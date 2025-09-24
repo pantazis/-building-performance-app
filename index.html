@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Building Performance App</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="container">
+      <a class="brand" href="#home"><img class="logo" src="logo.png" alt="Building Performance Logo"></a>
+      <nav class="nav">
+        <a href="#home">Home</a>
+        <a href="#add-1">Add building (1)</a>
+        <a href="#add-2">Add building (2)</a>
+        <a href="#results">Results</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- ============ HOME ============ -->
+    <section id="home" class="page">
+      <div class="page-header">
+        <h1>Back to home</h1>
+        <p class="muted">Choose an action to get started.</p>
+      </div>
+
+      <div class="grid cards-2">
+        <a class="card action" href="#list">
+          <div class="card-icon" aria-hidden="true">📄</div>
+          <h3>View list of buildings</h3>
+          <p>Browse and manage existing entries.</p>
+        </a>
+
+        <a class="card action" href="#add-1">
+          <div class="card-icon" aria-hidden="true">➕</div>
+          <h3>Add building</h3>
+          <p>Create a new building entry in two steps.</p>
+        </a>
+      </div>
+
+      <h2 class="mt-lg">Status legend</h2>
+      <div class="grid cards-3">
+        <div class="card legend">
+          <div class="status ready" title="Ready"></div>
+          <div>
+            <strong>Ready</strong>
+            <p class="muted">All data complete. Processing done.</p>
+          </div>
+        </div>
+        <div class="card legend">
+          <div class="status processing" title="Processing"></div>
+          <div>
+            <strong>Processing</strong>
+            <p class="muted">Please wait for the system to complete.</p>
+          </div>
+        </div>
+        <div class="card legend">
+          <div class="status incomplete" title="Incomplete"></div>
+          <div>
+            <strong>Incomplete data</strong>
+            <p class="muted">User needs to add/complete information.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LIST (placeholder) ============ -->
+    <section id="list" class="page">
+      <div class="page-header">
+        <h1>View list of buildings</h1>
+        <p class="muted">Example list layout.</p>
+      </div>
+
+      <!-- Header row -->
+      <div class="grid table-head">
+        <div>No.</div>
+        <div>Name</div>
+        <div>Location</div>
+        <div>Type</div>
+        <div>Results</div>
+        <div class="right">Actions</div>
+      </div>
+
+      <!-- Row 1 - READY -->
+      <div class="grid table-row">
+        <div>1</div>
+        <div>Demo Tower</div>
+        <div>Athens</div>
+        <div>Office</div>
+        <div class="status-cell">
+          <span class="icon icon--ready"><i class="fa-solid fa-check"></i></span>
+          <span class="chip chip--ready">Ready</span>
+        </div>
+        <div class="right actions">
+          <a class="btn-icon edit" href="#add-1" title="Edit">
+            <i class="fa-solid fa-pen"></i>
+          </a><a class="btn-icon remove" href="#results" title="Remove">
+            <i class="fa-solid fa-trash"></i>
+          </a>
+
+        </div>
+
+      </div>
+
+      <!-- Row 2 - PROCESSING -->
+      <div class="grid table-row">
+        <div>2</div>
+        <div>Harbor Residences</div>
+        <div>Thessaloniki</div>
+        <div>Residential</div>
+        <div class="status-cell">
+          <span class="icon icon--processing"><i class="fa-solid fa-spinner fa-spin"></i></span>
+          <span class="chip chip--processing">Processing</span>
+        </div>
+        <div class="right actions">
+          <a class="btn-icon edit" href="#add-1" title="Edit">
+            <i class="fa-solid fa-pen"></i>
+          </a><a class="btn-icon remove" href="#results" title="Remove">
+            <i class="fa-solid fa-trash"></i>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- Row 3 - INCOMPLETE -->
+      <div class="grid table-row">
+        <div>3</div>
+        <div>Metro Plaza</div>
+        <div>Patras</div>
+        <div>Retail</div>
+        <div class="status-cell">
+          <span class="icon icon--incomplete"><i class="fa-solid fa-triangle-exclamation"></i></span>
+          <span class="chip chip--incomplete">Incomplete data</span>
+        </div>
+        <div class="right actions">
+          <a class="btn-icon edit" href="#add-1" title="Edit">
+            <i class="fa-solid fa-pen"></i>
+          </a><a class="btn-icon remove" href="#results" title="Remove">
+            <i class="fa-solid fa-trash"></i>
+          </a>
+
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <a class="btn" href="#home">Back to home</a>
+        <a class="btn btn-primary" href="#add-1">Add building</a>
+      </div>
+    </section>
+
+
+
+
+    <!-- ============ ADD (1) ============ -->
+    <section id="add-1" class="page">
+      <div class="page-header">
+        <h1>Add building (1) / edit</h1>
+        <p class="muted">Basic information</p>
+      </div>
+
+      <form class="form grid form-2col" onsubmit="return false">
+        <label class="form-field">
+          <span>Name</span>
+          <input type="text" placeholder="e.g., Demo Tower" required />
+        </label>
+
+        <label class="form-field">
+          <span>Location</span>
+          <select>
+            <option value="" selected disabled>Select location</option>
+            <option>Athens</option>
+            <option>Thessaloniki</option>
+            <option>Patras</option>
+          </select>
+        </label>
+
+        <label class="form-field">
+          <span>Type</span>
+          <select>
+            <option value="" selected disabled>Select type</option>
+            <option>Office</option>
+            <option>Residential</option>
+            <option>Retail</option>
+            <option>Hospitality</option>
+          </select>
+        </label>
+      </form>
+
+      <div class="toolbar">
+        <a class="btn" href="#home">Back to home</a>
+        <a class="btn btn-ghost" href="#list">Save &amp; exit</a>
+        <a class="btn btn-primary" href="#add-2">Save &amp; continue</a>
+      </div>
+    </section>
+
+    <!-- ============ ADD (2) ============ -->
+    <section id="add-2" class="page">
+      <div class="page-header">
+        <h1>Add building (2) / edit</h1>
+        <p class="muted">Files &amp; domains</p>
+      </div>
+
+      <form class="form grid form-2col" onsubmit="return false">
+        <label class="form-field">
+          <span>IFC model</span>
+          <input type="file" accept=".ifc,.zip" />
+        </label>
+
+        <fieldset class="form-field col-span-2">
+          <legend>Domains</legend>
+          <div class="grid domains">
+            <!-- From your list -->
+            <label><input type="checkbox" /> Heating</label>
+            <label><input type="checkbox" /> Domestic hot water</label>
+            <label><input type="checkbox" /> Cooling</label>
+            <label><input type="checkbox" /> Ventilation</label>
+            <label><input type="checkbox" /> Lighting</label>
+            <label><input type="checkbox" /> Dynamic Building Envelope</label>
+            <label><input type="checkbox" /> Electricity</label>
+            <label><input type="checkbox" /> Electric Vehicle Charging</label>
+            <label><input type="checkbox" /> Monitoring and control</label>
+          </div>
+        </fieldset>
+
+        <!-- Placeholder for future fields -->
+        <fieldset class="form-field col-span-2">
+          <legend>Additional details</legend>
+          <textarea rows="4" placeholder="Add more form fields later…"></textarea>
+        </fieldset>
+      </form>
+
+      <div class="toolbar">
+        <a class="btn" href="#home">Back to home</a>
+        <a class="btn btn-ghost" href="#list">Exit without saving</a>
+        <a class="btn btn-primary" href="#results">Save &amp; calculate</a>
+      </div>
+    </section>
+
+    <!-- ============ RESULTS ============ -->
+    <section id="results" class="page">
+      <div class="page-header">
+        <h1>View results (when ready)</h1>
+        <p class="muted">Energy efficiency &amp; smart readiness summaries.</p>
+      </div>
+
+      <div class="grid cards-2">
+        <article class="card">
+          <div class="card-head">
+            <h3>Energy efficiency</h3>
+            <a class="btn btn-sm" href="#">View EPB report</a>
+          </div>
+          <div class="bullets">
+
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-head">
+            <h3>Smart Readiness</h3>
+            <a class="btn btn-sm" href="#">View SRI report</a>
+          </div>
+          <div class="bullets">
+
+          </div>
+        </article>
+      </div>
+
+      <div class="toolbar">
+        <a class="btn" href="#home">Back to home</a>
+      </div>
+    </section>
+  </main>
+  <div id="hiddenDiv" style="display: none;">
+    <div id="gaugeparent">
+      <svg id="gauge" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 226.71 120.91" width="100%">
+        <defs>
+          <style>
+            .d {
+              fill: #fecf17
+            }
+
+            .e {
+              fill: #2db34a
+            }
+
+            .f {
+              fill: #86c440
+            }
+
+            .g {
+              fill: #ef3e23
+            }
+
+            .h {
+              fill: #f47721
+            }
+
+            .i {
+              fill: #231f20
+            }
+          </style>
+        </defs>
+
+        <!-- arcs -->
+        <g id="b">
+          <path class="e"
+            d="M183.92,110.89h42.79c-.5-23.06-7.88-44.42-20.17-62.11l-34.6,25.14c7.17,10.62,11.51,23.31,11.99,36.97Z" />
+          <path class="d"
+            d="M113.35,42.76c6.74,0,13.26,.97,19.43,2.73l13.23-40.7C135.67,1.68,124.71,0,113.35,0s-22.32,1.68-32.66,4.78l13.23,40.7c6.18-1.76,12.69-2.73,19.43-2.73Z" />
+          <path class="f"
+            d="M168.98,69.88l34.62-25.15c-13.34-17.5-31.65-31.01-52.82-38.41l-13.22,40.68c12.51,4.56,23.36,12.58,31.43,22.87Z" />
+          <path class="h"
+            d="M89.16,47.01L75.94,6.33c-21.18,7.4-39.49,20.9-52.82,38.41l34.62,25.15c8.06-10.3,18.91-18.31,31.43-22.87Z" />
+          <path class="g"
+            d="M54.77,73.92L20.17,48.78C7.88,66.47,.5,87.83,0,110.89H42.79c.48-13.67,4.82-26.35,11.99-36.97Z" />
+        </g>
+
+        <!-- wrap needle so we can target it -->
+        <g id="needle" class="needle-sweep">
+          <path class="i" d="M115.26,16.86l-10.13,91.91c0,5.6,4.54,10.13,10.13,10.13s10.13-4.54,10.13-10.13l-10.13-91.91Zm0,97.87
+      c-3.29,0-5.96-2.67-5.96-5.96s2.67-5.96,5.96-5.96,5.96,2.67,5.96,5.96-2.67,5.96-5.96,5.96Z" />
+          <circle class="i" cx="115.26" cy="109.1" r="1.9" />
+        </g>
+      </svg>
+      <div class="gaugetitle">
+        <h4>Gauge Title <span class="percent"></span></h4>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* rotate around the screw center in viewBox coords */
+    #needle {
+      transform-box: view-box;
+      transform-origin: 115.26px 109.1px;
+    }
+
+    /* Needles will be animated with JavaScript */
+    .needle-animated {
+      transition: transform 0.1s ease-out;
+    }
+  </style>
+  <script>
+    // Create array with random gauge values from 0 to 100%
+    const gaugeValues = [];
+    for (let i = 0; i < 6; i++) { // 6 gauges total (3 per bullets container)
+      gaugeValues.push(Math.floor(Math.random() * 101)); // 0-100%
+    }
+
+    console.log('Gauge values:', gaugeValues);
+
+    // Animate needle to target angle
+    function animateNeedle(needle, targetPercentage, duration = 2000) {
+      const targetAngle = -90 + (targetPercentage / 100) * 180;
+      let startAngle = -90;
+      let startTime = null;
+
+      function animate(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+
+        // Easing function for smooth animation
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const currentAngle = startAngle + (targetAngle - startAngle) * easeOut;
+
+        needle.style.transform = `rotate(${currentAngle}deg)`;
+        needle.style.transformOrigin = '115.26px 109.1px';
+        needle.style.transformBox = 'view-box';
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    // Clone SVG gauge and append 3 times to each .bullets div
+    document.addEventListener('DOMContentLoaded', function () {
+      const originalSvg = document.getElementById('gaugeparent');
+      const bulletsContainers = document.querySelectorAll('.bullets');
+
+      let gaugeIndex = 0;
+
+      bulletsContainers.forEach(function (container) {
+        for (let i = 0; i < 3; i++) {
+          const clonedSvg = originalSvg.cloneNode(true);
+          clonedSvg.removeAttribute('id'); // Remove ID to avoid duplicates
+           // Set a smaller width
+          clonedSvg.style.margin = '10px'; // Add some margin
+
+          // Get the needle element
+          const needle = clonedSvg.querySelector('.needle-sweep');
+          const percent = clonedSvg.querySelector('.percent');
+          percent.innerText = gaugeValues[gaugeIndex] + '%';
+
+          const percentage = gaugeValues[gaugeIndex];
+
+          // Remove the CSS animation class and add new class
+          needle.classList.remove('needle-sweep');
+          needle.classList.add('needle-animated');
+
+          // Set initial position
+          needle.style.transform = 'rotate(-90deg)';
+          needle.style.transformOrigin = '115.26px 109.1px';
+          needle.style.transformBox = 'view-box';
+
+          // Add percentage label
+          const textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          textElement.setAttribute('x', '113.35');
+          textElement.setAttribute('y', '130');
+          textElement.setAttribute('text-anchor', 'middle');
+          textElement.setAttribute('fill', '#231f20');
+          textElement.setAttribute('font-size', '16');
+          textElement.setAttribute('font-weight', 'bold');
+          textElement.textContent = percentage + '%';
+          clonedSvg.appendChild(textElement);
+
+          container.appendChild(clonedSvg);
+
+          // Store needle and percentage for later animation
+          needle.dataset.percentage = percentage;
+          needle.dataset.gaugeIndex = gaugeIndex;
+
+          gaugeIndex++;
+        }
+      });
+
+      // Set up Intersection Observer to animate when section comes into view
+      const resultsSection = document.getElementById('results');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Start animations when section is visible
+            const needles = document.querySelectorAll('.needle-animated');
+            needles.forEach(needle => {
+              const percentage = parseInt(needle.dataset.percentage);
+              const gaugeIndex = parseInt(needle.dataset.gaugeIndex);
+              
+              setTimeout(() => {
+                animateNeedle(needle, percentage, 2000 + gaugeIndex * 200);
+              }, 500 + gaugeIndex * 300);
+            });
+            
+            // Stop observing after first animation
+            observer.unobserve(resultsSection);
+          }
+        });
+      }, {
+        threshold: 0.3 // Trigger when 30% of the section is visible
+      });
+
+      observer.observe(resultsSection);
+    });
+  </script>
+
+</body>
+
+</html>

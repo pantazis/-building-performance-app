@@ -1,0 +1,342 @@
+/* =======================
+   Design Tokens (CSS vars)
+   ======================= */
+:root {
+  /* Brand palette (from your image) */
+  --green: #1f543b;     /* primary brand / header / CTA */
+  --green-90: #1b4b35;  /* darker for hover/borders */
+  --mint:  #85d1c4;     /* info / processing */
+  --red:   #e8363d;     /* warning / error */
+
+  /* Light tints for chips/backgrounds */
+  --green-10: #e1ebe6;
+  --mint-20:  #d8f1ec;
+  --red-10:   #fde3e6;
+
+  /* Neutral UI */
+  --bg:      #f6f8f9;   /* app background (light) */
+  --panel:   #ffffff;   /* cards, table rows */
+  --panel-2: #ffffff;   /* secondary panels */
+  --ink:     #0c1220;   /* main text */
+  --muted:   #5e6a7d;   /* secondary text */
+  --line:    #d8dee7;   /* borders, grid lines */
+
+  /* Spacing (8pt scale) */
+  --sp-2xs: 4px;
+  --sp-xs: 8px;
+  --sp-sm: 12px;
+  --sp-md: 16px;
+  --sp-lg: 24px;
+  --sp-xl: 32px;
+  --sp-2xl: 48px;
+
+  /* Radii & shadows */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --shadow-1: 0 6px 20px rgba(16, 24, 40, 0.08);
+
+  /* Type */
+  --ff: ui-sans-serif, system-ui, -apple-system, Segoe UI, Inter, Roboto, "Helvetica Neue", Arial;
+  --fs-0: 14px;
+  --fs-1: 16px;
+  --fs-2: 18px;
+  --fs-3: 22px;
+  --fs-4: 28px;
+}
+
+/* =======================
+   Base
+   ======================= */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--ff);
+  color: var(--ink);
+  background: var(--bg) !important;     /* force light background */
+  line-height: 1.5;
+  font-size: var(--fs-1);
+}
+
+/* Containers & layout (Sass-safe) */
+.container {
+  max-width: 1200px;
+  width: calc(100% - 2 * var(--sp-xl));
+  margin-inline: auto;
+}
+
+/* =======================
+   Header / Footer
+   ======================= */
+.app-header {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--green) !important;   /* dark green strip */
+  border-bottom: 4px solid var(--green-90);
+}
+.app-header .container {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: var(--sp-lg);
+  padding: var(--sp-md) 0;
+}
+.brand {
+  color: #fff !important;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: var(--fs-2);
+}
+.nav a {
+  color: #eaf3ee !important;
+  text-decoration: none;
+  padding: var(--sp-xs) var(--sp-sm);
+  border-radius: var(--r-sm);
+}
+.nav a:hover { background: var(--green-90); color: #fff !important; }
+
+.app-footer {
+  margin-top: var(--sp-2xl);
+  border-top: 1px solid var(--line);
+}
+.app-footer .container {
+  padding: var(--sp-lg) 0;
+  color: var(--muted);
+}
+
+/* =======================
+   Pages / Typography
+   ======================= */
+.page {
+  padding-block: var(--sp-2xl);
+  display: grid;
+  gap: var(--sp-xl);
+}
+.page-header h1 {
+  font-size: var(--fs-4);
+  margin: 0 0 var(--sp-xs);
+}
+.muted { color: var(--muted); }
+
+/* =======================
+   Grid helpers
+   ======================= */
+.grid { display: grid; gap: var(--sp-lg); }
+.cards-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+.cards-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+
+@media (max-width: 960px) {
+  .cards-2, .cards-3 { grid-template-columns: 1fr; }
+}
+
+/* =======================
+   Cards
+   ======================= */
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: var(--sp-xl);
+  box-shadow: var(--shadow-1);
+}
+.card .card-head {
+  display: flex;
+  gap: var(--sp-md);
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-md);
+}
+.card .card-icon { font-size: 32px; }
+.card.action { text-decoration: none; color: inherit; transition: transform .12s ease, box-shadow .12s ease; }
+.card.action:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(16,24,40,0.12); }
+
+/* =======================
+   Status legend
+   ======================= */
+.legend {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: var(--sp-md);
+  align-items: center;
+}
+.status {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 2px solid rgba(0,0,0,0.06);
+  background: #e5e7eb;
+}
+.status.ready { background: var(--green); }
+.status.processing { background: var(--mint); }
+.status.incomplete { background: var(--red); }
+
+/* =======================
+   Chips
+   ======================= */
+.chip {
+  display: inline-grid; place-items: center;
+  padding: 2px 10px; border-radius: 999px;
+  font-size: var(--fs-0);
+  border: 1px solid var(--line);
+  background: #fff;
+}
+.chip--ready      { background: var(--green-10); color: var(--green); }
+.chip--processing { background: var(--mint-20);  color: #136a63; }
+.chip--incomplete { background: var(--red-10);   color: var(--red); }
+
+/* =======================
+   Table-like list (CSS Grid)
+   ======================= */
+.table-head, .table-row {
+  display: grid;
+  grid-template-columns: 8% 20% 15% 15% 15% 16%; /* No., Name, Location, Type, Results, Actions */
+  padding: var(--sp-sm) var(--sp-md);
+  border: 1px solid var(--line);
+  background: var(--panel);
+  align-items: center;
+}
+.table-head {
+  font-weight: 700;
+  color: var(--ink);
+  background: #f9fbfa;
+  border-top: 4px solid var(--green);    /* thick rule like your slide */
+}
+.table-row + .table-row { border-top: 0; border-bottom: 1px solid var(--line); }
+.right { justify-self: end; }
+
+/* =======================
+   Toolbar
+   ======================= */
+.toolbar {
+  display: grid;
+  grid-auto-flow: column;
+  gap: var(--sp-md);
+  justify-content: start;
+}
+
+/* =======================
+   Buttons
+   ======================= */
+.btn {
+  display: inline-grid; place-items: center;
+  padding: 10px 16px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 600;
+}
+.btn:hover { background: #f2f6f4; }
+
+.btn-primary {
+  background: var(--green) !important;
+  border-color: var(--green-90) !important;
+  color: #fff !important;
+}
+.btn-primary:hover { filter: brightness(1.05); }
+
+.btn-ghost {
+  background: transparent;
+  border-color: var(--line);
+  color: var(--ink);
+}
+.btn-sm { padding: 6px 10px; font-size: var(--fs-0); }
+
+/* =======================
+   Forms
+   ======================= */
+.form { gap: var(--sp-lg); }
+.form-2col { grid-template-columns: repeat(2, minmax(0,1fr)); }
+.form-field { display: grid; gap: var(--sp-xs); }
+.form-field > span, legend { color: var(--muted); font-size: var(--fs-0); }
+
+input[type="text"], select, input[type="file"], textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+}
+textarea { resize: vertical; }
+.col-span-2 { grid-column: 1 / -1; }
+
+.domains { grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--sp-md); }
+.domains label {
+  display: grid;
+  grid-auto-flow: column;
+  gap: var(--sp-sm);
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: var(--r-sm);
+}
+
+/* =======================
+   Responsive tweaks
+   ======================= */
+@media (max-width: 960px) {
+  .form-2col { grid-template-columns: 1fr; }
+  .domains { grid-template-columns: 1fr; }
+  .toolbar { grid-auto-flow: row; justify-items: start; }
+  .app-header .container { grid-template-columns: 1fr; gap: var(--sp-sm); }
+  .nav { display: grid; grid-auto-flow: column; overflow-x: auto; gap: var(--sp-xs); }
+}
+
+.logo {
+	max-width: 100px;
+}
+/* icon-only buttons */
+.btn-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  background: #fff;
+  font-size: 14px;
+  margin-left: var(--sp-xs);
+  transition: background 0.2s, transform 0.15s;
+}
+
+.btn-icon:hover {
+  transform: scale(1.1);
+}
+
+/* specific colors */
+.btn-icon.remove {
+  color: var(--red);
+  border-color: var(--red);
+  background: var(--red-10);
+}
+
+.btn-icon.remove:hover {
+  background: var(--red);
+  color: #fff;
+}
+
+.btn-icon.edit {
+  color: var(--green);
+  border-color: var(--green);
+  background: var(--green-10);
+}
+
+.btn-icon.edit:hover {
+  background: var(--green);
+  color: #fff;
+}
+
+/* =======================
+   Bullets Grid Layout
+   ======================= */
+.bullets {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--sp-md);
+  text-align: center;
+  align-items: center;
+  justify-items: center;
+  padding: var(--sp-lg) 0;
+}
