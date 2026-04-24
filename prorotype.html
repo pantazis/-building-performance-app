@@ -10,10 +10,16 @@
 </head>
 
 <body>
+  <!-- COMPONENT-INDEX: hamburger-menu, search-bar, breadcrumbs, typography-hierarchy, button-group, login-form, social-login, validation-state, unordered-list, ordered-list, data-table, select-menu, checklist, accordion, modal, toast, loader, empty-state, footer -->
   <header class="app-header">
     <div class="container">
       <a class="brand" href="#home"><img class="logo" src="logo.png" alt="Building Performance Logo"></a>
-      <nav class="nav">
+      <!-- COMPONENT: hamburger-menu -->
+      <button id="component-hamburger-menu" class="c-hamburger-menu" type="button" aria-controls="main-nav"
+        aria-expanded="false" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav id="main-nav" class="nav">
         <a href="#home">Home</a>
         <a href="#add-1">Add building (1)</a>
         <a href="#add-2">Add building (2)</a>
@@ -68,6 +74,187 @@
             <p class="muted">User needs to add/complete information.</p>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section id="components" class="page">
+      <div class="page-header">
+        <h1>Reusable component library</h1>
+        <p class="muted">Missing UX elements added from test checklist.</p>
+      </div>
+
+      <div class="grid cards-2">
+        <!-- COMPONENT: search-bar -->
+        <article id="component-search-bar" class="card c-search-bar">
+          <h2>Search</h2>
+          <label for="global-search" class="sr-only">Search buildings</label>
+          <div class="search-wrap">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <input id="global-search" type="search" placeholder="Search by building name, location or type" />
+          </div>
+        </article>
+
+        <!-- COMPONENT: breadcrumbs -->
+        <article id="component-breadcrumbs" class="card c-breadcrumbs">
+          <h2>Breadcrumbs</h2>
+          <nav aria-label="Breadcrumb">
+            <ol>
+              <li><a href="#home">Home</a></li>
+              <li><a href="#list">Buildings</a></li>
+              <li aria-current="page">Demo Tower</li>
+            </ol>
+          </nav>
+        </article>
+
+        <!-- COMPONENT: typography-hierarchy -->
+        <article id="component-typography-hierarchy" class="card c-typography-hierarchy">
+          <h1>H1 Page Title</h1>
+          <h2>H2 Section Subtitle</h2>
+          <h3>H3 Subsection Heading</h3>
+          <p>Body text example for readable content at normal size with comfortable line-height.</p>
+          <p class="caption">Caption / helper text for additional context.</p>
+        </article>
+
+        <!-- COMPONENT: button-group -->
+        <article id="component-button-group" class="card c-button-group">
+          <h2>Buttons and CTA</h2>
+          <div class="grid button-row">
+            <a href="#" class="btn btn-primary">Primary action</a>
+            <a href="#" class="btn">Secondary action</a>
+            <a href="#" class="btn btn-primary">Call to action</a>
+          </div>
+        </article>
+
+        <!-- COMPONENT: login-form -->
+        <article id="component-login-form" class="card c-login-form">
+          <h2>Login & security</h2>
+          <form id="login-form" class="grid" novalidate>
+            <label class="form-field" for="login-email">
+              <span>Email</span>
+              <input id="login-email" type="email" placeholder="name@example.com" required />
+            </label>
+            <label class="form-field" for="login-password">
+              <span>Password</span>
+              <div class="password-wrap">
+                <input id="login-password" type="password" placeholder="Enter your password" minlength="8" required />
+                <button id="toggle-password" type="button" class="btn btn-sm" aria-pressed="false">Show</button>
+              </div>
+            </label>
+            <!-- COMPONENT: validation-state -->
+            <p id="component-validation-state" class="c-validation-state" role="status" aria-live="polite"></p>
+            <div class="login-actions">
+              <a href="#" class="muted">Forgot password?</a>
+              <button type="submit" class="btn btn-primary">Sign in</button>
+            </div>
+          </form>
+
+          <!-- COMPONENT: social-login -->
+          <div id="component-social-login" class="c-social-login">
+            <p class="caption">Or continue with</p>
+            <div class="grid social-row">
+              <button type="button" class="btn"><i class="fa-brands fa-google"></i> Google</button>
+              <button type="button" class="btn"><i class="fa-brands fa-apple"></i> Apple</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <!-- COMPONENT: unordered-list -->
+          <div id="component-unordered-list" class="c-unordered-list">
+            <h2>Unordered list</h2>
+            <ul>
+              <li>Fast setup</li>
+              <li>Reusable tokens</li>
+              <li>Responsive grid layouts</li>
+            </ul>
+          </div>
+
+          <!-- COMPONENT: ordered-list -->
+          <div id="component-ordered-list" class="c-ordered-list">
+            <h2>Ordered list</h2>
+            <ol>
+              <li>Add building details</li>
+              <li>Upload IFC and select domains</li>
+              <li>Calculate and review results</li>
+            </ol>
+          </div>
+        </article>
+
+        <article class="card">
+          <!-- COMPONENT: data-table -->
+          <div id="component-data-table" class="c-data-table">
+            <h2>Data table</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Plan</th>
+                  <th scope="col">Buildings</th>
+                  <th scope="col">Reports</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Starter</td>
+                  <td>5</td>
+                  <td>Monthly</td>
+                </tr>
+                <tr>
+                  <td>Pro</td>
+                  <td>50</td>
+                  <td>Weekly</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- COMPONENT: select-menu -->
+          <div id="component-select-menu" class="c-select-menu">
+            <h2>Dropdown</h2>
+            <label for="country" class="caption">Country</label>
+            <select id="country">
+              <option selected>Greece</option>
+              <option>Italy</option>
+              <option>Spain</option>
+            </select>
+          </div>
+        </article>
+
+        <!-- COMPONENT: checklist -->
+        <article id="component-checklist" class="card c-checklist">
+          <h2>Checklist</h2>
+          <ul>
+            <li><input type="checkbox" checked /> Add profile information</li>
+            <li><input type="checkbox" checked /> Upload IFC model</li>
+            <li><input type="checkbox" /> Generate final report</li>
+          </ul>
+        </article>
+
+        <!-- COMPONENT: accordion -->
+        <article id="component-accordion" class="card c-accordion">
+          <h2>Accordion</h2>
+          <button type="button" class="accordion-trigger" aria-expanded="false" aria-controls="accordion-panel-1">What is
+            SRI?</button>
+          <div id="accordion-panel-1" class="accordion-panel" hidden>
+            Smart Readiness Indicator measures how smart a building is in terms of efficiency and flexibility.
+          </div>
+        </article>
+
+        <article class="card grid">
+          <!-- COMPONENT: loader -->
+          <div id="component-loader" class="c-loader" aria-label="Loading" role="status"></div>
+
+          <!-- COMPONENT: empty-state -->
+          <div id="component-empty-state" class="c-empty-state">
+            <h2>No buildings yet</h2>
+            <p class="muted">Create your first building to start calculating performance.</p>
+            <a href="#add-1" class="btn btn-primary">Add building</a>
+          </div>
+
+          <div class="grid button-row">
+            <button id="open-modal" type="button" class="btn">Open modal</button>
+            <button id="show-toast" type="button" class="btn btn-primary">Show toast</button>
+          </div>
+        </article>
       </div>
     </section>
 
@@ -277,6 +464,30 @@
       </div>
     </section>
   </main>
+
+  <!-- COMPONENT: modal -->
+  <div id="component-modal" class="c-modal" aria-hidden="true" role="dialog" aria-modal="true"
+    aria-labelledby="modal-title">
+    <div class="modal-card">
+      <h2 id="modal-title">Confirm action</h2>
+      <p>Are you sure you want to continue?</p>
+      <div class="toolbar">
+        <button id="close-modal" type="button" class="btn">Cancel</button>
+        <button type="button" class="btn btn-primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPONENT: toast -->
+  <div id="component-toast" class="c-toast" role="status" aria-live="polite">Success! Building saved.</div>
+
+  <!-- COMPONENT: footer -->
+  <footer id="component-footer" class="app-footer c-footer">
+    <div class="container">
+      <p>© 2026 OpenBEP · Contact · Privacy · Terms</p>
+    </div>
+  </footer>
+
   <div id="hiddenDiv" style="display: none;">
     <div id="gaugeparent">
       <svg id="gauge" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 226.71 120.91" width="100%">
@@ -336,6 +547,271 @@
   </div>
 
   <style>
+    /* COMPONENT: sr-only */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* COMPONENT: hamburger-menu */
+    .c-hamburger-menu {
+      display: none;
+      gap: 4px;
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 8px;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .c-hamburger-menu span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--green);
+    }
+
+    /* COMPONENT: search-bar */
+    .c-search-bar .search-wrap {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: var(--sp-sm);
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 10px 12px;
+    }
+
+    .c-search-bar input {
+      border: 0;
+      outline: 0;
+      font: inherit;
+    }
+
+    /* COMPONENT: breadcrumbs */
+    .c-breadcrumbs ol {
+      display: grid;
+      grid-auto-flow: column;
+      justify-content: start;
+      gap: var(--sp-xs);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .c-breadcrumbs li+li::before {
+      content: ">";
+      margin-right: var(--sp-xs);
+      color: var(--muted);
+    }
+
+    /* COMPONENT: typography-hierarchy */
+    .c-typography-hierarchy {
+      display: grid;
+      gap: var(--sp-xs);
+    }
+
+    .c-typography-hierarchy h1,
+    .c-typography-hierarchy h2,
+    .c-typography-hierarchy h3,
+    .c-typography-hierarchy p {
+      margin: 0;
+    }
+
+    .caption {
+      font-size: var(--fs-0);
+      color: var(--muted);
+    }
+
+    /* COMPONENT: button-group */
+    .button-row {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--sp-sm);
+    }
+
+    /* COMPONENT: login-form */
+    .c-login-form form {
+      gap: var(--sp-md);
+    }
+
+    .password-wrap {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--sp-xs);
+      align-items: center;
+    }
+
+    .login-actions {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: var(--sp-sm);
+    }
+
+    /* COMPONENT: validation-state */
+    .c-validation-state {
+      min-height: 20px;
+      margin: 0;
+      color: var(--red);
+      font-size: var(--fs-0);
+    }
+
+    /* COMPONENT: social-login */
+    .social-row {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-sm);
+    }
+
+    /* COMPONENT: unordered-list */
+    .c-unordered-list ul,
+    .c-ordered-list ol,
+    .c-checklist ul {
+      margin: var(--sp-xs) 0 var(--sp-md);
+      padding-left: 20px;
+    }
+
+    /* COMPONENT: data-table */
+    .c-data-table table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      overflow: hidden;
+    }
+
+    .c-data-table th,
+    .c-data-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px;
+      text-align: left;
+    }
+
+    .c-data-table th {
+      background: var(--green-10);
+    }
+
+    /* COMPONENT: select-menu */
+    .c-select-menu {
+      display: grid;
+      gap: var(--sp-xs);
+    }
+
+    /* COMPONENT: checklist */
+    .c-checklist li {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--sp-xs);
+      align-items: center;
+      margin-bottom: var(--sp-xs);
+    }
+
+    /* COMPONENT: accordion */
+    .accordion-trigger {
+      width: 100%;
+      text-align: left;
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      background: #fff;
+      padding: 10px 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .accordion-panel {
+      margin-top: var(--sp-sm);
+      padding: var(--sp-sm);
+      border-left: 3px solid var(--green);
+      background: #fff;
+    }
+
+    /* COMPONENT: loader */
+    .c-loader {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 3px solid var(--line);
+      border-top-color: var(--green);
+      animation: spin 0.9s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* COMPONENT: empty-state */
+    .c-empty-state {
+      display: grid;
+      gap: var(--sp-xs);
+      justify-items: start;
+    }
+
+    .c-empty-state h2,
+    .c-empty-state p {
+      margin: 0;
+    }
+
+    /* COMPONENT: modal */
+    .c-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(12, 18, 32, 0.45);
+      display: none;
+      place-items: center;
+      z-index: 200;
+      padding: var(--sp-lg);
+    }
+
+    .c-modal.is-open {
+      display: grid;
+    }
+
+    .modal-card {
+      background: #fff;
+      border-radius: var(--r-md);
+      border: 1px solid var(--line);
+      padding: var(--sp-lg);
+      max-width: 420px;
+      width: 100%;
+      display: grid;
+      gap: var(--sp-md);
+    }
+
+    /* COMPONENT: toast */
+    .c-toast {
+      position: fixed;
+      right: var(--sp-lg);
+      bottom: var(--sp-lg);
+      background: var(--green);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: var(--r-sm);
+      box-shadow: var(--shadow-1);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity .2s ease, transform .2s ease;
+      z-index: 250;
+    }
+
+    .c-toast.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* COMPONENT: footer */
+    .c-footer {
+      margin-top: var(--sp-xl);
+    }
+
     /* rotate around the screw center in viewBox coords */
     #needle {
       transform-box: view-box;
@@ -345,6 +821,25 @@
     /* Needles will be animated with JavaScript */
     .needle-animated {
       transition: transform 0.1s ease-out;
+    }
+
+    @media (max-width: 960px) {
+      .c-hamburger-menu {
+        display: grid;
+      }
+
+      .nav {
+        display: none;
+      }
+
+      .nav.is-open {
+        display: grid;
+      }
+
+      .button-row,
+      .social-row {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
   <script>
@@ -384,6 +879,92 @@
 
     // Clone SVG gauge and append 3 times to each .bullets div
     document.addEventListener('DOMContentLoaded', function () {
+      // Hamburger toggle
+      const menuBtn = document.getElementById('component-hamburger-menu');
+      const nav = document.getElementById('main-nav');
+      if (menuBtn && nav) {
+        menuBtn.addEventListener('click', function () {
+          const isOpen = nav.classList.toggle('is-open');
+          menuBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+      }
+
+      // Login interactions
+      const loginForm = document.getElementById('login-form');
+      const emailInput = document.getElementById('login-email');
+      const passwordInput = document.getElementById('login-password');
+      const validationState = document.getElementById('component-validation-state');
+      const togglePassword = document.getElementById('toggle-password');
+
+      if (togglePassword && passwordInput) {
+        togglePassword.addEventListener('click', function () {
+          const isPassword = passwordInput.type === 'password';
+          passwordInput.type = isPassword ? 'text' : 'password';
+          togglePassword.textContent = isPassword ? 'Hide' : 'Show';
+          togglePassword.setAttribute('aria-pressed', isPassword ? 'true' : 'false');
+        });
+      }
+
+      if (loginForm && emailInput && passwordInput && validationState) {
+        loginForm.addEventListener('submit', function (event) {
+          event.preventDefault();
+          const hasValidEmail = emailInput.value.includes('@');
+          const hasValidPassword = passwordInput.value.length >= 8;
+
+          if (!hasValidEmail) {
+            validationState.textContent = 'Please enter a valid email address.';
+            return;
+          }
+
+          if (!hasValidPassword) {
+            validationState.textContent = 'Password must be at least 8 characters.';
+            return;
+          }
+
+          validationState.textContent = 'Login form looks good.';
+          validationState.style.color = 'var(--green)';
+        });
+      }
+
+      // Accordion
+      const accordionTrigger = document.querySelector('.accordion-trigger');
+      const accordionPanel = document.getElementById('accordion-panel-1');
+      if (accordionTrigger && accordionPanel) {
+        accordionTrigger.addEventListener('click', function () {
+          const expanded = accordionTrigger.getAttribute('aria-expanded') === 'true';
+          accordionTrigger.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+          accordionPanel.hidden = expanded;
+        });
+      }
+
+      // Modal
+      const openModalBtn = document.getElementById('open-modal');
+      const closeModalBtn = document.getElementById('close-modal');
+      const modal = document.getElementById('component-modal');
+      if (openModalBtn && closeModalBtn && modal) {
+        openModalBtn.addEventListener('click', function () {
+          modal.classList.add('is-open');
+          modal.setAttribute('aria-hidden', 'false');
+        });
+
+        closeModalBtn.addEventListener('click', function () {
+          modal.classList.remove('is-open');
+          modal.setAttribute('aria-hidden', 'true');
+        });
+      }
+
+      // Toast
+      const toast = document.getElementById('component-toast');
+      const showToastBtn = document.getElementById('show-toast');
+      if (toast && showToastBtn) {
+        showToastBtn.addEventListener('click', function () {
+          toast.classList.add('is-visible');
+          window.setTimeout(function () {
+            toast.classList.remove('is-visible');
+          }, 1800);
+        });
+      }
+
       const originalSvg = document.getElementById('gaugeparent');
       const bulletsContainers = document.querySelectorAll('.bullets');
 
