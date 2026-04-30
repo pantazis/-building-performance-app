@@ -7,10 +7,7 @@
   <title>Building Performance App</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="style.css" />
-</head>
-
-<body>
-  <!-- COMPONENT-INDEX: hamburger-menu, search-bar, breadcrumbs, typography-hierarchy, button-group, login-form, social-login, validation-state, unordered-list, ordered-list, data-table, select-menu, checklist, accordion, modal, toast, loader, empty-state, footer -->
+</head>  <!-- CO  <!-- COMPONENT-INDEX: hamburger-menu, role-switcher, search-bar, breadcrumbs, typography-hierarchy, button-group, status-chips, login-form, social-login, validation-state, unordered-list, ordered-list, data-table, select-menu, checklist, accordion, modal, toast, loader, empty-state, footer, gauge-svg-template, sri-results-table -->
   <header class="app-header">
     <div class="container">
       <a class="brand" href="#home"><img class="logo" src="logo.png" alt="Building Performance Logo"></a>
@@ -19,19 +16,43 @@
         aria-expanded="false" aria-label="Toggle navigation menu">
         <span></span><span></span><span></span>
       </button>
-      <nav id="main-nav" class="nav">
-        <a href="#home">Home</a>
-        <a href="#add-1">Add building (1)</a>
-        <a href="#add-2">Add building (2)</a>
-        <a href="#results">Results</a>
-      </nav>
+      <div class="header-controls">
+        <nav id="main-nav" class="nav">
+          <a href="#home" data-roles="ALL">Dashboard</a>
+          <a href="#list" data-roles="ASSESSOR,BUILDING_OWNER,ADMIN">Building list</a>
+          <a href="#building-details" data-roles="ASSESSOR,BUILDING_OWNER,ADMIN">Building details</a>
+          <a href="#add-1" data-roles="ASSESSOR,ADMIN">Create / Edit building</a>
+          <a href="#calculation" data-roles="ASSESSOR,ADMIN">Calculation</a>
+          <a href="#results" data-roles="ASSESSOR,BUILDING_OWNER,ADMIN">Results</a>
+          <a href="#reports" data-roles="ASSESSOR,BUILDING_OWNER,ADMIN">Reports</a>
+          <a href="#data-hub" data-roles="DATA_OWNER,PUBLIC_USER,EXTERNAL_DATA_CONSUMER,ADMIN">Data Hub</a>
+          <a href="#sharing-requests" data-roles="DATA_OWNER,EXTERNAL_DATA_CONSUMER,ADMIN">Sharing</a>
+          <a href="#api-developer" data-roles="EXTERNAL_DEVELOPER,ADMIN">API / Developer</a>
+          <a href="#profile-settings" data-roles="ASSESSOR,BUILDING_OWNER,DATA_OWNER,EXTERNAL_DEVELOPER,EXTERNAL_DATA_CONSUMER,ADMIN">Profile / Settings</a>
+          <a href="#admin-users-roles" data-roles="ADMIN">Admin</a>
+          <a href="#notifications-activity" data-roles="ASSESSOR,BUILDING_OWNER,DATA_OWNER,EXTERNAL_DEVELOPER,EXTERNAL_DATA_CONSUMER,ADMIN">Notifications / Activity</a>
+        </nav>
+        <!-- COMPONENT: role-switcher -->
+        <label id="component-role-switcher" class="c-role-switcher role-switcher" for="role-selector">
+          <span>Role</span>
+          <select id="role-selector" aria-label="Change active user role">
+            <option value="ASSESSOR">Assessor</option>
+            <option value="BUILDING_OWNER">Building Owner / Manager</option>
+            <option value="DATA_OWNER">Data Owner</option>
+            <option value="PUBLIC_USER">Public User</option>
+            <option value="EXTERNAL_DEVELOPER">External Developer</option>
+            <option value="EXTERNAL_DATA_CONSUMER">External Data Consumer</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+        </label>
+      </div>
     </div>
   </header>
 
   <main class="container">
 
     <!-- ============ HOME ============ -->
-    <section id="home" class="page">
+    <section id="home" class="page" data-roles="ALL">
       <div class="page-header">
         <h1>Back to home</h1>
         <p class="muted">Choose an action to get started.</p>
@@ -119,9 +140,56 @@
         <article id="component-button-group" class="card c-button-group">
           <h2>Buttons and CTA</h2>
           <div class="grid button-row">
+            <a href="#" class="btn btn-default">Default</a>
+            <a href="#" class="btn btn-success">Success</a>
+            <a href="#" class="btn btn-warning">Warning</a>
+            <a href="#" class="btn btn-orange">Orange</a>
+            <a href="#" class="btn btn-danger">Danger</a>
             <a href="#" class="btn btn-primary">Primary action</a>
-            <a href="#" class="btn">Secondary action</a>
-            <a href="#" class="btn btn-primary">Call to action</a>
+          </div>
+        </article>
+
+        <!-- COMPONENT: status-chips -->
+        <article id="component-status-chips" class="card c-status-chips">
+          <h2>Status chips from data model</h2>
+          <p class="caption">Known status values (UPPER_SNAKE_CASE) shown with chip styles and Font Awesome icons.</p>
+          <div class="status-chip-grid">
+            <div class="status-chip-item">
+              <span class="icon"><i class="fa-solid fa-file"></i></span>
+              <span class="chip chip--draft">Draft</span>
+            </div>
+            <div class="status-chip-item">
+              <span class="icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
+              <span class="chip chip--incomplete">Missing Data</span>
+            </div>
+            <div class="status-chip-item">
+              <span class="icon"><i class="fa-solid fa-check"></i></span>
+              <span class="chip chip--ready">Ready For Calculation</span>
+            </div>
+            <div class="status-chip-item">
+              <span class="icon"><i class="fa-solid fa-arrows-rotate fa-spin"></i></span>
+              <span class="chip chip--processing">Calculation Running</span>
+            </div>
+            <div class="status-chip-item">
+              <span class="icon"><i class="fa-solid fa-chart-line"></i></span>
+              <span class="chip chip--ready">Calculated</span>
+            </div>
+            <div class="status-chip-item">
+              <span class="icon"><i class="fa-solid fa-file-circle-check"></i></span>
+              <span class="chip chip--ready">Report Generated</span>
+            </div>
+            <div class="status-chip-item">
+              <span class="icon"><i class="fa-solid fa-box-archive"></i></span>
+              <span class="chip chip--archived">Archived</span>
+            </div>
+            <div class="status-chip-item">
+              <span class="icon"><i class="fa-solid fa-hourglass-half"></i></span>
+              <span class="chip chip--pending">Pending Approval</span>
+            </div>
+            <div class="status-chip-item">
+              <span class="icon"><i class="fa-solid fa-circle-check"></i></span>
+              <span class="chip chip--ready">Calculation Completed</span>
+            </div>
           </div>
         </article>
 
@@ -255,11 +323,96 @@
             <button id="show-toast" type="button" class="btn btn-primary">Show toast</button>
           </div>
         </article>
+
+        <!-- COMPONENT: sri-results-table -->
+        <article id="component-sri-results-table" class="card c-sri-results-table">
+          <h2>SRI Results View table</h2>
+          <div class="sri-card">
+            <div class="sri-title">
+              Overall SRI Score (%) + SRI Class
+            </div>
+
+            <table class="sri-table">
+              <thead>
+                <tr>
+                  <th class="empty"></th>
+                  <th colspan="2" class="group group-energy">
+                    ⚡ Optimise energy efficiency and overall in-use performance
+                  </th>
+                  <th colspan="4" class="group group-occupant">
+                    👥 Adapt its operation to the needs of the occupant
+                  </th>
+                  <th class="group group-grid">
+                    🗼 Adapt to signals from the grid
+                  </th>
+                </tr>
+
+                <tr>
+                  <th class="empty"></th>
+                  <th>⚙️<br>Energy efficiency</th>
+                  <th>🔧<br>Maintenance &amp; fault prediction</th>
+                  <th>🌡️<br>Comfort</th>
+                  <th>🛋️<br>Convenience</th>
+                  <th>❤️<br>Health &amp; accessibility</th>
+                  <th>📱<br>Information to occupants</th>
+                  <th>🔋<br>Energy flexibility &amp; storage</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <th>🔥 Heating</th>
+                  <td>82%</td><td>70%</td><td>76%</td><td>68%</td><td>64%</td><td>72%</td><td>55%</td>
+                </tr>
+
+                <tr>
+                  <th>❄️ Cooling</th>
+                  <td>75%</td><td>66%</td><td>80%</td><td>70%</td><td>62%</td><td>69%</td><td>58%</td>
+                </tr>
+
+                <tr>
+                  <th>🚿 Domestic hot water</th>
+                  <td>68%</td><td>60%</td><td>55%</td><td>52%</td><td>50%</td><td>62%</td><td>48%</td>
+                </tr>
+
+                <tr>
+                  <th>🌬️ Ventilation</th>
+                  <td>71%</td><td>64%</td><td>78%</td><td>61%</td><td>82%</td><td>74%</td><td>45%</td>
+                </tr>
+
+                <tr>
+                  <th>💡 Lighting</th>
+                  <td>79%</td><td>58%</td><td>72%</td><td>77%</td><td>69%</td><td>65%</td><td>40%</td>
+                </tr>
+
+                <tr>
+                  <th>🪟 Dynamic building envelope</th>
+                  <td>63%</td><td>59%</td><td>67%</td><td>64%</td><td>60%</td><td>55%</td><td>42%</td>
+                </tr>
+
+                <tr>
+                  <th>⚡ Electricity</th>
+                  <td>85%</td><td>72%</td><td class="disabled">—</td><td class="disabled">—</td><td class="disabled">—</td><td>76%</td><td>88%</td>
+                </tr>
+
+                <tr>
+                  <th>🚗 EV charging</th>
+                  <td class="disabled">—</td><td>50%</td><td class="disabled">—</td><td>62%</td><td class="disabled">—</td><td>68%</td><td>84%</td>
+                </tr>
+
+                <tr>
+                  <th>🖥️ Monitoring and control</th>
+                  <td>74%</td><td>78%</td><td>70%</td><td>73%</td><td>69%</td><td>82%</td><td>79%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
       </div>
     </section>
 
     <!-- ============ LIST (placeholder) ============ -->
-    <section id="list" class="page">
+    <section id="list" class="page" data-roles="ASSESSOR,BUILDING_OWNER,ADMIN">
       <div class="page-header">
         <h1>View list of buildings</h1>
         <p class="muted">Example list layout.</p>
@@ -346,7 +499,7 @@
 
 
     <!-- ============ ADD (1) ============ -->
-    <section id="add-1" class="page">
+    <section id="add-1" class="page" data-roles="ASSESSOR,ADMIN">
       <div class="page-header">
         <h1>Add building (1) / edit</h1>
         <p class="muted">Basic information</p>
@@ -388,7 +541,7 @@
     </section>
 
     <!-- ============ ADD (2) ============ -->
-    <section id="add-2" class="page">
+    <section id="add-2" class="page" data-roles="ASSESSOR,ADMIN">
       <div class="page-header">
         <h1>Add building (2) / edit</h1>
         <p class="muted">Files &amp; domains</p>
@@ -431,7 +584,7 @@
     </section>
 
     <!-- ============ RESULTS ============ -->
-    <section id="results" class="page">
+    <section id="results" class="page" data-roles="ASSESSOR,BUILDING_OWNER,ADMIN">
       <div class="page-header">
         <h1>View results (when ready)</h1>
         <p class="muted">Energy efficiency &amp; smart readiness summaries.</p>
@@ -463,6 +616,156 @@
         <a class="btn" href="#home">Back to home</a>
       </div>
     </section>
+
+    <!-- ============ BUILDING DETAILS ============ -->
+    <section id="building-details" class="page" data-roles="ASSESSOR,BUILDING_OWNER,ADMIN">
+      <div class="page-header">
+        <h1>Building details</h1>
+        <p class="muted">Full building profile linked to buildings, envelope, technical systems and audit records.</p>
+      </div>
+      <div class="grid cards-2">
+        <article class="card">
+          <h3>Core building data</h3>
+          <p class="muted">Uses <code>buildings</code> and <code>organisations</code> from the fake data model.</p>
+        </article>
+        <article class="card">
+          <h3>Envelope + systems</h3>
+          <p class="muted">Uses <code>buildingEnvelope</code>, <code>technicalSystems</code> and <code>auditRecords</code>.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ CALCULATION ============ -->
+    <section id="calculation" class="page" data-roles="ASSESSOR,ADMIN">
+      <div class="page-header">
+        <h1>Calculation view</h1>
+        <p class="muted">Run EPB/SRI, show status, and surface validation errors.</p>
+      </div>
+      <div class="grid cards-2">
+        <article class="card">
+          <h3>EPB calculation</h3>
+          <p class="muted">Uses <code>epbCalculations</code> + <code>auditRecords</code>.</p>
+        </article>
+        <article class="card">
+          <h3>SRI calculation</h3>
+          <p class="muted">Uses <code>sriCalculations</code> + <code>kpis</code>.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ REPORTS ============ -->
+    <section id="reports" class="page" data-roles="ASSESSOR,BUILDING_OWNER,ADMIN">
+      <div class="page-header">
+        <h1>Reports view</h1>
+        <p class="muted">Generate, preview and download EPB/SRI reports.</p>
+      </div>
+      <div class="grid cards-2">
+        <article class="card">
+          <h3>Report generation</h3>
+          <p class="muted">Uses <code>reports</code> for generated files and metadata.</p>
+        </article>
+        <article class="card">
+          <h3>File management</h3>
+          <p class="muted">Uses <code>files</code> for IFC/PDF links and upload status.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ DATA HUB ============ -->
+    <section id="data-hub" class="page" data-roles="DATA_OWNER,PUBLIC_USER,EXTERNAL_DATA_CONSUMER,ADMIN">
+      <div class="page-header">
+        <h1>Data Hub</h1>
+        <p class="muted">Browse and publish datasets and good-practice content.</p>
+      </div>
+      <div class="grid cards-2">
+        <article class="card">
+          <h3>Hub catalog</h3>
+          <p class="muted">Uses <code>dataHubItems</code> and <code>enums.dataHubItemTypes</code>.</p>
+        </article>
+        <article class="card">
+          <h3>Dataset upload</h3>
+          <p class="muted">Supports DATASET / GOOD_PRACTICE / REPORT workflows.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ SHARING REQUESTS ============ -->
+    <section id="sharing-requests" class="page" data-roles="DATA_OWNER,EXTERNAL_DATA_CONSUMER,ADMIN">
+      <div class="page-header">
+        <h1>Sharing requests</h1>
+        <p class="muted">Review, approve and track secure data-sharing exchanges.</p>
+      </div>
+      <article class="card">
+        <h3>Request management</h3>
+        <p class="muted">Uses <code>sharingRequests</code> and role-based permissions.</p>
+      </article>
+    </section>
+
+    <!-- ============ API / DEVELOPER ============ -->
+    <section id="api-developer" class="page" data-roles="EXTERNAL_DEVELOPER,ADMIN">
+      <div class="page-header">
+        <h1>API / Developer</h1>
+        <p class="muted">External app integration, API docs, keys, and logs.</p>
+      </div>
+      <div class="grid cards-2">
+        <article class="card">
+          <h3>Developer dashboard</h3>
+          <p class="muted">Connect external apps to building/audit/calculation endpoints.</p>
+        </article>
+        <article class="card">
+          <h3>Integration logs</h3>
+          <p class="muted">Activity and error traces can align with <code>activityLog</code>.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ PROFILE / SETTINGS ============ -->
+    <section id="profile-settings" class="page" data-roles="ASSESSOR,BUILDING_OWNER,DATA_OWNER,EXTERNAL_DEVELOPER,EXTERNAL_DATA_CONSUMER,ADMIN">
+      <div class="page-header">
+        <h1>Profile / Settings</h1>
+        <p class="muted">Manage account, organisation preferences and user options.</p>
+      </div>
+      <article class="card">
+        <h3>User profile</h3>
+        <p class="muted">Uses <code>users</code> and <code>organisations</code>.</p>
+      </article>
+    </section>
+
+    <!-- ============ ADMIN USERS / ROLES ============ -->
+    <section id="admin-users-roles" class="page" data-roles="ADMIN">
+      <div class="page-header">
+        <h1>Admin users / roles</h1>
+        <p class="muted">Manage users, roles and permissions.</p>
+      </div>
+      <div class="grid cards-2">
+        <article class="card">
+          <h3>User management</h3>
+          <p class="muted">Uses <code>users</code> and <code>enums.userRoles</code>.</p>
+        </article>
+        <article class="card">
+          <h3>Role & permission policies</h3>
+          <p class="muted">Supports assessor, owner, data owner, external, and admin flows.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ NOTIFICATIONS / ACTIVITY ============ -->
+    <section id="notifications-activity" class="page" data-roles="ASSESSOR,BUILDING_OWNER,DATA_OWNER,EXTERNAL_DEVELOPER,EXTERNAL_DATA_CONSUMER,ADMIN">
+      <div class="page-header">
+        <h1>Notifications / Activity log</h1>
+        <p class="muted">Track completed calculations, validation issues, and system events.</p>
+      </div>
+      <div class="grid cards-2">
+        <article class="card">
+          <h3>Notifications</h3>
+          <p class="muted">Uses <code>notifications</code>.</p>
+        </article>
+        <article class="card">
+          <h3>Activity log</h3>
+          <p class="muted">Uses <code>activityLog</code>.</p>
+        </article>
+      </div>
+    </section>
   </main>
 
   <!-- COMPONENT: modal -->
@@ -488,7 +791,8 @@
     </div>
   </footer>
 
-  <div id="hiddenDiv" style="display: none;">
+  <!-- COMPONENT: gauge-svg-template -->
+  <div id="component-gauge-svg-template" class="c-gauge-svg-template" style="display: none;">
     <div id="gaugeparent">
       <svg id="gauge" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 226.71 120.91" width="100%">
         <defs>
@@ -547,6 +851,61 @@
   </div>
 
   <style>
+    :root {
+      --btn-color-default: #86c440;
+      --btn-color-success: #2db34a;
+      --btn-color-warning: #fecf17;
+      --btn-color-orange: #f47721;
+      --btn-color-danger: #ef3e23;
+      --btn-color-text-dark: #231f20;
+      --btn-color-text-light: #ffffff;
+    }
+
+    /* COMPONENT: button-variants */
+    .btn {
+      transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+    }
+
+    .btn-default {
+      background: var(--btn-color-default);
+      border-color: var(--btn-color-default);
+      color: var(--btn-color-text-dark);
+    }
+
+    .btn-success,
+    .btn-primary {
+      background: var(--btn-color-success);
+      border-color: var(--btn-color-success);
+      color: var(--btn-color-text-light);
+    }
+
+    .btn-warning {
+      background: var(--btn-color-warning);
+      border-color: var(--btn-color-warning);
+      color: var(--btn-color-text-dark);
+    }
+
+    .btn-orange {
+      background: var(--btn-color-orange);
+      border-color: var(--btn-color-orange);
+      color: var(--btn-color-text-light);
+    }
+
+    .btn-danger {
+      background: var(--btn-color-danger);
+      border-color: var(--btn-color-danger);
+      color: var(--btn-color-text-light);
+    }
+
+    .btn-default:hover,
+    .btn-success:hover,
+    .btn-primary:hover,
+    .btn-warning:hover,
+    .btn-orange:hover,
+    .btn-danger:hover {
+      filter: brightness(0.8);
+    }
+
     /* COMPONENT: sr-only */
     .sr-only {
       position: absolute;
@@ -576,6 +935,35 @@
       width: 20px;
       height: 2px;
       background: var(--green);
+    }
+
+    /* COMPONENT: role-switcher */
+    .header-controls {
+      display: grid;
+      grid-auto-flow: column;
+      align-items: center;
+      gap: var(--sp-md);
+    }
+
+    .c-role-switcher {
+      display: grid;
+      grid-auto-flow: column;
+      align-items: center;
+      gap: var(--sp-xs);
+      color: #fff;
+      font-size: var(--fs-0);
+    }
+
+    .c-role-switcher select {
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 6px 10px;
+      font: inherit;
+      min-width: 210px;
+    }
+
+    .is-hidden-by-role {
+      display: none !important;
     }
 
     /* COMPONENT: search-bar */
@@ -634,6 +1022,35 @@
     .button-row {
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: var(--sp-sm);
+    }
+
+    /* COMPONENT: status-chips */
+    .c-status-chips {
+      display: grid;
+      gap: var(--sp-sm);
+    }
+
+    .status-chip-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sp-sm);
+    }
+
+    .status-chip-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--sp-xs);
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 8px 10px;
+      background: #fff;
+    }
+
+    .status-chip-item .icon {
+      width: 18px;
+      text-align: center;
+      color: var(--muted);
     }
 
     /* COMPONENT: login-form */
@@ -812,6 +1229,105 @@
       margin-top: var(--sp-xl);
     }
 
+    /* COMPONENT: sri-results-table */
+    .c-sri-results-table {
+      display: grid;
+      gap: var(--sp-sm);
+    }
+
+    .c-sri-results-table .sri-card {
+      --sri-bg: #ffffff;
+      --sri-border: var(--line);
+      --sri-text: var(--ink);
+      --sri-muted: var(--muted);
+      --sri-header-bg: color-mix(in srgb, var(--green-10) 65%, #ffffff 35%);
+      --sri-energy-bg: #eef8ff;
+      --sri-occupant-bg: #f4f9ff;
+      --sri-grid-bg: #eef9f2;
+      --sri-cell-bg: #ffffff;
+      --sri-disabled-bg: #e5e7eb;
+      --sri-shadow: var(--shadow-1);
+      --sri-radius: var(--r-md);
+
+      background: var(--sri-bg);
+      color: var(--sri-text);
+      border: 1px solid var(--sri-border);
+      border-radius: var(--sri-radius);
+      box-shadow: var(--sri-shadow);
+      padding: var(--sp-md);
+      overflow-x: auto;
+      font-family: Arial, sans-serif;
+    }
+
+    .c-sri-results-table .sri-title {
+      background: var(--sri-header-bg);
+      border: 1px solid var(--sri-border);
+      border-bottom: none;
+      padding: 14px;
+      text-align: center;
+      font-weight: 700;
+      font-size: var(--fs-2);
+    }
+
+    .c-sri-results-table .sri-table {
+      width: 100%;
+      min-width: 1100px;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .c-sri-results-table .sri-table th,
+    .c-sri-results-table .sri-table td {
+      border: 1px solid var(--sri-border);
+      padding: 12px 10px;
+      text-align: center;
+      vertical-align: middle;
+      background: var(--sri-cell-bg);
+      font-size: var(--fs-0);
+    }
+
+    .c-sri-results-table .sri-table thead th {
+      font-weight: 700;
+    }
+
+    .c-sri-results-table .sri-table tbody th {
+      text-align: left;
+      font-weight: 600;
+      width: 230px;
+      white-space: nowrap;
+    }
+
+    .c-sri-results-table .sri-table td {
+      font-weight: 700;
+    }
+
+    .c-sri-results-table .sri-table .empty {
+      background: transparent;
+      border: none;
+    }
+
+    .c-sri-results-table .sri-table .group {
+      font-size: var(--fs-1);
+      line-height: 1.35;
+    }
+
+    .c-sri-results-table .group-energy {
+      background: var(--sri-energy-bg) !important;
+    }
+
+    .c-sri-results-table .group-occupant {
+      background: var(--sri-occupant-bg) !important;
+    }
+
+    .c-sri-results-table .group-grid {
+      background: var(--sri-grid-bg) !important;
+    }
+
+    .c-sri-results-table .sri-table .disabled {
+      background: var(--sri-disabled-bg);
+      color: var(--sri-muted);
+    }
+
     /* rotate around the screw center in viewBox coords */
     #needle {
       transform-box: view-box;
@@ -836,8 +1352,23 @@
         display: grid;
       }
 
+      .header-controls {
+        grid-auto-flow: row;
+        justify-items: start;
+      }
+
+      .c-role-switcher {
+        grid-auto-flow: row;
+        justify-items: start;
+      }
+
+      .c-role-switcher select {
+        min-width: 100%;
+      }
+
       .button-row,
-      .social-row {
+      .social-row,
+      .status-chip-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -879,6 +1410,36 @@
 
     // Clone SVG gauge and append 3 times to each .bullets div
     document.addEventListener('DOMContentLoaded', function () {
+      const roleSelector = document.getElementById('role-selector');
+      const roleStorageKey = 'openbep-active-role';
+
+      function applyRoleVisibility(activeRole) {
+        const roleBoundElements = document.querySelectorAll('[data-roles]');
+
+        roleBoundElements.forEach(function (element) {
+          // Keep all sections visible regardless of selected role.
+          element.classList.remove('is-hidden-by-role');
+        });
+      }
+
+      if (roleSelector) {
+        const storedRole = localStorage.getItem(roleStorageKey);
+        if (storedRole) {
+          roleSelector.value = storedRole;
+        }
+
+        applyRoleVisibility(roleSelector.value);
+
+        roleSelector.addEventListener('change', function () {
+          localStorage.setItem(roleStorageKey, roleSelector.value);
+          applyRoleVisibility(roleSelector.value);
+        });
+
+        window.addEventListener('hashchange', function () {
+          applyRoleVisibility(roleSelector.value);
+        });
+      }
+
       // Hamburger toggle
       const menuBtn = document.getElementById('component-hamburger-menu');
       const nav = document.getElementById('main-nav');
@@ -965,6 +1526,16 @@
         });
       }
 
+    if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    // Clone SVG gauge and append 3 times to each .bullets div
+    document.addEventListener('DOMContentLoaded', function () {
       const originalSvg = document.getElementById('gaugeparent');
       const bulletsContainers = document.querySelectorAll('.bullets');
 

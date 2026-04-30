@@ -224,6 +224,18 @@ body {
   background: var(--red-10);
   color: var(--red); }
 
+.chip--draft {
+  background: #f3f4f6;
+  color: #374151; }
+
+.chip--pending {
+  background: #fff7e6;
+  color: #92400e; }
+
+.chip--archived {
+  background: #eef2ff;
+  color: #3730a3; }
+
 /* =======================
    Table-like list (CSS Grid)
    ======================= */
@@ -273,8 +285,6 @@ body {
   text-decoration: none;
   font-weight: 600; }
 
-.btn:hover {
-  background: #f2f6f4; }
 
 .btn-primary {
   background: var(--green) !important;
