@@ -215,7 +215,119 @@
         </article>
 
         <article class="view-item">
-          <h3>11) About</h3>
+          <h3>11) SRI View 1: Methodology Selection (SRI1)</h3>
+          <p><strong>What this view is:</strong> Entry point for Smart Readiness workflow configuration.</p>
+          <p><strong>What you can do:</strong> Choose methodology path and initialize the SRI assessment process.</p>
+          <p><strong>Relationship to schema:</strong> SRI chain start after Building Tab, before weighting decision flow.</p>
+          <p><a href="./view/SRI1-methodology-selection.html">Open view/SRI1-methodology-selection.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>12) SRI Decision: User-defined Weightings (SRI2)</h3>
+          <p><strong>What this view is:</strong> Decision gate for using default or custom impact weightings.</p>
+          <p><strong>What you can do:</strong> Select whether to proceed with user-defined weighting strategy.</p>
+          <p><strong>Relationship to schema:</strong> Transition node between methodology selection and detailed weighting setup.</p>
+          <p><a href="./view/SRI2-user-defined-weightings.html">Open view/SRI2-user-defined-weightings.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>13) SRI View 2: Weighting Settings (SRI3)</h3>
+          <p><strong>What this view is:</strong> Configuration interface for SRI impact/category weighting values.</p>
+          <p><strong>What you can do:</strong> Adjust and confirm custom weighting parameters used in scoring.</p>
+          <p><strong>Relationship to schema:</strong> Follows SRI2 custom path and feeds the domain dashboard.</p>
+          <p><a href="./view/SRI3-weighting-settings.html">Open view/SRI3-weighting-settings.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>14) SRI View 3: Domain Dashboard (SRI4)</h3>
+          <p><strong>What this view is:</strong> Central SRI domain navigator across technical service tabs.</p>
+          <p><strong>What you can do:</strong> Review readiness progress and jump into each service domain form.</p>
+          <p><strong>Relationship to schema:</strong> SRI hub branching to service tabs SRI5 through SRI13.</p>
+          <p><a href="./view/SRI4-domain-dashboard.html">Open view/SRI4-domain-dashboard.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>15) Heating Tab (SRI5)</h3>
+          <p><strong>What this view is:</strong> Heating services smart-readiness assessment tab.</p>
+          <p><strong>What you can do:</strong> Enter functionality levels and controls for heating-related criteria.</p>
+          <p><strong>Relationship to schema:</strong> One of the service-domain children of SRI4.</p>
+          <p><a href="./view/SRI5-heating-tab.html">Open view/SRI5-heating-tab.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>16) DHW Tab (SRI6)</h3>
+          <p><strong>What this view is:</strong> Domestic hot water smart-readiness assessment tab.</p>
+          <p><strong>What you can do:</strong> Configure DHW service functionality and monitoring/control levels.</p>
+          <p><strong>Relationship to schema:</strong> Service-domain branch from SRI4 in the SRI workflow set.</p>
+          <p><a href="./view/SRI6-dhw-tab.html">Open view/SRI6-dhw-tab.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>17) Cooling Tab (SRI7)</h3>
+          <p><strong>What this view is:</strong> Cooling systems smart-readiness assessment tab.</p>
+          <p><strong>What you can do:</strong> Set cooling automation, efficiency, and control capability levels.</p>
+          <p><strong>Relationship to schema:</strong> Service-domain branch under the SRI4 dashboard.</p>
+          <p><a href="./view/SRI7-cooling-tab.html">Open view/SRI7-cooling-tab.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>18) Ventilation Tab (SRI8)</h3>
+          <p><strong>What this view is:</strong> Ventilation services smart-readiness input tab.</p>
+          <p><strong>What you can do:</strong> Record ventilation capabilities for scoring and domain completeness.</p>
+          <p><strong>Relationship to schema:</strong> Another technical-domain tab routed from SRI4.</p>
+          <p><a href="./view/SRI8-ventilation-tab.html">Open view/SRI8-ventilation-tab.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>19) Lighting Tab (SRI9)</h3>
+          <p><strong>What this view is:</strong> Lighting services smart-readiness tab.</p>
+          <p><strong>What you can do:</strong> Capture lighting control/intelligence functions for SRI computation.</p>
+          <p><strong>Relationship to schema:</strong> Domain-specific node in the SRI4 service-tab group.</p>
+          <p><a href="./view/SRI9-lighting-tab.html">Open view/SRI9-lighting-tab.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>20) Dynamic Envelope Tab (SRI10)</h3>
+          <p><strong>What this view is:</strong> Assessment tab for adaptive envelope/building shell functions.</p>
+          <p><strong>What you can do:</strong> Define dynamic envelope capabilities contributing to SRI score.</p>
+          <p><strong>Relationship to schema:</strong> Domain branch from SRI4 alongside other service tabs.</p>
+          <p><a href="./view/SRI10-dynamic-envelope-tab.html">Open view/SRI10-dynamic-envelope-tab.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>21) Electricity Tab (SRI11)</h3>
+          <p><strong>What this view is:</strong> Electricity-domain smart-readiness data-entry tab.</p>
+          <p><strong>What you can do:</strong> Configure electrical service intelligence and responsiveness levels.</p>
+          <p><strong>Relationship to schema:</strong> SRI4 child node for electricity-related functionalities.</p>
+          <p><a href="./view/SRI11-electricity-tab.html">Open view/SRI11-electricity-tab.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>22) EV Charging Tab (SRI12)</h3>
+          <p><strong>What this view is:</strong> Electric-vehicle charging readiness assessment tab.</p>
+          <p><strong>What you can do:</strong> Enter EV charging intelligence and interaction features.</p>
+          <p><strong>Relationship to schema:</strong> Service-domain branch in the SRI tabbed sequence.</p>
+          <p><a href="./view/SRI12-ev-charging-tab.html">Open view/SRI12-ev-charging-tab.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>23) Monitoring & Control Tab (SRI13)</h3>
+          <p><strong>What this view is:</strong> Monitoring, automation, and control capability assessment tab.</p>
+          <p><strong>What you can do:</strong> Define supervisory/control features that influence smart readiness.</p>
+          <p><strong>Relationship to schema:</strong> Final service-domain input tab before SRI results aggregation.</p>
+          <p><a href="./view/SRI13-monitoring-control-tab.html">Open view/SRI13-monitoring-control-tab.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>24) SRI Results (SRI14)</h3>
+          <p><strong>What this view is:</strong> Final SRI output screen with consolidated smart-readiness indicators.</p>
+          <p><strong>What you can do:</strong> Review total score, domain performance, and final readiness class.</p>
+          <p><strong>Relationship to schema:</strong> Endpoint of SRI workflow after domain/service evaluation.</p>
+          <p><a href="./view/SRI14-results.html">Open view/SRI14-results.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>25) About</h3>
           <p><strong>What this view is:</strong> Informational/support page describing the app context.</p>
           <p><strong>What you can do:</strong> Read project information and orientation content.</p>
           <p><strong>Relationship to schema:</strong> Auxiliary page, outside the core A→EPB/SRI transactional path.</p>
