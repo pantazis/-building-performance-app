@@ -125,6 +125,18 @@
                   <option value="building-1">Office Athens</option>
                 </select>
               </label>
+              <label class="form-field">
+                <span>Assessment date</span>
+                <select id="assessment-date" disabled>
+                  <option>2026-04-29</option>
+                </select>
+              </label>
+              <label class="form-field">
+                <span>Weighting mode</span>
+                <select id="weighting-mode" disabled>
+                  <option>Default weightings</option>
+                </select>
+              </label>
               <div class="full-row">
                 <p><strong>SRI preparation status:</strong> <span id="sri-status" class="chip chip--ready">Ready</span></p>
               </div>
@@ -147,6 +159,7 @@
               <li>Ventilation: Available</li>
             </ul>
             <p class="muted" id="domains-summary">0/0 domains available</p>
+            <p class="muted" id="services-summary">Method services: 0</p>
           </article>
         </div>
       </div>
@@ -183,6 +196,11 @@
 
     document.getElementById('building-select').innerHTML = `<option value="${building?.id || 'building-1'}">${building?.name || 'Building'}</option>`;
     document.getElementById('method-select').value = sri?.method || 'A';
+    document.getElementById('assessment-date').innerHTML = `<option>${sri?.assessmentDate || 'N/A'}</option>`;
+
+    const isNonEu = sri?.jurisdiction?.region === 'NON_EU';
+    const useDefaultWeightings = isNonEu ? false : Boolean(sri?.hasDefaultWeightings);
+    document.getElementById('weighting-mode').innerHTML = `<option>${useDefaultWeightings ? 'Default weightings' : 'User-defined weightings'}</option>`;
 
     const domainLabelMap = {
       heating: 'Heating',
@@ -210,6 +228,12 @@
     });
 
     document.getElementById('domains-summary').textContent = `${availableCount}/${keys.length} domains available`;
+
+    const catalogues = sri?.serviceCatalogues || {};
+    const methodKey = (sri?.method || 'A') === 'B' ? 'methodB' : 'methodA';
+    const selectedCatalogue = catalogues[methodKey] || {};
+    const serviceCount = Object.values(selectedCatalogue).reduce((total, services) => total + (Array.isArray(services) ? services.length : 0), 0);
+    document.getElementById('services-summary').textContent = `Method services: ${serviceCount}`;
 
     const statusKey = availableCount >= 4 ? 'READY_FOR_CALCULATION' : 'MISSING_DATA';
     const status = getStatusPresentation(statusKey);

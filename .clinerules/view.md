@@ -45,8 +45,8 @@
 1. [*] `A` - Projects Dashboard
 2. [*] `B` - Add New Building First
 3. [*] `C` - Open / Edit Building
-4. [*] `D` - Duplicate Building
-5. [*] `E` - Delete Building
+4. [*] `D` - Duplicate Building "pop up"
+5. [*] `E` - Delete Building "pop up"
 6. [*] `F` - Global Resource Library
 7. [ ] `G` - Language Selection
 8. [ ] `H` - User Profile
@@ -71,10 +71,10 @@
 21. [*] `SRI8` - Ventilation Tab
 22. [*] `SRI9` - Lighting Tab
 23. [*] `SRI10` - Dynamic Envelope Tab
-24. [ ] `SRI11` - Electricity Tab
-25. [ ] `SRI12` - EV Charging Tab
-26. [ ] `SRI13` - Monitoring & Control Tab
-27. [ ] `SRI14` - SRI Results
+24. [*] `SRI11` - Electricity Tab
+25. [*] `SRI12` - EV Charging Tab
+26. [*] `SRI13` - Monitoring & Control Tab
+27. [*] `SRI14` - SRI Results
 
 ## Status Presentation Mapping (Mandatory)
 - Keep backend/data-model status values unchanged (e.g., `READY_FOR_CALCULATION`, `MISSING_DATA`, `CALCULATION_COMPLETED`).

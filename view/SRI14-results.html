@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SRI14 · SRI Results · OpenBEP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../building-performance-app/style.css" />
+  <style>
+    :root {
+      --btn-color-success: #2db34a;
+      --btn-color-default: #86c440;
+      --btn-color-warning: #fecf17;
+      --btn-color-orange: #f47721;
+      --btn-color-danger: #ef3e23;
+    }
+
+    .results-layout {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--sp-md);
+    }
+
+    .full { grid-column: 1 / -1; }
+    .span-4 { grid-column: span 4; }
+    .span-8 { grid-column: span 8; }
+
+    @media (max-width: 980px) {
+      .span-4,
+      .span-8 { grid-column: 1 / -1; }
+    }
+
+    /* COMPONENT: breadcrumbs */
+    .c-breadcrumbs ol {
+      display: grid;
+      grid-auto-flow: column;
+      justify-content: start;
+      gap: var(--sp-xs);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .c-breadcrumbs li+li::before {
+      content: ">";
+      margin-right: var(--sp-xs);
+      color: var(--muted);
+    }
+
+    /* COMPONENT: gauge-svg-template */
+    .c-gauge-svg-template #gaugeparent {
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    .c-gauge-svg-template .gaugetitle h4 {
+      text-align: center;
+      margin: 10px 0 0;
+    }
+
+    .needle-sweep {
+      transform-box: fill-box;
+      transform-origin: 50% 90%;
+      transition: transform .5s ease;
+    }
+
+    /* COMPONENT: sri-results-table */
+    .c-sri-results-table .sri-card {
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      background: #fff;
+    }
+
+    .c-sri-results-table .sri-title {
+      font-weight: 700;
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      background: #f7faf7;
+    }
+
+    .c-sri-results-table .sri-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1100px;
+    }
+
+    .c-sri-results-table .sri-table th,
+    .c-sri-results-table .sri-table td {
+      border: 1px solid var(--line);
+      padding: 8px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .c-sri-results-table .sri-table tbody th {
+      text-align: left;
+      white-space: nowrap;
+      background: #fcfdfc;
+    }
+
+    .c-sri-results-table .group {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .c-sri-results-table .group-energy { background: #4c8f3a; }
+    .c-sri-results-table .group-occupant { background: #3f7f95; }
+    .c-sri-results-table .group-grid { background: #7b5aa6; }
+
+    .c-sri-results-table .disabled {
+      color: #9aa4ad;
+      background: #f2f4f6;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="container">
+      <a class="brand" href="./A-projects-dashboard.html"><img class="logo" src="../building-performance-app/logo.png" alt="OpenBEP logo"></a>
+      <nav id="main-nav" class="nav" aria-label="Primary">
+        <a href="./A-projects-dashboard.html">Projects Dashboard</a>
+        <a href="./I-building-tab.html">Building Tab</a>
+        <a href="./SRI4-domain-dashboard.html">SRI4</a>
+        <a href="./SRI14-results.html" aria-current="page">SRI14</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page" id="view-sri14">
+      <div class="page-header">
+        <h1>SRI14 · SRI Results</h1>
+        <p class="muted">Full-page SRI results table and score summary using static data aligned with the UI data model.</p>
+      </div>
+
+      <div class="results-layout">
+        <div class="full">
+          <!-- COMPONENT: breadcrumbs -->
+          <article id="component-breadcrumbs" class="card c-breadcrumbs">
+            <h2>Breadcrumbs</h2>
+            <nav aria-label="Breadcrumb">
+              <ol>
+                <li><a href="./A-projects-dashboard.html">Home</a></li>
+                <li><a href="./I-building-tab.html">Building Tab</a></li>
+                <li><a href="./SRI4-domain-dashboard.html">SRI4</a></li>
+                <li aria-current="page">SRI14 Results</li>
+              </ol>
+            </nav>
+          </article>
+        </div>
+
+        <div class="span-4">
+          <article class="card">
+            <h2>Assessment summary</h2>
+            <p><strong>Building:</strong> <span id="building-name">Office Athens</span></p>
+            <p><strong>Method:</strong> <span id="method-label">Method A</span></p>
+            <p><strong>Total SRI score:</strong> <span id="sri-score-chip" class="chip">0%</span></p>
+            <p><strong>SRI class:</strong> <span id="sri-class-chip" class="chip">-</span></p>
+            <p><strong>Result status:</strong> <span id="result-status-chip" class="chip">Loading</span></p>
+            <div class="action-row">
+              <a class="btn btn-default" href="./SRI13-monitoring-control-tab.html">Back to SRI13</a>
+              <a class="btn btn-primary" href="./A-projects-dashboard.html">Finish</a>
+            </div>
+          </article>
+
+          <!-- COMPONENT: gauge-svg-template -->
+          <article id="component-gauge-svg-template" class="card c-gauge-svg-template">
+            <h2>SRI score gauge</h2>
+            <div id="gaugeparent">
+              <svg id="gauge" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 226.71 120.91" width="100%">
+                <defs>
+                  <style>
+                    .d { fill: #fecf17 }
+                    .e { fill: #2db34a }
+                    .f { fill: #86c440 }
+                    .g { fill: #ef3e23 }
+                    .h { fill: #f47721 }
+                    .i { fill: #231f20 }
+                  </style>
+                </defs>
+                <g id="b">
+                  <path class="e" d="M183.92,110.89h42.79c-.5-23.06-7.88-44.42-20.17-62.11l-34.6,25.14c7.17,10.62,11.51,23.31,11.99,36.97Z" />
+                  <path class="d" d="M113.35,42.76c6.74,0,13.26,.97,19.43,2.73l13.23-40.7C135.67,1.68,124.71,0,113.35,0s-22.32,1.68-32.66,4.78l13.23,40.7c6.18-1.76,12.69-2.73,19.43-2.73Z" />
+                  <path class="f" d="M168.98,69.88l34.62-25.15c-13.34-17.5-31.65-31.01-52.82-38.41l-13.22,40.68c12.51,4.56,23.36,12.58,31.43,22.87Z" />
+                  <path class="h" d="M89.16,47.01L75.94,6.33c-21.18,7.4-39.49,20.9-52.82,38.41l34.62,25.15c8.06-10.3,18.91-18.31,31.43-22.87Z" />
+                  <path class="g" d="M54.77,73.92L20.17,48.78C7.88,66.47,.5,87.83,0,110.89H42.79c.48-13.67,4.82-26.35,11.99-36.97Z" />
+                </g>
+                <g id="needle" class="needle-sweep">
+                  <path class="i" d="M115.26,16.86l-10.13,91.91c0,5.6,4.54,10.13,10.13,10.13s10.13-4.54,10.13-10.13l-10.13-91.91Zm0,97.87c-3.29,0-5.96-2.67-5.96-5.96s2.67-5.96,5.96-5.96,5.96,2.67,5.96,5.96-2.67,5.96-5.96,5.96Z" />
+                  <circle class="i" cx="115.26" cy="109.1" r="1.9" />
+                </g>
+              </svg>
+              <div class="gaugetitle">
+                <h4>SRI Score <span id="gauge-percent">0%</span></h4>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="span-8">
+          <!-- COMPONENT: sri-results-table -->
+          <article id="component-sri-results-table" class="card c-sri-results-table">
+            <h2>SRI Results View table</h2>
+            <div class="sri-card">
+              <div class="sri-title" id="sri-title">Overall SRI Score (%) + SRI Class</div>
+              <table class="sri-table">
+                <thead>
+                  <tr>
+                    <th class="empty"></th>
+                    <th colspan="2" class="group group-energy">⚡ Optimise energy efficiency and overall in-use performance</th>
+                    <th colspan="4" class="group group-occupant">👥 Adapt its operation to the needs of the occupant</th>
+                    <th class="group group-grid">🗼 Adapt to signals from the grid</th>
+                  </tr>
+                  <tr>
+                    <th class="empty"></th>
+                    <th>⚙️<br>Energy efficiency</th>
+                    <th>🔧<br>Maintenance &amp; fault prediction</th>
+                    <th>🌡️<br>Comfort</th>
+                    <th>🛋️<br>Convenience</th>
+                    <th>❤️<br>Health &amp; accessibility</th>
+                    <th>📱<br>Information to occupants</th>
+                    <th>🔋<br>Energy flexibility &amp; storage</th>
+                  </tr>
+                </thead>
+                <tbody id="sri-results-body"></tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card">
+            <h2>Result interpretation notes</h2>
+            <ul>
+              <li>Total score and class come from <code>sri.results.totalScore</code> and <code>sri.results.class</code>.</li>
+              <li>Domain rows align with SRI domains listed in the model and prototype results table structure.</li>
+              <li>Unavailable cells are displayed as an em dash for non-applicable impact-domain combinations.</li>
+              <li>Status chips use enum-to-label mapping and never expose raw enum keys in the UI.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- COMPONENT: footer -->
+  <footer id="component-footer" class="app-footer c-footer">
+    <div class="container"><p>© 2026 OpenBEP · Contact · Privacy · Terms</p></div>
+  </footer>
+
+  <script>
+    function toTitleCaseFromEnum(status) {
+      return String(status || 'UNKNOWN_STATUS').toLowerCase().split('_').map((s) => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
+    }
+
+    function getStatusPresentation(status) {
+      const map = {
+        READY_FOR_CALCULATION: { label: 'Ready', className: 'chip chip--ready' },
+        MISSING_DATA: { label: 'Incomplete data', className: 'chip chip--incomplete' },
+        IN_PROGRESS: { label: 'Processing', className: 'chip chip--processing' },
+        PROCESSING: { label: 'Processing', className: 'chip chip--processing' },
+        CALCULATION_COMPLETED: { label: 'Calculation completed', className: 'chip chip--ready' }
+      };
+      return map[status] || { label: toTitleCaseFromEnum(status), className: 'chip' };
+    }
+
+    const staticModel = {
+      projects: [{
+        building: {
+          name: 'Office Athens',
+          sri: {
+            method: 'A',
+            results: {
+              totalScore: 75,
+              class: 'B',
+              impacts: { energyEfficiency: 70, comfort: 80 },
+              domains: { heating: 80, cooling: 70 }
+            }
+          }
+        }
+      }]
+    };
+
+    const AppDataModel = window.AppDataModel || staticModel;
+    const project = AppDataModel?.projects?.[0] || {};
+    const building = project?.building || {};
+    const sri = building?.sri || {};
+    const results = sri?.results || {};
+
+    const totalScore = Number(results?.totalScore || 0);
+    const sriClass = String(results?.class || 'N/A');
+
+    document.getElementById('building-name').textContent = building?.name || 'Building';
+    document.getElementById('method-label').textContent = `Method ${sri?.method || 'A'}`;
+    document.getElementById('sri-title').textContent = `Overall SRI Score: ${totalScore}% · Class ${sriClass}`;
+    document.getElementById('gauge-percent').textContent = `${totalScore}%`;
+
+    const scoreChip = document.getElementById('sri-score-chip');
+    scoreChip.className = 'chip chip--ready';
+    scoreChip.textContent = `${totalScore}%`;
+
+    const classChip = document.getElementById('sri-class-chip');
+    classChip.className = 'chip chip--ready';
+    classChip.textContent = `Class ${sriClass}`;
+
+    const resultStatus = getStatusPresentation(totalScore > 0 ? 'CALCULATION_COMPLETED' : 'IN_PROGRESS');
+    const resultStatusChip = document.getElementById('result-status-chip');
+    resultStatusChip.className = resultStatus.className;
+    resultStatusChip.textContent = resultStatus.label;
+
+    const needle = document.getElementById('needle');
+    const rotation = -90 + (Math.max(0, Math.min(100, totalScore)) * 1.8);
+    needle.style.transform = `rotate(${rotation}deg)`;
+
+    const defaultImpacts = {
+      energyEfficiency: Number(results?.impacts?.energyEfficiency ?? 70),
+      maintenance: 60,
+      comfort: Number(results?.impacts?.comfort ?? 80),
+      convenience: 65,
+      health: 62,
+      info: 68,
+      flexibility: 64
+    };
+
+    const defaultRows = [
+      { key: 'heating', label: '🔥 Heating', values: [80, 70, 76, 68, 64, 72, 55] },
+      { key: 'cooling', label: '❄️ Cooling', values: [70, 66, 80, 70, 62, 69, 58] },
+      { key: 'dhw', label: '🚿 Domestic hot water', values: [68, 60, 55, 52, 50, 62, 48] },
+      { key: 'ventilation', label: '🌬️ Ventilation', values: [71, 64, 78, 61, 82, 74, 45] },
+      { key: 'lighting', label: '💡 Lighting', values: [79, 58, 72, 77, 69, 65, 40] },
+      { key: 'envelope', label: '🪟 Dynamic building envelope', values: [63, 59, 67, 64, 60, 55, 42] },
+      { key: 'electricity', label: '⚡ Electricity', values: [85, 72, null, null, null, 76, 88] },
+      { key: 'ev', label: '🚗 EV charging', values: [null, 50, null, 62, null, 68, 84] },
+      { key: 'monitoring', label: '🖥️ Monitoring and control', values: [74, 78, 70, 73, 69, 82, 79] }
+    ];
+
+    const domainOverrides = results?.domains || {};
+    const body = document.getElementById('sri-results-body');
+
+    defaultRows.forEach((row) => {
+      const tr = document.createElement('tr');
+      const domainScore = Number(domainOverrides[row.key]);
+      const values = row.values.slice();
+      if (!Number.isNaN(domainScore) && domainScore > 0) {
+        values[0] = domainScore;
+      }
+      tr.innerHTML = `<th>${row.label}</th>` + values.map((value, idx) => {
+        if (value === null) return '<td class="disabled">—</td>';
+        const finalValue = idx === 0 ? value : Math.round((value + defaultImpacts.energyEfficiency) / 2);
+        return `<td>${finalValue}%</td>`;
+      }).join('');
+      body.appendChild(tr);
+    });
+  </script>
+</body>
+
+</html>
