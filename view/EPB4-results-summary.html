@@ -110,6 +110,7 @@
           <article class="card">
             <h2>Calculation status</h2>
             <p><strong>Orchestration:</strong> <span id="status-chip" class="chip chip--ready">Calculation completed</span></p>
+            <p><strong>Input routes:</strong> <span id="input-routes">-</span></p>
             <h3>Core workflow steps</h3>
             <ol id="workflow-list">
               <li>Data Import</li>
@@ -123,6 +124,18 @@
               <a class="btn btn-default" href="./EPB3-thermal-zones-envelope.html">Back to EPB3</a>
               <a class="btn btn-success" href="./I-building-tab.html">Finish EPB Flow</a>
             </div>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card">
+            <h2>Standards coverage</h2>
+            <ul id="standards-list">
+              <li>EN ISO 6946</li>
+              <li>EN ISO 52016-1</li>
+              <li>EN ISO 52010-1</li>
+              <li>EN 15316 series</li>
+            </ul>
           </article>
         </div>
 
@@ -199,6 +212,7 @@
 
     const epb = AppDataModel?.projects?.[0]?.building?.epb || {};
     const indicators = epb?.epcIndicators || {};
+    document.getElementById('input-routes').textContent = (AppDataModel?.calculationEngine?.inputRoutes || []).join(', ') || 'n/a';
 
     const score = Math.max(0, Math.min(100, Math.round(((indicators?.onsiteRenewablesShare_percent || 0) + 82) / 2)));
     const livePercent = document.getElementById('epb-percent-live');
@@ -218,6 +232,23 @@
       const li = document.createElement('li');
       li.textContent = toTitleCaseFromEnum(step);
       workflowList.appendChild(li);
+    });
+
+    const standardsList = document.getElementById('standards-list');
+    standardsList.innerHTML = '';
+    const standardsCoverage = AppDataModel?.calculationEngine?.standardsCoverage || {};
+    const standardItems = [
+      ...(standardsCoverage?.envelope || []),
+      ...(standardsCoverage?.climate || []),
+      ...(standardsCoverage?.indoorOperation || []),
+      ...(standardsCoverage?.hourlyNeeds || []),
+      ...(standardsCoverage?.systems || []),
+      ...(standardsCoverage?.aggregation || [])
+    ];
+    standardItems.forEach((std) => {
+      const li = document.createElement('li');
+      li.textContent = std;
+      standardsList.appendChild(li);
     });
 
     const body = document.getElementById('indicators-table-body');

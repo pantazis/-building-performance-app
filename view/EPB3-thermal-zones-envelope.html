@@ -77,10 +77,14 @@
                     <th>Space</th>
                     <th>People</th>
                     <th>Ventilation (ACH)</th>
+                    <th>Heating / Cooling (W)</th>
                   </tr>
                 </thead>
                 <tbody id="zones-table-body">
-                  <tr><td>Main Zone</td><td>Office Room</td><td>5</td><td>1.5</td></tr>
+                  <tr><td>Main Zone</td><td>Office Room</td><td>5</td><td>1.5</td><td>4200 / 3600</td></tr>
+                  <tr><td>Main Zone</td><td>Meeting Room</td><td>8</td><td>2.0</td><td>4600 / 3900</td></tr>
+                  <tr><td>Secondary Zone</td><td>Lobby</td><td>3</td><td>1.2</td><td>2800 / 2400</td></tr>
+                  <tr><td>Secondary Zone</td><td>Storage Room</td><td>1</td><td>0.8</td><td>1200 / 900</td></tr>
                 </tbody>
               </table>
             </div>
@@ -100,6 +104,31 @@
             <div class="action-row">
               <a class="btn btn-default" href="./EPB2-materials-constructions.html">Back to EPB2</a>
               <a class="btn btn-primary" href="./EPB4-results-summary.html">Continue to EPB4</a>
+            </div>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card">
+            <h2>Surface and subsurface inventory</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Zone</th>
+                    <th>Surface ID</th>
+                    <th>Type</th>
+                    <th>Construction</th>
+                    <th>Subsurfaces</th>
+                  </tr>
+                </thead>
+                <tbody id="surface-table-body">
+                  <tr><td>Main Zone</td><td>surf-wall-n-01</td><td>Wall</td><td>cons-wall-ext-01</td><td>win-n-01 (Window), door-n-01 (Door)</td></tr>
+                  <tr><td>Main Zone</td><td>surf-roof-01</td><td>Roof</td><td>cons-roof-flat-01</td><td>skylight-01 (Window)</td></tr>
+                  <tr><td>Secondary Zone</td><td>surf-floor-g-01</td><td>Floor</td><td>cons-floor-ground-01</td><td>None</td></tr>
+                  <tr><td>Secondary Zone</td><td>surf-wall-int-01</td><td>InternalWall</td><td>cons-partition-int-01</td><td>opening-int-01 (Door)</td></tr>
+                </tbody>
+              </table>
             </div>
           </article>
         </div>
@@ -131,24 +160,6 @@
 
     const epb = AppDataModel?.projects?.[0]?.building?.epb || {};
     const zones = Array.isArray(epb?.zones) ? epb.zones : [];
-    const zoneBody = document.getElementById('zones-table-body');
-    zoneBody.innerHTML = '';
-
-    const rows = [];
-    zones.forEach((zone) => {
-      const spaces = Array.isArray(zone?.spaces) && zone.spaces.length ? zone.spaces : [{ name: 'n/a', people: '-' }];
-      spaces.forEach((space) => {
-        rows.push(`
-          <tr>
-            <td>${zone?.name ?? 'n/a'}</td>
-            <td>${space?.name ?? 'n/a'}</td>
-            <td>${space?.people ?? '-'}</td>
-            <td>${zone?.ventilation?.airChangesPerHour ?? '-'}</td>
-          </tr>
-        `);
-      });
-    });
-    zoneBody.innerHTML = rows.join('');
 
     const envelopeList = document.getElementById('envelope-list');
     envelopeList.innerHTML = '';
@@ -170,6 +181,7 @@
     const statusChip = document.getElementById('status-chip');
     statusChip.textContent = status.label;
     statusChip.className = status.className;
+
   </script>
 </body>
 

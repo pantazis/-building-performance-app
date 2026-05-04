@@ -68,12 +68,13 @@
 
         <div class="half">
           <article class="card">
-            <h2>Materials library</h2>
+            <h2>Materials library (opaque)</h2>
             <div class="table-wrap">
               <table>
                 <thead>
                   <tr>
-                    <th>Name</th>
+                    <th>ID</th>
+                    <th>Roughness</th>
                     <th>Thickness (m)</th>
                     <th>Conductivity</th>
                     <th>Density</th>
@@ -91,6 +92,38 @@
         </div>
 
         <div class="half">
+          <article class="card">
+            <h2>Constructions & glazing</h2>
+            <div class="table-wrap" style="margin-bottom: var(--sp-md);">
+              <table>
+                <thead>
+                  <tr><th>Construction ID</th><th>Class</th><th>Outside layer</th><th>Layer IDs</th></tr>
+                </thead>
+                <tbody id="construction-body">
+                  <tr><td>cons-wall-ext-01</td><td>Wall</td><td>mat-brick-outer</td><td>mat-brick-outer, mat-insulation-xps-80, mat-gypsum-board</td></tr>
+                  <tr><td>cons-roof-flat-01</td><td>Roof</td><td>mat-bitumen-membrane</td><td>mat-bitumen-membrane, mat-insulation-mineralwool-120, mat-concrete-slab</td></tr>
+                  <tr><td>cons-floor-ground-01</td><td>Floor</td><td>mat-ceramic-tile</td><td>mat-ceramic-tile, mat-screed-cement, mat-concrete-slab</td></tr>
+                  <tr><td>cons-partition-int-01</td><td>InternalWall</td><td>mat-gypsum-board</td><td>mat-gypsum-board, mat-mineral-wool-40, mat-gypsum-board</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Glazing ID</th><th>U-Factor</th><th>SHGC</th><th>Visible transmittance</th></tr>
+                </thead>
+                <tbody id="glazing-body">
+                  <tr><td>glz-double-clear-01</td><td>1.30</td><td>0.52</td><td>0.72</td></tr>
+                  <tr><td>glz-triple-lowe-01</td><td>0.80</td><td>0.45</td><td>0.64</td></tr>
+                  <tr><td>glz-double-solar-01</td><td>1.10</td><td>0.38</td><td>0.58</td></tr>
+                  <tr><td>glz-double-clear-02</td><td>1.40</td><td>0.56</td><td>0.75</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+
+        <div class="full">
           <article class="card">
             <h2>Library completeness</h2>
             <ul id="completeness-list">
@@ -133,17 +166,18 @@
     }
 
     const epb = AppDataModel?.projects?.[0]?.building?.epb || {};
-    const materials = Array.isArray(epb?.library?.materials) ? epb.library.materials : [];
+    const materials = Array.isArray(epb?.library?.materialOpaque) ? epb.library.materialOpaque : [];
     const materialRows = materials.length ? materials : [
-      { name: 'Concrete', thickness: 0.2, conductivity: 1.4, density: 2400 },
-      { name: 'Insulation XPS', thickness: 0.08, conductivity: 0.034, density: 35 },
-      { name: 'Brick', thickness: 0.12, conductivity: 0.72, density: 1700 },
-      { name: 'Gypsum board', thickness: 0.015, conductivity: 0.21, density: 800 }
+      { id: 'mat-1', roughness: 'MediumRough', thickness: 0.2, conductivity: 1.4, density: 2400 },
+      { id: 'mat-2', roughness: 'MediumSmooth', thickness: 0.08, conductivity: 0.034, density: 35 },
+      { id: 'mat-3', roughness: 'Rough', thickness: 0.12, conductivity: 0.72, density: 1700 },
+      { id: 'mat-4', roughness: 'Smooth', thickness: 0.015, conductivity: 0.21, density: 800 }
     ];
 
     document.getElementById('materials-body').innerHTML = materialRows.map((m) => `
       <tr>
-        <td>${m.name ?? 'n/a'}</td>
+        <td>${m.id ?? 'n/a'}</td>
+        <td>${m.roughness ?? 'n/a'}</td>
         <td>${m.thickness ?? '-'}</td>
         <td>${m.conductivity ?? '-'}</td>
         <td>${m.density ?? '-'}</td>
@@ -153,10 +187,10 @@
     const list = document.getElementById('completeness-list');
     list.innerHTML = '';
     const checks = [
-      `Materials: ${(epb?.library?.materials || []).length}`,
-      `Glazing systems: ${(epb?.library?.glazing || []).length}`,
-      `Constructions: ${(epb?.library?.constructions || []).length}`,
-      `Schedules: ${(epb?.library?.schedules || []).length}`
+      `Materials: ${(epb?.library?.materialOpaque || []).length}`,
+      `Glazing systems: ${(epb?.library?.glazingSimpleSystem || []).length}`,
+      `Constructions: ${(epb?.library?.construction || []).length}`,
+      `Schedules: ${(epb?.library?.scheduleConstant || []).length}`
     ];
     checks.forEach((item) => {
       const li = document.createElement('li');

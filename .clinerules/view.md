@@ -47,7 +47,7 @@
 3. [*] `C` - Open / Edit Building
 4. [*] `D` - Duplicate Building
 5. [*] `E` - Delete Building
-6. [ ] `F` - Global Resource Library
+6. [*] `F` - Global Resource Library
 7. [ ] `G` - Language Selection
 8. [ ] `H` - User Profile
 
@@ -55,13 +55,13 @@
 9. [*] `I` - Building Tab
 
 #### EPB Tabs Group
-10. [ ] `EPB1` - EPB View 1: Calculation Settings
-11. [ ] `EPB2` - EPB View 2: Materials & Constructions
-12. [ ] `EPB3` - EPB View 3: Thermal Zones & Envelope Analysis
-13. [ ] `EPB4` - EPB Results / Performance Summary
+10. [*] `EPB1` - EPB View 1: Calculation Settings
+11. [*] `EPB2` - EPB View 2: Materials & Constructions
+12. [*] `EPB3` - EPB View 3: Thermal Zones & Envelope Analysis
+13. [*] `EPB4` - EPB Results / Performance Summary
 
 #### SRI Tabs Group
-14. [ ] `SRI1` - SRI View 1: Methodology Selection
+14. [*] `SRI1` - SRI View 1: Methodology Selection
 15. [ ] `SRI2` - SRI Decision: User-defined Weightings
 16. [ ] `SRI3` - SRI View 2: Weighting Settings
 17. [ ] `SRI4` - SRI View 3: Domain Dashboard

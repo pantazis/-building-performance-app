@@ -134,6 +134,7 @@
             <h2>Engine readiness</h2>
             <p><strong>Validation:</strong> <span id="validation-chip" class="chip chip--ready">Ready</span></p>
             <p><strong>Transformation:</strong> <span id="transformation-status">READY</span></p>
+            <p><strong>Provenance source:</strong> <span id="provenance-source">-</span></p>
             <h3>Execution order</h3>
             <ol id="execution-order-list">
               <li>Import</li>
@@ -143,6 +144,50 @@
               <li>Systems</li>
               <li>Aggregation</li>
             </ol>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card">
+            <h2>Ground temperature calculation properties</h2>
+            <div style="overflow-x:auto;">
+              <table style="width:100%; border-collapse:collapse;">
+                <thead>
+                  <tr>
+                    <th style="text-align:left; border-bottom:1px solid var(--line); padding:8px;">Name</th>
+                    <th style="text-align:left; border-bottom:1px solid var(--line); padding:8px;">Wall thickness</th>
+                    <th style="text-align:left; border-bottom:1px solid var(--line); padding:8px;">Exposed perimeter</th>
+                    <th style="text-align:left; border-bottom:1px solid var(--line); padding:8px;">Conductivity</th>
+                  </tr>
+                </thead>
+                <tbody id="gtcp-body">
+                  <tr>
+                    <td style="border-bottom:1px solid var(--line); padding:8px;">Default Ground Profile</td>
+                    <td style="border-bottom:1px solid var(--line); padding:8px;">0.30</td>
+                    <td style="border-bottom:1px solid var(--line); padding:8px;">120</td>
+                    <td style="border-bottom:1px solid var(--line); padding:8px;">1.8</td>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom:1px solid var(--line); padding:8px;">Basement Perimeter Profile</td>
+                    <td style="border-bottom:1px solid var(--line); padding:8px;">0.25</td>
+                    <td style="border-bottom:1px solid var(--line); padding:8px;">96</td>
+                    <td style="border-bottom:1px solid var(--line); padding:8px;">1.6</td>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom:1px solid var(--line); padding:8px;">Slab-on-Grade Profile</td>
+                    <td style="border-bottom:1px solid var(--line); padding:8px;">0.28</td>
+                    <td style="border-bottom:1px solid var(--line); padding:8px;">110</td>
+                    <td style="border-bottom:1px solid var(--line); padding:8px;">1.7</td>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom:1px solid var(--line); padding:8px;">High-Mass Soil Profile</td>
+                    <td style="border-bottom:1px solid var(--line); padding:8px;">0.35</td>
+                    <td style="border-bottom:1px solid var(--line); padding:8px;">140</td>
+                    <td style="border-bottom:1px solid var(--line); padding:8px;">2.0</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </article>
         </div>
       </div>
@@ -178,6 +223,12 @@
     document.getElementById('run-start').value = epb?.settings?.runPeriod?.start || '';
     document.getElementById('run-end').value = epb?.settings?.runPeriod?.end || '';
     document.getElementById('run-step').value = epb?.settings?.timestep || 1;
+    if (epb?.settings?.runPeriodDetailed) {
+      const d = epb.settings.runPeriodDetailed;
+      document.getElementById('run-start').value = `${String(d.beginMonth).padStart(2, '0')}-${String(d.beginDayOfMonth).padStart(2, '0')}`;
+      document.getElementById('run-end').value = `${String(d.endMonth).padStart(2, '0')}-${String(d.endDayOfMonth).padStart(2, '0')}`;
+    }
+    document.getElementById('run-step').value = epb?.settings?.timeStep?.numberPerHour || epb?.settings?.timestep || 1;
 
     const routeSelect = document.getElementById('route-select');
     routeSelect.innerHTML = '';
@@ -196,6 +247,7 @@
     validationChip.className = status.className;
 
     document.getElementById('transformation-status').textContent = epb?.transformation?.status || 'Unknown';
+    document.getElementById('provenance-source').textContent = `${epb?.provenance?.sourceType || 'n/a'} · ${epb?.provenance?.sourceFile || 'n/a'}`;
 
     const executionOrderList = document.getElementById('execution-order-list');
     executionOrderList.innerHTML = '';
