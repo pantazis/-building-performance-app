@@ -62,15 +62,15 @@
 
 #### SRI Tabs Group
 14. [*] `SRI1` - SRI View 1: Methodology Selection
-15. [ ] `SRI2` - SRI Decision: User-defined Weightings
-16. [ ] `SRI3` - SRI View 2: Weighting Settings
-17. [ ] `SRI4` - SRI View 3: Domain Dashboard
-18. [ ] `SRI5` - Heating Tab
-19. [ ] `SRI6` - DHW Tab
-20. [ ] `SRI7` - Cooling Tab
-21. [ ] `SRI8` - Ventilation Tab
-22. [ ] `SRI9` - Lighting Tab
-23. [ ] `SRI10` - Dynamic Envelope Tab
+15. [*] `SRI2` - SRI Decision: User-defined Weightings
+16. [*] `SRI3` - SRI View 2: Weighting Settings
+17. [*] `SRI4` - SRI View 3: Domain Dashboard
+18. [*] `SRI5` - Heating Tab
+19. [*] `SRI6` - DHW Tab
+20. [*] `SRI7` - Cooling Tab
+21. [*] `SRI8` - Ventilation Tab
+22. [*] `SRI9` - Lighting Tab
+23. [*] `SRI10` - Dynamic Envelope Tab
 24. [ ] `SRI11` - Electricity Tab
 25. [ ] `SRI12` - EV Charging Tab
 26. [ ] `SRI13` - Monitoring & Control Tab
