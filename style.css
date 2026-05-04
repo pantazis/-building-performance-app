@@ -27,6 +27,12 @@
   --muted: #5e6a7d;
   /* secondary text */
   --line: #d8dee7;
+  /* Semantic button palette (prototype-aligned) */
+  --btn-color-success: #2db34a;
+  --btn-color-default: #86c440;
+  --btn-color-warning: #fecf17;
+  --btn-color-orange: #f47721;
+  --btn-color-danger: #ef3e23;
   /* borders, grid lines */
   /* Spacing (8pt scale) */
   --sp-2xs: 4px;
@@ -287,12 +293,44 @@ body {
 
 
 .btn-primary {
-  background: var(--green) !important;
-  border-color: var(--green-90) !important;
+  background: var(--btn-color-success) !important;
+  border-color: var(--btn-color-success) !important;
   color: #fff !important; }
 
 .btn-primary:hover {
   filter: brightness(1.05); }
+
+.btn-default {
+  background: var(--btn-color-default);
+  border-color: var(--btn-color-default);
+  color: #fff; }
+
+.btn-success {
+  background: var(--btn-color-success);
+  border-color: var(--btn-color-success);
+  color: #fff; }
+
+.btn-warning {
+  background: var(--btn-color-warning);
+  border-color: var(--btn-color-warning);
+  color: #1f2937; }
+
+.btn-orange {
+  background: var(--btn-color-orange);
+  border-color: var(--btn-color-orange);
+  color: #fff; }
+
+.btn-danger {
+  background: var(--btn-color-danger);
+  border-color: var(--btn-color-danger);
+  color: #fff; }
+
+.btn-default:hover,
+.btn-success:hover,
+.btn-warning:hover,
+.btn-orange:hover,
+.btn-danger:hover {
+  filter: brightness(0.95); }
 
 .btn-ghost {
   background: transparent;
