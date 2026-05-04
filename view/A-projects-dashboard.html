@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A · Projects Dashboard · OpenBEP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../building-performance-app/style.css" />
+  <style>
+    .dashboard-layout {
+      display: grid;
+      gap: var(--sp-md);
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+
+    .dashboard-layout>.full {
+      grid-column: 1 / -1;
+    }
+
+    .dashboard-layout>.half {
+      grid-column: span 6;
+    }
+
+    @media (max-width: 900px) {
+      .dashboard-layout>.half {
+        grid-column: 1 / -1;
+      }
+    }
+
+    /* COMPONENT: breadcrumbs */
+    .c-breadcrumbs ol {
+      display: grid;
+      grid-auto-flow: column;
+      justify-content: start;
+      gap: var(--sp-xs);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .c-breadcrumbs li+li::before {
+      content: ">";
+      margin-right: var(--sp-xs);
+      color: var(--muted);
+    }
+
+    /* COMPONENT: search-bar */
+    .c-search-bar .search-wrap {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: var(--sp-sm);
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 10px 12px;
+    }
+
+    .c-search-bar input {
+      border: 0;
+      outline: 0;
+      font: inherit;
+    }
+
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sp-md);
+    }
+
+    @media (max-width: 700px) {
+      .score-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .score-value {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-top: var(--sp-xs);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .action-row {
+      display: grid;
+      grid-auto-flow: column;
+      gap: var(--sp-xs);
+      justify-content: start;
+    }
+
+    /* COMPONENT: gauge-svg-template */
+    .gauge-host {
+      max-width: 220px;
+    }
+
+    .needle-sweep {
+      transform-origin: 115.26px 109.1px;
+      transition: transform 300ms ease;
+    }
+
+    .gaugetitle {
+      margin-top: var(--sp-xs);
+      text-align: center;
+    }
+
+    /* COMPONENT: modal */
+    .c-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(12, 18, 32, 0.45);
+      display: none;
+      place-items: center;
+      z-index: 200;
+      padding: var(--sp-lg);
+    }
+
+    .c-modal.is-open {
+      display: grid;
+    }
+
+    .modal-card {
+      background: #fff;
+      border-radius: var(--r-md);
+      border: 1px solid var(--line);
+      padding: var(--sp-lg);
+      max-width: 420px;
+      width: 100%;
+      display: grid;
+      gap: var(--sp-md);
+    }
+
+    /* COMPONENT: toast */
+    .c-toast {
+      position: fixed;
+      right: var(--sp-lg);
+      bottom: var(--sp-lg);
+      background: var(--green);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: var(--r-sm);
+      box-shadow: var(--shadow-1);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity .2s ease, transform .2s ease;
+      z-index: 250;
+    }
+
+    .c-toast.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="container">
+      <a class="brand" href="./A-projects-dashboard.html"><img class="logo" src="../building-performance-app/logo.png"
+          alt="OpenBEP logo"></a>
+      <nav id="main-nav" class="nav" aria-label="Primary">
+        <a href="./A-projects-dashboard.html" aria-current="page">Projects Dashboard</a>
+        <a href="./login.html">Login</a>
+        <a href="./about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page" id="view-a-projects-dashboard">
+      <div class="page-header">
+        <h1>A · Projects Dashboard</h1>
+        <p class="muted">General UI project manager with EPB/SRI progress and quick actions.</p>
+      </div>
+
+      <div class="dashboard-layout">
+        <div class="full">
+          <!-- COMPONENT: breadcrumbs -->
+          <article id="component-breadcrumbs" class="card c-breadcrumbs">
+            <h2>Breadcrumbs</h2>
+            <nav aria-label="Breadcrumb">
+              <ol>
+                <li><a href="./A-projects-dashboard.html">Home</a></li>
+                <li><a href="./A-projects-dashboard.html">General UI</a></li>
+                <li><a href="./A-projects-dashboard.html">Projects</a></li>
+                <li aria-current="page">Dashboard</li>
+              </ol>
+            </nav>
+          </article>
+        </div>
+
+        <div class="half">
+          <!-- COMPONENT: search-bar -->
+          <article id="component-search-bar" class="card c-search-bar">
+            <h2>Search</h2>
+            <label for="global-search" class="sr-only">Search buildings</label>
+            <div class="search-wrap">
+              <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+              <input id="global-search" type="search" placeholder="Search by building name, location or type" />
+            </div>
+          </article>
+        </div>
+
+        <div class="half">
+          <article class="card">
+            <h2>Quick actions</h2>
+            <div class="action-row">
+              <a class="btn btn-primary" href="./B-add-new-building.html">Add New Building (B)</a>
+              <a class="btn btn-default" href="./F-global-resource-library.html">Global Resource Library (F)</a>
+            </div>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card">
+            <h2>Portfolio score snapshot</h2>
+            <div class="score-grid" id="score-grid"></div>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card">
+            <h2>Buildings overview</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Building</th>
+                    <th scope="col">Country</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">EPB Status</th>
+                    <th scope="col">SRI Score</th>
+                    <th scope="col">Last updated</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="projects-table-body"></tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- COMPONENT: footer -->
+  <footer id="component-footer" class="app-footer c-footer">
+    <div class="container">
+      <p>© 2026 OpenBEP · Contact · Privacy · Terms</p>
+    </div>
+  </footer>
+
+  <!-- COMPONENT: gauge-svg-template -->
+  <div id="component-gauge-svg-template" class="c-gauge-svg-template" style="display: none;">
+    <div id="gaugeparent">
+      <svg id="gauge" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 226.71 120.91" width="100%">
+        <defs>
+          <style>
+            .d {
+              fill: #fecf17
+            }
+
+            .e {
+              fill: #2db34a
+            }
+
+            .f {
+              fill: #86c440
+            }
+
+            .g {
+              fill: #ef3e23
+            }
+
+            .h {
+              fill: #f47721
+            }
+
+            .i {
+              fill: #231f20
+            }
+          </style>
+        </defs>
+
+        <g id="b">
+          <path class="e"
+            d="M183.92,110.89h42.79c-.5-23.06-7.88-44.42-20.17-62.11l-34.6,25.14c7.17,10.62,11.51,23.31,11.99,36.97Z" />
+          <path class="d"
+            d="M113.35,42.76c6.74,0,13.26,.97,19.43,2.73l13.23-40.7C135.67,1.68,124.71,0,113.35,0s-22.32,1.68-32.66,4.78l13.23,40.7c6.18-1.76,12.69-2.73,19.43-2.73Z" />
+          <path class="f"
+            d="M168.98,69.88l34.62-25.15c-13.34-17.5-31.65-31.01-52.82-38.41l-13.22,40.68c12.51,4.56,23.36,12.58,31.43,22.87Z" />
+          <path class="h"
+            d="M89.16,47.01L75.94,6.33c-21.18,7.4-39.49,20.9-52.82,38.41l34.62,25.15c8.06-10.3,18.91-18.31,31.43-22.87Z" />
+          <path class="g"
+            d="M54.77,73.92L20.17,48.78C7.88,66.47,.5,87.83,0,110.89H42.79c.48-13.67,4.82-26.35,11.99-36.97Z" />
+        </g>
+
+        <g id="needle" class="needle-sweep">
+          <path class="i" d="M115.26,16.86l-10.13,91.91c0,5.6,4.54,10.13,10.13,10.13s10.13-4.54,10.13-10.13l-10.13-91.91Zm0,97.87
+      c-3.29,0-5.96-2.67-5.96-5.96s2.67-5.96,5.96-5.96,5.96,2.67,5.96,5.96-2.67,5.96-5.96,5.96Z" />
+          <circle class="i" cx="115.26" cy="109.1" r="1.9" />
+        </g>
+      </svg>
+      <div class="gaugetitle">
+        <h4>Gauge Title <span class="percent"></span></h4>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPONENT: modal -->
+  <div id="component-modal" class="c-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <h2 id="modal-title">Confirm action</h2>
+      <p id="modal-message">Are you sure you want to continue?</p>
+      <div class="action-row">
+        <button type="button" class="btn btn-default" id="modal-cancel">Cancel</button>
+        <button type="button" class="btn btn-danger" id="modal-confirm">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPONENT: toast -->
+  <div id="component-toast" class="c-toast" role="status" aria-live="polite">Success! Action completed.</div>
+
+  <script>
+    // Static data aligned with data_model/sri_epb_ui_data_model_v2.js
+    const AppDataModel = {
+      projects: [
+        {
+          id: 'project-1',
+          name: 'Demo Building',
+          lastModified: '2026-04-29',
+          building: {
+            id: 'building-1',
+            name: 'Office Athens',
+            general: {
+              type: 'Non-Residential',
+              usage: 'Offices',
+              country: 'Greece',
+              floorArea: '1000-10000',
+              year: 2015,
+              address: 'Athens'
+            },
+            epb: {
+              orchestration: { status: 'CALCULATION_COMPLETED' }
+            },
+            sri: {
+              results: {
+                totalScore: 75,
+                class: 'B'
+              }
+            }
+          }
+        }
+      ]
+    };
+
+    const tableBody = document.getElementById('projects-table-body');
+    const scoreGrid = document.getElementById('score-grid');
+    const searchInput = document.getElementById('global-search');
+    const modal = document.getElementById('component-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalMessage = document.getElementById('modal-message');
+    const modalCancel = document.getElementById('modal-cancel');
+    const modalConfirm = document.getElementById('modal-confirm');
+    const toast = document.getElementById('component-toast');
+
+    const appDataModel = AppDataModel ?? { projects: [] };
+
+    const baseProjects = Array.isArray(appDataModel?.projects) ? appDataModel.projects : [];
+
+    const templateProject = baseProjects[0] || null;
+    const generatedVariants = templateProject
+      ? [
+        { id: 'project-2', lastModified: '2026-04-28', name: 'Harbor Residences', country: 'Greece', type: 'Residential', status: 'IN_PROGRESS', score: 62, scoreClass: 'C' },
+        { id: 'project-3', lastModified: '2026-04-27', name: 'Metro Plaza', country: 'Greece', type: 'Retail', status: 'MISSING_DATA', score: 48, scoreClass: 'D' },
+        { id: 'project-4', lastModified: '2026-04-26', name: 'Innovation Campus', country: 'Italy', type: 'Non-Residential', status: 'READY_FOR_CALCULATION', score: 0, scoreClass: '-' },
+        { id: 'project-5', lastModified: '2026-04-25', name: 'Green Port Offices', country: 'Spain', type: 'Offices', status: 'CALCULATION_COMPLETED', score: 79, scoreClass: 'B' },
+        { id: 'project-6', lastModified: '2026-04-24', name: 'City Health Center', country: 'Portugal', type: 'Healthcare', status: 'PROCESSING', score: 55, scoreClass: 'C' }
+      ].map((seed) => ({
+        ...templateProject,
+        id: seed.id,
+        lastModified: seed.lastModified,
+        building: {
+          ...templateProject.building,
+          name: seed.name,
+          general: {
+            ...templateProject.building.general,
+            country: seed.country,
+            type: seed.type
+          },
+          epb: {
+            ...templateProject.building.epb,
+            orchestration: {
+              ...templateProject.building.epb.orchestration,
+              status: seed.status
+            }
+          },
+          sri: {
+            ...templateProject.building.sri,
+            results: {
+              ...templateProject.building.sri.results,
+              totalScore: seed.score,
+              class: seed.scoreClass
+            }
+          }
+        }
+      }))
+      : [];
+
+    let displayProjects = [...baseProjects, ...generatedVariants];
+    let pendingAction = null;
+
+    function toTitleCaseFromEnum(status) {
+      return String(status || 'UNKNOWN_STATUS')
+        .toLowerCase()
+        .split('_')
+        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+        .join(' ');
+    }
+
+    function getStatusPresentation(status) {
+      const map = {
+        READY_FOR_CALCULATION: { label: 'Ready', className: 'chip chip--ready' },
+        MISSING_DATA: { label: 'Incomplete data', className: 'chip chip--incomplete' },
+        IN_PROGRESS: { label: 'Processing', className: 'chip chip--processing' },
+        PROCESSING: { label: 'Processing', className: 'chip chip--processing' },
+        CALCULATION_COMPLETED: { label: 'Calculation completed', className: 'chip chip--ready' }
+      };
+
+      if (map[status]) return map[status];
+      return { label: toTitleCaseFromEnum(status), className: 'chip' };
+    }
+
+    function createGaugeCard(title, value, subtitle) {
+      const template = document.getElementById('component-gauge-svg-template');
+      const gaugeContainer = document.createElement('article');
+      gaugeContainer.className = 'card';
+      const host = document.createElement('div');
+      host.className = 'gauge-host';
+
+      const cloned = template.firstElementChild.cloneNode(true);
+      const titleEl = cloned.querySelector('.gaugetitle h4');
+      const percentEl = cloned.querySelector('.percent');
+      const needle = cloned.querySelector('.needle-sweep');
+
+      titleEl.childNodes[0].nodeValue = `${title} `;
+      percentEl.textContent = `${value}%`;
+      const angle = -90 + Math.max(0, Math.min(100, value)) * 1.8;
+      needle.style.transform = `rotate(${angle}deg)`;
+
+      host.appendChild(cloned);
+      gaugeContainer.appendChild(host);
+
+      const caption = document.createElement('p');
+      caption.className = 'score-value';
+      caption.textContent = `${title} ${value}% · ${subtitle}`;
+      gaugeContainer.appendChild(caption);
+      return gaugeContainer;
+    }
+
+    function renderScores(projects) {
+      const withSRI = projects.filter((p) => Number.isFinite(p?.building?.sri?.results?.totalScore) && p.building.sri.results.totalScore > 0);
+      const avgSRI = withSRI.length
+        ? Math.round(withSRI.reduce((sum, p) => sum + p.building.sri.results.totalScore, 0) / withSRI.length)
+        : 0;
+
+      const completedEPB = projects.filter((p) => p?.building?.epb?.orchestration?.status === 'CALCULATION_COMPLETED').length;
+      const epbCompletion = Math.round((completedEPB / projects.length) * 100);
+
+      scoreGrid.innerHTML = '';
+      scoreGrid.appendChild(createGaugeCard('SRI Score', avgSRI, 'portfolio average'));
+      scoreGrid.appendChild(createGaugeCard('EPB Completion', epbCompletion, 'projects completed'));
+    }
+
+    function renderRows(projects) {
+      tableBody.innerHTML = projects.map((project) => {
+        const building = project.building || {};
+        const status = building?.epb?.orchestration?.status || 'UNKNOWN_STATUS';
+        const statusPresentation = getStatusPresentation(status);
+        const sriScore = building?.sri?.results?.totalScore;
+        const sriClass = building?.sri?.results?.class || '-';
+
+        return `
+          <tr>
+            <td>${building.name ?? 'Unnamed building'}</td>
+            <td>${building?.general?.country ?? 'n/a'}</td>
+            <td>${building?.general?.type ?? 'n/a'}</td>
+            <td><span class="${statusPresentation.className}">${statusPresentation.label}</span></td>
+            <td>${Number.isFinite(sriScore) ? `${sriScore}% (Class ${sriClass})` : 'n/a'}</td>
+            <td>${project.lastModified ?? 'n/a'}</td>
+            <td>
+              <div class="action-row">
+                <a class="btn btn-sm btn-success" href="./C-open-edit-building.html">Open (C)</a>
+                <button type="button" class="btn btn-sm btn-orange" data-action="duplicate" data-project-id="${project.id}" data-building-name="${building.name ?? 'Unnamed building'}">Duplicate (D)</button>
+                <button type="button" class="btn btn-sm btn-danger" data-action="delete" data-project-id="${project.id}" data-building-name="${building.name ?? 'Unnamed building'}">Delete (E)</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function applySearch() {
+      const query = searchInput.value.trim().toLowerCase();
+      const filtered = displayProjects.filter((project) => {
+        const b = project.building || {};
+        return [b.name, b?.general?.country, b?.general?.type]
+          .filter(Boolean)
+          .some((v) => String(v).toLowerCase().includes(query));
+      });
+      renderRows(filtered);
+      renderScores(filtered.length ? filtered : displayProjects);
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('is-visible');
+      window.setTimeout(() => {
+        toast.classList.remove('is-visible');
+      }, 1800);
+    }
+
+    function openConfirmModal(action, projectId, buildingName) {
+      pendingAction = { action, projectId, buildingName };
+      const safeName = buildingName || 'this building';
+      modalTitle.textContent = action === 'duplicate' ? 'Confirm duplicate' : 'Confirm delete';
+      modalMessage.textContent = action === 'duplicate'
+        ? `Are you sure you want to duplicate ${safeName}?`
+        : `Are you sure you want to delete ${safeName}?`;
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeConfirmModal() {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      pendingAction = null;
+    }
+
+    tableBody.addEventListener('click', (event) => {
+      const target = event.target.closest('button[data-action]');
+      if (!target) return;
+      openConfirmModal(target.dataset.action, target.dataset.projectId, target.dataset.buildingName);
+    });
+
+    modalCancel.addEventListener('click', closeConfirmModal);
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) closeConfirmModal();
+    });
+
+    modalConfirm.addEventListener('click', () => {
+      if (!pendingAction) return;
+      const { action, projectId, buildingName } = pendingAction;
+
+      if (action === 'duplicate') {
+        const source = displayProjects.find((p) => p.id === projectId);
+        if (source) {
+          const duplicateName = `${source?.building?.name ?? buildingName} (Copy)`;
+          const duplicateProject = {
+            ...source,
+            id: `${source.id}-copy-${Date.now()}`,
+            lastModified: new Date().toISOString().slice(0, 10),
+            building: {
+              ...source.building,
+              name: duplicateName
+            }
+          };
+          displayProjects = [duplicateProject, ...displayProjects];
+          applySearch();
+          showToast(`Building duplicated: ${duplicateName}`);
+        }
+      }
+
+      if (action === 'delete') {
+        displayProjects = displayProjects.filter((p) => p.id !== projectId);
+        applySearch();
+        showToast(`Building deleted: ${buildingName}`);
+      }
+
+      closeConfirmModal();
+    });
+
+    searchInput.addEventListener('input', applySearch);
+    renderRows(displayProjects);
+    renderScores(displayProjects);
+  </script>
+</body>
+
+</html>

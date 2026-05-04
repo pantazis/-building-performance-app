@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>B · Add New Building · OpenBEP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../building-performance-app/style.css" />
+  <style>
+    :root {
+      --btn-color-success: #2db34a;
+      --btn-color-default: #86c440;
+      --btn-color-warning: #fecf17;
+      --btn-color-orange: #f47721;
+      --btn-color-danger: #ef3e23;
+    }
+
+    .page-grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--sp-md);
+    }
+
+    .full { grid-column: 1 / -1; }
+    .half { grid-column: span 6; }
+
+    @media (max-width: 900px) {
+      .half { grid-column: 1 / -1; }
+    }
+
+    /* COMPONENT: breadcrumbs */
+    .c-breadcrumbs ol {
+      display: grid;
+      grid-auto-flow: column;
+      justify-content: start;
+      gap: var(--sp-xs);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .c-breadcrumbs li+li::before {
+      content: ">";
+      margin-right: var(--sp-xs);
+      color: var(--muted);
+    }
+
+    /* COMPONENT: checklist */
+    .c-checklist ul {
+      display: grid;
+      gap: var(--sp-xs);
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sp-md);
+    }
+
+    .col-span-2 { grid-column: span 2; }
+
+    @media (max-width: 700px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .col-span-2 { grid-column: auto; }
+    }
+
+    .status-preview {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-xs);
+      margin-top: var(--sp-sm);
+    }
+
+    .inline-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-xs);
+      margin-top: var(--sp-md);
+    }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="container">
+      <a class="brand" href="./A-projects-dashboard.html"><img class="logo" src="../building-performance-app/logo.png" alt="OpenBEP logo"></a>
+      <nav id="main-nav" class="nav" aria-label="Primary">
+        <a href="./A-projects-dashboard.html">Projects Dashboard</a>
+        <a href="./B-add-new-building.html" aria-current="page">Add New Building</a>
+        <a href="./login.html">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page" id="view-b-add-new-building">
+      <div class="page-header">
+        <h1>B · Add New Building</h1>
+        <p class="muted">Create a new building profile, then continue to Building Tab (I).</p>
+      </div>
+
+      <div class="page-grid">
+        <div class="full">
+          <!-- COMPONENT: breadcrumbs -->
+          <article id="component-breadcrumbs" class="card c-breadcrumbs">
+            <h2>Breadcrumbs</h2>
+            <nav aria-label="Breadcrumb">
+              <ol>
+                <li><a href="./A-projects-dashboard.html">Home</a></li>
+                <li><a href="./A-projects-dashboard.html">Projects Dashboard</a></li>
+                <li aria-current="page">Add New Building</li>
+              </ol>
+            </nav>
+          </article>
+        </div>
+
+        <div class="half">
+          <article class="card">
+            <h2>Building information</h2>
+            <form id="add-building-form" class="form-grid" action="./I-building-tab.html" method="get" novalidate>
+              <label class="form-field">
+                <span>Building name</span>
+                <input id="building-name" name="buildingName" type="text" placeholder="e.g., Innovation Campus" required />
+              </label>
+
+              <label class="form-field">
+                <span>Country</span>
+                <select id="building-country" name="country" required></select>
+              </label>
+
+              <label class="form-field">
+                <span>Type</span>
+                <select id="building-type" name="type" required></select>
+              </label>
+
+              <label class="form-field">
+                <span>Usage</span>
+                <input id="building-usage" name="usage" type="text" placeholder="e.g., Offices" required />
+              </label>
+
+              <label class="form-field">
+                <span>Floor area band</span>
+                <input id="building-floor-area" name="floorArea" type="text" placeholder="e.g., 1000-10000" required />
+              </label>
+
+              <label class="form-field">
+                <span>Year built</span>
+                <input id="building-year" name="year" type="number" min="1800" max="2100" required />
+              </label>
+
+              <label class="form-field col-span-2">
+                <span>Address</span>
+                <input id="building-address" name="address" type="text" placeholder="City or full address" required />
+              </label>
+
+              <div class="col-span-2">
+                <div class="status-preview" id="status-preview"></div>
+              </div>
+
+              <div class="inline-actions col-span-2">
+                <a class="btn btn-default" href="./A-projects-dashboard.html">Cancel</a>
+                <button type="button" class="btn btn-warning" id="btn-save-draft">Save draft</button>
+                <button type="submit" class="btn btn-primary">Save &amp; continue to Building Tab (I)</button>
+              </div>
+            </form>
+          </article>
+        </div>
+
+        <div class="half">
+          <!-- COMPONENT: checklist -->
+          <article id="component-checklist" class="card c-checklist">
+            <h2>Checklist</h2>
+            <ul>
+              <li><input type="checkbox" checked disabled /> Name and location are set</li>
+              <li><input type="checkbox" checked disabled /> Building type and usage are selected</li>
+              <li><input type="checkbox" /> EPB and SRI workflow will continue in Building Tab (I)</li>
+              <li><input type="checkbox" /> IFC upload and domain setup will be completed in later steps</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- COMPONENT: footer -->
+  <footer id="component-footer" class="app-footer c-footer">
+    <div class="container">
+      <p>© 2026 OpenBEP · Contact · Privacy · Terms</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { AppDataModel } from 'file:///c:/Users/pvast/Documents/OpenBEP$EU/data_model/sri_epb_ui_data_model_v2.js';
+
+    function toTitleCaseFromEnum(status) {
+      return String(status || 'UNKNOWN_STATUS')
+        .toLowerCase()
+        .split('_')
+        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+        .join(' ');
+    }
+
+    function getStatusPresentation(status) {
+      const map = {
+        READY_FOR_CALCULATION: { label: 'Ready', className: 'chip chip--ready' },
+        MISSING_DATA: { label: 'Incomplete data', className: 'chip chip--incomplete' },
+        IN_PROGRESS: { label: 'Processing', className: 'chip chip--processing' },
+        PROCESSING: { label: 'Processing', className: 'chip chip--processing' },
+        CALCULATION_COMPLETED: { label: 'Calculation completed', className: 'chip chip--ready' }
+      };
+
+      if (map[status]) return map[status];
+      return { label: toTitleCaseFromEnum(status), className: 'chip' };
+    }
+
+    const appDataModel = AppDataModel ?? null;
+    const sample = appDataModel?.projects?.[0]?.building?.general ?? {};
+
+    const countries = ['Greece', 'Italy', 'Spain', 'Portugal'];
+    const types = ['Residential', 'Non-Residential', 'Offices', 'Healthcare'];
+
+    const countrySelect = document.getElementById('building-country');
+    const typeSelect = document.getElementById('building-type');
+    const statusPreview = document.getElementById('status-preview');
+    const form = document.getElementById('add-building-form');
+
+    function fillSelect(selectEl, values, selectedValue) {
+      selectEl.innerHTML = [`<option value="" disabled>Select one</option>`, ...values.map((v) => `<option value="${v}">${v}</option>`)]
+        .join('');
+      if (selectedValue && values.includes(selectedValue)) {
+        selectEl.value = selectedValue;
+      } else {
+        selectEl.selectedIndex = 0;
+      }
+    }
+
+    fillSelect(countrySelect, countries, sample.country);
+    fillSelect(typeSelect, types, sample.type);
+
+    document.getElementById('building-name').value = appDataModel?.projects?.[0]?.name ? `${appDataModel.projects[0].name} Copy` : '';
+    document.getElementById('building-usage').value = sample.usage ?? '';
+    document.getElementById('building-floor-area').value = sample.floorArea ?? '';
+    document.getElementById('building-year').value = sample.year ?? '';
+    document.getElementById('building-address').value = sample.address ?? '';
+
+    const status = getStatusPresentation('MISSING_DATA');
+    statusPreview.innerHTML = `
+      <strong>Initial status:</strong>
+      <span class="${status.className}">${status.label}</span>
+    `;
+
+    document.getElementById('btn-save-draft').addEventListener('click', () => {
+      const statusDraft = getStatusPresentation('IN_PROGRESS');
+      statusPreview.innerHTML = `
+        <strong>Draft status:</strong>
+        <span class="${statusDraft.className}">${statusDraft.label}</span>
+      `;
+    });
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      window.location.href = './I-building-tab.html';
+    });
+  </script>
+</body>
+
+</html>

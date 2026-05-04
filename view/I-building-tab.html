@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>I · Building Tab · OpenBEP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../building-performance-app/style.css" />
+  <style>
+    :root {
+      --btn-color-success: #2db34a;
+      --btn-color-default: #86c440;
+      --btn-color-warning: #fecf17;
+      --btn-color-orange: #f47721;
+      --btn-color-danger: #ef3e23;
+    }
+
+    .tab-layout {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--sp-md);
+    }
+
+    .full { grid-column: 1 / -1; }
+    .half { grid-column: span 6; }
+    .third { grid-column: span 4; }
+
+    @media (max-width: 1000px) {
+      .third { grid-column: span 6; }
+    }
+
+    @media (max-width: 800px) {
+      .half,
+      .third { grid-column: 1 / -1; }
+    }
+
+    /* COMPONENT: breadcrumbs */
+    .c-breadcrumbs ol {
+      display: grid;
+      grid-auto-flow: column;
+      justify-content: start;
+      gap: var(--sp-xs);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .c-breadcrumbs li+li::before {
+      content: ">";
+      margin-right: var(--sp-xs);
+      color: var(--muted);
+    }
+
+    /* COMPONENT: checklist */
+    .c-checklist ul {
+      display: grid;
+      gap: var(--sp-xs);
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sp-sm);
+    }
+
+    @media (max-width: 560px) {
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .meta-item {
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 10px;
+      background: #fff;
+    }
+
+    .tab-actions {
+      display: grid;
+      gap: var(--sp-xs);
+    }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="container">
+      <a class="brand" href="./A-projects-dashboard.html"><img class="logo" src="../building-performance-app/logo.png" alt="OpenBEP logo"></a>
+      <nav id="main-nav" class="nav" aria-label="Primary">
+        <a href="./A-projects-dashboard.html">Projects Dashboard</a>
+        <a href="./B-add-new-building.html">Add New Building</a>
+        <a href="./I-building-tab.html" aria-current="page">Building Tab</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page" id="view-i-building-tab">
+      <div class="page-header">
+        <h1>I · Building Tab</h1>
+        <p class="muted">Entry point after building creation/edit. Continue to EPB and SRI workflows from here.</p>
+      </div>
+
+      <div class="tab-layout">
+        <div class="full">
+          <!-- COMPONENT: breadcrumbs -->
+          <article id="component-breadcrumbs" class="card c-breadcrumbs">
+            <h2>Breadcrumbs</h2>
+            <nav aria-label="Breadcrumb">
+              <ol>
+                <li><a href="./A-projects-dashboard.html">Home</a></li>
+                <li><a href="./A-projects-dashboard.html">Projects Dashboard</a></li>
+                <li><a href="./B-add-new-building.html">Add / Edit Building</a></li>
+                <li aria-current="page">Building Tab</li>
+              </ol>
+            </nav>
+          </article>
+        </div>
+
+        <div class="half">
+          <article class="card">
+            <h2>Building overview</h2>
+            <p class="caption">Loaded from <code>sri_epb_ui_data_model_v2.js</code>.</p>
+            <div class="meta-grid" id="building-meta">
+              <div class="meta-item"><strong>Building name</strong><div>Office Athens</div></div>
+              <div class="meta-item"><strong>Type</strong><div>Non-Residential</div></div>
+              <div class="meta-item"><strong>Usage</strong><div>Offices</div></div>
+              <div class="meta-item"><strong>Country</strong><div>Greece</div></div>
+              <div class="meta-item"><strong>Floor area</strong><div>1000-10000</div></div>
+              <div class="meta-item"><strong>Year built</strong><div>2015</div></div>
+            </div>
+            <div style="margin-top: var(--sp-sm);" id="status-area">
+              <p><strong>EPB orchestration status:</strong> <span class="chip chip--ready">Calculation completed</span></p>
+              <p><strong>SRI summary:</strong> SRI Score 75% · Class B</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="half">
+          <!-- COMPONENT: checklist -->
+          <article id="component-checklist" class="card c-checklist">
+            <h2>Checklist</h2>
+            <ul>
+              <li><input type="checkbox" checked disabled /> Building profile is created in steps B/B1</li>
+              <li><input type="checkbox" checked disabled /> Continue all EPB flow from this tab entry point</li>
+              <li><input type="checkbox" checked disabled /> Continue all SRI flow from this tab entry point</li>
+              <li><input type="checkbox" disabled /> Complete IFC upload and domain setup in later workflow pages</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="third">
+          <article class="card tab-actions">
+            <h2>EPB workflow</h2>
+            <a class="btn btn-primary" href="./EPB1-calculation-settings.html">Go to EPB Dashboard (J)</a>
+            <a class="btn btn-default" href="./EPB2-materials-constructions.html">Open EPB2 · Materials & Constructions</a>
+            <a class="btn btn-warning" href="./EPB3-thermal-zones-envelope.html">Open EPB3 · Thermal Zones</a>
+            <a class="btn btn-success" href="./EPB4-results-summary.html">Open EPB4 · Performance Summary</a>
+          </article>
+        </div>
+
+        <div class="third">
+          <article class="card tab-actions">
+            <h2>SRI workflow</h2>
+            <a class="btn btn-primary" href="./SRI1-methodology-selection.html">Go to SRI Dashboard (K)</a>
+            <a class="btn btn-default" href="./SRI4-domain-dashboard.html">Open SRI4 · Domain Dashboard</a>
+            <a class="btn btn-orange" href="./SRI13-monitoring-control-tab.html">Open SRI13 · Monitoring & Control</a>
+            <a class="btn btn-success" href="./SRI14-results.html">Open SRI14 · SRI Results</a>
+          </article>
+        </div>
+
+        <div class="third">
+          <article class="card tab-actions">
+            <h2>General actions</h2>
+            <a class="btn btn-default" href="./A-projects-dashboard.html">Back to Projects Dashboard (A)</a>
+            <a class="btn btn-warning" href="./C-open-edit-building.html">Open/Edit Building (C)</a>
+            <a class="btn btn-orange" href="./D-duplicate-building.html">Duplicate Building (D)</a>
+            <a class="btn btn-danger" href="./E-delete-building.html">Delete Building (E)</a>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- COMPONENT: footer -->
+  <footer id="component-footer" class="app-footer c-footer">
+    <div class="container">
+      <p>© 2026 OpenBEP · Contact · Privacy · Terms</p>
+    </div>
+  </footer>
+
+</body>
+
+</html>

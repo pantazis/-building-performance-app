@@ -1,0 +1,221 @@
+🧩 1. GENERAL UI (the “Main App / Control Center”)
+
+📄 Source:
+
+What it is
+
+This is the home screen + navigation of your app.
+
+👉 Like the menu in a game where you:
+
+see your saved buildings
+create new ones
+open/edit them
+🧠 What user does here
+1. Dashboard (Main Page)
+
+You see a table like:
+
+Building	EPB Score	SRI Score	Last Updated
+
+You can:
+
+➕ Add building
+✏️ Edit
+📄 Duplicate
+❌ Delete
+2. Building Page (when you open one)
+
+You fill basic info:
+
+Type (house, office)
+Country
+Size
+Location (lat/lng)
+Year built
+
+👉 This is like creating your character profile
+
+3. Buttons to go deeper
+👉 Go to EPB (energy analysis)
+👉 Go to SRI (smartness analysis)
+4. Resource Library (VERY IMPORTANT)
+
+This is like your inventory system 🎒
+
+You store reusable things:
+
+Materials (walls, insulation)
+Windows
+Constructions
+Thermostats
+
+👉 “Create once → reuse everywhere”
+
+🧠 Simple idea
+
+👉 GENERAL UI = Navigation + Data Storage + Project Manager
+
+⚡ 2. EPB UI (Energy Performance of Building)
+
+📄 Source:
+
+What it is
+
+This part calculates:
+
+👉 How energy efficient the building is
+
+🧠 Think like this
+
+You are building a simulation of a building:
+
+🔹 Tab 1: Settings
+
+You define:
+
+Time period (Jan–Dec)
+Simulation step (hourly)
+Temperature properties
+
+👉 Like setting the rules of the simulation
+
+🔹 Tab 2: Materials & Constructions
+
+You define:
+
+Walls
+Windows
+Layers
+
+👉 Like saying:
+“this wall = concrete + insulation + glass”
+
+🔹 Tab 3: Zones & Spaces (IMPORTANT)
+Zone = big area
+Space = smaller part inside zone
+
+Example:
+
+Zone = Apartment
+Spaces = Bedroom, Kitchen, Living Room
+You define:
+People inside (heat they produce)
+Equipment (computers, lights)
+Ventilation
+Surfaces (walls, windows)
+🧠 What system does
+
+It calculates:
+
+Heat loss
+Cooling needs
+Energy usage
+🧠 Simple idea
+
+👉 EPB = Physics engine of the building
+
+🤖 3. SRI UI (Smart Readiness Indicator)
+
+📄 Source:
+
+What it is
+
+This measures:
+
+👉 How “smart” the building is
+
+Not energy — but intelligence.
+
+🧠 Example:
+Does heating adjust automatically?
+Does lighting react to people?
+Can building talk to the grid?
+🔹 Step 1: Methodology Selection
+
+You choose:
+
+Method A or B
+Which systems exist (heating, cooling, etc.)
+🔹 Step 2: Weighting (VERY IMPORTANT)
+
+You decide what matters more:
+
+Example:
+
+Energy efficiency → 30%
+Comfort → 20%
+Flexibility → 10%
+
+👉 Total must = 100%
+
+🔹 Step 3: Domains (the big systems)
+
+Each tab = one system:
+
+Heating
+Cooling
+Lighting
+Ventilation
+EV Charging
+etc.
+🔹 Inside each domain
+
+You answer questions like:
+
+👉 “How smart is heating?”
+
+Levels:
+
+0 = dumb
+4 = very smart (AI / predictive / connected)
+
+Example:
+
+Level 0 → manual thermostat
+Level 4 → auto + sensors + AI + grid connection
+🔹 Step 4: Results
+
+System calculates:
+
+🎯 Final output:
+SRI Score (%)
+Class (A → G)
+Breakdown:
+By domain
+By impact
+By category
+🧠 Simple idea
+
+👉 SRI = “brain score” of the building
+
+🔥 BIG PICTURE (SUPER IMPORTANT)
+GENERAL UI
+   ↓
+Choose building
+   ↓
+EPB → How efficient is it? (energy)
+   ↓
+SRI → How smart is it? (automation + control)
+🧠 EASY ANALOGY
+
+Think of a building like a human:
+
+System	Meaning
+EPB	Physical health (body)
+SRI	Intelligence (brain)
+General UI	Identity + profile
+⚠️ Your question (very good one)
+
+“Why do we have spaces if we already have zones?”
+
+Answer:
+Zone = logical group (calculation level)
+Space = real rooms (detailed level)
+
+👉 Yes — you will have MANY spaces per zone.
+
+🧠 Final Summary (1 line each)
+GENERAL → manage buildings
+EPB → simulate energy
+SRI → evaluate smartness

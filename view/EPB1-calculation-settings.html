@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EPB1 · Calculation Settings · OpenBEP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../building-performance-app/style.css" />
+  <style>
+    :root {
+      --btn-color-success: #2db34a;
+      --btn-color-default: #86c440;
+      --btn-color-warning: #fecf17;
+      --btn-color-orange: #f47721;
+      --btn-color-danger: #ef3e23;
+    }
+
+    .epb-layout {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--sp-md);
+    }
+
+    .full { grid-column: 1 / -1; }
+    .half { grid-column: span 6; }
+    @media (max-width: 860px) { .half { grid-column: 1 / -1; } }
+
+    /* COMPONENT: breadcrumbs */
+    .c-breadcrumbs ol {
+      display: grid;
+      grid-auto-flow: column;
+      justify-content: start;
+      gap: var(--sp-xs);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .c-breadcrumbs li+li::before { content: ">"; margin-right: var(--sp-xs); color: var(--muted); }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sp-sm);
+    }
+    .form-grid .full-row { grid-column: 1 / -1; }
+    @media (max-width: 620px) { .form-grid { grid-template-columns: 1fr; } }
+
+    .form-field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .form-field input,
+    .form-field select {
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 10px;
+      font: inherit;
+      width: 100%;
+    }
+
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="container">
+      <a class="brand" href="./A-projects-dashboard.html"><img class="logo" src="../building-performance-app/logo.png" alt="OpenBEP logo"></a>
+      <nav id="main-nav" class="nav" aria-label="Primary">
+        <a href="./A-projects-dashboard.html">Projects Dashboard</a>
+        <a href="./I-building-tab.html">Building Tab</a>
+        <a href="./EPB1-calculation-settings.html" aria-current="page">EPB1</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page" id="view-epb1">
+      <div class="page-header">
+        <h1>EPB1 · Calculation Settings</h1>
+        <p class="muted">Define run period, timestep, and simulation readiness for EPB calculations.</p>
+      </div>
+
+      <div class="epb-layout">
+        <div class="full">
+          <!-- COMPONENT: breadcrumbs -->
+          <article id="component-breadcrumbs" class="card c-breadcrumbs">
+            <h2>Breadcrumbs</h2>
+            <nav aria-label="Breadcrumb">
+              <ol>
+                <li><a href="./A-projects-dashboard.html">Home</a></li>
+                <li><a href="./I-building-tab.html">Building Tab</a></li>
+                <li><a href="./EPB1-calculation-settings.html">EPB</a></li>
+                <li aria-current="page">Calculation Settings</li>
+              </ol>
+            </nav>
+          </article>
+        </div>
+
+        <div class="half">
+          <article class="card">
+            <h2>Simulation settings</h2>
+            <form class="form-grid" aria-label="EPB settings form">
+              <label class="form-field">
+                <span>Run period start</span>
+                <input id="run-start" type="text" value="01-01" />
+              </label>
+              <label class="form-field">
+                <span>Run period end</span>
+                <input id="run-end" type="text" value="12-31" />
+              </label>
+              <label class="form-field">
+                <span>Timestep (hours)</span>
+                <input id="run-step" type="number" min="1" value="1" />
+              </label>
+              <label class="form-field">
+                <span>Input source route</span>
+                <select id="route-select">
+                  <option value="JSON">JSON</option>
+                  <option value="IFC4 Add2 DTV">IFC4 Add2 DTV</option>
+                </select>
+              </label>
+              <div class="full-row action-row">
+                <a class="btn btn-default" href="./I-building-tab.html">Back to Building Tab</a>
+                <a class="btn btn-primary" href="./EPB2-materials-constructions.html">Continue to EPB2</a>
+              </div>
+            </form>
+          </article>
+        </div>
+
+        <div class="half">
+          <article class="card">
+            <h2>Engine readiness</h2>
+            <p><strong>Validation:</strong> <span id="validation-chip" class="chip chip--ready">Ready</span></p>
+            <p><strong>Transformation:</strong> <span id="transformation-status">READY</span></p>
+            <h3>Execution order</h3>
+            <ol id="execution-order-list">
+              <li>Import</li>
+              <li>Validation</li>
+              <li>Transformation</li>
+              <li>Hourly Needs</li>
+              <li>Systems</li>
+              <li>Aggregation</li>
+            </ol>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- COMPONENT: footer -->
+  <footer id="component-footer" class="app-footer c-footer">
+    <div class="container"><p>© 2026 OpenBEP · Contact · Privacy · Terms</p></div>
+  </footer>
+
+  <script type="module">
+    import { AppDataModel } from '../data_model/sri_epb_ui_data_model_v2.js';
+
+    function toTitleCaseFromEnum(status) {
+      return String(status || 'UNKNOWN_STATUS').toLowerCase().split('_').map((s) => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
+    }
+
+    function getStatusPresentation(status) {
+      const map = {
+        READY_FOR_CALCULATION: { label: 'Ready', className: 'chip chip--ready' },
+        MISSING_DATA: { label: 'Incomplete data', className: 'chip chip--incomplete' },
+        IN_PROGRESS: { label: 'Processing', className: 'chip chip--processing' },
+        PROCESSING: { label: 'Processing', className: 'chip chip--processing' },
+        CALCULATION_COMPLETED: { label: 'Calculation completed', className: 'chip chip--ready' }
+      };
+      return map[status] || { label: toTitleCaseFromEnum(status), className: 'chip' };
+    }
+
+    const project = AppDataModel?.projects?.[0];
+    const epb = project?.building?.epb || {};
+
+    document.getElementById('run-start').value = epb?.settings?.runPeriod?.start || '';
+    document.getElementById('run-end').value = epb?.settings?.runPeriod?.end || '';
+    document.getElementById('run-step').value = epb?.settings?.timestep || 1;
+
+    const routeSelect = document.getElementById('route-select');
+    routeSelect.innerHTML = '';
+    (AppDataModel?.calculationEngine?.inputRoutes || []).forEach((route) => {
+      const option = document.createElement('option');
+      option.textContent = route;
+      option.value = route;
+      routeSelect.appendChild(option);
+    });
+
+    const schemaValid = epb?.validation?.schemaValid && epb?.validation?.referenceIntegrityValid && epb?.validation?.semanticConstraintsValid;
+    const statusKey = schemaValid ? 'READY_FOR_CALCULATION' : 'MISSING_DATA';
+    const status = getStatusPresentation(statusKey);
+    const validationChip = document.getElementById('validation-chip');
+    validationChip.textContent = status.label;
+    validationChip.className = status.className;
+
+    document.getElementById('transformation-status').textContent = epb?.transformation?.status || 'Unknown';
+
+    const executionOrderList = document.getElementById('execution-order-list');
+    executionOrderList.innerHTML = '';
+    (epb?.orchestration?.executionOrder || []).forEach((step) => {
+      const li = document.createElement('li');
+      li.textContent = toTitleCaseFromEnum(step);
+      executionOrderList.appendChild(li);
+    });
+
+  </script>
+</body>
+
+</html>

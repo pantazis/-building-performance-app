@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenBEP4EU View Index</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #4b5563;
+      --border: #dbe3ef;
+      --link: #0b5fff; 
+      --shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+      padding: 24px;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+    h1, h2, h3 { margin-top: 0; }
+    .flow img {
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+    }
+    .svg-toolbar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .svg-toolbar button {
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      border-radius: 8px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .svg-toolbar button:hover,
+    .svg-toolbar button:focus {
+      outline: 2px solid #93c5fd;
+      outline-offset: 1px;
+    }
+    .svg-viewport {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+      overflow: auto;
+      max-height: 72vh;
+      padding: 8px;
+      cursor: grab;
+      touch-action: none;
+    }
+    .svg-viewport.is-dragging { cursor: grabbing; }
+    .svg-stage {
+      transform-origin: top left;
+      transition: transform 120ms ease;
+      width: max-content;
+      min-width: 100%;
+    }
+    .svg-stage img {
+      display: block;
+      max-width: none;
+      width: 100%;
+      height: auto;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+      border: 0;
+    }
+    .view-list {
+      display: grid;
+      gap: 12px;
+    }
+    .view-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      background: #fff;
+    }
+    .view-item p {
+      margin: 6px 0;
+      color: var(--muted);
+    }
+    a {
+      color: var(--link);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    a:hover, a:focus { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="card flow" aria-labelledby="journey-map-title">
+      <h1 id="journey-map-title">OpenBEP4EU Journey Map</h1>
+      <p>This diagram is the schema/flow overview used to organize all screens.</p>
+      <div class="svg-toolbar" role="group" aria-label="SVG zoom controls">
+        <button type="button" id="zoom-out">Zoom out</button>
+        <button type="button" id="zoom-in">Zoom in</button>
+        <button type="button" id="zoom-reset">Reset</button>
+        <span id="zoom-level" aria-live="polite">100%</span>
+      </div>
+      <div class="svg-viewport" id="svg-viewport">
+        <div class="svg-stage" id="svg-stage">
+          <img src="./output.svg" alt="OpenBEP4EU user journey and schema flow" />
+        </div>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="view-index-title">
+      <h2 id="view-index-title">View Index (Logical Order)</h2>
+      <div class="view-list">
+        <article class="view-item">
+          <h3>1) Login</h3>
+          <p><strong>What this view is:</strong> Entry screen for authentication before using the application.</p>
+          <p><strong>What you can do:</strong> Sign in and proceed to the main project workspace.</p>
+          <p><strong>Relationship to schema:</strong> Practical system entry point before flow node A (Projects Dashboard).</p>
+          <p><a href="./view/login.html">Open view/login.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>2) Projects Dashboard (A)</h3>
+          <p><strong>What this view is:</strong> Main control center listing building projects and scores/statuses.</p>
+          <p><strong>What you can do:</strong> Start all major actions (add, open/edit, duplicate, delete, library access).</p>
+          <p><strong>Relationship to schema:</strong> Root node A in the plan, branching to B/C/D/E/F/G/H.</p>
+          <p><a href="./view/A-projects-dashboard.html">Open view/A-projects-dashboard.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>3) Add New Building (B)</h3>
+          <p><strong>What this view is:</strong> Creation form for first-time building setup.</p>
+          <p><strong>What you can do:</strong> Provide basic building metadata and create a new record.</p>
+          <p><strong>Relationship to schema:</strong> Node B; after creation, workflow hands off to Building Tab (I).</p>
+          <p><a href="./view/B-add-new-building.html">Open view/B-add-new-building.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>4) Open / Edit Building (C)</h3>
+          <p><strong>What this view is:</strong> Building editing screen for an existing project.</p>
+          <p><strong>What you can do:</strong> Update building profile fields and prepare for deeper EPB/SRI work.</p>
+          <p><strong>Relationship to schema:</strong> Node C that also transitions into Building Tab (I).</p>
+          <p><a href="./view/C-open-edit-building.html">Open view/C-open-edit-building.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>5) Global Resource Library (F)</h3>
+          <p><strong>What this view is:</strong> Shared catalog for reusable assets and references.</p>
+          <p><strong>What you can do:</strong> Manage reusable materials/components used across multiple buildings.</p>
+          <p><strong>Relationship to schema:</strong> Node F branch from dashboard A supporting reuse-first workflows.</p>
+          <p><a href="./view/F-global-resource-library.html">Open view/F-global-resource-library.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>6) Building Tab (I)</h3>
+          <p><strong>What this view is:</strong> Main per-building tab hub where EPB and SRI paths begin.</p>
+          <p><strong>What you can do:</strong> Select EPB or SRI dashboard and continue technical assessments.</p>
+          <p><strong>Relationship to schema:</strong> Node I, receiving flow from B/C and routing to J (EPB) and K (SRI).</p>
+          <p><a href="./view/I-building-tab.html">Open view/I-building-tab.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>7) EPB View 1: Calculation Settings (EPB1)</h3>
+          <p><strong>What this view is:</strong> Initial EPB simulation configuration screen.</p>
+          <p><strong>What you can do:</strong> Define time period, simulation resolution, and core calculation settings.</p>
+          <p><strong>Relationship to schema:</strong> EPB sequence start: J → EPB1 → EPB2 → EPB3 → EPB4.</p>
+          <p><a href="./view/EPB1-calculation-settings.html">Open view/EPB1-calculation-settings.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>8) EPB View 2: Materials & Constructions (EPB2)</h3>
+          <p><strong>What this view is:</strong> Envelope/material definitions for the energy model.</p>
+          <p><strong>What you can do:</strong> Configure walls, windows, layers, and construction assemblies.</p>
+          <p><strong>Relationship to schema:</strong> Second EPB step after settings; feeds model physics inputs.</p>
+          <p><a href="./view/EPB2-materials-constructions.html">Open view/EPB2-materials-constructions.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>9) EPB View 3: Thermal Zones & Envelope Analysis (EPB3)</h3>
+          <p><strong>What this view is:</strong> Thermal zoning and operational definition screen.</p>
+          <p><strong>What you can do:</strong> Set zones/spaces, occupancy/equipment assumptions, and envelope analysis inputs.</p>
+          <p><strong>Relationship to schema:</strong> Third EPB stage immediately before results summary (EPB4).</p>
+          <p><a href="./view/EPB3-thermal-zones-envelope.html">Open view/EPB3-thermal-zones-envelope.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>10) EPB Results / Performance Summary (EPB4)</h3>
+          <p><strong>What this view is:</strong> EPB outcome view with final energy-performance outputs.</p>
+          <p><strong>What you can do:</strong> Review calculated indicators and summary KPI results.</p>
+          <p><strong>Relationship to schema:</strong> EPB chain endpoint and recipient of engine output (CE6 → EPB4).</p>
+          <p><a href="./view/EPB4-results-summary.html">Open view/EPB4-results-summary.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>11) About</h3>
+          <p><strong>What this view is:</strong> Informational/support page describing the app context.</p>
+          <p><strong>What you can do:</strong> Read project information and orientation content.</p>
+          <p><strong>Relationship to schema:</strong> Auxiliary page, outside the core A→EPB/SRI transactional path.</p>
+          <p><a href="./view/about.html">Open view/about.html</a></p>
+        </article>
+      </div>
+    </section>
+  </main>
+  <script>
+    (function () {
+      const stage = document.getElementById('svg-stage');
+      const viewport = document.getElementById('svg-viewport');
+      const zoomIn = document.getElementById('zoom-in');
+      const zoomOut = document.getElementById('zoom-out');
+      const zoomReset = document.getElementById('zoom-reset');
+      const zoomLevel = document.getElementById('zoom-level');
+
+      let scale = 1;
+      const minScale = 0.5;
+      const maxScale = 3;
+      const step = 0.15;
+
+      function renderScale() {
+        stage.style.transform = `scale(${scale})`;
+        zoomLevel.textContent = `${Math.round(scale * 100)}%`;
+      }
+
+      zoomIn.addEventListener('click', function () {
+        scale = Math.min(maxScale, +(scale + step).toFixed(2));
+        renderScale();
+      });
+
+      zoomOut.addEventListener('click', function () {
+        scale = Math.max(minScale, +(scale - step).toFixed(2));
+        renderScale();
+      });
+
+      zoomReset.addEventListener('click', function () {
+        scale = 1;
+        renderScale();
+      });
+
+      let isDragging = false;
+      let startX = 0;
+      let startY = 0;
+      let startScrollLeft = 0;
+      let startScrollTop = 0;
+
+      viewport.addEventListener('pointerdown', function (event) {
+        isDragging = true;
+        viewport.classList.add('is-dragging');
+        startX = event.clientX;
+        startY = event.clientY;
+        startScrollLeft = viewport.scrollLeft;
+        startScrollTop = viewport.scrollTop;
+        viewport.setPointerCapture(event.pointerId);
+      });
+
+      viewport.addEventListener('pointermove', function (event) {
+        if (!isDragging) return;
+        const dx = event.clientX - startX;
+        const dy = event.clientY - startY;
+        viewport.scrollLeft = startScrollLeft - dx;
+        viewport.scrollTop = startScrollTop - dy;
+      });
+
+      function stopDragging(event) {
+        if (!isDragging) return;
+        isDragging = false;
+        viewport.classList.remove('is-dragging');
+        if (event && typeof event.pointerId === 'number') {
+          try { viewport.releasePointerCapture(event.pointerId); } catch (e) {}
+        }
+      }
+
+      viewport.addEventListener('pointerup', stopDragging);
+      viewport.addEventListener('pointercancel', stopDragging);
+      viewport.addEventListener('pointerleave', stopDragging);
+
+      renderScale();
+    })();
+  </script>
+</body>
+</html>

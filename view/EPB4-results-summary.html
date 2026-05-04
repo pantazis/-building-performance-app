@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EPB4 · Results / Performance Summary · OpenBEP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../building-performance-app/style.css" />
+  <style>
+    :root {
+      --btn-color-success: #2db34a;
+      --btn-color-default: #86c440;
+      --btn-color-warning: #fecf17;
+      --btn-color-orange: #f47721;
+      --btn-color-danger: #ef3e23;
+    }
+
+    .epb-layout { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--sp-md); }
+    .full { grid-column: 1 / -1; }
+    .half { grid-column: span 6; }
+    @media (max-width: 900px) { .half { grid-column: 1 / -1; } }
+
+    /* COMPONENT: breadcrumbs */
+    .c-breadcrumbs ol { display: grid; grid-auto-flow: column; justify-content: start; gap: var(--sp-xs); margin: 0; padding: 0; list-style: none; }
+    .c-breadcrumbs li+li::before { content: ">"; margin-right: var(--sp-xs); color: var(--muted); }
+
+    /* COMPONENT: gauge-svg-template */
+    .gauge-host { max-width: 260px; }
+    .needle-sweep { transform-origin: 115.26px 109.1px; transition: transform 300ms ease; }
+    .gaugetitle { margin-top: var(--sp-xs); text-align: center; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px; text-align: left; }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="container">
+      <a class="brand" href="./A-projects-dashboard.html"><img class="logo" src="../building-performance-app/logo.png" alt="OpenBEP logo"></a>
+      <nav id="main-nav" class="nav" aria-label="Primary">
+        <a href="./A-projects-dashboard.html">Projects Dashboard</a>
+        <a href="./I-building-tab.html">Building Tab</a>
+        <a href="./EPB4-results-summary.html" aria-current="page">EPB4</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page" id="view-epb4">
+      <div class="page-header">
+        <h1>EPB4 · Results / Performance Summary</h1>
+        <p class="muted">Final EPB indicators from the OpenBEP4EU calculation engine and orchestration outputs.</p>
+      </div>
+
+      <div class="epb-layout">
+        <div class="full">
+          <!-- COMPONENT: breadcrumbs -->
+          <article id="component-breadcrumbs" class="card c-breadcrumbs">
+            <h2>Breadcrumbs</h2>
+            <nav aria-label="Breadcrumb">
+              <ol>
+                <li><a href="./A-projects-dashboard.html">Home</a></li>
+                <li><a href="./I-building-tab.html">Building Tab</a></li>
+                <li><a href="./EPB3-thermal-zones-envelope.html">EPB3</a></li>
+                <li aria-current="page">EPB4</li>
+              </ol>
+            </nav>
+          </article>
+        </div>
+
+        <div class="half">
+          <article class="card">
+            <h2>Performance score gauge</h2>
+            <div id="epb-gauge-host" class="gauge-host">
+              <div id="gaugeparent-live">
+                <svg id="gauge-live" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 226.71 120.91" width="100%">
+                  <defs>
+                    <style>
+                      .d { fill: #fecf17 }
+                      .e { fill: #2db34a }
+                      .f { fill: #86c440 }
+                      .g { fill: #ef3e23 }
+                      .h { fill: #f47721 }
+                      .i { fill: #231f20 }
+                    </style>
+                  </defs>
+                  <g id="b-live">
+                    <path class="e" d="M183.92,110.89h42.79c-.5-23.06-7.88-44.42-20.17-62.11l-34.6,25.14c7.17,10.62,11.51,23.31,11.99,36.97Z" />
+                    <path class="d" d="M113.35,42.76c6.74,0,13.26,.97,19.43,2.73l13.23-40.7C135.67,1.68,124.71,0,113.35,0s-22.32,1.68-32.66,4.78l13.23,40.7c6.18-1.76,12.69-2.73,19.43-2.73Z" />
+                    <path class="f" d="M168.98,69.88l34.62-25.15c-13.34-17.5-31.65-31.01-52.82-38.41l-13.22,40.68c12.51,4.56,23.36,12.58,31.43,22.87Z" />
+                    <path class="h" d="M89.16,47.01L75.94,6.33c-21.18,7.4-39.49,20.9-52.82,38.41l34.62,25.15c8.06-10.3,18.91-18.31,31.43-22.87Z" />
+                    <path class="g" d="M54.77,73.92L20.17,48.78C7.88,66.47,.5,87.83,0,110.89H42.79c.48-13.67,4.82-26.35,11.99-36.97Z" />
+                  </g>
+                  <g id="needle-live" class="needle-sweep" style="transform: rotate(0deg);">
+                    <path class="i" d="M115.26,16.86l-10.13,91.91c0,5.6,4.54,10.13,10.13,10.13s10.13-4.54,10.13-10.13l-10.13-91.91Zm0,97.87
+                c-3.29,0-5.96-2.67-5.96-5.96s2.67-5.96,5.96-5.96,5.96,2.67,5.96,5.96-2.67,5.96-5.96,5.96Z" />
+                    <circle class="i" cx="115.26" cy="109.1" r="1.9" />
+                  </g>
+                </svg>
+                <div class="gaugetitle"><h4>EPB Score <span class="percent" id="epb-percent-live">50%</span></h4></div>
+              </div>
+            </div>
+            <p id="epb-gauge-label" class="caption">EPB Score 50% · Performance summary</p>
+          </article>
+        </div>
+
+        <div class="half">
+          <article class="card">
+            <h2>Calculation status</h2>
+            <p><strong>Orchestration:</strong> <span id="status-chip" class="chip chip--ready">Calculation completed</span></p>
+            <h3>Core workflow steps</h3>
+            <ol id="workflow-list">
+              <li>Data Import</li>
+              <li>Data Validation</li>
+              <li>Data Transformation</li>
+              <li>Simulation Core Modules</li>
+              <li>Orchestration</li>
+              <li>Epc Output Aggregation</li>
+            </ol>
+            <div class="action-row">
+              <a class="btn btn-default" href="./EPB3-thermal-zones-envelope.html">Back to EPB3</a>
+              <a class="btn btn-success" href="./I-building-tab.html">Finish EPB Flow</a>
+            </div>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card">
+            <h2>EPC-relevant indicators</h2>
+            <table>
+              <tbody id="indicators-table-body">
+                <tr><th scope="row">Final energy (electricity)</th><td>12000 kWh</td></tr>
+                <tr><th scope="row">Final energy (natural gas)</th><td>8400 kWh</td></tr>
+                <tr><th scope="row">Primary energy</th><td>24600 kWh</td></tr>
+                <tr><th scope="row">Operational GHG emissions</th><td>5100 kgCO₂eq</td></tr>
+                <tr><th scope="row">On-site renewables share</th><td>18%</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- COMPONENT: footer -->
+  <footer id="component-footer" class="app-footer c-footer">
+    <div class="container"><p>© 2026 OpenBEP · Contact · Privacy · Terms</p></div>
+  </footer>
+
+  <!-- COMPONENT: gauge-svg-template -->
+  <div id="component-gauge-svg-template" class="c-gauge-svg-template" style="display: none;">
+    <div id="gaugeparent">
+      <svg id="gauge" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 226.71 120.91" width="100%">
+        <defs>
+          <style>
+            .d { fill: #fecf17 }
+            .e { fill: #2db34a }
+            .f { fill: #86c440 }
+            .g { fill: #ef3e23 }
+            .h { fill: #f47721 }
+            .i { fill: #231f20 }
+          </style>
+        </defs>
+        <g id="b">
+          <path class="e" d="M183.92,110.89h42.79c-.5-23.06-7.88-44.42-20.17-62.11l-34.6,25.14c7.17,10.62,11.51,23.31,11.99,36.97Z" />
+          <path class="d" d="M113.35,42.76c6.74,0,13.26,.97,19.43,2.73l13.23-40.7C135.67,1.68,124.71,0,113.35,0s-22.32,1.68-32.66,4.78l13.23,40.7c6.18-1.76,12.69-2.73,19.43-2.73Z" />
+          <path class="f" d="M168.98,69.88l34.62-25.15c-13.34-17.5-31.65-31.01-52.82-38.41l-13.22,40.68c12.51,4.56,23.36,12.58,31.43,22.87Z" />
+          <path class="h" d="M89.16,47.01L75.94,6.33c-21.18,7.4-39.49,20.9-52.82,38.41l34.62,25.15c8.06-10.3,18.91-18.31,31.43-22.87Z" />
+          <path class="g" d="M54.77,73.92L20.17,48.78C7.88,66.47,.5,87.83,0,110.89H42.79c.48-13.67,4.82-26.35,11.99-36.97Z" />
+        </g>
+        <g id="needle" class="needle-sweep">
+          <path class="i" d="M115.26,16.86l-10.13,91.91c0,5.6,4.54,10.13,10.13,10.13s10.13-4.54,10.13-10.13l-10.13-91.91Zm0,97.87
+      c-3.29,0-5.96-2.67-5.96-5.96s2.67-5.96,5.96-5.96,5.96,2.67,5.96,5.96-2.67,5.96-5.96,5.96Z" />
+          <circle class="i" cx="115.26" cy="109.1" r="1.9" />
+        </g>
+      </svg>
+      <div class="gaugetitle"><h4>EPB Score <span class="percent"></span></h4></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { AppDataModel } from '../data_model/sri_epb_ui_data_model_v2.js';
+
+    function toTitleCaseFromEnum(status) {
+      return String(status || 'UNKNOWN_STATUS').toLowerCase().split('_').map((s) => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
+    }
+    function getStatusPresentation(status) {
+      const map = {
+        READY_FOR_CALCULATION: { label: 'Ready', className: 'chip chip--ready' },
+        MISSING_DATA: { label: 'Incomplete data', className: 'chip chip--incomplete' },
+        IN_PROGRESS: { label: 'Processing', className: 'chip chip--processing' },
+        PROCESSING: { label: 'Processing', className: 'chip chip--processing' },
+        CALCULATION_COMPLETED: { label: 'Calculation completed', className: 'chip chip--ready' }
+      };
+      return map[status] || { label: toTitleCaseFromEnum(status), className: 'chip' };
+    }
+
+    const epb = AppDataModel?.projects?.[0]?.building?.epb || {};
+    const indicators = epb?.epcIndicators || {};
+
+    const score = Math.max(0, Math.min(100, Math.round(((indicators?.onsiteRenewablesShare_percent || 0) + 82) / 2)));
+    const livePercent = document.getElementById('epb-percent-live');
+    const liveNeedle = document.getElementById('needle-live');
+    if (livePercent) livePercent.textContent = `${score}%`;
+    if (liveNeedle) liveNeedle.style.transform = `rotate(${-90 + score * 1.8}deg)`;
+    document.getElementById('epb-gauge-label').textContent = `EPB Score ${score}% · Performance summary`;
+
+    const status = getStatusPresentation(epb?.orchestration?.status || 'CALCULATION_COMPLETED');
+    const statusChip = document.getElementById('status-chip');
+    statusChip.textContent = status.label;
+    statusChip.className = status.className;
+
+    const workflowList = document.getElementById('workflow-list');
+    workflowList.innerHTML = '';
+    (AppDataModel?.calculationEngine?.workflow || []).forEach((step) => {
+      const li = document.createElement('li');
+      li.textContent = toTitleCaseFromEnum(step);
+      workflowList.appendChild(li);
+    });
+
+    const body = document.getElementById('indicators-table-body');
+    const rows = [
+      ['Final energy (electricity)', `${indicators?.finalEnergyByCarrier?.electricity_kWh ?? 0} kWh`],
+      ['Final energy (natural gas)', `${indicators?.finalEnergyByCarrier?.naturalGas_kWh ?? 0} kWh`],
+      ['Primary energy', `${indicators?.primaryEnergy_kWh ?? 0} kWh`],
+      ['Operational GHG emissions', `${indicators?.operationalGHG_kgCO2eq ?? 0} kgCO₂eq`],
+      ['On-site renewables share', `${indicators?.onsiteRenewablesShare_percent ?? 0}%`]
+    ];
+    body.innerHTML = rows.map((row) => `<tr><th scope="row">${row[0]}</th><td>${row[1]}</td></tr>`).join('');
+  </script>
+</body>
+
+</html>

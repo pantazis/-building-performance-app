@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login · OpenBEP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../building-performance-app/style.css" />
+  <style>
+    .login-shell {
+      min-height: calc(100vh - 160px);
+      display: grid;
+      align-items: center;
+      padding-block: var(--sp-lg);
+    }
+
+    .login-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: var(--sp-lg);
+    }
+
+    .login-intro .badge {
+      display: inline-grid;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--green-10);
+      color: var(--green-700);
+      font-weight: 600;
+      margin-bottom: var(--sp-sm);
+    }
+
+    .login-intro h1 {
+      margin-top: 0;
+      margin-bottom: var(--sp-sm);
+    }
+
+    .login-intro p {
+      margin-top: 0;
+      margin-bottom: var(--sp-md);
+    }
+
+    .login-meta {
+      display: grid;
+      gap: var(--sp-sm);
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .login-card .form-field,
+    .login-card .login-actions,
+    .login-card .social-row {
+      width: 100%;
+    }
+
+    .login-card .btn {
+      justify-content: center;
+    }
+
+    @media (max-width: 900px) {
+      .login-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="container">
+      <a class="brand" href="./login.html"><img class="logo" src="../building-performance-app/logo.png"
+          alt="OpenBEP logo"></a>
+      <nav id="main-nav" class="nav" aria-label="Authentication navigation">
+        <a href="./login.html" aria-current="page">Login</a>
+        <a href="./about.html">Public home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container login-shell">
+    <section class="login-grid" aria-labelledby="login-title">
+      <article class="card login-intro">
+        <span class="badge">OpenBEP4EU</span>
+        <h1 id="login-title">Sign in to continue</h1>
+        <p class="muted">Access your building assessments, calculations, reports, and sharing workflows.</p>
+        <div class="login-meta" id="login-meta" aria-live="polite">
+          <span>Loading demo user data…</span>
+        </div>
+      </article>
+
+      <!-- COMPONENT: login-form -->
+      <article id="component-login-form" class="card c-login-form login-card" aria-label="Login form">
+        <h2>Login & security</h2>
+        <form id="login-form" class="grid" novalidate>
+          <label class="form-field" for="login-email">
+            <span>Email</span>
+            <input id="login-email" type="email" placeholder="name@example.com" required />
+          </label>
+          <label class="form-field" for="login-password">
+            <span>Password</span>
+            <div class="password-wrap">
+              <input id="login-password" type="password" placeholder="Enter your password" minlength="8" required />
+              <button id="toggle-password" type="button" class="btn btn-sm" aria-pressed="false">Show</button>
+            </div>
+          </label>
+
+          <!-- COMPONENT: validation-state -->
+          <p id="component-validation-state" class="c-validation-state" role="status" aria-live="polite"></p>
+
+          <div class="login-actions">
+            <a href="#" class="muted">Forgot password?</a>
+            <button type="submit" class="btn btn-primary">Sign in</button>
+          </div>
+        </form>
+
+        <!-- COMPONENT: social-login -->
+        <div id="component-social-login" class="c-social-login">
+          <p class="caption">Or continue with</p>
+          <div class="grid social-row">
+            <button type="button" class="btn"><i class="fa-brands fa-google" aria-hidden="true"></i> Google</button>
+            <button type="button" class="btn"><i class="fa-brands fa-apple" aria-hidden="true"></i> Apple</button>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <!-- COMPONENT: footer -->
+  <footer id="component-footer" class="app-footer c-footer">
+    <div class="container">
+      <p>© 2026 OpenBEP · Contact · Privacy · Terms</p>
+    </div>
+  </footer>
+
+  <script>
+    const loginForm = document.getElementById('login-form');
+    const emailInput = document.getElementById('login-email');
+    const passwordInput = document.getElementById('login-password');
+    const toggleBtn = document.getElementById('toggle-password');
+    const statusEl = document.getElementById('component-validation-state');
+    const loginMeta = document.getElementById('login-meta');
+
+    toggleBtn.addEventListener('click', () => {
+      const isPassword = passwordInput.type === 'password';
+      passwordInput.type = isPassword ? 'text' : 'password';
+      toggleBtn.textContent = isPassword ? 'Hide' : 'Show';
+      toggleBtn.setAttribute('aria-pressed', String(isPassword));
+    });
+
+    loginForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!emailInput.value.trim() || !passwordInput.value.trim()) {
+        statusEl.textContent = 'Please complete email and password.';
+        statusEl.style.color = 'var(--red-600)';
+        return;
+      }
+
+      statusEl.textContent = 'Login successful (prototype flow). Continue to Dashboard.';
+      statusEl.style.color = 'var(--green-700)';
+    });
+
+    function setLoginUsers(users) {
+      if (!users || !users.length) {
+        loginMeta.innerHTML = '<span>Demo user data unavailable.</span>';
+        return;
+      }
+
+      const assessor = users.find((u) => u.role === 'ASSESSOR');
+      const owner = users.find((u) => u.role === 'BUILDING_OWNER');
+      const admin = users.find((u) => u.role === 'ADMIN');
+
+      loginMeta.innerHTML = `
+        <span><strong>Demo assessor:</strong> ${assessor?.email ?? 'n/a'}</span>
+        <span><strong>Demo owner:</strong> ${owner?.email ?? 'n/a'}</span>
+        <span><strong>Demo admin:</strong> ${admin?.email ?? 'n/a'}</span>
+      `;
+
+      if (assessor?.email) emailInput.value = assessor.email;
+    }
+
+    (function loadDataModelWithScriptTag() {
+      const previousModule = window.module;
+      const cjsShim = { exports: {} };
+      window.module = cjsShim;
+
+      const script = document.createElement('script');
+      script.src = '../data_model/openbep4eu_fake_data_models.js';
+      script.onload = () => {
+        const users = Array.isArray(cjsShim.exports?.users) ? cjsShim.exports.users : [];
+        setLoginUsers(users);
+        window.module = previousModule;
+      };
+      script.onerror = () => {
+        loginMeta.innerHTML = '<span>Could not load data model script.</span>';
+        window.module = previousModule;
+      };
+
+      document.head.appendChild(script);
+    })();
+  </script>
+</body>
+
+</html>

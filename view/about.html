@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About · OpenBEP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../building-performance-app/style.css" />
+  <style>
+    /* COMPONENT: breadcrumbs */
+    .c-breadcrumbs ol {
+      display: grid;
+      grid-auto-flow: column;
+      justify-content: start;
+      gap: var(--sp-xs);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .c-breadcrumbs li+li::before {
+      content: ">";
+      margin-right: var(--sp-xs);
+      color: var(--muted);
+    }
+
+    /* COMPONENT: ordered-list */
+    .c-ordered-list ol {
+      margin: var(--sp-xs) 0 var(--sp-md);
+      padding-left: 20px;
+    }
+
+    /* COMPONENT: data-table */
+    .c-data-table table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      overflow: hidden;
+    }
+
+    .c-data-table th,
+    .c-data-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px;
+      text-align: left;
+    }
+
+    .c-data-table th {
+      background: var(--green-10);
+    }
+
+    /* COMPONENT: checklist */
+    .c-checklist ul {
+      margin: var(--sp-xs) 0 var(--sp-md);
+      padding-left: 20px;
+    }
+
+    .c-checklist li {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--sp-xs);
+      align-items: center;
+      margin-bottom: var(--sp-xs);
+    }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="container">
+      <a class="brand" href="#about-home"><img class="logo" src="../building-performance-app/logo.png"
+          alt="Building Performance Logo"></a>
+      <nav id="main-nav" class="nav" aria-label="Main navigation">
+        <a href="#about-home">About</a>
+        <a href="#mission">Mission</a>
+        <a href="#team">Team</a>
+        <a href="#milestones">Milestones</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="about-home" class="page">
+      <div class="page-header">
+        <h1>About OpenBEP</h1>
+        <p class="muted">Demo page with sample content for product and team presentation.</p>
+      </div>
+
+      <!-- COMPONENT: breadcrumbs -->
+      <article id="component-breadcrumbs" class="card c-breadcrumbs">
+        <h2>Breadcrumbs</h2>
+        <nav aria-label="Breadcrumb">
+          <ol>
+            <li><a href="#about-home">Home</a></li>
+            <li><a href="#about-home">Company</a></li>
+            <li aria-current="page">About</li>
+          </ol>
+        </nav>
+      </article>
+
+      <div class="grid cards-2">
+        <article id="mission" class="card">
+          <h2>Our mission</h2>
+          <p>OpenBEP helps teams measure building performance with transparent and practical workflows.
+            We combine IFC-based data, domain scoring, and reporting into one clear process.</p>
+          <p class="muted">Demo focus: faster onboarding, consistent assessments, and actionable reports.</p>
+        </article>
+
+        <article class="card c-checklist" id="component-checklist">
+          <h2>What we deliver</h2>
+          <ul>
+            <li><input type="checkbox" checked aria-label="Data import completed" /> IFC import and validation</li>
+            <li><input type="checkbox" checked aria-label="KPI analysis completed" /> KPI-based domain analysis</li>
+            <li><input type="checkbox" checked aria-label="Reporting completed" /> EPB and SRI-ready outputs</li>
+            <li><input type="checkbox" aria-label="API integration pending" /> Optional API integrations</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="grid cards-2">
+        <article id="team" class="card c-data-table" aria-labelledby="team-table-title">
+          <h2 id="team-table-title">Team snapshot (demo data)</h2>
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Role</th>
+                <th scope="col">Location</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Elena M.</td>
+                <td>Product Lead</td>
+                <td>Athens</td>
+              </tr>
+              <tr>
+                <td>Nikos P.</td>
+                <td>Energy Engineer</td>
+                <td>Patras</td>
+              </tr>
+              <tr>
+                <td>Sofia K.</td>
+                <td>Frontend Developer</td>
+                <td>Thessaloniki</td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+
+        <article id="milestones" class="card c-ordered-list">
+          <h2>Project milestones</h2>
+          <ol>
+            <li>Q1 2026: Prototype and core design tokens finalized</li>
+            <li>Q2 2026: Pilot with 20 demo buildings</li>
+            <li>Q3 2026: Reporting upgrades and dashboard insights</li>
+            <li>Q4 2026: Multi-tenant deployment and API connectors</li>
+          </ol>
+          <a class="btn btn-primary" href="#about-home">Back to top</a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- COMPONENT: footer -->
+  <footer id="component-footer" class="app-footer c-footer">
+    <div class="container">
+      <p>© 2026 OpenBEP · Contact · Privacy · Terms</p>
+    </div>
+  </footer>
+</body>
+
+</html>

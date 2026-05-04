@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>F · Global Resource Library · OpenBEP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../building-performance-app/style.css" />
+  <style>
+    :root {
+      --btn-color-success: #2db34a;
+      --btn-color-default: #86c440;
+      --btn-color-warning: #fecf17;
+      --btn-color-orange: #f47721;
+      --btn-color-danger: #ef3e23;
+    }
+
+    .page-grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--sp-md);
+    }
+
+    .full { grid-column: 1 / -1; }
+    .half { grid-column: span 6; }
+
+    @media (max-width: 900px) {
+      .half { grid-column: 1 / -1; }
+    }
+
+    /* COMPONENT: breadcrumbs */
+    .c-breadcrumbs ol {
+      display: grid;
+      grid-auto-flow: column;
+      justify-content: start;
+      gap: var(--sp-xs);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .c-breadcrumbs li+li::before {
+      content: ">";
+      margin-right: var(--sp-xs);
+      color: var(--muted);
+    }
+
+    /* COMPONENT: search-bar */
+    .c-search-bar .search-wrap {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: var(--sp-sm);
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 10px 12px;
+    }
+
+    .c-search-bar input {
+      border: 0;
+      outline: 0;
+      font: inherit;
+    }
+
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px; text-align: left; }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--sp-sm);
+    }
+
+    @media (max-width: 900px) {
+      .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 600px) {
+      .kpi-grid { grid-template-columns: 1fr; }
+    }
+
+    .kpi-card { padding: var(--sp-sm); border: 1px solid var(--line); border-radius: var(--r-sm); }
+    .kpi-value { font-size: 1.2rem; font-weight: 700; }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="container">
+      <a class="brand" href="./A-projects-dashboard.html"><img class="logo" src="../building-performance-app/logo.png" alt="OpenBEP logo"></a>
+      <nav id="main-nav" class="nav" aria-label="Primary">
+        <a href="./A-projects-dashboard.html">Projects Dashboard</a>
+        <a href="./F-global-resource-library.html" aria-current="page">Global Resource Library</a>
+        <a href="./I-building-tab.html">Building Tab</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page" id="view-f-global-resource-library">
+      <div class="page-header">
+        <h1>F · Global Resource Library</h1>
+        <p class="muted">Create once and reuse materials, constructions, glazing and controls across buildings.</p>
+      </div>
+
+      <div class="page-grid">
+        <div class="full">
+          <!-- COMPONENT: breadcrumbs -->
+          <article id="component-breadcrumbs" class="card c-breadcrumbs">
+            <h2>Breadcrumbs</h2>
+            <nav aria-label="Breadcrumb">
+              <ol>
+                <li><a href="./A-projects-dashboard.html">Home</a></li>
+                <li><a href="./A-projects-dashboard.html">Projects Dashboard</a></li>
+                <li aria-current="page">Global Resource Library</li>
+              </ol>
+            </nav>
+          </article>
+        </div>
+
+        <div class="half">
+          <!-- COMPONENT: search-bar -->
+          <article id="component-search-bar" class="card c-search-bar">
+            <h2>Search</h2>
+            <label for="library-search" class="sr-only">Search library resources</label>
+            <div class="search-wrap">
+              <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+              <input id="library-search" type="search" placeholder="Search by resource name or type" />
+            </div>
+          </article>
+        </div>
+
+        <div class="half">
+          <article class="card">
+            <h2>Quick actions</h2>
+            <div class="action-row">
+              <button type="button" class="btn btn-success" id="btn-add-material">Add material</button>
+              <button type="button" class="btn btn-default" id="btn-add-construction">Add construction</button>
+              <a class="btn btn-warning" href="./A-projects-dashboard.html">Back to Dashboard (A)</a>
+            </div>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card">
+            <h2>Library overview</h2>
+            <div class="kpi-grid" id="kpi-grid"></div>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card">
+            <h2>Reusable resources table</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Resource</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Main properties</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="resource-table-body"></tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+
+        <div class="full">
+          <!-- COMPONENT: checklist -->
+          <article id="component-checklist" class="card c-checklist">
+            <h2>Library usage checklist</h2>
+            <ul>
+              <li><input type="checkbox" checked disabled /> Define at least one core material template</li>
+              <li><input type="checkbox" checked disabled /> Add reusable glazing options for facade variants</li>
+              <li><input type="checkbox" checked disabled /> Build construction assemblies from material layers</li>
+              <li><input type="checkbox" checked disabled /> Reuse thermostats and schedules in EPB/SRI flows</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- COMPONENT: footer -->
+  <footer id="component-footer" class="app-footer c-footer">
+    <div class="container">
+      <p>© 2026 OpenBEP · Contact · Privacy · Terms</p>
+    </div>
+  </footer>
+
+  <script>
+    // Static data aligned with data_model/sri_epb_ui_data_model_v2.js (epb.library)
+    const AppDataModel = {
+      projects: [
+        {
+          building: {
+            epb: {
+              library: {
+                materials: [
+                  { id: 'mat1', name: 'Concrete', thickness: 0.2, conductivity: 1.4, density: 2400, specificHeat: 880 },
+                  { id: 'mat2', name: 'Mineral Wool', thickness: 0.12, conductivity: 0.04, density: 120, specificHeat: 1030 }
+                ],
+                glazing: [
+                  { id: 'glz1', name: 'Double Low-E', uValue: 1.1, gValue: 0.55 },
+                  { id: 'glz2', name: 'Triple Low-E', uValue: 0.8, gValue: 0.48 }
+                ],
+                constructions: [
+                  { id: 'cons1', name: 'External Wall A', layers: 3 },
+                  { id: 'cons2', name: 'Roof Assembly B', layers: 4 }
+                ],
+                thermostats: [
+                  { id: 'th1', name: 'Office Thermostat', controlType: 'Scheduled' }
+                ],
+                humidistats: [
+                  { id: 'hum1', name: 'DHW Humidity Control', controlType: 'Auto' }
+                ],
+                schedules: [
+                  { id: 'sch1', name: 'Weekday Occupancy', profile: '08:00-18:00' }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    };
+
+    const library = AppDataModel?.projects?.[0]?.building?.epb?.library ?? {
+      materials: [], glazing: [], constructions: [], thermostats: [], humidistats: [], schedules: []
+    };
+
+    const resourceTableBody = document.getElementById('resource-table-body');
+    const kpiGrid = document.getElementById('kpi-grid');
+    const searchInput = document.getElementById('library-search');
+
+    function getStatusPresentation(status) {
+      const map = {
+        READY_FOR_CALCULATION: { label: 'Ready', className: 'chip chip--ready' },
+        MISSING_DATA: { label: 'Incomplete data', className: 'chip chip--incomplete' },
+        IN_PROGRESS: { label: 'Processing', className: 'chip chip--processing' },
+        PROCESSING: { label: 'Processing', className: 'chip chip--processing' },
+        CALCULATION_COMPLETED: { label: 'Calculation completed', className: 'chip chip--ready' }
+      };
+      if (map[status]) return map[status];
+      const label = String(status || 'UNKNOWN_STATUS').toLowerCase().split('_').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
+      return { label, className: 'chip' };
+    }
+
+    function flattenResources() {
+      return [
+        ...library.materials.map((m) => ({ name: m.name, category: 'Material', props: `k=${m.conductivity} W/mK · t=${m.thickness} m`, status: 'READY_FOR_CALCULATION' })),
+        ...library.glazing.map((g) => ({ name: g.name, category: 'Glazing', props: `U=${g.uValue} · g=${g.gValue}`, status: 'READY_FOR_CALCULATION' })),
+        ...library.constructions.map((c) => ({ name: c.name, category: 'Construction', props: `${c.layers} layers`, status: 'IN_PROGRESS' })),
+        ...library.thermostats.map((t) => ({ name: t.name, category: 'Thermostat', props: `${t.controlType} control`, status: 'CALCULATION_COMPLETED' })),
+        ...library.humidistats.map((h) => ({ name: h.name, category: 'Humidistat', props: `${h.controlType} control`, status: 'READY_FOR_CALCULATION' })),
+        ...library.schedules.map((s) => ({ name: s.name, category: 'Schedule', props: s.profile, status: 'MISSING_DATA' }))
+      ];
+    }
+
+    function renderKpis() {
+      const cards = [
+        { label: 'Materials', value: library.materials.length },
+        { label: 'Glazing', value: library.glazing.length },
+        { label: 'Constructions', value: library.constructions.length },
+        { label: 'Controls & Schedules', value: library.thermostats.length + library.humidistats.length + library.schedules.length }
+      ];
+      kpiGrid.innerHTML = cards.map((c) => `<div class="kpi-card"><p class="caption">${c.label}</p><p class="kpi-value">${c.value}</p></div>`).join('');
+    }
+
+    function renderRows(resources) {
+      resourceTableBody.innerHTML = resources.map((item) => {
+        const status = getStatusPresentation(item.status);
+        return `<tr><td>${item.name}</td><td>${item.category}</td><td>${item.props}</td><td><span class="${status.className}">${status.label}</span></td></tr>`;
+      }).join('');
+    }
+
+    function applySearch() {
+      const query = searchInput.value.trim().toLowerCase();
+      const all = flattenResources();
+      const filtered = all.filter((r) => [r.name, r.category, r.props].some((v) => String(v).toLowerCase().includes(query)));
+      renderRows(filtered);
+    }
+
+    document.getElementById('btn-add-material').addEventListener('click', () => alert('Material template creation flow can be connected next.'));
+    document.getElementById('btn-add-construction').addEventListener('click', () => alert('Construction template creation flow can be connected next.'));
+
+    searchInput.addEventListener('input', applySearch);
+    renderKpis();
+    renderRows(flattenResources());
+  </script>
+</body>
+
+</html>

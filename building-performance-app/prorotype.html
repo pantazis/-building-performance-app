@@ -1,0 +1,1618 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Building Performance App</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>  <!-- CO  <!-- COMPONENT-INDEX: hamburger-menu, role-switcher, search-bar, breadcrumbs, typography-hierarchy, button-group, status-chips, login-form, social-login, validation-state, unordered-list, ordered-list, data-table, select-menu, checklist, accordion, modal, toast, loader, empty-state, footer, gauge-svg-template, sri-results-table -->
+  <header class="app-header">
+    <div class="container">
+      <a class="brand" href="#home"><img class="logo" src="logo.png" alt="Building Performance Logo"></a>
+      <!-- COMPONENT: hamburger-menu -->
+      <button id="component-hamburger-menu" class="c-hamburger-menu" type="button" aria-controls="main-nav"
+        aria-expanded="false" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="header-controls">
+        <nav id="main-nav" class="nav">
+          <a href="#home" data-roles="ALL">Dashboard</a>
+          <a href="#list" data-roles="ASSESSOR,BUILDING_OWNER,ADMIN">Building list</a>
+          <a href="#building-details" data-roles="ASSESSOR,BUILDING_OWNER,ADMIN">Building details</a>
+          <a href="#add-1" data-roles="ASSESSOR,ADMIN">Create / Edit building</a>
+          <a href="#calculation" data-roles="ASSESSOR,ADMIN">Calculation</a>
+          <a href="#results" data-roles="ASSESSOR,BUILDING_OWNER,ADMIN">Results</a>
+          <a href="#reports" data-roles="ASSESSOR,BUILDING_OWNER,ADMIN">Reports</a>
+          <a href="#data-hub" data-roles="DATA_OWNER,PUBLIC_USER,EXTERNAL_DATA_CONSUMER,ADMIN">Data Hub</a>
+          <a href="#sharing-requests" data-roles="DATA_OWNER,EXTERNAL_DATA_CONSUMER,ADMIN">Sharing</a>
+          <a href="#api-developer" data-roles="EXTERNAL_DEVELOPER,ADMIN">API / Developer</a>
+          <a href="#profile-settings" data-roles="ASSESSOR,BUILDING_OWNER,DATA_OWNER,EXTERNAL_DEVELOPER,EXTERNAL_DATA_CONSUMER,ADMIN">Profile / Settings</a>
+          <a href="#admin-users-roles" data-roles="ADMIN">Admin</a>
+          <a href="#notifications-activity" data-roles="ASSESSOR,BUILDING_OWNER,DATA_OWNER,EXTERNAL_DEVELOPER,EXTERNAL_DATA_CONSUMER,ADMIN">Notifications / Activity</a>
+        </nav>
+        <!-- COMPONENT: role-switcher -->
+        <label id="component-role-switcher" class="c-role-switcher role-switcher" for="role-selector">
+          <span>Role</span>
+          <select id="role-selector" aria-label="Change active user role">
+            <option value="ASSESSOR">Assessor</option>
+            <option value="BUILDING_OWNER">Building Owner / Manager</option>
+            <option value="DATA_OWNER">Data Owner</option>
+            <option value="PUBLIC_USER">Public User</option>
+            <option value="EXTERNAL_DEVELOPER">External Developer</option>
+            <option value="EXTERNAL_DATA_CONSUMER">External Data Consumer</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- ============ HOME ============ -->
+    <section id="home" class="page" data-roles="ALL">
+      <div class="page-header">
+        <h1>Back to home</h1>
+        <p class="muted">Choose an action to get started.</p>
+      </div>
+
+      <div class="grid cards-2">
+        <a class="card action" href="#list">
+          <div class="card-icon" aria-hidden="true">📄</div>
+          <h3>View list of buildings</h3>
+          <p>Browse and manage existing entries.</p>
+        </a>
+
+        <a class="card action" href="#add-1">
+          <div class="card-icon" aria-hidden="true">➕</div>
+          <h3>Add building</h3>
+          <p>Create a new building entry in two steps.</p>
+        </a>
+      </div>
+
+      <h2 class="mt-lg">Status legend</h2>
+      <div class="grid cards-3">
+        <div class="card legend">
+          <div class="status ready" title="Ready"></div>
+          <div>
+            <strong>Ready</strong>
+            <p class="muted">All data complete. Processing done.</p>
+          </div>
+        </div>
+        <div class="card legend">
+          <div class="status processing" title="Processing"></div>
+          <div>
+            <strong>Processing</strong>
+            <p class="muted">Please wait for the system to complete.</p>
+          </div>
+        </div>
+        <div class="card legend">
+          <div class="status incomplete" title="Incomplete"></div>
+          <div>
+            <strong>Incomplete data</strong>
+            <p class="muted">User needs to add/complete information.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="components" class="page">
+      <div class="page-header">
+        <h1>Reusable component library</h1>
+        <p class="muted">Missing UX elements added from test checklist.</p>
+      </div>
+
+      <div class="grid cards-2">
+        <!-- COMPONENT: search-bar -->
+        <article id="component-search-bar" class="card c-search-bar">
+          <h2>Search</h2>
+          <label for="global-search" class="sr-only">Search buildings</label>
+          <div class="search-wrap">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <input id="global-search" type="search" placeholder="Search by building name, location or type" />
+          </div>
+        </article>
+
+        <!-- COMPONENT: breadcrumbs -->
+        <article id="component-breadcrumbs" class="card c-breadcrumbs">
+          <h2>Breadcrumbs</h2>
+          <nav aria-label="Breadcrumb">
+            <ol>
+              <li><a href="#home">Home</a></li>
+              <li><a href="#list">Buildings</a></li>
+              <li aria-current="page">Demo Tower</li>
+            </ol>
+          </nav>
+        </article>
+
+        <!-- COMPONENT: typography-hierarchy -->
+        <article id="component-typography-hierarchy" class="card c-typography-hierarchy">
+          <h1>H1 Page Title</h1>
+          <h2>H2 Section Subtitle</h2>
+          <h3>H3 Subsection Heading</h3>
+          <p>Body text example for readable content at normal size with comfortable line-height.</p>
+          <p class="caption">Caption / helper text for additional context.</p>
+        </article>
+
+        <!-- COMPONENT: button-group -->
+        <article id="component-button-group" class="card c-button-group">
+          <h2>Buttons and CTA</h2>
+          <div class="grid button-row">
+            <a href="#" class="btn btn-default">Default</a>
+            <a href="#" class="btn btn-success">Success</a>
+            <a href="#" class="btn btn-warning">Warning</a>
+            <a href="#" class="btn btn-orange">Orange</a>
+            <a href="#" class="btn btn-danger">Danger</a>
+            <a href="#" class="btn btn-primary">Primary action</a>
+          </div>
+        </article>
+
+        <!-- COMPONENT: status-chips -->
+        <article id="component-status-chips" class="card c-status-chips">
+          <h2>Status chips from data model</h2>
+          <p class="caption">Known status values (UPPER_SNAKE_CASE) shown with chip styles and Font Awesome icons.</p>
+          <div class="status-chip-grid">
+            <div class="status-chip-item">
+              <span class="icon"><i class="fa-solid fa-file"></i></span>
+              <span class="chip chip--draft">Draft</span>
+            </div>
+            <div class="status-chip-item">
+              <span class="icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
+              <span class="chip chip--incomplete">Missing Data</span>
+            </div>
+            <div class="status-chip-item">
+              <span class="icon"><i class="fa-solid fa-check"></i></span>
+              <span class="chip chip--ready">Ready For Calculation</span>
+            </div>
+            <div class="status-chip-item">
+              <span class="icon"><i class="fa-solid fa-arrows-rotate fa-spin"></i></span>
+              <span class="chip chip--processing">Calculation Running</span>
+            </div>
+            <div class="status-chip-item">
+              <span class="icon"><i class="fa-solid fa-chart-line"></i></span>
+              <span class="chip chip--ready">Calculated</span>
+            </div>
+            <div class="status-chip-item">
+              <span class="icon"><i class="fa-solid fa-file-circle-check"></i></span>
+              <span class="chip chip--ready">Report Generated</span>
+            </div>
+            <div class="status-chip-item">
+              <span class="icon"><i class="fa-solid fa-box-archive"></i></span>
+              <span class="chip chip--archived">Archived</span>
+            </div>
+            <div class="status-chip-item">
+              <span class="icon"><i class="fa-solid fa-hourglass-half"></i></span>
+              <span class="chip chip--pending">Pending Approval</span>
+            </div>
+            <div class="status-chip-item">
+              <span class="icon"><i class="fa-solid fa-circle-check"></i></span>
+              <span class="chip chip--ready">Calculation Completed</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- COMPONENT: login-form -->
+        <article id="component-login-form" class="card c-login-form">
+          <h2>Login & security</h2>
+          <form id="login-form" class="grid" novalidate>
+            <label class="form-field" for="login-email">
+              <span>Email</span>
+              <input id="login-email" type="email" placeholder="name@example.com" required />
+            </label>
+            <label class="form-field" for="login-password">
+              <span>Password</span>
+              <div class="password-wrap">
+                <input id="login-password" type="password" placeholder="Enter your password" minlength="8" required />
+                <button id="toggle-password" type="button" class="btn btn-sm" aria-pressed="false">Show</button>
+              </div>
+            </label>
+            <!-- COMPONENT: validation-state -->
+            <p id="component-validation-state" class="c-validation-state" role="status" aria-live="polite"></p>
+            <div class="login-actions">
+              <a href="#" class="muted">Forgot password?</a>
+              <button type="submit" class="btn btn-primary">Sign in</button>
+            </div>
+          </form>
+
+          <!-- COMPONENT: social-login -->
+          <div id="component-social-login" class="c-social-login">
+            <p class="caption">Or continue with</p>
+            <div class="grid social-row">
+              <button type="button" class="btn"><i class="fa-brands fa-google"></i> Google</button>
+              <button type="button" class="btn"><i class="fa-brands fa-apple"></i> Apple</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <!-- COMPONENT: unordered-list -->
+          <div id="component-unordered-list" class="c-unordered-list">
+            <h2>Unordered list</h2>
+            <ul>
+              <li>Fast setup</li>
+              <li>Reusable tokens</li>
+              <li>Responsive grid layouts</li>
+            </ul>
+          </div>
+
+          <!-- COMPONENT: ordered-list -->
+          <div id="component-ordered-list" class="c-ordered-list">
+            <h2>Ordered list</h2>
+            <ol>
+              <li>Add building details</li>
+              <li>Upload IFC and select domains</li>
+              <li>Calculate and review results</li>
+            </ol>
+          </div>
+        </article>
+
+        <article class="card">
+          <!-- COMPONENT: data-table -->
+          <div id="component-data-table" class="c-data-table">
+            <h2>Data table</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Plan</th>
+                  <th scope="col">Buildings</th>
+                  <th scope="col">Reports</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Starter</td>
+                  <td>5</td>
+                  <td>Monthly</td>
+                </tr>
+                <tr>
+                  <td>Pro</td>
+                  <td>50</td>
+                  <td>Weekly</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- COMPONENT: select-menu -->
+          <div id="component-select-menu" class="c-select-menu">
+            <h2>Dropdown</h2>
+            <label for="country" class="caption">Country</label>
+            <select id="country">
+              <option selected>Greece</option>
+              <option>Italy</option>
+              <option>Spain</option>
+            </select>
+          </div>
+        </article>
+
+        <!-- COMPONENT: checklist -->
+        <article id="component-checklist" class="card c-checklist">
+          <h2>Checklist</h2>
+          <ul>
+            <li><input type="checkbox" checked /> Add profile information</li>
+            <li><input type="checkbox" checked /> Upload IFC model</li>
+            <li><input type="checkbox" /> Generate final report</li>
+          </ul>
+        </article>
+
+        <!-- COMPONENT: accordion -->
+        <article id="component-accordion" class="card c-accordion">
+          <h2>Accordion</h2>
+          <button type="button" class="accordion-trigger" aria-expanded="false" aria-controls="accordion-panel-1">What is
+            SRI?</button>
+          <div id="accordion-panel-1" class="accordion-panel" hidden>
+            Smart Readiness Indicator measures how smart a building is in terms of efficiency and flexibility.
+          </div>
+        </article>
+
+        <article class="card grid">
+          <!-- COMPONENT: loader -->
+          <div id="component-loader" class="c-loader" aria-label="Loading" role="status"></div>
+
+          <!-- COMPONENT: empty-state -->
+          <div id="component-empty-state" class="c-empty-state">
+            <h2>No buildings yet</h2>
+            <p class="muted">Create your first building to start calculating performance.</p>
+            <a href="#add-1" class="btn btn-primary">Add building</a>
+          </div>
+
+          <div class="grid button-row">
+            <button id="open-modal" type="button" class="btn">Open modal</button>
+            <button id="show-toast" type="button" class="btn btn-primary">Show toast</button>
+          </div>
+        </article>
+
+        <!-- COMPONENT: sri-results-table -->
+        <article id="component-sri-results-table" class="card c-sri-results-table">
+          <h2>SRI Results View table</h2>
+          <div class="sri-card">
+            <div class="sri-title">
+              Overall SRI Score (%) + SRI Class
+            </div>
+
+            <table class="sri-table">
+              <thead>
+                <tr>
+                  <th class="empty"></th>
+                  <th colspan="2" class="group group-energy">
+                    ⚡ Optimise energy efficiency and overall in-use performance
+                  </th>
+                  <th colspan="4" class="group group-occupant">
+                    👥 Adapt its operation to the needs of the occupant
+                  </th>
+                  <th class="group group-grid">
+                    🗼 Adapt to signals from the grid
+                  </th>
+                </tr>
+
+                <tr>
+                  <th class="empty"></th>
+                  <th>⚙️<br>Energy efficiency</th>
+                  <th>🔧<br>Maintenance &amp; fault prediction</th>
+                  <th>🌡️<br>Comfort</th>
+                  <th>🛋️<br>Convenience</th>
+                  <th>❤️<br>Health &amp; accessibility</th>
+                  <th>📱<br>Information to occupants</th>
+                  <th>🔋<br>Energy flexibility &amp; storage</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <th>🔥 Heating</th>
+                  <td>82%</td><td>70%</td><td>76%</td><td>68%</td><td>64%</td><td>72%</td><td>55%</td>
+                </tr>
+
+                <tr>
+                  <th>❄️ Cooling</th>
+                  <td>75%</td><td>66%</td><td>80%</td><td>70%</td><td>62%</td><td>69%</td><td>58%</td>
+                </tr>
+
+                <tr>
+                  <th>🚿 Domestic hot water</th>
+                  <td>68%</td><td>60%</td><td>55%</td><td>52%</td><td>50%</td><td>62%</td><td>48%</td>
+                </tr>
+
+                <tr>
+                  <th>🌬️ Ventilation</th>
+                  <td>71%</td><td>64%</td><td>78%</td><td>61%</td><td>82%</td><td>74%</td><td>45%</td>
+                </tr>
+
+                <tr>
+                  <th>💡 Lighting</th>
+                  <td>79%</td><td>58%</td><td>72%</td><td>77%</td><td>69%</td><td>65%</td><td>40%</td>
+                </tr>
+
+                <tr>
+                  <th>🪟 Dynamic building envelope</th>
+                  <td>63%</td><td>59%</td><td>67%</td><td>64%</td><td>60%</td><td>55%</td><td>42%</td>
+                </tr>
+
+                <tr>
+                  <th>⚡ Electricity</th>
+                  <td>85%</td><td>72%</td><td class="disabled">—</td><td class="disabled">—</td><td class="disabled">—</td><td>76%</td><td>88%</td>
+                </tr>
+
+                <tr>
+                  <th>🚗 EV charging</th>
+                  <td class="disabled">—</td><td>50%</td><td class="disabled">—</td><td>62%</td><td class="disabled">—</td><td>68%</td><td>84%</td>
+                </tr>
+
+                <tr>
+                  <th>🖥️ Monitoring and control</th>
+                  <td>74%</td><td>78%</td><td>70%</td><td>73%</td><td>69%</td><td>82%</td><td>79%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ LIST (placeholder) ============ -->
+    <section id="list" class="page" data-roles="ASSESSOR,BUILDING_OWNER,ADMIN">
+      <div class="page-header">
+        <h1>View list of buildings</h1>
+        <p class="muted">Example list layout.</p>
+      </div>
+
+      <!-- Header row -->
+      <div class="grid table-head">
+        <div>No.</div>
+        <div>Name</div>
+        <div>Location</div>
+        <div>Type</div>
+        <div>Results</div>
+        <div class="right">Actions</div>
+      </div>
+
+      <!-- Row 1 - READY -->
+      <div class="grid table-row">
+        <div>1</div>
+        <div>Demo Tower</div>
+        <div>Athens</div>
+        <div>Office</div>
+        <div class="status-cell">
+          <span class="icon icon--ready"><i class="fa-solid fa-check"></i></span>
+          <span class="chip chip--ready">Ready</span>
+        </div>
+        <div class="right actions">
+          <a class="btn-icon edit" href="#add-1" title="Edit">
+            <i class="fa-solid fa-pen"></i>
+          </a><a class="btn-icon remove" href="#results" title="Remove">
+            <i class="fa-solid fa-trash"></i>
+          </a>
+
+        </div>
+
+      </div>
+
+      <!-- Row 2 - PROCESSING -->
+      <div class="grid table-row">
+        <div>2</div>
+        <div>Harbor Residences</div>
+        <div>Thessaloniki</div>
+        <div>Residential</div>
+        <div class="status-cell">
+          <span class="icon icon--processing"><i class="fa-solid fa-spinner fa-spin"></i></span>
+          <span class="chip chip--processing">Processing</span>
+        </div>
+        <div class="right actions">
+          <a class="btn-icon edit" href="#add-1" title="Edit">
+            <i class="fa-solid fa-pen"></i>
+          </a><a class="btn-icon remove" href="#results" title="Remove">
+            <i class="fa-solid fa-trash"></i>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- Row 3 - INCOMPLETE -->
+      <div class="grid table-row">
+        <div>3</div>
+        <div>Metro Plaza</div>
+        <div>Patras</div>
+        <div>Retail</div>
+        <div class="status-cell">
+          <span class="icon icon--incomplete"><i class="fa-solid fa-triangle-exclamation"></i></span>
+          <span class="chip chip--incomplete">Incomplete data</span>
+        </div>
+        <div class="right actions">
+          <a class="btn-icon edit" href="#add-1" title="Edit">
+            <i class="fa-solid fa-pen"></i>
+          </a><a class="btn-icon remove" href="#results" title="Remove">
+            <i class="fa-solid fa-trash"></i>
+          </a>
+
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <a class="btn" href="#home">Back to home</a>
+        <a class="btn btn-primary" href="#add-1">Add building</a>
+      </div>
+    </section>
+
+
+
+
+    <!-- ============ ADD (1) ============ -->
+    <section id="add-1" class="page" data-roles="ASSESSOR,ADMIN">
+      <div class="page-header">
+        <h1>Add building (1) / edit</h1>
+        <p class="muted">Basic information</p>
+      </div>
+
+      <form class="form grid form-2col" onsubmit="return false">
+        <label class="form-field">
+          <span>Name</span>
+          <input type="text" placeholder="e.g., Demo Tower" required />
+        </label>
+
+        <label class="form-field">
+          <span>Location</span>
+          <select>
+            <option value="" selected disabled>Select location</option>
+            <option>Athens</option>
+            <option>Thessaloniki</option>
+            <option>Patras</option>
+          </select>
+        </label>
+
+        <label class="form-field">
+          <span>Type</span>
+          <select>
+            <option value="" selected disabled>Select type</option>
+            <option>Office</option>
+            <option>Residential</option>
+            <option>Retail</option>
+            <option>Hospitality</option>
+          </select>
+        </label>
+      </form>
+
+      <div class="toolbar">
+        <a class="btn" href="#home">Back to home</a>
+        <a class="btn btn-ghost" href="#list">Save &amp; exit</a>
+        <a class="btn btn-primary" href="#add-2">Save &amp; continue</a>
+      </div>
+    </section>
+
+    <!-- ============ ADD (2) ============ -->
+    <section id="add-2" class="page" data-roles="ASSESSOR,ADMIN">
+      <div class="page-header">
+        <h1>Add building (2) / edit</h1>
+        <p class="muted">Files &amp; domains</p>
+      </div>
+
+      <form class="form grid form-2col" onsubmit="return false">
+        <label class="form-field">
+          <span>IFC model</span>
+          <input type="file" accept=".ifc,.zip" />
+        </label>
+
+        <fieldset class="form-field col-span-2">
+          <legend>Domains</legend>
+          <div class="grid domains">
+            <!-- From your list -->
+            <label><input type="checkbox" /> Heating</label>
+            <label><input type="checkbox" /> Domestic hot water</label>
+            <label><input type="checkbox" /> Cooling</label>
+            <label><input type="checkbox" /> Ventilation</label>
+            <label><input type="checkbox" /> Lighting</label>
+            <label><input type="checkbox" /> Dynamic Building Envelope</label>
+            <label><input type="checkbox" /> Electricity</label>
+            <label><input type="checkbox" /> Electric Vehicle Charging</label>
+            <label><input type="checkbox" /> Monitoring and control</label>
+          </div>
+        </fieldset>
+
+        <!-- Placeholder for future fields -->
+        <fieldset class="form-field col-span-2">
+          <legend>Additional details</legend>
+          <textarea rows="4" placeholder="Add more form fields later…"></textarea>
+        </fieldset>
+      </form>
+
+      <div class="toolbar">
+        <a class="btn" href="#home">Back to home</a>
+        <a class="btn btn-ghost" href="#list">Exit without saving</a>
+        <a class="btn btn-primary" href="#results">Save &amp; calculate</a>
+      </div>
+    </section>
+
+    <!-- ============ RESULTS ============ -->
+    <section id="results" class="page" data-roles="ASSESSOR,BUILDING_OWNER,ADMIN">
+      <div class="page-header">
+        <h1>View results (when ready)</h1>
+        <p class="muted">Energy efficiency &amp; smart readiness summaries.</p>
+      </div>
+
+      <div class="grid cards-2">
+        <article class="card">
+          <div class="card-head">
+            <h3>Energy efficiency</h3>
+            <a class="btn btn-sm" href="#">View EPB report</a>
+          </div>
+          <div class="bullets">
+
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-head">
+            <h3>Smart Readiness</h3>
+            <a class="btn btn-sm" href="#">View SRI report</a>
+          </div>
+          <div class="bullets">
+
+          </div>
+        </article>
+      </div>
+
+      <div class="toolbar">
+        <a class="btn" href="#home">Back to home</a>
+      </div>
+    </section>
+
+    <!-- ============ BUILDING DETAILS ============ -->
+    <section id="building-details" class="page" data-roles="ASSESSOR,BUILDING_OWNER,ADMIN">
+      <div class="page-header">
+        <h1>Building details</h1>
+        <p class="muted">Full building profile linked to buildings, envelope, technical systems and audit records.</p>
+      </div>
+      <div class="grid cards-2">
+        <article class="card">
+          <h3>Core building data</h3>
+          <p class="muted">Uses <code>buildings</code> and <code>organisations</code> from the fake data model.</p>
+        </article>
+        <article class="card">
+          <h3>Envelope + systems</h3>
+          <p class="muted">Uses <code>buildingEnvelope</code>, <code>technicalSystems</code> and <code>auditRecords</code>.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ CALCULATION ============ -->
+    <section id="calculation" class="page" data-roles="ASSESSOR,ADMIN">
+      <div class="page-header">
+        <h1>Calculation view</h1>
+        <p class="muted">Run EPB/SRI, show status, and surface validation errors.</p>
+      </div>
+      <div class="grid cards-2">
+        <article class="card">
+          <h3>EPB calculation</h3>
+          <p class="muted">Uses <code>epbCalculations</code> + <code>auditRecords</code>.</p>
+        </article>
+        <article class="card">
+          <h3>SRI calculation</h3>
+          <p class="muted">Uses <code>sriCalculations</code> + <code>kpis</code>.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ REPORTS ============ -->
+    <section id="reports" class="page" data-roles="ASSESSOR,BUILDING_OWNER,ADMIN">
+      <div class="page-header">
+        <h1>Reports view</h1>
+        <p class="muted">Generate, preview and download EPB/SRI reports.</p>
+      </div>
+      <div class="grid cards-2">
+        <article class="card">
+          <h3>Report generation</h3>
+          <p class="muted">Uses <code>reports</code> for generated files and metadata.</p>
+        </article>
+        <article class="card">
+          <h3>File management</h3>
+          <p class="muted">Uses <code>files</code> for IFC/PDF links and upload status.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ DATA HUB ============ -->
+    <section id="data-hub" class="page" data-roles="DATA_OWNER,PUBLIC_USER,EXTERNAL_DATA_CONSUMER,ADMIN">
+      <div class="page-header">
+        <h1>Data Hub</h1>
+        <p class="muted">Browse and publish datasets and good-practice content.</p>
+      </div>
+      <div class="grid cards-2">
+        <article class="card">
+          <h3>Hub catalog</h3>
+          <p class="muted">Uses <code>dataHubItems</code> and <code>enums.dataHubItemTypes</code>.</p>
+        </article>
+        <article class="card">
+          <h3>Dataset upload</h3>
+          <p class="muted">Supports DATASET / GOOD_PRACTICE / REPORT workflows.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ SHARING REQUESTS ============ -->
+    <section id="sharing-requests" class="page" data-roles="DATA_OWNER,EXTERNAL_DATA_CONSUMER,ADMIN">
+      <div class="page-header">
+        <h1>Sharing requests</h1>
+        <p class="muted">Review, approve and track secure data-sharing exchanges.</p>
+      </div>
+      <article class="card">
+        <h3>Request management</h3>
+        <p class="muted">Uses <code>sharingRequests</code> and role-based permissions.</p>
+      </article>
+    </section>
+
+    <!-- ============ API / DEVELOPER ============ -->
+    <section id="api-developer" class="page" data-roles="EXTERNAL_DEVELOPER,ADMIN">
+      <div class="page-header">
+        <h1>API / Developer</h1>
+        <p class="muted">External app integration, API docs, keys, and logs.</p>
+      </div>
+      <div class="grid cards-2">
+        <article class="card">
+          <h3>Developer dashboard</h3>
+          <p class="muted">Connect external apps to building/audit/calculation endpoints.</p>
+        </article>
+        <article class="card">
+          <h3>Integration logs</h3>
+          <p class="muted">Activity and error traces can align with <code>activityLog</code>.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ PROFILE / SETTINGS ============ -->
+    <section id="profile-settings" class="page" data-roles="ASSESSOR,BUILDING_OWNER,DATA_OWNER,EXTERNAL_DEVELOPER,EXTERNAL_DATA_CONSUMER,ADMIN">
+      <div class="page-header">
+        <h1>Profile / Settings</h1>
+        <p class="muted">Manage account, organisation preferences and user options.</p>
+      </div>
+      <article class="card">
+        <h3>User profile</h3>
+        <p class="muted">Uses <code>users</code> and <code>organisations</code>.</p>
+      </article>
+    </section>
+
+    <!-- ============ ADMIN USERS / ROLES ============ -->
+    <section id="admin-users-roles" class="page" data-roles="ADMIN">
+      <div class="page-header">
+        <h1>Admin users / roles</h1>
+        <p class="muted">Manage users, roles and permissions.</p>
+      </div>
+      <div class="grid cards-2">
+        <article class="card">
+          <h3>User management</h3>
+          <p class="muted">Uses <code>users</code> and <code>enums.userRoles</code>.</p>
+        </article>
+        <article class="card">
+          <h3>Role & permission policies</h3>
+          <p class="muted">Supports assessor, owner, data owner, external, and admin flows.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ NOTIFICATIONS / ACTIVITY ============ -->
+    <section id="notifications-activity" class="page" data-roles="ASSESSOR,BUILDING_OWNER,DATA_OWNER,EXTERNAL_DEVELOPER,EXTERNAL_DATA_CONSUMER,ADMIN">
+      <div class="page-header">
+        <h1>Notifications / Activity log</h1>
+        <p class="muted">Track completed calculations, validation issues, and system events.</p>
+      </div>
+      <div class="grid cards-2">
+        <article class="card">
+          <h3>Notifications</h3>
+          <p class="muted">Uses <code>notifications</code>.</p>
+        </article>
+        <article class="card">
+          <h3>Activity log</h3>
+          <p class="muted">Uses <code>activityLog</code>.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- COMPONENT: modal -->
+  <div id="component-modal" class="c-modal" aria-hidden="true" role="dialog" aria-modal="true"
+    aria-labelledby="modal-title">
+    <div class="modal-card">
+      <h2 id="modal-title">Confirm action</h2>
+      <p>Are you sure you want to continue?</p>
+      <div class="toolbar">
+        <button id="close-modal" type="button" class="btn">Cancel</button>
+        <button type="button" class="btn btn-primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPONENT: toast -->
+  <div id="component-toast" class="c-toast" role="status" aria-live="polite">Success! Building saved.</div>
+
+  <!-- COMPONENT: footer -->
+  <footer id="component-footer" class="app-footer c-footer">
+    <div class="container">
+      <p>© 2026 OpenBEP · Contact · Privacy · Terms</p>
+    </div>
+  </footer>
+
+  <!-- COMPONENT: gauge-svg-template -->
+  <div id="component-gauge-svg-template" class="c-gauge-svg-template" style="display: none;">
+    <div id="gaugeparent">
+      <svg id="gauge" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 226.71 120.91" width="100%">
+        <defs>
+          <style>
+            .d {
+              fill: #fecf17
+            }
+
+            .e {
+              fill: #2db34a
+            }
+
+            .f {
+              fill: #86c440
+            }
+
+            .g {
+              fill: #ef3e23
+            }
+
+            .h {
+              fill: #f47721
+            }
+
+            .i {
+              fill: #231f20
+            }
+          </style>
+        </defs>
+
+        <!-- arcs -->
+        <g id="b">
+          <path class="e"
+            d="M183.92,110.89h42.79c-.5-23.06-7.88-44.42-20.17-62.11l-34.6,25.14c7.17,10.62,11.51,23.31,11.99,36.97Z" />
+          <path class="d"
+            d="M113.35,42.76c6.74,0,13.26,.97,19.43,2.73l13.23-40.7C135.67,1.68,124.71,0,113.35,0s-22.32,1.68-32.66,4.78l13.23,40.7c6.18-1.76,12.69-2.73,19.43-2.73Z" />
+          <path class="f"
+            d="M168.98,69.88l34.62-25.15c-13.34-17.5-31.65-31.01-52.82-38.41l-13.22,40.68c12.51,4.56,23.36,12.58,31.43,22.87Z" />
+          <path class="h"
+            d="M89.16,47.01L75.94,6.33c-21.18,7.4-39.49,20.9-52.82,38.41l34.62,25.15c8.06-10.3,18.91-18.31,31.43-22.87Z" />
+          <path class="g"
+            d="M54.77,73.92L20.17,48.78C7.88,66.47,.5,87.83,0,110.89H42.79c.48-13.67,4.82-26.35,11.99-36.97Z" />
+        </g>
+
+        <!-- wrap needle so we can target it -->
+        <g id="needle" class="needle-sweep">
+          <path class="i" d="M115.26,16.86l-10.13,91.91c0,5.6,4.54,10.13,10.13,10.13s10.13-4.54,10.13-10.13l-10.13-91.91Zm0,97.87
+      c-3.29,0-5.96-2.67-5.96-5.96s2.67-5.96,5.96-5.96,5.96,2.67,5.96,5.96-2.67,5.96-5.96,5.96Z" />
+          <circle class="i" cx="115.26" cy="109.1" r="1.9" />
+        </g>
+      </svg>
+      <div class="gaugetitle">
+        <h4>Gauge Title <span class="percent"></span></h4>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    :root {
+      --btn-color-default: #86c440;
+      --btn-color-success: #2db34a;
+      --btn-color-warning: #fecf17;
+      --btn-color-orange: #f47721;
+      --btn-color-danger: #ef3e23;
+      --btn-color-text-dark: #231f20;
+      --btn-color-text-light: #ffffff;
+    }
+
+    /* COMPONENT: button-variants */
+    .btn {
+      transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+    }
+
+    .btn-default {
+      background: var(--btn-color-default);
+      border-color: var(--btn-color-default);
+      color: var(--btn-color-text-dark);
+    }
+
+    .btn-success,
+    .btn-primary {
+      background: var(--btn-color-success);
+      border-color: var(--btn-color-success);
+      color: var(--btn-color-text-light);
+    }
+
+    .btn-warning {
+      background: var(--btn-color-warning);
+      border-color: var(--btn-color-warning);
+      color: var(--btn-color-text-dark);
+    }
+
+    .btn-orange {
+      background: var(--btn-color-orange);
+      border-color: var(--btn-color-orange);
+      color: var(--btn-color-text-light);
+    }
+
+    .btn-danger {
+      background: var(--btn-color-danger);
+      border-color: var(--btn-color-danger);
+      color: var(--btn-color-text-light);
+    }
+
+    .btn-default:hover,
+    .btn-success:hover,
+    .btn-primary:hover,
+    .btn-warning:hover,
+    .btn-orange:hover,
+    .btn-danger:hover {
+      filter: brightness(0.8);
+    }
+
+    /* COMPONENT: sr-only */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* COMPONENT: hamburger-menu */
+    .c-hamburger-menu {
+      display: none;
+      gap: 4px;
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 8px;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .c-hamburger-menu span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--green);
+    }
+
+    /* COMPONENT: role-switcher */
+    .header-controls {
+      display: grid;
+      grid-auto-flow: column;
+      align-items: center;
+      gap: var(--sp-md);
+    }
+
+    .c-role-switcher {
+      display: grid;
+      grid-auto-flow: column;
+      align-items: center;
+      gap: var(--sp-xs);
+      color: #fff;
+      font-size: var(--fs-0);
+    }
+
+    .c-role-switcher select {
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 6px 10px;
+      font: inherit;
+      min-width: 210px;
+    }
+
+    .is-hidden-by-role {
+      display: none !important;
+    }
+
+    /* COMPONENT: search-bar */
+    .c-search-bar .search-wrap {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: var(--sp-sm);
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 10px 12px;
+    }
+
+    .c-search-bar input {
+      border: 0;
+      outline: 0;
+      font: inherit;
+    }
+
+    /* COMPONENT: breadcrumbs */
+    .c-breadcrumbs ol {
+      display: grid;
+      grid-auto-flow: column;
+      justify-content: start;
+      gap: var(--sp-xs);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .c-breadcrumbs li+li::before {
+      content: ">";
+      margin-right: var(--sp-xs);
+      color: var(--muted);
+    }
+
+    /* COMPONENT: typography-hierarchy */
+    .c-typography-hierarchy {
+      display: grid;
+      gap: var(--sp-xs);
+    }
+
+    .c-typography-hierarchy h1,
+    .c-typography-hierarchy h2,
+    .c-typography-hierarchy h3,
+    .c-typography-hierarchy p {
+      margin: 0;
+    }
+
+    .caption {
+      font-size: var(--fs-0);
+      color: var(--muted);
+    }
+
+    /* COMPONENT: button-group */
+    .button-row {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--sp-sm);
+    }
+
+    /* COMPONENT: status-chips */
+    .c-status-chips {
+      display: grid;
+      gap: var(--sp-sm);
+    }
+
+    .status-chip-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sp-sm);
+    }
+
+    .status-chip-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--sp-xs);
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 8px 10px;
+      background: #fff;
+    }
+
+    .status-chip-item .icon {
+      width: 18px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    /* COMPONENT: login-form */
+    .c-login-form form {
+      gap: var(--sp-md);
+    }
+
+    .password-wrap {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--sp-xs);
+      align-items: center;
+    }
+
+    .login-actions {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: var(--sp-sm);
+    }
+
+    /* COMPONENT: validation-state */
+    .c-validation-state {
+      min-height: 20px;
+      margin: 0;
+      color: var(--red);
+      font-size: var(--fs-0);
+    }
+
+    /* COMPONENT: social-login */
+    .social-row {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-sm);
+    }
+
+    /* COMPONENT: unordered-list */
+    .c-unordered-list ul,
+    .c-ordered-list ol,
+    .c-checklist ul {
+      margin: var(--sp-xs) 0 var(--sp-md);
+      padding-left: 20px;
+    }
+
+    /* COMPONENT: data-table */
+    .c-data-table table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      overflow: hidden;
+    }
+
+    .c-data-table th,
+    .c-data-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px;
+      text-align: left;
+    }
+
+    .c-data-table th {
+      background: var(--green-10);
+    }
+
+    /* COMPONENT: select-menu */
+    .c-select-menu {
+      display: grid;
+      gap: var(--sp-xs);
+    }
+
+    /* COMPONENT: checklist */
+    .c-checklist li {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--sp-xs);
+      align-items: center;
+      margin-bottom: var(--sp-xs);
+    }
+
+    /* COMPONENT: accordion */
+    .accordion-trigger {
+      width: 100%;
+      text-align: left;
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      background: #fff;
+      padding: 10px 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .accordion-panel {
+      margin-top: var(--sp-sm);
+      padding: var(--sp-sm);
+      border-left: 3px solid var(--green);
+      background: #fff;
+    }
+
+    /* COMPONENT: loader */
+    .c-loader {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 3px solid var(--line);
+      border-top-color: var(--green);
+      animation: spin 0.9s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* COMPONENT: empty-state */
+    .c-empty-state {
+      display: grid;
+      gap: var(--sp-xs);
+      justify-items: start;
+    }
+
+    .c-empty-state h2,
+    .c-empty-state p {
+      margin: 0;
+    }
+
+    /* COMPONENT: modal */
+    .c-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(12, 18, 32, 0.45);
+      display: none;
+      place-items: center;
+      z-index: 200;
+      padding: var(--sp-lg);
+    }
+
+    .c-modal.is-open {
+      display: grid;
+    }
+
+    .modal-card {
+      background: #fff;
+      border-radius: var(--r-md);
+      border: 1px solid var(--line);
+      padding: var(--sp-lg);
+      max-width: 420px;
+      width: 100%;
+      display: grid;
+      gap: var(--sp-md);
+    }
+
+    /* COMPONENT: toast */
+    .c-toast {
+      position: fixed;
+      right: var(--sp-lg);
+      bottom: var(--sp-lg);
+      background: var(--green);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: var(--r-sm);
+      box-shadow: var(--shadow-1);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity .2s ease, transform .2s ease;
+      z-index: 250;
+    }
+
+    .c-toast.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* COMPONENT: footer */
+    .c-footer {
+      margin-top: var(--sp-xl);
+    }
+
+    /* COMPONENT: sri-results-table */
+    .c-sri-results-table {
+      display: grid;
+      gap: var(--sp-sm);
+    }
+
+    .c-sri-results-table .sri-card {
+      --sri-bg: #ffffff;
+      --sri-border: var(--line);
+      --sri-text: var(--ink);
+      --sri-muted: var(--muted);
+      --sri-header-bg: color-mix(in srgb, var(--green-10) 65%, #ffffff 35%);
+      --sri-energy-bg: #eef8ff;
+      --sri-occupant-bg: #f4f9ff;
+      --sri-grid-bg: #eef9f2;
+      --sri-cell-bg: #ffffff;
+      --sri-disabled-bg: #e5e7eb;
+      --sri-shadow: var(--shadow-1);
+      --sri-radius: var(--r-md);
+
+      background: var(--sri-bg);
+      color: var(--sri-text);
+      border: 1px solid var(--sri-border);
+      border-radius: var(--sri-radius);
+      box-shadow: var(--sri-shadow);
+      padding: var(--sp-md);
+      overflow-x: auto;
+      font-family: Arial, sans-serif;
+    }
+
+    .c-sri-results-table .sri-title {
+      background: var(--sri-header-bg);
+      border: 1px solid var(--sri-border);
+      border-bottom: none;
+      padding: 14px;
+      text-align: center;
+      font-weight: 700;
+      font-size: var(--fs-2);
+    }
+
+    .c-sri-results-table .sri-table {
+      width: 100%;
+      min-width: 1100px;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .c-sri-results-table .sri-table th,
+    .c-sri-results-table .sri-table td {
+      border: 1px solid var(--sri-border);
+      padding: 12px 10px;
+      text-align: center;
+      vertical-align: middle;
+      background: var(--sri-cell-bg);
+      font-size: var(--fs-0);
+    }
+
+    .c-sri-results-table .sri-table thead th {
+      font-weight: 700;
+    }
+
+    .c-sri-results-table .sri-table tbody th {
+      text-align: left;
+      font-weight: 600;
+      width: 230px;
+      white-space: nowrap;
+    }
+
+    .c-sri-results-table .sri-table td {
+      font-weight: 700;
+    }
+
+    .c-sri-results-table .sri-table .empty {
+      background: transparent;
+      border: none;
+    }
+
+    .c-sri-results-table .sri-table .group {
+      font-size: var(--fs-1);
+      line-height: 1.35;
+    }
+
+    .c-sri-results-table .group-energy {
+      background: var(--sri-energy-bg) !important;
+    }
+
+    .c-sri-results-table .group-occupant {
+      background: var(--sri-occupant-bg) !important;
+    }
+
+    .c-sri-results-table .group-grid {
+      background: var(--sri-grid-bg) !important;
+    }
+
+    .c-sri-results-table .sri-table .disabled {
+      background: var(--sri-disabled-bg);
+      color: var(--sri-muted);
+    }
+
+    /* rotate around the screw center in viewBox coords */
+    #needle {
+      transform-box: view-box;
+      transform-origin: 115.26px 109.1px;
+    }
+
+    /* Needles will be animated with JavaScript */
+    .needle-animated {
+      transition: transform 0.1s ease-out;
+    }
+
+    @media (max-width: 960px) {
+      .c-hamburger-menu {
+        display: grid;
+      }
+
+      .nav {
+        display: none;
+      }
+
+      .nav.is-open {
+        display: grid;
+      }
+
+      .header-controls {
+        grid-auto-flow: row;
+        justify-items: start;
+      }
+
+      .c-role-switcher {
+        grid-auto-flow: row;
+        justify-items: start;
+      }
+
+      .c-role-switcher select {
+        min-width: 100%;
+      }
+
+      .button-row,
+      .social-row,
+      .status-chip-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <script>
+    // Create array with random gauge values from 0 to 100%
+    const gaugeValues = [];
+    for (let i = 0; i < 6; i++) { // 6 gauges total (3 per bullets container)
+      gaugeValues.push(Math.floor(Math.random() * 101)); // 0-100%
+    }
+
+    console.log('Gauge values:', gaugeValues);
+
+    // Animate needle to target angle
+    function animateNeedle(needle, targetPercentage, duration = 2000) {
+      const targetAngle = -90 + (targetPercentage / 100) * 180;
+      let startAngle = -90;
+      let startTime = null;
+
+      function animate(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+
+        // Easing function for smooth animation
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const currentAngle = startAngle + (targetAngle - startAngle) * easeOut;
+
+        needle.style.transform = `rotate(${currentAngle}deg)`;
+        needle.style.transformOrigin = '115.26px 109.1px';
+        needle.style.transformBox = 'view-box';
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    // Clone SVG gauge and append 3 times to each .bullets div
+    document.addEventListener('DOMContentLoaded', function () {
+      const roleSelector = document.getElementById('role-selector');
+      const roleStorageKey = 'openbep-active-role';
+
+      function applyRoleVisibility(activeRole) {
+        const roleBoundElements = document.querySelectorAll('[data-roles]');
+
+        roleBoundElements.forEach(function (element) {
+          // Keep all sections visible regardless of selected role.
+          element.classList.remove('is-hidden-by-role');
+        });
+      }
+
+      if (roleSelector) {
+        const storedRole = localStorage.getItem(roleStorageKey);
+        if (storedRole) {
+          roleSelector.value = storedRole;
+        }
+
+        applyRoleVisibility(roleSelector.value);
+
+        roleSelector.addEventListener('change', function () {
+          localStorage.setItem(roleStorageKey, roleSelector.value);
+          applyRoleVisibility(roleSelector.value);
+        });
+
+        window.addEventListener('hashchange', function () {
+          applyRoleVisibility(roleSelector.value);
+        });
+      }
+
+      // Hamburger toggle
+      const menuBtn = document.getElementById('component-hamburger-menu');
+      const nav = document.getElementById('main-nav');
+      if (menuBtn && nav) {
+        menuBtn.addEventListener('click', function () {
+          const isOpen = nav.classList.toggle('is-open');
+          menuBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+      }
+
+      // Login interactions
+      const loginForm = document.getElementById('login-form');
+      const emailInput = document.getElementById('login-email');
+      const passwordInput = document.getElementById('login-password');
+      const validationState = document.getElementById('component-validation-state');
+      const togglePassword = document.getElementById('toggle-password');
+
+      if (togglePassword && passwordInput) {
+        togglePassword.addEventListener('click', function () {
+          const isPassword = passwordInput.type === 'password';
+          passwordInput.type = isPassword ? 'text' : 'password';
+          togglePassword.textContent = isPassword ? 'Hide' : 'Show';
+          togglePassword.setAttribute('aria-pressed', isPassword ? 'true' : 'false');
+        });
+      }
+
+      if (loginForm && emailInput && passwordInput && validationState) {
+        loginForm.addEventListener('submit', function (event) {
+          event.preventDefault();
+          const hasValidEmail = emailInput.value.includes('@');
+          const hasValidPassword = passwordInput.value.length >= 8;
+
+          if (!hasValidEmail) {
+            validationState.textContent = 'Please enter a valid email address.';
+            return;
+          }
+
+          if (!hasValidPassword) {
+            validationState.textContent = 'Password must be at least 8 characters.';
+            return;
+          }
+
+          validationState.textContent = 'Login form looks good.';
+          validationState.style.color = 'var(--green)';
+        });
+      }
+
+      // Accordion
+      const accordionTrigger = document.querySelector('.accordion-trigger');
+      const accordionPanel = document.getElementById('accordion-panel-1');
+      if (accordionTrigger && accordionPanel) {
+        accordionTrigger.addEventListener('click', function () {
+          const expanded = accordionTrigger.getAttribute('aria-expanded') === 'true';
+          accordionTrigger.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+          accordionPanel.hidden = expanded;
+        });
+      }
+
+      // Modal
+      const openModalBtn = document.getElementById('open-modal');
+      const closeModalBtn = document.getElementById('close-modal');
+      const modal = document.getElementById('component-modal');
+      if (openModalBtn && closeModalBtn && modal) {
+        openModalBtn.addEventListener('click', function () {
+          modal.classList.add('is-open');
+          modal.setAttribute('aria-hidden', 'false');
+        });
+
+        closeModalBtn.addEventListener('click', function () {
+          modal.classList.remove('is-open');
+          modal.setAttribute('aria-hidden', 'true');
+        });
+      }
+
+      // Toast
+      const toast = document.getElementById('component-toast');
+      const showToastBtn = document.getElementById('show-toast');
+      if (toast && showToastBtn) {
+        showToastBtn.addEventListener('click', function () {
+          toast.classList.add('is-visible');
+          window.setTimeout(function () {
+            toast.classList.remove('is-visible');
+          }, 1800);
+        });
+      }
+
+    if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    // Clone SVG gauge and append 3 times to each .bullets div
+    document.addEventListener('DOMContentLoaded', function () {
+      const originalSvg = document.getElementById('gaugeparent');
+      const bulletsContainers = document.querySelectorAll('.bullets');
+
+      let gaugeIndex = 0;
+
+      bulletsContainers.forEach(function (container) {
+        for (let i = 0; i < 3; i++) {
+          const clonedSvg = originalSvg.cloneNode(true);
+          clonedSvg.removeAttribute('id'); // Remove ID to avoid duplicates
+           // Set a smaller width
+          clonedSvg.style.margin = '10px'; // Add some margin
+
+          // Get the needle element
+          const needle = clonedSvg.querySelector('.needle-sweep');
+          const percent = clonedSvg.querySelector('.percent');
+          percent.innerText = gaugeValues[gaugeIndex] + '%';
+
+          const percentage = gaugeValues[gaugeIndex];
+
+          // Remove the CSS animation class and add new class
+          needle.classList.remove('needle-sweep');
+          needle.classList.add('needle-animated');
+
+          // Set initial position
+          needle.style.transform = 'rotate(-90deg)';
+          needle.style.transformOrigin = '115.26px 109.1px';
+          needle.style.transformBox = 'view-box';
+
+          // Add percentage label
+          const textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          textElement.setAttribute('x', '113.35');
+          textElement.setAttribute('y', '130');
+          textElement.setAttribute('text-anchor', 'middle');
+          textElement.setAttribute('fill', '#231f20');
+          textElement.setAttribute('font-size', '16');
+          textElement.setAttribute('font-weight', 'bold');
+          textElement.textContent = percentage + '%';
+          clonedSvg.appendChild(textElement);
+
+          container.appendChild(clonedSvg);
+
+          // Store needle and percentage for later animation
+          needle.dataset.percentage = percentage;
+          needle.dataset.gaugeIndex = gaugeIndex;
+
+          gaugeIndex++;
+        }
+      });
+
+      // Set up Intersection Observer to animate when section comes into view
+      const resultsSection = document.getElementById('results');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Start animations when section is visible
+            const needles = document.querySelectorAll('.needle-animated');
+            needles.forEach(needle => {
+              const percentage = parseInt(needle.dataset.percentage);
+              const gaugeIndex = parseInt(needle.dataset.gaugeIndex);
+              
+              setTimeout(() => {
+                animateNeedle(needle, percentage, 2000 + gaugeIndex * 200);
+              }, 500 + gaugeIndex * 300);
+            });
+            
+            // Stop observing after first animation
+            observer.unobserve(resultsSection);
+          }
+        });
+      }, {
+        threshold: 0.3 // Trigger when 30% of the section is visible
+      });
+
+      observer.observe(resultsSection);
+    });
+  </script>
+
+</body>
+
+</html>
