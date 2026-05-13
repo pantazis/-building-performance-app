@@ -28,6 +28,11 @@
     table { width: 100%; border-collapse: collapse; }
     th, td { border-bottom: 1px solid var(--line); padding: 10px; text-align: left; vertical-align: top; }
     .table-wrap { overflow-x: auto; }
+    .section-head { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-sm); margin-bottom: var(--sp-sm); flex-wrap: wrap; }
+    .inline-actions { display: inline-flex; gap: 6px; flex-wrap: wrap; }
+    .inline-actions .btn { padding: 6px 10px; font-size: 12px; }
+    .surface-details { display: none; margin-top: var(--sp-md); }
+    .surface-details.is-open { display: block; }
   </style>
 </head>
 
@@ -47,7 +52,7 @@
     <section class="page" id="view-epb3">
       <div class="page-header">
         <h1>EPB3 · Thermal Zones & Envelope Analysis</h1>
-        <p class="muted">Review zones, spaces, surfaces and envelope subsurfaces before EPB result aggregation.</p>
+        <p class="muted">Review thermal zones, surfaces and envelope subsurfaces before EPB result aggregation.</p>
       </div>
 
       <div class="epb-layout">
@@ -68,49 +73,38 @@
 
         <div class="half">
           <article class="card">
-            <h2>Zones and spaces</h2>
+            <div class="section-head">
+              <h2>Thermal zones</h2>
+              <button class="btn btn-success" type="button">+ Add Thermal Zone</button>
+            </div>
             <div class="table-wrap">
               <table>
                 <thead>
                   <tr>
                     <th>Zone</th>
-                    <th>Space</th>
+                    <th>Type</th>
+                    <th>Volume (m³)</th>
+                    <th>Floor area (m²)</th>
                     <th>People</th>
                     <th>Ventilation (ACH)</th>
                     <th>Heating / Cooling (W)</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody id="zones-table-body">
-                  <tr><td>Main Zone</td><td>Office Room</td><td>5</td><td>1.5</td><td>4200 / 3600</td></tr>
-                  <tr><td>Main Zone</td><td>Meeting Room</td><td>8</td><td>2.0</td><td>4600 / 3900</td></tr>
-                  <tr><td>Secondary Zone</td><td>Lobby</td><td>3</td><td>1.2</td><td>2800 / 2400</td></tr>
-                  <tr><td>Secondary Zone</td><td>Storage Room</td><td>1</td><td>0.8</td><td>1200 / 900</td></tr>
+                  <tr><td colspan="8">No thermal zones</td></tr>
                 </tbody>
               </table>
             </div>
           </article>
         </div>
 
-        <div class="half">
-          <article class="card">
-            <h2>Envelope analysis checklist</h2>
-            <ul id="envelope-list">
-              <li>Total zones loaded: 1</li>
-              <li>Primary zone floor area: 100 m²</li>
-              <li>Primary zone volume: 300 m³</li>
-              <li>Main surface area: 50 m²</li>
-            </ul>
-            <p><strong>Workflow status:</strong> <span id="status-chip" class="chip chip--ready">Calculation completed</span></p>
-            <div class="action-row">
-              <a class="btn btn-default" href="./EPB2-materials-constructions.html">Back to EPB2</a>
-              <a class="btn btn-primary" href="./EPB4-results-summary.html">Continue to EPB4</a>
-            </div>
-          </article>
-        </div>
-
         <div class="full">
           <article class="card">
-            <h2>Surface and subsurface inventory</h2>
+            <div class="section-head">
+              <h2>Surface and subsurface inventory</h2>
+              <button class="btn btn-success" type="button">+ Add Surface</button>
+            </div>
             <div class="table-wrap">
               <table>
                 <thead>
@@ -120,15 +114,45 @@
                     <th>Type</th>
                     <th>Construction</th>
                     <th>Subsurfaces</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
-                <tbody id="surface-table-body">
-                  <tr><td>Main Zone</td><td>surf-wall-n-01</td><td>Wall</td><td>cons-wall-ext-01</td><td>win-n-01 (Window), door-n-01 (Door)</td></tr>
-                  <tr><td>Main Zone</td><td>surf-roof-01</td><td>Roof</td><td>cons-roof-flat-01</td><td>skylight-01 (Window)</td></tr>
-                  <tr><td>Secondary Zone</td><td>surf-floor-g-01</td><td>Floor</td><td>cons-floor-ground-01</td><td>None</td></tr>
-                  <tr><td>Secondary Zone</td><td>surf-wall-int-01</td><td>InternalWall</td><td>cons-partition-int-01</td><td>opening-int-01 (Door)</td></tr>
-                </tbody>
+                <tbody id="surface-table-body"></tbody>
               </table>
+            </div>
+
+            <article id="surface-detail-card" class="card surface-details" aria-live="polite">
+              <div class="section-head">
+                <h3 id="surface-detail-title">Surface details</h3>
+                <button class="btn btn-success" type="button">+ Add Sub-surface</button>
+              </div>
+              <p id="surface-detail-meta" class="muted"></p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Sub-surface ID</th>
+                      <th>Type</th>
+                      <th>Construction / Glazing</th>
+                      <th>Area (m²)</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="subsurface-table-body"></tbody>
+                </table>
+              </div>
+            </article>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card">
+            <h2>Envelope analysis checklist</h2>
+            <ul id="envelope-list"></ul>
+            <p><strong>Workflow status:</strong> <span id="status-chip" class="chip chip--ready">Calculation completed</span></p>
+            <div class="action-row">
+              <a class="btn btn-default" href="./EPB2-materials-constructions.html">Back to EPB2</a>
+              <a class="btn btn-primary" href="./EPB4-results-summary.html">Continue to EPB4</a>
             </div>
           </article>
         </div>
@@ -141,8 +165,10 @@
     <div class="container"><p>© 2026 OpenBEP · Contact · Privacy · Terms</p></div>
   </footer>
 
-  <script type="module">
-    import { AppDataModel } from '../data_model/sri_epb_ui_data_model_v2.js';
+ <script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
+
+
+<script >
 
     function toTitleCaseFromEnum(status) {
       return String(status || 'UNKNOWN_STATUS').toLowerCase().split('_').map((s) => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
@@ -160,11 +186,81 @@
 
     const epb = AppDataModel?.projects?.[0]?.building?.epb || {};
     const zones = Array.isArray(epb?.zones) ? epb.zones : [];
+    const zoneRows = zones.length ? zones : [
+      { id: 'zone-main', type: 'thermal zone', volume: 300, floorArea: 100, people: 8, ventilationAch: 1.5, maxHeatingPower: 4600, maxCoolingPower: 3900 },
+      { id: 'zone-secondary', type: 'thermal zone', volume: 180, floorArea: 60, people: 3, ventilationAch: 1.1, maxHeatingPower: 2600, maxCoolingPower: 2200 }
+    ];
+
+    function actionButtons(action, target = '') {
+      return `<div class="inline-actions">
+        <button type="button" class="btn btn-default js-open-${action}" data-target="${target}">Open</button>
+        <button type="button" class="btn btn-warning">Duplicate</button>
+        <button type="button" class="btn btn-danger">Delete</button>
+      </div>`;
+    }
+
+    document.getElementById('zones-table-body').innerHTML = zoneRows.map((z) => `
+      <tr>
+        <td>${z.id}</td>
+        <td>${z.type ?? 'thermal zone'}</td>
+        <td>${z.volume ?? '-'}</td>
+        <td>${z.floorArea ?? '-'}</td>
+        <td>${z.people ?? '-'}</td>
+        <td>${z.ventilationAch ?? '-'}</td>
+        <td>${z.maxHeatingPower ?? '-'} / ${z.maxCoolingPower ?? '-'}</td>
+        <td>${actionButtons('zone')}</td>
+      </tr>
+    `).join('');
+
+    const surfaceRows = zoneRows.flatMap((z, i) => {
+      const base = i + 1;
+      return [
+        { zoneId: z.id, id: `surf-wall-${base}`, surfaceType: 'Wall', constructionId: 'cons-wall-ext-01', area: 48, subsurfaces: [{ id: `win-${base}-01`, surfaceType: 'Window', constructionId: 'glz-double-clear-01', area: 6 }, { id: `door-${base}-01`, surfaceType: 'Door', constructionId: 'cons-door-01', area: 2.2 }] },
+        { zoneId: z.id, id: `surf-roof-${base}`, surfaceType: 'Roof', constructionId: 'cons-roof-flat-01', area: 50, subsurfaces: [{ id: `skylight-${base}-01`, surfaceType: 'Window', constructionId: 'glz-triple-lowe-01', area: 1.8 }] }
+      ];
+    });
+
+    document.getElementById('surface-table-body').innerHTML = surfaceRows.map((s, idx) => `
+      <tr>
+        <td>${s.zoneId}</td>
+        <td>${s.id}</td>
+        <td>${s.surfaceType}</td>
+        <td>${s.constructionId}</td>
+        <td>${(s.subsurfaces || []).length}</td>
+        <td>${actionButtons('surface', String(idx))}</td>
+      </tr>
+    `).join('');
+
+    const detailCard = document.getElementById('surface-detail-card');
+    const detailTitle = document.getElementById('surface-detail-title');
+    const detailMeta = document.getElementById('surface-detail-meta');
+    const subsurfaceBody = document.getElementById('subsurface-table-body');
+
+    document.querySelectorAll('.js-open-surface').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const idx = Number(btn.getAttribute('data-target'));
+        const surface = surfaceRows[idx];
+        if (!surface) return;
+        detailTitle.textContent = `Surface details · ${surface.id}`;
+        detailMeta.textContent = `Zone: ${surface.zoneId} · Type: ${surface.surfaceType} · Construction: ${surface.constructionId} · Area: ${surface.area ?? '-'} m²`;
+        const subs = Array.isArray(surface.subsurfaces) ? surface.subsurfaces : [];
+        subsurfaceBody.innerHTML = (subs.length ? subs : [{ id: 'none', surfaceType: '-', constructionId: '-', area: '-' }]).map((sub) => `
+          <tr>
+            <td>${sub.id}</td>
+            <td>${sub.surfaceType}</td>
+            <td>${sub.constructionId}</td>
+            <td>${sub.area}</td>
+            <td>${actionButtons('subsurface')}</td>
+          </tr>
+        `).join('');
+        detailCard.classList.add('is-open');
+      });
+    });
 
     const envelopeList = document.getElementById('envelope-list');
     envelopeList.innerHTML = '';
-    const zone = zones[0] || {};
-    const surface = (zone?.surfaces || [])[0] || {};
+    const zone = zoneRows[0] || {};
+    const surface = surfaceRows[0] || {};
     const checks = [
       `Total zones loaded: ${zones.length}`,
       `Primary zone floor area: ${zone?.floorArea ?? 0} m²`,

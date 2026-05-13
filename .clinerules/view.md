@@ -15,6 +15,15 @@
 - Always read `info.txt` to align page content, actions, and role-based behavior with the documented functional context (General UI, EPB UI, SRI UI).
 - Ensure view structure, navigation choices, and behavior remain consistent with both `plan.mmd` and `info.txt`.
 
+## Page Completion Readiness + Documentation Compatibility Check (Mandatory)
+- Before marking any `/view` page as done/ready, always verify it is compatible with the official documentation set below:
+  - `docs123/OpenBEP4EU-D2.2-vf.docx`
+  - `docs123/UI-EPB v4(1).docx`
+  - `docs123/UI-General v4.docx`
+  - `docs123/UI-SRI v4(1).docx`
+- Compatibility check must confirm alignment of page purpose, fields/content, actions/buttons, and navigation flow with the relevant document(s).
+- If any mismatch is found, update the page (or report the gap) before declaring the page complete.
+
 ## Gauge Component Planning & Usage (Mandatory)
 - For tasks involving score visualization, plan usage of the reusable prototype gauge component (`<!-- COMPONENT: gauge-svg-template -->`, `#component-gauge-svg-template`, `#gauge`) before implementing the target `/view` page.
 - Use `plan.mmd` + `info.txt` to choose where the gauge is shown first, with this priority:

@@ -126,6 +126,16 @@
               </label>
 
               <label class="form-field">
+                <span>Climate zone</span>
+                <input id="building-climate-zone" type="text" readonly />
+              </label>
+
+              <label class="form-field">
+                <span>Time zone</span>
+                <input id="building-time-zone" type="text" readonly />
+              </label>
+
+              <label class="form-field">
                 <span>Type</span>
                 <input id="building-type" type="text" required />
               </label>
@@ -141,6 +151,15 @@
               </label>
 
               <label class="form-field">
+                <span>Building state</span>
+                <select id="building-state" required>
+                  <option value="">Select state</option>
+                  <option value="Renovated">Renovated</option>
+                  <option value="Original">Original</option>
+                </select>
+              </label>
+
+              <label class="form-field">
                 <span>Year built</span>
                 <input id="building-year" type="number" min="1800" max="2100" required />
               </label>
@@ -148,6 +167,26 @@
               <label class="form-field col-span-2">
                 <span>Address</span>
                 <input id="building-address" type="text" required />
+              </label>
+
+              <label class="form-field">
+                <span>Latitude</span>
+                <input id="building-latitude" type="number" min="-90" max="90" step="0.000001" required />
+              </label>
+
+              <label class="form-field">
+                <span>Longitude</span>
+                <input id="building-longitude" type="number" min="-180" max="180" step="0.000001" required />
+              </label>
+
+              <label class="form-field">
+                <span>Elevation (m)</span>
+                <input id="building-elevation" type="number" step="0.1" required />
+              </label>
+
+              <label class="form-field">
+                <span>North axis orientation (0–360)</span>
+                <input id="building-north-axis" type="number" min="0" max="360" step="1" required />
               </label>
 
               <div class="col-span-2" id="status-area"></div>
@@ -184,8 +223,10 @@
     </div>
   </footer>
 
-  <script type="module">
-    import { AppDataModel } from '../data_model/sri_epb_ui_data_model_v2.js';
+ <script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
+
+
+<script >
 
     function toTitleCaseFromEnum(status) {
       return String(status || 'UNKNOWN_STATUS')
@@ -212,11 +253,18 @@
 
     document.getElementById('building-name').value = building.name ?? '';
     document.getElementById('building-country').value = building?.general?.country ?? '';
+    document.getElementById('building-climate-zone').value = building?.general?.climateZone ?? '';
+    document.getElementById('building-time-zone').value = building?.general?.timeZone ?? '';
     document.getElementById('building-type').value = building?.general?.type ?? '';
     document.getElementById('building-usage').value = building?.general?.usage ?? '';
     document.getElementById('building-floor-area').value = building?.general?.floorArea ?? '';
+    document.getElementById('building-state').value = building?.general?.buildingState ?? '';
     document.getElementById('building-year').value = building?.general?.year ?? '';
     document.getElementById('building-address').value = building?.general?.address ?? '';
+    document.getElementById('building-latitude').value = building?.general?.location?.lat ?? '';
+    document.getElementById('building-longitude').value = building?.general?.location?.lng ?? '';
+    document.getElementById('building-elevation').value = building?.general?.location?.elevation ?? '';
+    document.getElementById('building-north-axis').value = building?.northAxis ?? '';
 
     const statusArea = document.getElementById('status-area');
     const form = document.getElementById('edit-building-form');

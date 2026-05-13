@@ -1,0 +1,108 @@
+read the documents  
+
+docs123\OpenBEP4EU-D2.2-vf.docx
+docs123\UI-EPB v4(1).docx
+docs123\UI-General v4.docx
+docs123\UI-SRI v4(1).docx
+
+
+
+
+
+
+Αλλαγες/ σχολια
+1) στο A projects dashboard να φυγει το global resource library*****
+2) στο C · Open / Edit Building έχει και επιπλεον πεδια να προσθέσεις με βαση το αρχειο  general v4
+- __Building State__ (Renovated / Original)
+
+- __Climate Zone__ (read-only)
+
+- __Time Zone__ (read-only)
+
+- __Latitude__
+
+- __Longitude__
+
+- __Elevation__
+
+- __North Axis orientation (0–360)__
+
+
+
+4) γενικα για πεδια στο epb σου λειπουν πεδια οποτε να δεις πιο αναλυτικα το αρχειο epb v4 ****
+5) στο EPB1 · Calculation Settings στα Ground temperature calculation properties βλεπω αρκετες αλλαγες*****
+6) στο EPB2 · Materials & Constructions 
+Αλλαξε το ονομα Materials  library σε σκετο Materials και θέλει ) ένα κουμπι add νέο και διπλα από τα ηδη καταχωρημενα να βαλουμε open, duplicate,delete όπως εχεις στον πινακα του Buildings overview στο A · Projects Dashboard (αυτή η αλλαγη να γινει σε οσα θα σου εχω διπλα σαν σχολιο «προσθηκη επιλογων πινακα»
+τα Constructions εχουν πολλα layers και ξεκινανε από το outside και μετα ο χρηστης προσθετει και αλλα μεχρι να εχει όλα τα απαραιτητα layers . τα layers αυτά είναι επι της ουσιας τα materials από πανω. Οποτε θελει αντιστοχια με αυτά και μηπως επειδη μπορει να είναι πολλα, να τα βλεπει ο χρηστης αναλυτικα τα layers μονο όταν θα πατησει open? (Νομιζω αυτό είναι καλυτερα για να μην υπαρχει πολύ πληροφορια
+Λειπουν τα Schedules και  Controls (Thermostats & Humidistats) και αυτά πινακες με add και «προσθηκη επιλογων πινακα»
+Στο Constructions & glazing παλι 2 κουμπια  add Construction και add glazing  και «προσθηκη επιλογων πινακα» για τα ηδη καταχωρημενα
+7) στο EPB3 · Thermal Zones & Envelope Analysis
+Το Envelope analysis checklist να παει τερμα κατω
+Το Zones and spaces να γινει Thermal zones και να φυγει το spaces αφου θα γινει ξεχωριστο tab
+Το Surface and subsurface inventory ωραιο που το εχεις ξεχωριστο πινακα που δειχνει σε thermal zone. Παλι προσθηκη 1 κουμπι  add surface και «προσθηκη επιλογων πινακα» για τα ηδη καταχωρημενα και μετα αφου πατησει ο χρηστης σε ένα συγκεκριμενο surface μεσα στην νεα καρτελα εκτος από τις πληροφοριες του surface να εχει έναν πινακα με τα sub surfaces και αντιστοιχα με κουμπι add sub surface  και «προσθηκη επιλογων πινακα» για τα ηδη καταχωρημενα
+8)προσθηκη του tab για spaces με το κουμπι add και «προσθηκη επιλογων πινακα» για τα ηδη καταχωρημενα και σημαντικο το καθενα από τα spaces να δειχνει σε ένα thermal zone
+9) για τα results δεν ειχαν σε αρχειο συγκεκριμενα τι εχουν για epb οποτε θεωρω
+10) στο sri νομιζω δεν εχεις βαλει τον χρηστης να επιλεγει την μεταβλητη domain presented και να εμφανιζονται τα tabs με βαση το εξης The visibility of these tabs is determined by the "Domain Present" status selected in the General Information section: [JSON Level]
+o	If 1 (Present): The domain tab is fully visible and interactive. 
+o	If 2 (Absent but Mandatory): The domain tab is hidden. The system flags the domain as ¨Absent but Mandatory¨ in the JSON (Presence: 2). – we will have the values only as readable for the user
+o	If 0 (Absent and Not Mandatory): The domain tab is hidden and entirely excluded from the calculation.
+o	Otherwise -1 based on the switch bellow
+11) οκ τα dropdown list με τις επιλογες για κάθε μια κατηγορια (πχ H1a: Heat emission control (Levels 0-4) ) με τα levels δεν τα εχεις βαλει προς το παρον, αλλα οκ δεν επηρεαζει την δομη που θελουμε για αρχη και μετα να δωσεις εμφαση σε αυτό
+Each category starts with a Yes/No switch button labeled "Applicable."
+o	If No: The category is excluded from the calculation.
+	Affect Maximum Obtainable Score? (Checkbox) ." [JSON Triage]
+	Functionality Level: -1 [JSON Level -1]
+	Compliance (Share %): 100% [JSON Compliance 1]
+	(“Functionality level-1 corresponds to not applicable service. If that is the case, then the compliance must be 100% for that level, and no other functionality level can appear.”)
+o	If Yes: [JSON Compliance 0-1]
+	A drop-down list with the levels and a "Share %" input field (default value: 100) are revealed.
+	If the user enters a " Compliance " value of less than 100%, the system automatically generates a new row (Drop-down list + Share Input) to account for the remaining percentage.
+	This process repeats (adding Level + Compliance sets) as long as the cumulative " Compliance " total is less than 100%.
+	The system must prevent the user from moving to the next domain tab if the cumulative Compliance % of the current domain is not exactly 100%
+	[JSON Triage=True]
+
+
+καποια μικρες αλλαγες στο epb (βασικα σχολια)
+UI-EPB v5.docx
+
+	Air Changes Per Hour (Input Field (numeric)) [JSON thermalZoneVentilationDesignFlowRate -> airChangesPerHour] 
+	Ventilation Schedule (Drop-down: Linked to Schedules from tab2) [JSON thermalZoneVentilationDesignFlowRate -> scheduleId] 
+o	Surfaces & Geometry (νεος πινακας όπως το εχεις
+	[ + ] Add Surface (Context: Linked to a specific Thermal Zone) και στο καθενα απο τα ηδη καταχωρημενα στον πινακα edit, delete και duplicate
+•	Surface automatically generated ID [JSON surface -> id] 
+•	Surface Type (Drop-down: Wall, Roof, Floor etc) [JSON surface -> surfaceType] 
+•	Construction ID (Drop-down: Linked to Tab 2 Constractions ID or Name) [JSON surface -> constructionId] 
+•	Outside Boundary Condition (Drop-down: Outdoors, Ground, etc.) [JSON surface -> outsideBoundaryCondition] 
+•	If Outside Boundary Condition ==’Ground’
+o	Select  Ground Temperature Calculation Properties (drop-down list from Ground Tempature Calculation Properties Name of tab 1) [ JSON surface->groundTemperatureCalculationPropertiesId
+•	Area (Input Field (m²)) [JSON surface -> area] 
+•	Height (Input Field (m)) [JSON surface -> height] 
+•	Azimuth Angle (Input Field (degrees)) [JSON surface -> azimuth_angle] 
+•	Tilt Angle (Input Field (degrees)) [JSON surface -> tilt_angle] 
+•	[ + ] Add Sub-surface (Openings)
+•	Sub-surface automatically generated ID [JSON subsurface -> id]
+•	 Sub-surface Type (Drop-down: Window, Door etc) [JSON subsurface -> surfaceType] 
+•	Construction (Drop-down: Linked to Tab 2 Constractions ID or Name) [JSON subsurface -> constructionId] 
+•	Area (Input Field (m²)) [JSON subsurface -> area] 
+•	Height (Input Field (m)) [JSON subsurface -> height] 
+•	Azimuth Angle (Input Field (degrees)) [JSON subsurface -> azimuth_angle] 
+•	Tilt Angle (Input Field (degrees)) [JSON subsurface -> tilt_angle] 
+Tab 4: Spaces
+•	[+] Space και στο καθενα απο τα ηδη καταχωρημενα στον πινακα edit, delete και duplicate
+•	Space (Input Field (text)) or automatically generated ID (Input (text)) [JSON space -> id] 
+•	Select Thermal Zone [Drop-down list of tab3 thermal zones) 
+•	Volume (Input Field (number)) [JSON zone -> volume] 
+•	Floor Area (Input Field (number)) [JSON zone -> floorArea]
+
+
+Πανταζή == fornt end developer
+Καλημέρα Πανταζή, να σου πω χθες με ειχε αποπαερει πολυ ο πινακας με τα κτηρια που εχεις τα κουμπια open duplicate delete και ανεφερα και σε ολα τα αλλα πχ materials, thermal zones κλπ να τα κανουμε ετσι (με την αναφορά "προσθηκη επιλογων πινακα" στο αρχειο) απλα αυτο η αληθεια ειναι θα σε πηγαίνει γσε νεες καρτελες αν επιλέξεις το open, για να προσθεσεις τα πεδία του καθενος απο αυτα (που για καποιο σαν το thermal zone μπορει να ειναι καλο, αλλα για αλλα υπερβολικό οταν εχουν λίγα πεδια να προσθεσεις). Αν θεωρεις μπορεις να σκεφτεις κατι αλλο σε μορφη που να ειναι πιο καλο πχ να προσθετεις σε ολες τις εγγραφες του πινακα κατι σαν βελακι και να κανει και να κανει εξοαντ για να προσθεσει τα σχετικα πεδία (και αρα ολα να ειναι στην ιδια σελιδα) αληθεια fell free να κάνεις ότι θεωρεις πιο ωραιο χωρις να σε περιοριζω με αυτα που γραφω
+
+
+Λείπουν ακόμα: G - Language Selection, H - User Profile, D - Duplicate Building pop-up, E - Delete Building pop-up (υπάρχουν links από I αλλά όχι αντίστοιχα view αρχεία στο /view).
+ 
+
+
+
+
+ 

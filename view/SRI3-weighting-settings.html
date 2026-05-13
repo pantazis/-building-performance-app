@@ -299,7 +299,9 @@
     <div class="container"><p>© 2026 OpenBEP · Contact · Privacy · Terms</p></div>
   </footer>
 
-  <script>
+<script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
+
+<script >
 
     function toTitleCaseFromEnum(status) {
       return String(status || 'UNKNOWN_STATUS').toLowerCase().split('_').map((s) => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
@@ -350,12 +352,7 @@
     };
 
     async function loadDataModel() {
-      try {
-        const mod = await import('../data_model/sri_epb_ui_data_model_v2.js');
-        return mod?.AppDataModel || fallbackModel;
-      } catch (error) {
-        return fallbackModel;
-      }
+      return AppDataModel || fallbackModel;
     }
 
     async function init() {

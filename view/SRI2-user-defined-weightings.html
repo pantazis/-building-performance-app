@@ -123,8 +123,10 @@
     <div class="container"><p>© 2026 OpenBEP · Contact · Privacy · Terms</p></div>
   </footer>
 
-  <script type="module">
-    import { AppDataModel } from '../data_model/sri_epb_ui_data_model_v2.js';
+ <script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
+
+
+<script >
 
     const project = AppDataModel?.projects?.[0] || {};
     const building = project?.building || {};

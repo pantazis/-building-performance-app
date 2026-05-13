@@ -60,6 +60,74 @@
       width: 100%;
     }
 
+    .form-section-title {
+      margin: var(--sp-xs) 0 0;
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .gtcp-input,
+    .gtcp-select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 8px;
+      font: inherit;
+      background: #fff;
+    }
+
+    .gtcp-actions {
+      margin-top: var(--sp-sm);
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--sp-xs);
+      flex-wrap: wrap;
+    }
+
+    /* COMPONENT: modal */
+    .c-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(12, 18, 32, 0.45);
+      display: none;
+      place-items: center;
+      z-index: 200;
+      padding: var(--sp-lg);
+    }
+    .c-modal.is-open { display: grid; }
+    .modal-card {
+      background: #fff;
+      border-radius: var(--r-md);
+      border: 1px solid var(--line);
+      padding: var(--sp-lg);
+      width: min(760px, 96vw);
+      display: grid;
+      gap: var(--sp-sm);
+      max-height: 90vh;
+      overflow: auto;
+    }
+    .modal-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sp-sm);
+    }
+    .modal-form-grid label { display: grid; gap: 6px; }
+    .modal-form-grid input,
+    .modal-form-grid select {
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 8px;
+      font: inherit;
+      width: 100%;
+    }
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--sp-xs);
+      flex-wrap: wrap;
+    }
+
   </style>
 </head>
 
@@ -103,15 +171,23 @@
             <h2>Simulation settings</h2>
             <form class="form-grid" aria-label="EPB settings form">
               <label class="form-field">
-                <span>Run period start</span>
-                <input id="run-start" type="text" value="01-01" />
+                <span>Begin month</span>
+                <input id="run-begin-month" type="number" min="1" max="12" value="1" />
               </label>
               <label class="form-field">
-                <span>Run period end</span>
-                <input id="run-end" type="text" value="12-31" />
+                <span>Begin day</span>
+                <input id="run-begin-day" type="number" min="1" max="31" value="1" />
               </label>
               <label class="form-field">
-                <span>Timestep (hours)</span>
+                <span>End month</span>
+                <input id="run-end-month" type="number" min="1" max="12" value="12" />
+              </label>
+              <label class="form-field">
+                <span>End day</span>
+                <input id="run-end-day" type="number" min="1" max="31" value="31" />
+              </label>
+              <label class="form-field full-row">
+                <span>Number per hour (time step)</span>
                 <input id="run-step" type="number" min="1" value="1" />
               </label>
               <label class="form-field">
@@ -150,43 +226,27 @@
         <div class="full">
           <article class="card">
             <h2>Ground temperature calculation properties</h2>
+            <p class="form-section-title">Tab 1 required fields (UI-EPB v4)</p>
             <div style="overflow-x:auto;">
               <table style="width:100%; border-collapse:collapse;">
                 <thead>
                   <tr>
-                    <th style="text-align:left; border-bottom:1px solid var(--line); padding:8px;">Name</th>
-                    <th style="text-align:left; border-bottom:1px solid var(--line); padding:8px;">Wall thickness</th>
+                    <th style="text-align:left; border-bottom:1px solid var(--line); padding:8px;">Ground Temperature Calculation Properties Name *</th>
+                    <th style="text-align:left; border-bottom:1px solid var(--line); padding:8px;">External walls thickness (m)</th>
                     <th style="text-align:left; border-bottom:1px solid var(--line); padding:8px;">Exposed perimeter</th>
+                    <th style="text-align:left; border-bottom:1px solid var(--line); padding:8px;">Annual mean internal temperature (°C)</th>
+                    <th style="text-align:left; border-bottom:1px solid var(--line); padding:8px;">Amplitude of internal temperature variations</th>
+                    <th style="text-align:left; border-bottom:1px solid var(--line); padding:8px;">Month of minimum external temperature</th>
+                    <th style="text-align:left; border-bottom:1px solid var(--line); padding:8px;">Linear thermal transmittance</th>
                     <th style="text-align:left; border-bottom:1px solid var(--line); padding:8px;">Conductivity</th>
+                    <th style="text-align:left; border-bottom:1px solid var(--line); padding:8px;">Heat capacity</th>
                   </tr>
                 </thead>
-                <tbody id="gtcp-body">
-                  <tr>
-                    <td style="border-bottom:1px solid var(--line); padding:8px;">Default Ground Profile</td>
-                    <td style="border-bottom:1px solid var(--line); padding:8px;">0.30</td>
-                    <td style="border-bottom:1px solid var(--line); padding:8px;">120</td>
-                    <td style="border-bottom:1px solid var(--line); padding:8px;">1.8</td>
-                  </tr>
-                  <tr>
-                    <td style="border-bottom:1px solid var(--line); padding:8px;">Basement Perimeter Profile</td>
-                    <td style="border-bottom:1px solid var(--line); padding:8px;">0.25</td>
-                    <td style="border-bottom:1px solid var(--line); padding:8px;">96</td>
-                    <td style="border-bottom:1px solid var(--line); padding:8px;">1.6</td>
-                  </tr>
-                  <tr>
-                    <td style="border-bottom:1px solid var(--line); padding:8px;">Slab-on-Grade Profile</td>
-                    <td style="border-bottom:1px solid var(--line); padding:8px;">0.28</td>
-                    <td style="border-bottom:1px solid var(--line); padding:8px;">110</td>
-                    <td style="border-bottom:1px solid var(--line); padding:8px;">1.7</td>
-                  </tr>
-                  <tr>
-                    <td style="border-bottom:1px solid var(--line); padding:8px;">High-Mass Soil Profile</td>
-                    <td style="border-bottom:1px solid var(--line); padding:8px;">0.35</td>
-                    <td style="border-bottom:1px solid var(--line); padding:8px;">140</td>
-                    <td style="border-bottom:1px solid var(--line); padding:8px;">2.0</td>
-                  </tr>
-                </tbody>
+                <tbody id="gtcp-body"></tbody>
               </table>
+            </div>
+            <div class="gtcp-actions">
+              <button id="gtcp-open-add" class="btn btn-default" type="button">+ Add Ground Profile</button>
             </div>
           </article>
         </div>
@@ -199,8 +259,34 @@
     <div class="container"><p>© 2026 OpenBEP · Contact · Privacy · Terms</p></div>
   </footer>
 
-  <script type="module">
-    import { AppDataModel } from '../data_model/sri_epb_ui_data_model_v2.js';
+  <!-- COMPONENT: modal -->
+  <section id="gtcp-modal" class="c-modal" aria-hidden="true">
+    <article class="modal-card" role="dialog" aria-modal="true" aria-labelledby="gtcp-modal-title">
+      <h2 id="gtcp-modal-title">Add Ground Temperature Profile</h2>
+      <form id="gtcp-modal-form" class="modal-form-grid">
+        <label><span>Name *</span><input id="m-name" type="text" required value="Demo Ground Profile" /></label>
+        <label><span>External walls thickness (m)</span><input id="m-thickness" type="number" step="any" value="0.30" /></label>
+        <label><span>Exposed perimeter (m)</span><input id="m-perimeter" type="number" step="any" value="120" /></label>
+        <label><span>Annual mean internal temperature (°C)</span><input id="m-annual" type="number" step="any" value="21" /></label>
+        <label><span>Amplitude of internal temperature variations</span><input id="m-amplitude" type="number" step="any" value="3" /></label>
+        <label><span>Month of minimum external temperature</span>
+          <select id="m-month"></select>
+        </label>
+        <label><span>Linear thermal transmittance</span><input id="m-linear" type="number" step="any" value="0.25" /></label>
+        <label><span>Conductivity</span><input id="m-conductivity" type="number" step="any" value="1.8" /></label>
+        <label><span>Heat capacity</span><input id="m-heat" type="number" step="any" value="2.1" /></label>
+      </form>
+      <div class="modal-actions">
+        <button id="gtcp-cancel" type="button" class="btn btn-default">Cancel</button>
+        <button id="gtcp-save" type="button" class="btn btn-success">Add Row</button>
+      </div>
+    </article>
+  </section>
+
+ <script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
+
+
+<script >
 
     function toTitleCaseFromEnum(status) {
       return String(status || 'UNKNOWN_STATUS').toLowerCase().split('_').map((s) => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
@@ -220,13 +306,25 @@
     const project = AppDataModel?.projects?.[0];
     const epb = project?.building?.epb || {};
 
-    document.getElementById('run-start').value = epb?.settings?.runPeriod?.start || '';
-    document.getElementById('run-end').value = epb?.settings?.runPeriod?.end || '';
+    const beginMonthEl = document.getElementById('run-begin-month');
+    const beginDayEl = document.getElementById('run-begin-day');
+    const endMonthEl = document.getElementById('run-end-month');
+    const endDayEl = document.getElementById('run-end-day');
+
+    const legacyStart = String(epb?.settings?.runPeriod?.start || '01-01').split('-');
+    const legacyEnd = String(epb?.settings?.runPeriod?.end || '12-31').split('-');
+
+    beginMonthEl.value = Number(legacyStart[0]) || 1;
+    beginDayEl.value = Number(legacyStart[1]) || 1;
+    endMonthEl.value = Number(legacyEnd[0]) || 12;
+    endDayEl.value = Number(legacyEnd[1]) || 31;
     document.getElementById('run-step').value = epb?.settings?.timestep || 1;
     if (epb?.settings?.runPeriodDetailed) {
       const d = epb.settings.runPeriodDetailed;
-      document.getElementById('run-start').value = `${String(d.beginMonth).padStart(2, '0')}-${String(d.beginDayOfMonth).padStart(2, '0')}`;
-      document.getElementById('run-end').value = `${String(d.endMonth).padStart(2, '0')}-${String(d.endDayOfMonth).padStart(2, '0')}`;
+      beginMonthEl.value = d.beginMonth ?? beginMonthEl.value;
+      beginDayEl.value = d.beginDayOfMonth ?? beginDayEl.value;
+      endMonthEl.value = d.endMonth ?? endMonthEl.value;
+      endDayEl.value = d.endDayOfMonth ?? endDayEl.value;
     }
     document.getElementById('run-step').value = epb?.settings?.timeStep?.numberPerHour || epb?.settings?.timestep || 1;
 
@@ -256,6 +354,91 @@
       li.textContent = toTitleCaseFromEnum(step);
       executionOrderList.appendChild(li);
     });
+
+    const monthOptions = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+      ];
+
+    const gtcpBody = document.getElementById('gtcp-body');
+    const demoGroundRow = {
+      name: 'Demo Ground Profile',
+      externalWallsThickness: 0.30,
+      exposedPerimeter: 120,
+      annualMeanInternalTemperature: 21,
+      amplitudeOfInternalTemperatureVariations: 3,
+      minExternalTemperatureMonth: 1,
+      linearThermalTransmittance: 0.25,
+      conductivity: 1.8,
+      heatCapacity: 2.1
+    };
+
+    const gtcpRows = Array.isArray(epb?.settings?.groundTemperatureCalculationProperties)
+      ? epb.settings.groundTemperatureCalculationProperties
+      : [demoGroundRow];
+
+    function renderGroundRows() {
+      gtcpBody.innerHTML = gtcpRows.map((row, index) => {
+        const selectedMonth = Number(row?.minExternalTemperatureMonth) || 1;
+        const monthHtml = monthOptions.map((m, i) => `<option value="${i + 1}" ${selectedMonth === i + 1 ? 'selected' : ''}>${m}</option>`).join('');
+        return `
+          <tr>
+            <td style="border-bottom:1px solid var(--line); padding:8px;"><input class="gtcp-input" type="text" value="${row?.name ?? ''}" placeholder="Ground profile name" /></td>
+            <td style="border-bottom:1px solid var(--line); padding:8px;"><input class="gtcp-input" type="number" step="any" value="${row?.externalWallsThickness ?? ''}" /></td>
+            <td style="border-bottom:1px solid var(--line); padding:8px;"><input class="gtcp-input" type="number" step="any" value="${row?.exposedPerimeter ?? ''}" /></td>
+            <td style="border-bottom:1px solid var(--line); padding:8px;"><input class="gtcp-input" type="number" step="any" value="${row?.annualMeanInternalTemperature ?? ''}" /></td>
+            <td style="border-bottom:1px solid var(--line); padding:8px;"><input class="gtcp-input" type="number" step="any" value="${row?.amplitudeOfInternalTemperatureVariations ?? ''}" /></td>
+            <td style="border-bottom:1px solid var(--line); padding:8px;"><select class="gtcp-select">${monthHtml}</select></td>
+            <td style="border-bottom:1px solid var(--line); padding:8px;"><input class="gtcp-input" type="number" step="any" value="${row?.linearThermalTransmittance ?? ''}" /></td>
+            <td style="border-bottom:1px solid var(--line); padding:8px;"><input class="gtcp-input" type="number" step="any" value="${row?.conductivity ?? ''}" /></td>
+            <td style="border-bottom:1px solid var(--line); padding:8px;"><input class="gtcp-input" type="number" step="any" value="${row?.heatCapacity ?? ''}" /></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    renderGroundRows();
+
+    const gtcpModal = document.getElementById('gtcp-modal');
+    const openAddBtn = document.getElementById('gtcp-open-add');
+    const cancelAddBtn = document.getElementById('gtcp-cancel');
+    const saveAddBtn = document.getElementById('gtcp-save');
+    const monthSelectModal = document.getElementById('m-month');
+    monthSelectModal.innerHTML = monthOptions.map((m, i) => `<option value="${i + 1}" ${i === 0 ? 'selected' : ''}>${m}</option>`).join('');
+
+    function openModal() {
+      gtcpModal.classList.add('is-open');
+      gtcpModal.setAttribute('aria-hidden', 'false');
+    }
+    function closeModal() {
+      gtcpModal.classList.remove('is-open');
+      gtcpModal.setAttribute('aria-hidden', 'true');
+    }
+
+    openAddBtn.addEventListener('click', openModal);
+    cancelAddBtn.addEventListener('click', closeModal);
+    gtcpModal.addEventListener('click', (e) => {
+      if (e.target === gtcpModal) closeModal();
+    });
+
+    saveAddBtn.addEventListener('click', () => {
+      const row = {
+        name: document.getElementById('m-name').value || 'Demo Ground Profile',
+        externalWallsThickness: document.getElementById('m-thickness').value,
+        exposedPerimeter: document.getElementById('m-perimeter').value,
+        annualMeanInternalTemperature: document.getElementById('m-annual').value,
+        amplitudeOfInternalTemperatureVariations: document.getElementById('m-amplitude').value,
+        minExternalTemperatureMonth: Number(document.getElementById('m-month').value) || 1,
+        linearThermalTransmittance: document.getElementById('m-linear').value,
+        conductivity: document.getElementById('m-conductivity').value,
+        heatCapacity: document.getElementById('m-heat').value
+      };
+      gtcpRows.push(row);
+      renderGroundRows();
+      closeModal();
+    });
+
+    
 
   </script>
 </body>

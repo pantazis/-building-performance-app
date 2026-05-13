@@ -83,6 +83,27 @@
       display: grid;
       gap: var(--sp-xs);
     }
+
+    .inline-upload {
+      display: grid;
+      gap: 8px;
+      margin-top: var(--sp-xs);
+      padding-top: var(--sp-xs);
+      border-top: 1px solid var(--line);
+    }
+
+    .inline-upload label {
+      font-weight: 600;
+      font-size: 0.92rem;
+    }
+
+    .inline-upload input[type="file"] {
+      width: 100%;
+    }
+
+    .inline-upload .caption {
+      margin: 0;
+    }
   </style>
 </head>
 
@@ -156,6 +177,12 @@
         <div class="third">
           <article class="card tab-actions">
             <h2>EPB workflow</h2>
+            <div class="inline-upload" aria-label="EPB JSON import">
+              <label for="epb-json-file">Import EPB JSON model</label>
+              <input id="epb-json-file" type="file" accept=".json,application/json" />
+              <button type="button" id="epb-json-load" class="btn btn-default">Load JSON to EPB Engine</button>
+              <p id="epb-json-file-name" class="caption">No JSON file selected.</p>
+            </div>
             <a class="btn btn-primary" href="./EPB1-calculation-settings.html">Go to EPB Dashboard (J)</a>
             <a class="btn btn-default" href="./EPB2-materials-constructions.html">Open EPB2 · Materials & Constructions</a>
             <a class="btn btn-warning" href="./EPB3-thermal-zones-envelope.html">Open EPB3 · Thermal Zones</a>
@@ -192,6 +219,27 @@
       <p>© 2026 OpenBEP · Contact · Privacy · Terms</p>
     </div>
   </footer>
+
+  <script>
+    const epbJsonInput = document.getElementById('epb-json-file');
+    const epbJsonFileName = document.getElementById('epb-json-file-name');
+    const epbJsonLoad = document.getElementById('epb-json-load');
+
+    epbJsonInput?.addEventListener('change', () => {
+      const selected = epbJsonInput.files && epbJsonInput.files[0];
+      epbJsonFileName.textContent = selected
+        ? `Selected file: ${selected.name}`
+        : 'No JSON file selected.';
+    });
+
+    epbJsonLoad?.addEventListener('click', () => {
+      if (!epbJsonInput?.files || !epbJsonInput.files[0]) {
+        epbJsonFileName.textContent = 'Please select a JSON file first.';
+        return;
+      }
+      epbJsonFileName.textContent = `JSON ready for import: ${epbJsonInput.files[0].name}`;
+    });
+  </script>
 
 </body>
 

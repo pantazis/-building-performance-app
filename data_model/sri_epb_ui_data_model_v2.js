@@ -1,4 +1,4 @@
-export const AppDataModel = {
+var AppDataModel = {
   meta: {
     sourceDeliverable: "OpenBEP4EU-D2.2-vf.docx",
     deliverable: "D2.2 – Advanced EU Kernel EPC Engine",
@@ -36,12 +36,16 @@ export const AppDataModel = {
       building: {
         id: "building-1",
         name: "Office Athens",
+        northAxis: 180,
 
         general: {
           type: "Non-Residential",
           usage: "Offices",
           country: "Greece",
+          climateZone: "Mediterranean",
+          timeZone: "Europe/Athens",
           floorArea: "1000-10000",
+          buildingState: "Renovated",
           year: 2015,
           address: "Athens",
           location: {

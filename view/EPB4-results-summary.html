@@ -193,8 +193,10 @@
     </div>
   </div>
 
-  <script type="module">
-    import { AppDataModel } from '../data_model/sri_epb_ui_data_model_v2.js';
+ <script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
+
+
+<script >
 
     function toTitleCaseFromEnum(status) {
       return String(status || 'UNKNOWN_STATUS').toLowerCase().split('_').map((s) => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');

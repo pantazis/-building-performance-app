@@ -28,6 +28,40 @@
     table { width: 100%; border-collapse: collapse; }
     th, td { border-bottom: 1px solid var(--line); padding: 10px; text-align: left; }
     .table-wrap { overflow-x: auto; }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--sp-sm);
+      margin-bottom: var(--sp-sm);
+      flex-wrap: wrap;
+    }
+    .inline-actions {
+      display: inline-flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .inline-actions .btn {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+    .link-btn {
+      border: 0;
+      background: none;
+      color: var(--green);
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0;
+    }
+    .layer-details {
+      background: #f8fbff;
+      border: 1px dashed var(--line);
+      border-radius: var(--r-sm);
+      padding: var(--sp-sm);
+      margin-top: 8px;
+      display: none;
+    }
+    .layer-details.is-open { display: block; }
   </style>
 </head>
 
@@ -68,23 +102,25 @@
 
         <div class="half">
           <article class="card">
-            <h2>Materials library (opaque)</h2>
+            <div class="section-head">
+              <h2>Materials</h2>
+              <button class="btn btn-success" type="button">+ Add Material</button>
+            </div>
             <div class="table-wrap">
               <table>
                 <thead>
                   <tr>
-                    <th>ID</th>
+                    <th>Material Name *</th>
                     <th>Roughness</th>
                     <th>Thickness (m)</th>
                     <th>Conductivity</th>
                     <th>Density</th>
+                    <th>Specific Heat</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody id="materials-body">
-                  <tr><td>Concrete</td><td>0.2</td><td>1.4</td><td>2400</td></tr>
-                  <tr><td>Insulation XPS</td><td>0.08</td><td>0.034</td><td>35</td></tr>
-                  <tr><td>Brick</td><td>0.12</td><td>0.72</td><td>1700</td></tr>
-                  <tr><td>Gypsum board</td><td>0.015</td><td>0.21</td><td>800</td></tr>
+                  <tr><td colspan="8">No materials</td></tr>
                 </tbody>
               </table>
             </div>
@@ -93,30 +129,83 @@
 
         <div class="half">
           <article class="card">
-            <h2>Constructions & glazing</h2>
+            <div class="section-head">
+              <h2>Constructions</h2>
+              <button class="btn btn-success" type="button">+ Add Construction</button>
+            </div>
             <div class="table-wrap" style="margin-bottom: var(--sp-md);">
               <table>
                 <thead>
-                  <tr><th>Construction ID</th><th>Class</th><th>Outside layer</th><th>Layer IDs</th></tr>
+                  <tr><th>Construction ID *</th><th>Class</th><th>Outside layer (Layer 1)</th><th>Layers summary</th><th>Actions</th></tr>
                 </thead>
                 <tbody id="construction-body">
-                  <tr><td>cons-wall-ext-01</td><td>Wall</td><td>mat-brick-outer</td><td>mat-brick-outer, mat-insulation-xps-80, mat-gypsum-board</td></tr>
-                  <tr><td>cons-roof-flat-01</td><td>Roof</td><td>mat-bitumen-membrane</td><td>mat-bitumen-membrane, mat-insulation-mineralwool-120, mat-concrete-slab</td></tr>
-                  <tr><td>cons-floor-ground-01</td><td>Floor</td><td>mat-ceramic-tile</td><td>mat-ceramic-tile, mat-screed-cement, mat-concrete-slab</td></tr>
-                  <tr><td>cons-partition-int-01</td><td>InternalWall</td><td>mat-gypsum-board</td><td>mat-gypsum-board, mat-mineral-wool-40, mat-gypsum-board</td></tr>
+                  <tr><td colspan="5">No constructions</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="section-head">
+              <h2>Glazing Systems</h2>
+              <button class="btn btn-success" type="button">+ Add Glazing</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Glazing ID *</th><th>U-Factor</th><th>SHGC</th><th>Visible transmittance</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="glazing-body">
+                  <tr><td colspan="5">No glazing systems</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+
+        <div class="half">
+          <article class="card">
+            <div class="section-head">
+              <h2>Schedules</h2>
+              <button class="btn btn-success" type="button">+ Add Schedule</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Schedule Name *</th><th>Type</th><th>Value</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="schedules-body">
+                  <tr><td colspan="4">No schedules</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+
+        <div class="half">
+          <article class="card">
+            <div class="section-head">
+              <h2>Controls (Thermostats & Humidistats)</h2>
+              <div class="inline-actions">
+                <button class="btn btn-success" type="button">+ Add Thermostat</button>
+                <button class="btn btn-success" type="button">+ Add Humidistat</button>
+              </div>
+            </div>
+            <div class="table-wrap" style="margin-bottom: var(--sp-md);">
+              <table>
+                <thead>
+                  <tr><th>Thermostat ID *</th><th>Constant heating setpoint (°C)</th><th>Cooling setpoint schedule</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="thermostats-body">
+                  <tr><td colspan="4">No thermostats</td></tr>
                 </tbody>
               </table>
             </div>
             <div class="table-wrap">
               <table>
                 <thead>
-                  <tr><th>Glazing ID</th><th>U-Factor</th><th>SHGC</th><th>Visible transmittance</th></tr>
+                  <tr><th>Humidistat ID *</th><th>Dehumidification setpoint (%)</th><th>Humidification setpoint (%)</th><th>Actions</th></tr>
                 </thead>
-                <tbody id="glazing-body">
-                  <tr><td>glz-double-clear-01</td><td>1.30</td><td>0.52</td><td>0.72</td></tr>
-                  <tr><td>glz-triple-lowe-01</td><td>0.80</td><td>0.45</td><td>0.64</td></tr>
-                  <tr><td>glz-double-solar-01</td><td>1.10</td><td>0.38</td><td>0.58</td></tr>
-                  <tr><td>glz-double-clear-02</td><td>1.40</td><td>0.56</td><td>0.75</td></tr>
+                <tbody id="humidistats-body">
+                  <tr><td colspan="4">No humidistats</td></tr>
                 </tbody>
               </table>
             </div>
@@ -148,8 +237,10 @@
     <div class="container"><p>© 2026 OpenBEP · Contact · Privacy · Terms</p></div>
   </footer>
 
-  <script type="module">
-    import { AppDataModel } from '../data_model/sri_epb_ui_data_model_v2.js';
+ <script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
+
+
+<script >
 
     function toTitleCaseFromEnum(status) {
       return String(status || 'UNKNOWN_STATUS').toLowerCase().split('_').map((s) => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
@@ -167,6 +258,21 @@
 
     const epb = AppDataModel?.projects?.[0]?.building?.epb || {};
     const materials = Array.isArray(epb?.library?.materialOpaque) ? epb.library.materialOpaque : [];
+    const constructions = Array.isArray(epb?.library?.construction) ? epb.library.construction : [];
+    const glazings = Array.isArray(epb?.library?.glazingSimpleSystem) ? epb.library.glazingSimpleSystem : [];
+    const schedules = Array.isArray(epb?.library?.scheduleConstant) ? epb.library.scheduleConstant : [];
+    const thermostats = Array.isArray(epb?.library?.thermostat) ? epb.library.thermostat : [];
+    const humidistats = Array.isArray(epb?.library?.humidistat) ? epb.library.humidistat : [];
+
+    function actionButtons(extraOpen = false, openTarget = '') {
+      return `
+        <div class="inline-actions">
+          ${extraOpen ? `<button type="button" class="btn btn-default js-open-layers" data-target="${openTarget}">Open</button>` : `<button type="button" class="btn btn-default">Open</button>`}
+          <button type="button" class="btn btn-warning">Duplicate</button>
+          <button type="button" class="btn btn-danger">Delete</button>
+        </div>
+      `;
+    }
     const materialRows = materials.length ? materials : [
       { id: 'mat-1', roughness: 'MediumRough', thickness: 0.2, conductivity: 1.4, density: 2400 },
       { id: 'mat-2', roughness: 'MediumSmooth', thickness: 0.08, conductivity: 0.034, density: 35 },
@@ -181,6 +287,89 @@
         <td>${m.thickness ?? '-'}</td>
         <td>${m.conductivity ?? '-'}</td>
         <td>${m.density ?? '-'}</td>
+        <td>${m.specificHeat ?? '-'}</td>
+        <td>${actionButtons(false)}</td>
+      </tr>
+    `).join('');
+
+    const constructionRows = constructions.length ? constructions : [
+      { id: 'cons-wall-ext-01', constructionClass: 'MassEquallyDistributed', outsideLayerMaterialId: 'mat-1', layerMaterialIds: ['mat-1', 'mat-2', 'mat-4'] },
+      { id: 'cons-roof-flat-01', constructionClass: 'MassConcentratedAtInternal', outsideLayerMaterialId: 'mat-3', layerMaterialIds: ['mat-3', 'mat-2', 'mat-1'] }
+    ];
+
+    document.getElementById('construction-body').innerHTML = constructionRows.map((c, idx) => {
+      const layers = Array.isArray(c.layerMaterialIds) ? c.layerMaterialIds : [];
+      const detailId = `layers-${idx}`;
+      return `
+        <tr>
+          <td>${c.id ?? 'n/a'}</td>
+          <td>${c.constructionClass ?? '-'}</td>
+          <td>${c.outsideLayerMaterialId ?? '-'}</td>
+          <td>
+            ${layers.length} layer(s)
+            <div id="${detailId}" class="layer-details">
+              <strong>Layers (outside -> inside)</strong>
+              <ol>
+                ${(layers.length ? layers : ['n/a', 'n/a', 'n/a', 'n/a']).map((l) => `<li>${l}</li>`).join('')}
+              </ol>
+            </div>
+          </td>
+          <td>${actionButtons(true, detailId)}</td>
+        </tr>
+      `;
+    }).join('');
+
+    const glazingRows = glazings.length ? glazings : [
+      { id: 'glz-double-clear-01', uFactor: 1.3, solarHeatGainCoefficient: 0.52, visibleTransmittance: 0.72 },
+      { id: 'glz-triple-lowe-01', uFactor: 0.8, solarHeatGainCoefficient: 0.45, visibleTransmittance: 0.64 }
+    ];
+
+    document.getElementById('glazing-body').innerHTML = glazingRows.map((g) => `
+      <tr>
+        <td>${g.id ?? 'n/a'}</td>
+        <td>${g.uFactor ?? '-'}</td>
+        <td>${g.solarHeatGainCoefficient ?? '-'}</td>
+        <td>${g.visibleTransmittance ?? '-'}</td>
+        <td>${actionButtons(false)}</td>
+      </tr>
+    `).join('');
+
+    const scheduleRows = schedules.length ? schedules : [
+      { id: 'sch-occ-1', type: 'Occupancy', hourlyValue: 1 },
+      { id: 'sch-act-1', type: 'Activity', hourlyValue: 120 },
+      { id: 'sch-cool-sp-1', type: 'CoolingSetpoint', hourlyValue: 26 },
+      { id: 'sch-vent-1', type: 'Ventilation', hourlyValue: 1 }
+    ];
+    document.getElementById('schedules-body').innerHTML = scheduleRows.map((s) => `
+      <tr>
+        <td>${s.id ?? 'n/a'}</td>
+        <td>${s.type ?? '-'}</td>
+        <td>${s.hourlyValue ?? '-'}</td>
+        <td>${actionButtons(false)}</td>
+      </tr>
+    `).join('');
+
+    const thermostatRows = thermostats.length ? thermostats : [
+      { id: 'th-1', constantHeatingSetpoint: 21, coolingSetpointSchedule: 'sch-cool-sp-1' }
+    ];
+    document.getElementById('thermostats-body').innerHTML = thermostatRows.map((t) => `
+      <tr>
+        <td>${t.id ?? 'n/a'}</td>
+        <td>${t.constantHeatingSetpoint ?? '-'}</td>
+        <td>${t.coolingSetpointSchedule ?? '-'}</td>
+        <td>${actionButtons(false)}</td>
+      </tr>
+    `).join('');
+
+    const humidistatRows = humidistats.length ? humidistats : [
+      { id: 'hum-1', constantDehumidificationSetpoint: 60, constantHumidificationSetpoint: 35 }
+    ];
+    document.getElementById('humidistats-body').innerHTML = humidistatRows.map((h) => `
+      <tr>
+        <td>${h.id ?? 'n/a'}</td>
+        <td>${h.constantDehumidificationSetpoint ?? '-'}</td>
+        <td>${h.constantHumidificationSetpoint ?? '-'}</td>
+        <td>${actionButtons(false)}</td>
       </tr>
     `).join('');
 
@@ -196,6 +385,15 @@
       const li = document.createElement('li');
       li.textContent = item;
       list.appendChild(li);
+    });
+
+    document.querySelectorAll('.js-open-layers').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-target');
+        const panel = targetId ? document.getElementById(targetId) : null;
+        if (!panel) return;
+        panel.classList.toggle('is-open');
+      });
     });
 
     const status = getStatusPresentation(epb?.orchestration?.status || 'READY_FOR_CALCULATION');
