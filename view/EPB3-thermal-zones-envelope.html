@@ -33,6 +33,10 @@
     .inline-actions .btn { padding: 6px 10px; font-size: 12px; }
     .surface-details { display: none; margin-top: var(--sp-md); }
     .surface-details.is-open { display: block; }
+    .detail-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--sp-sm); margin-bottom: var(--sp-sm); }
+    .detail-grid p { margin: 0; grid-column: span 4; }
+    @media (max-width: 900px) { .detail-grid p { grid-column: span 6; } }
+    @media (max-width: 600px) { .detail-grid p { grid-column: 1 / -1; } }
   </style>
 </head>
 
@@ -44,6 +48,7 @@
         <a href="./A-projects-dashboard.html">Projects Dashboard</a>
         <a href="./I-building-tab.html">Building Tab</a>
         <a href="./EPB3-thermal-zones-envelope.html" aria-current="page">EPB3</a>
+        <a href="./EPB-spaces-tab.html">Spaces</a>
       </nav>
     </div>
   </header>
@@ -105,7 +110,7 @@
               <h2>Surface and subsurface inventory</h2>
               <button class="btn btn-success" type="button">+ Add Surface</button>
             </div>
-            <div class="table-wrap">
+              <div class="table-wrap">
               <table>
                 <thead>
                   <tr>
@@ -113,6 +118,10 @@
                     <th>Surface ID</th>
                     <th>Type</th>
                     <th>Construction</th>
+                      <th>Outside boundary</th>
+                      <th>GTCP</th>
+                      <th>Area / Height</th>
+                      <th>Azimuth / Tilt</th>
                     <th>Subsurfaces</th>
                     <th>Actions</th>
                   </tr>
@@ -126,7 +135,7 @@
                 <h3 id="surface-detail-title">Surface details</h3>
                 <button class="btn btn-success" type="button">+ Add Sub-surface</button>
               </div>
-              <p id="surface-detail-meta" class="muted"></p>
+              <div id="surface-detail-meta" class="detail-grid" aria-label="Surface details metadata"></div>
               <div class="table-wrap">
                 <table>
                   <thead>
@@ -135,6 +144,9 @@
                       <th>Type</th>
                       <th>Construction / Glazing</th>
                       <th>Area (m²)</th>
+                      <th>Height (m)</th>
+                      <th>Azimuth (°)</th>
+                      <th>Tilt (°)</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -152,6 +164,7 @@
             <p><strong>Workflow status:</strong> <span id="status-chip" class="chip chip--ready">Calculation completed</span></p>
             <div class="action-row">
               <a class="btn btn-default" href="./EPB2-materials-constructions.html">Back to EPB2</a>
+              <a class="btn btn-warning" href="./EPB-spaces-tab.html">Open Spaces Tab</a>
               <a class="btn btn-primary" href="./EPB4-results-summary.html">Continue to EPB4</a>
             </div>
           </article>
@@ -187,8 +200,28 @@
     const epb = AppDataModel?.projects?.[0]?.building?.epb || {};
     const zones = Array.isArray(epb?.zones) ? epb.zones : [];
     const zoneRows = zones.length ? zones : [
-      { id: 'zone-main', type: 'thermal zone', volume: 300, floorArea: 100, people: 8, ventilationAch: 1.5, maxHeatingPower: 4600, maxCoolingPower: 3900 },
-      { id: 'zone-secondary', type: 'thermal zone', volume: 180, floorArea: 60, people: 3, ventilationAch: 1.1, maxHeatingPower: 2600, maxCoolingPower: 2200 }
+      {
+        id: 'zone-main',
+        type: 'thermal zone',
+        volume: 300,
+        floorArea: 100,
+        people: 8,
+        ventilationAch: 1.5,
+        thermalZoneVentilationDesignFlowRate: { scheduleId: 'sch-vent-1' },
+        maxHeatingPower: 4600,
+        maxCoolingPower: 3900
+      },
+      {
+        id: 'zone-secondary',
+        type: 'thermal zone',
+        volume: 180,
+        floorArea: 60,
+        people: 3,
+        ventilationAch: 1.1,
+        thermalZoneVentilationDesignFlowRate: { scheduleId: 'sch-vent-1' },
+        maxHeatingPower: 2600,
+        maxCoolingPower: 2200
+      }
     ];
 
     function actionButtons(action, target = '') {
@@ -206,17 +239,50 @@
         <td>${z.volume ?? '-'}</td>
         <td>${z.floorArea ?? '-'}</td>
         <td>${z.people ?? '-'}</td>
-        <td>${z.ventilationAch ?? '-'}</td>
+        <td>${z?.thermalZoneVentilationDesignFlowRate?.airChangesPerHour ?? z?.ventilation?.airChangesPerHour ?? z.ventilationAch ?? '-'}</td>
         <td>${z.maxHeatingPower ?? '-'} / ${z.maxCoolingPower ?? '-'}</td>
         <td>${actionButtons('zone')}</td>
       </tr>
     `).join('');
 
     const surfaceRows = zoneRows.flatMap((z, i) => {
+      const zoneSurfaces = Array.isArray(z?.surfaces) ? z.surfaces : [];
+      if (zoneSurfaces.length) {
+        return zoneSurfaces.map((s) => ({ ...s, zoneId: z.id }));
+      }
       const base = i + 1;
       return [
-        { zoneId: z.id, id: `surf-wall-${base}`, surfaceType: 'Wall', constructionId: 'cons-wall-ext-01', area: 48, subsurfaces: [{ id: `win-${base}-01`, surfaceType: 'Window', constructionId: 'glz-double-clear-01', area: 6 }, { id: `door-${base}-01`, surfaceType: 'Door', constructionId: 'cons-door-01', area: 2.2 }] },
-        { zoneId: z.id, id: `surf-roof-${base}`, surfaceType: 'Roof', constructionId: 'cons-roof-flat-01', area: 50, subsurfaces: [{ id: `skylight-${base}-01`, surfaceType: 'Window', constructionId: 'glz-triple-lowe-01', area: 1.8 }] }
+        {
+          zoneId: z.id,
+          id: `surf-wall-${base}`,
+          surfaceType: 'Wall',
+          constructionId: 'cons-wall-ext-01',
+          outsideBoundaryCondition: 'Outdoors',
+          groundTemperatureCalculationPropertiesId: '-',
+          area: 48,
+          height: 3,
+          azimuth_angle: 90,
+          tilt_angle: 90,
+          subsurfaces: [
+            { id: `win-${base}-01`, surfaceType: 'Window', constructionId: 'glz-double-clear-01', area: 6, height: 1.4, azimuth_angle: 90, tilt_angle: 90 },
+            { id: `door-${base}-01`, surfaceType: 'Door', constructionId: 'cons-door-01', area: 2.2, height: 2.1, azimuth_angle: 90, tilt_angle: 90 }
+          ]
+        },
+        {
+          zoneId: z.id,
+          id: `surf-roof-${base}`,
+          surfaceType: 'Roof',
+          constructionId: 'cons-roof-flat-01',
+          outsideBoundaryCondition: 'Outdoors',
+          groundTemperatureCalculationPropertiesId: '-',
+          area: 50,
+          height: 0.3,
+          azimuth_angle: 0,
+          tilt_angle: 0,
+          subsurfaces: [
+            { id: `skylight-${base}-01`, surfaceType: 'Window', constructionId: 'glz-triple-lowe-01', area: 1.8, height: 0.8, azimuth_angle: 0, tilt_angle: 0 }
+          ]
+        }
       ];
     });
 
@@ -224,8 +290,12 @@
       <tr>
         <td>${s.zoneId}</td>
         <td>${s.id}</td>
-        <td>${s.surfaceType}</td>
+        <td>${s.surfaceType ?? s.type ?? '-'}</td>
         <td>${s.constructionId}</td>
+        <td>${s.outsideBoundaryCondition ?? '-'}</td>
+        <td>${s.outsideBoundaryCondition === 'Ground' ? (s.groundTemperatureCalculationPropertiesId ?? '-') : '-'}</td>
+        <td>${s.area ?? '-'} / ${s.height ?? '-'}</td>
+        <td>${s.azimuth_angle ?? s.azimuth ?? '-'} / ${s.tilt_angle ?? s.tilt ?? '-'}</td>
         <td>${(s.subsurfaces || []).length}</td>
         <td>${actionButtons('surface', String(idx))}</td>
       </tr>
@@ -242,14 +312,27 @@
         const surface = surfaceRows[idx];
         if (!surface) return;
         detailTitle.textContent = `Surface details · ${surface.id}`;
-        detailMeta.textContent = `Zone: ${surface.zoneId} · Type: ${surface.surfaceType} · Construction: ${surface.constructionId} · Area: ${surface.area ?? '-'} m²`;
+        detailMeta.innerHTML = `
+          <p><strong>Zone:</strong> ${surface.zoneId}</p>
+          <p><strong>Type:</strong> ${surface.surfaceType ?? surface.type ?? '-'}</p>
+          <p><strong>Construction:</strong> ${surface.constructionId ?? '-'}</p>
+          <p><strong>Outside boundary:</strong> ${surface.outsideBoundaryCondition ?? '-'}</p>
+          <p><strong>Ground temp props:</strong> ${surface.outsideBoundaryCondition === 'Ground' ? (surface.groundTemperatureCalculationPropertiesId ?? '-') : 'N/A'}</p>
+          <p><strong>Area:</strong> ${surface.area ?? '-'} m²</p>
+          <p><strong>Height:</strong> ${surface.height ?? '-'} m</p>
+          <p><strong>Azimuth:</strong> ${surface.azimuth_angle ?? surface.azimuth ?? '-'}°</p>
+          <p><strong>Tilt:</strong> ${surface.tilt_angle ?? surface.tilt ?? '-'}°</p>
+        `;
         const subs = Array.isArray(surface.subsurfaces) ? surface.subsurfaces : [];
-        subsurfaceBody.innerHTML = (subs.length ? subs : [{ id: 'none', surfaceType: '-', constructionId: '-', area: '-' }]).map((sub) => `
+        subsurfaceBody.innerHTML = (subs.length ? subs : [{ id: 'none', surfaceType: '-', constructionId: '-', area: '-', height: '-', azimuth_angle: '-', tilt_angle: '-' }]).map((sub) => `
           <tr>
             <td>${sub.id}</td>
-            <td>${sub.surfaceType}</td>
-            <td>${sub.constructionId}</td>
-            <td>${sub.area}</td>
+            <td>${sub.surfaceType ?? sub.type ?? '-'}</td>
+            <td>${sub.constructionId ?? '-'}</td>
+            <td>${sub.area ?? '-'}</td>
+            <td>${sub.height ?? '-'}</td>
+            <td>${sub.azimuth_angle ?? sub.azimuth ?? '-'}</td>
+            <td>${sub.tilt_angle ?? sub.tilt ?? '-'}</td>
             <td>${actionButtons('subsurface')}</td>
           </tr>
         `).join('');
@@ -265,7 +348,8 @@
       `Total zones loaded: ${zones.length}`,
       `Primary zone floor area: ${zone?.floorArea ?? 0} m²`,
       `Primary zone volume: ${zone?.volume ?? 0} m³`,
-      `Main surface area: ${surface?.area ?? 0} m²`
+      `Main surface area: ${surface?.area ?? 0} m²`,
+      `Primary ventilation schedule: ${zone?.thermalZoneVentilationDesignFlowRate?.scheduleId ?? 'N/A'}`
     ];
     checks.forEach((item) => {
       const li = document.createElement('li');
