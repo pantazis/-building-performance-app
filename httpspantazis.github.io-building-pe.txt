@@ -1,0 +1,34 @@
+https://pantazis.github.io/-building-performance-app/view/A-projects-dashboard.html
+Buildings overview add new building button 
+Portfolio score snapshot fevgi
+Country - > full adresss 
+dublicate ->  remove 
+add buton to sri epb  desdabel if status false
+add popup on delite 
+
+https://pantazis.github.io/-building-performance-app/view/C-open-edit-building.html
+remove Current EPB status: Calculation completed
+Checklist remove  Mark as processing
+group both view in to  1
+Editable building profile -> building information
+Prefilled from sri_epb_ui_data_model_v2.js.
+only save  and delite building 
+
+https://pantazis.github.io/-building-performance-app/view/EPB1-calculation-settings.html
+Simulation settings-> simulation peridode 
+Engine readiness
+Input source route -> delete 
+Tab 1 required fields (UI-EPB v4) -> Tab 1 required fields (UI-EPB v4)
+add values from Tab 1 required fields (UI-EPB v4)
+check varibles 
+
+https://pantazis.github.io/-building-performance-app/view/EPB2-materials-constructions.html
+fix ui 
+remove dublikate 
+ADD POP UP
+Layers summary CAN BE MEANY 
+
+https://pantazis.github.io/-building-performance-app/view/EPB3-thermal-zones-envelope.html
+VAGZOUME DUBLIKATE 
+
+CLA-> MATERIAL ,THERMAL >SPASES 

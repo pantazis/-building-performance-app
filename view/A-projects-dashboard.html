@@ -98,11 +98,30 @@
       vertical-align: middle;
     }
 
+    .addr-cell {
+      max-width: 180px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: inline-block;
+      vertical-align: bottom;
+    }
+
     .action-row {
       display: grid;
       grid-auto-flow: column;
       gap: var(--sp-xs);
       justify-content: start;
+    }
+
+    .action-row .btn:disabled,
+    .action-row .btn[disabled] {
+      background: #c7cbd1;
+      border-color: #c7cbd1;
+      color: #6b7280;
+      cursor: not-allowed;
+      opacity: 1;
+      box-shadow: none;
     }
 
     /* COMPONENT: gauge-svg-template */
@@ -167,6 +186,12 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    .grid134 {
+	display: grid;
+	grid-template-columns: 1fr auto auto;
+	gap: var(--sp-xs);
+}
   </style>
 </head>
 
@@ -194,7 +219,7 @@
         <div class="full">
           <!-- COMPONENT: breadcrumbs -->
           <article id="component-breadcrumbs" class="card c-breadcrumbs">
-            <h2>Breadcrumbs</h2>
+            
             <nav aria-label="Breadcrumb">
               <ol>
                 <li><a href="./A-projects-dashboard.html">Home</a></li>
@@ -206,43 +231,38 @@
           </article>
         </div>
 
-        <div class="half">
-          <!-- COMPONENT: search-bar -->
-          <article id="component-search-bar" class="card c-search-bar">
-            <h2>Search</h2>
+       
+
+     
+
+ 
+        <div class="full">
+          <article class="card">
+             <h2>Buildings overview</h2>
+            <div class="grid134">
+                    <article  class="c-search-bar">
+           
             <label for="global-search" class="sr-only">Search buildings</label>
             <div class="search-wrap">
               <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
               <input id="global-search" type="search" placeholder="Search by building name, location or type" />
             </div>
           </article>
-        </div>
-
-        <div class="half">
-          <article class="card">
-            <h2>Quick actions</h2>
-            <div class="action-row">
+                <div class="action-row ">
+              <a class="btn btn-orange" href="./B-add-new-building.html">Search</a>
+            </div>
+              
+             <div class="action-row">
               <a class="btn btn-primary" href="./B-add-new-building.html">Add New Building (B)</a>
             </div>
-          </article>
-        </div>
-
-        <div class="full">
-          <article class="card">
-            <h2>Portfolio score snapshot</h2>
-            <div class="score-grid" id="score-grid"></div>
-          </article>
-        </div>
-
-        <div class="full">
-          <article class="card">
-            <h2>Buildings overview</h2>
+            </div>
+           
             <div class="table-wrap">
               <table>
                 <thead>
                   <tr>
                     <th scope="col">Building</th>
-                    <th scope="col">Country</th>
+                    <th scope="col">full adresss</th>
                     <th scope="col">Type</th>
                     <th scope="col">EPB Status</th>
                     <th scope="col">SRI Score</th>
@@ -355,7 +375,7 @@
               country: 'Greece',
               floorArea: '1000-10000',
               year: 2015,
-              address: 'Athens'
+              address: 'Messinias 21, Athens 15234'
             },
             epb: {
               orchestration: { status: 'CALCULATION_COMPLETED' }
@@ -388,11 +408,11 @@
     const templateProject = baseProjects[0] || null;
     const generatedVariants = templateProject
       ? [
-        { id: 'project-2', lastModified: '2026-04-28', name: 'Harbor Residences', country: 'Greece', type: 'Residential', status: 'IN_PROGRESS', score: 62, scoreClass: 'C' },
-        { id: 'project-3', lastModified: '2026-04-27', name: 'Metro Plaza', country: 'Greece', type: 'Retail', status: 'MISSING_DATA', score: 48, scoreClass: 'D' },
-        { id: 'project-4', lastModified: '2026-04-26', name: 'Innovation Campus', country: 'Italy', type: 'Non-Residential', status: 'READY_FOR_CALCULATION', score: 0, scoreClass: '-' },
-        { id: 'project-5', lastModified: '2026-04-25', name: 'Green Port Offices', country: 'Spain', type: 'Offices', status: 'CALCULATION_COMPLETED', score: 79, scoreClass: 'B' },
-        { id: 'project-6', lastModified: '2026-04-24', name: 'City Health Center', country: 'Portugal', type: 'Healthcare', status: 'PROCESSING', score: 55, scoreClass: 'C' }
+        { id: 'project-2', lastModified: '2026-04-28', name: 'Harbor Residences', country: 'Greece', address: 'Messinias 21, Athens 15234', type: 'Residential', status: 'IN_PROGRESS', score: 62, scoreClass: 'C' },
+        { id: 'project-3', lastModified: '2026-04-27', name: 'Metro Plaza', country: 'Greece', address: 'Kifisias 120, Marousi 15125', type: 'Retail', status: 'MISSING_DATA', score: 48, scoreClass: 'D' },
+        { id: 'project-4', lastModified: '2026-04-26', name: 'Innovation Campus', country: 'Italy', address: 'Via Roma 45, Milan 20121', type: 'Non-Residential', status: 'READY_FOR_CALCULATION', score: 0, scoreClass: '-' },
+        { id: 'project-5', lastModified: '2026-04-25', name: 'Green Port Offices', country: 'Spain', address: 'Calle Mayor 8, Madrid 28013', type: 'Offices', status: 'CALCULATION_COMPLETED', score: 79, scoreClass: 'B' },
+        { id: 'project-6', lastModified: '2026-04-24', name: 'City Health Center', country: 'Portugal', address: 'Avenida da Liberdade 32, Lisbon 1250-145', type: 'Healthcare', status: 'PROCESSING', score: 55, scoreClass: 'C' }
       ].map((seed) => ({
         ...templateProject,
         id: seed.id,
@@ -403,6 +423,7 @@
           general: {
             ...templateProject.building.general,
             country: seed.country,
+            address: seed.address,
             type: seed.type
           },
           epb: {
@@ -496,20 +517,24 @@
         const statusPresentation = getStatusPresentation(status);
         const sriScore = building?.sri?.results?.totalScore;
         const sriClass = building?.sri?.results?.class || '-';
+        const epbDisabled = status === 'MISSING_DATA';
+        const sriDisabled = !Number.isFinite(sriScore) || sriScore <= 0;
 
         return `
           <tr>
             <td>${building.name ?? 'Unnamed building'}</td>
-            <td>${building?.general?.country ?? 'n/a'}</td>
+            <td><span class="addr-cell" title="${building?.general?.address ?? 'n/a'}">${building?.general?.address ?? 'n/a'}</span></td>
             <td>${building?.general?.type ?? 'n/a'}</td>
             <td><span class="${statusPresentation.className}">${statusPresentation.label}</span></td>
             <td>${Number.isFinite(sriScore) ? `${sriScore}% (Class ${sriClass})` : 'n/a'}</td>
             <td>${project.lastModified ?? 'n/a'}</td>
             <td>
               <div class="action-row">
-                <a class="btn btn-sm btn-success" href="./C-open-edit-building.html">Open (C)</a>
-                <button type="button" class="btn btn-sm btn-orange" data-action="duplicate" data-project-id="${project.id}" data-building-name="${building.name ?? 'Unnamed building'}">Duplicate (D)</button>
-                <button type="button" class="btn btn-sm btn-danger" data-action="delete" data-project-id="${project.id}" data-building-name="${building.name ?? 'Unnamed building'}">Delete (E)</button>
+                <button type="button" class="btn btn-sm btn-default" ${epbDisabled ? 'disabled title="EPB not available until missing data is completed"' : ''}>EPB</button>
+                <button type="button" class="btn btn-sm btn-default" ${sriDisabled ? 'disabled title="SRI not available yet"' : ''}>SRI</button>
+                <a class="btn btn-sm btn-success" href="./C-open-edit-building.html">Open/Edit</a>
+                
+                <button type="button" class="btn btn-sm btn-danger" data-action="delete" data-project-id="${project.id}" data-building-name="${building.name ?? 'Unnamed building'}">Delete</button>
               </div>
             </td>
           </tr>
@@ -521,7 +546,7 @@
       const query = searchInput.value.trim().toLowerCase();
       const filtered = displayProjects.filter((project) => {
         const b = project.building || {};
-        return [b.name, b?.general?.country, b?.general?.type]
+        return [b.name, b?.general?.address, b?.general?.type]
           .filter(Boolean)
           .some((v) => String(v).toLowerCase().includes(query));
       });

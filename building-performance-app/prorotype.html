@@ -7,7 +7,7 @@
   <title>Building Performance App</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="style.css" />
-</head>  <!-- CO  <!-- COMPONENT-INDEX: hamburger-menu, role-switcher, search-bar, breadcrumbs, typography-hierarchy, button-group, status-chips, login-form, social-login, validation-state, unordered-list, ordered-list, data-table, select-menu, checklist, accordion, modal, toast, loader, empty-state, footer, gauge-svg-template, sri-results-table -->
+</head>  <!-- CO  <!-- COMPONENT-INDEX: hamburger-menu, role-switcher, search-bar, breadcrumbs, typography-hierarchy, button-group, status-chips, login-form, social-login, validation-state, unordered-list, ordered-list, data-table, select-menu, checklist, accordion, steps-tabs, modal, toast, loader, empty-state, footer, gauge-svg-template, sri-results-table -->
   <header class="app-header">
     <div class="container">
       <a class="brand" href="#home"><img class="logo" src="logo.png" alt="Building Performance Logo"></a>
@@ -304,6 +304,50 @@
             SRI?</button>
           <div id="accordion-panel-1" class="accordion-panel" hidden>
             Smart Readiness Indicator measures how smart a building is in terms of efficiency and flexibility.
+          </div>
+        </article>
+
+        <!-- COMPONENT: steps-tabs -->
+        <article id="component-steps-tabs" class="card c-steps-tabs">
+          <h2>Modern steps tabs</h2>
+
+          <div class="steps-container">
+            <input type="radio" id="steps-tab1" name="steps-tabs" class="tab-switch" checked>
+            <input type="radio" id="steps-tab2" name="steps-tabs" class="tab-switch">
+            <input type="radio" id="steps-tab3" name="steps-tabs" class="tab-switch">
+
+            <div class="steps-header">
+              <label for="steps-tab1" class="step-item">
+                <div class="step-number">1</div>
+                <span class="step-title">Account</span>
+              </label>
+              <label for="steps-tab2" class="step-item">
+                <div class="step-number">2</div>
+                <span class="step-title">Profile</span>
+              </label>
+              <label for="steps-tab3" class="step-item">
+                <div class="step-number">3</div>
+                <span class="step-title">Review</span>
+              </label>
+            </div>
+
+            <div class="tab-content panel-1">
+              <h3>Account Details</h3>
+              <p>Set up your login credentials and security settings here. Choose a strong password to protect your modern
+                web application dashboard.</p>
+            </div>
+
+            <div class="tab-content panel-2">
+              <h3>Profile Information</h3>
+              <p>Tell us more about yourself. Upload an avatar, fill in your bio, and add your social media handles so
+                people can find you easily.</p>
+            </div>
+
+            <div class="tab-content panel-3">
+              <h3>Review &amp; Confirm</h3>
+              <p>Almost there! Double-check your settings above. Once you are satisfied with your configurations, click
+                submit to launch your new profile.</p>
+            </div>
           </div>
         </article>
 
@@ -1146,6 +1190,154 @@
       padding: var(--sp-sm);
       border-left: 3px solid var(--green);
       background: #fff;
+    }
+
+    /* COMPONENT: steps-tabs */
+    .c-steps-tabs .steps-container {
+      --steps-color-primary: var(--btn-color-success);
+      --steps-color-primary-light: color-mix(in srgb, var(--btn-color-success) 18%, #ffffff 82%);
+      --steps-color-text-main: var(--ink);
+      --steps-color-text-muted: var(--muted);
+      --steps-color-border: var(--line);
+
+      width: 100%;
+      background: #ffffff;
+      padding: var(--sp-md);
+      border-radius: var(--r-md);
+      border: 1px solid var(--steps-color-border);
+      box-shadow: var(--shadow-1);
+    }
+
+    .c-steps-tabs .tab-switch {
+      display: none;
+    }
+
+    .c-steps-tabs .steps-header {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin-bottom: var(--sp-lg);
+      gap: var(--sp-sm);
+    }
+
+    .c-steps-tabs .steps-header::before {
+      content: '';
+      position: absolute;
+      top: 25px;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--steps-color-border);
+      z-index: 1;
+    }
+
+    .c-steps-tabs .step-item {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .c-steps-tabs .step-number {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 3px solid var(--steps-color-border);
+      color: var(--steps-color-text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: var(--fs-2);
+      transition: all 0.3s ease;
+      margin-bottom: var(--sp-sm);
+    }
+
+    .c-steps-tabs .step-title {
+      font-size: var(--fs-0);
+      font-weight: 600;
+      color: var(--steps-color-text-muted);
+      transition: color 0.3s ease;
+    }
+
+    .c-steps-tabs .tab-content {
+      display: none;
+      padding: var(--sp-md) var(--sp-xs) 0 var(--sp-xs);
+      animation: steps-fade-in 0.4s ease;
+    }
+
+    @keyframes steps-fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .c-steps-tabs #steps-tab1:checked~.steps-header .step-item[for="steps-tab1"] .step-number,
+    .c-steps-tabs #steps-tab2:checked~.steps-header .step-item[for="steps-tab2"] .step-number,
+    .c-steps-tabs #steps-tab3:checked~.steps-header .step-item[for="steps-tab3"] .step-number {
+      border-color: var(--green);
+      background: var(--steps-color-primary);
+      color: #ffffff;
+      box-shadow: 0 0 0 4px var(--steps-color-primary-light);
+    }
+
+    .c-steps-tabs #steps-tab1:checked~.steps-header .step-item[for="steps-tab1"] .step-title,
+    .c-steps-tabs #steps-tab2:checked~.steps-header .step-item[for="steps-tab2"] .step-title,
+    .c-steps-tabs #steps-tab3:checked~.steps-header .step-item[for="steps-tab3"] .step-title {
+      color: var(--steps-color-primary);
+    }
+
+    .c-steps-tabs #steps-tab1:checked~.panel-1,
+    .c-steps-tabs #steps-tab2:checked~.panel-2,
+    .c-steps-tabs #steps-tab3:checked~.panel-3 {
+      display: block;
+    }
+
+    .c-steps-tabs .tab-content h3 {
+      margin-top: 0;
+      margin-bottom: var(--sp-xs);
+      color: var(--steps-color-text-main);
+      font-size: var(--fs-3);
+    }
+
+    .c-steps-tabs .tab-content p {
+      margin: 0;
+      color: var(--steps-color-text-muted);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 700px) {
+      .c-steps-tabs .steps-header {
+        flex-direction: column;
+        align-items: stretch;
+        margin-bottom: var(--sp-md);
+      }
+
+      .c-steps-tabs .steps-header::before {
+        display: none;
+      }
+
+      .c-steps-tabs .step-item {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: var(--sp-sm);
+        text-align: left;
+      }
+
+      .c-steps-tabs .step-number {
+        margin-bottom: 0;
+      }
     }
 
     /* COMPONENT: loader */
