@@ -123,6 +123,79 @@
       display: none;
     }
     .layer-details.is-open { display: block; }
+
+    /* COMPONENT: modal */
+    .c-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(12, 18, 32, 0.45);
+      display: none;
+      place-items: center;
+      z-index: 200;
+      padding: var(--sp-lg);
+    }
+
+    .c-modal.is-open { display: grid; }
+
+    .modal-card {
+      background: #fff;
+      border-radius: var(--r-md);
+      border: 1px solid var(--line);
+      padding: var(--sp-lg);
+      max-width: 560px;
+      width: 100%;
+      display: grid;
+      gap: var(--sp-md);
+      max-height: 80vh;
+      overflow: auto;
+    }
+
+    .modal-actions {
+      display: grid;
+      grid-auto-flow: column;
+      justify-content: start;
+      gap: var(--sp-xs);
+    }
+
+    /* COMPONENT: constructions-editor */
+    .c-constructions-editor {
+      margin-bottom: var(--sp-md);
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: var(--sp-sm);
+      background: #fcfef9;
+      display: none;
+    }
+    .c-constructions-editor.is-open { display: block; }
+    .editor-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sp-sm);
+    }
+    .editor-field { grid-column: span 4; display: grid; gap: 6px; }
+    .editor-field.full { grid-column: 1 / -1; }
+    .editor-field input,
+    .editor-field select {
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 10px;
+      width: 100%;
+    }
+    .layers-list { margin: 0; padding-left: 18px; }
+    .layers-list li { margin-bottom: 8px; }
+    .layers-list label { display: grid; gap: 4px; }
+    .chips-row { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip-inline {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 12px;
+    }
+    .field-error { color: #b42318; font-weight: 600; margin: 4px 0 0; }
+    @media (max-width: 900px) {
+      .editor-field { grid-column: 1 / -1; }
+    }
   </style>
 </head>
 
@@ -189,7 +262,7 @@
           <article class="card">
             <div class="section-head">
               <h2>Materials</h2>
-              <button class="btn btn-success" type="button">+ Add Material</button>
+              <button id="add-material-btn" class="btn btn-success" type="button">+ Add Material</button>
             </div>
             <div class="table-wrap">
               <table>
@@ -216,8 +289,50 @@
           <article class="card">
             <div class="section-head">
               <h2>Constructions</h2>
-              <button class="btn btn-success" type="button">+ Add Construction</button>
+              <button id="add-construction-btn" class="btn btn-success" type="button">+ Add Construction</button>
             </div>
+
+            <!-- COMPONENT: constructions-editor -->
+            <section id="component-constructions-editor" class="c-constructions-editor" aria-label="Construction editor">
+              <h3>Add Construction</h3>
+              <p class="muted">Construction id is mandatory and mapped to surface <code>constructionId</code>.</p>
+              <form id="construction-form" class="editor-grid" novalidate>
+                <label class="editor-field" for="construction-id-input">
+                  <span>Construction *</span>
+                  <input id="construction-id-input" type="text" required placeholder="e.g., cons-wall-ext-02" />
+                </label>
+                <label class="editor-field" for="construction-class-input">
+                  <span>Construction Class *</span>
+                  <select id="construction-class-input" required>
+                    <option value="">Select class</option>
+                    <option value="MassConcentratedAtInternal">Mass concentrated at internal</option>
+                    <option value="MassConcentratedAtExternal">Mass concentrated at external</option>
+                    <option value="MassEquallyDistributed">Mass equally distributed</option>
+                    <option value="NoMass">No mass</option>
+                  </select>
+                </label>
+                <label class="editor-field" for="outside-layer-input">
+                  <span>Outside Layer (Layer 1) *</span>
+                  <select id="outside-layer-input" required></select>
+                </label>
+
+                <div class="editor-field full">
+                  <h4>Layers Configuration</h4>
+                  <ol id="layers-config-list" class="layers-list"></ol>
+                  <div class="action-row">
+                    <button id="add-layer-btn" type="button" class="btn btn-default">+ Add Layer</button>
+                  </div>
+                </div>
+
+                <p id="construction-form-error" class="field-error editor-field full" hidden></p>
+
+                <div class="editor-field full action-row">
+                  <button type="submit" class="btn btn-success">Save Construction</button>
+                  <button id="cancel-construction-btn" type="button" class="btn btn-default">Cancel</button>
+                </div>
+              </form>
+            </section>
+
             <div class="table-wrap" style="margin-bottom: var(--sp-md);">
               <table>
                 <thead>
@@ -231,7 +346,7 @@
 
             <div class="section-head">
               <h2>Glazing Systems</h2>
-              <button class="btn btn-success" type="button">+ Add Glazing</button>
+              <button id="add-glazing-btn" class="btn btn-success" type="button">+ Add Glazing</button>
             </div>
             <div class="table-wrap">
               <table>
@@ -250,7 +365,7 @@
           <article class="card">
             <div class="section-head">
               <h2>Schedules</h2>
-              <button class="btn btn-success" type="button">+ Add Schedule</button>
+              <button id="add-schedule-btn" class="btn btn-success" type="button">+ Add Schedule</button>
             </div>
             <div class="table-wrap">
               <table>
@@ -270,8 +385,8 @@
             <div class="section-head">
               <h2>Controls (Thermostats & Humidistats)</h2>
               <div class="inline-actions">
-                <button class="btn btn-success" type="button">+ Add Thermostat</button>
-                <button class="btn btn-success" type="button">+ Add Humidistat</button>
+                <button id="add-thermostat-btn" class="btn btn-success" type="button">+ Add Thermostat</button>
+                <button id="add-humidistat-btn" class="btn btn-success" type="button">+ Add Humidistat</button>
               </div>
             </div>
             <div class="table-wrap" style="margin-bottom: var(--sp-md);">
@@ -322,6 +437,19 @@
     <div class="container"><p>© 2026 OpenBEP · Contact · Privacy · Terms</p></div>
   </footer>
 
+  <!-- COMPONENT: modal -->
+  <div id="component-modal" class="c-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <h2 id="modal-title">Action</h2>
+      <p id="modal-message">Action details.</p>
+      <div id="modal-content" class="caption"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-default" id="modal-cancel">Cancel</button>
+        <button type="button" class="btn btn-danger" id="modal-confirm">Confirm</button>
+      </div>
+    </div>
+  </div>
+
  <script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
 
 
@@ -349,12 +477,43 @@
     const thermostats = Array.isArray(epb?.library?.thermostat) ? epb.library.thermostat : [];
     const humidistats = Array.isArray(epb?.library?.humidistat) ? epb.library.humidistat : [];
 
-    function actionButtons(extraOpen = false, openTarget = '') {
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>'"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
+    }
+
+    function getMaterialLabelById(id) {
+      const material = materialRows.find((m) => m.id === id);
+      if (!material) return id || 'n/a';
+      return `${material.id}${material.name ? ` · ${material.name}` : ''}`;
+    }
+
+    function normalizeConstruction(c) {
+      const layerMaterialIds = Array.isArray(c?.layerMaterialIds) && c.layerMaterialIds.length ? [...c.layerMaterialIds] : [c?.outsideLayerMaterialId].filter(Boolean);
+      if (c?.outsideLayerMaterialId && layerMaterialIds[0] !== c.outsideLayerMaterialId) {
+        layerMaterialIds.unshift(c.outsideLayerMaterialId);
+      }
+      return {
+        id: c?.id || '',
+        constructionClass: c?.constructionClass || '',
+        outsideLayerMaterialId: c?.outsideLayerMaterialId || layerMaterialIds[0] || '',
+        layerMaterialIds
+      };
+    }
+
+    function buildLayersSummary(c) {
+      const layers = Array.isArray(c.layerMaterialIds) ? c.layerMaterialIds : [];
+      const maxInline = 4;
+      const shown = layers.slice(0, maxInline).map((id, idx) => `<span class="chip-inline">L${idx + 1} ${escapeHtml(getMaterialLabelById(id))}</span>`).join('');
+      const remaining = layers.length > maxInline ? `<span class="chip-inline">+${layers.length - maxInline} more</span>` : '';
+      return `<div class="chips-row">${shown}${remaining}</div>`;
+    }
+
+    function actionButtons(extraOpen = false, openTarget = '', itemType = 'item') {
       return `
         <div class="inline-actions">
-          ${extraOpen ? `<button type="button" class="btn btn-default js-open-layers" data-target="${openTarget}">Open</button>` : `<button type="button" class="btn btn-default">Open</button>`}
+          ${extraOpen ? `<button type="button" class="btn btn-default js-open-layers" data-target="${openTarget}" data-item-type="${itemType}">Edit</button>` : `<button type="button" class="btn btn-default js-open-generic" data-item-type="${itemType}">Edit</button>`}
           
-          <button type="button" class="btn btn-danger">Delete</button>
+          <button type="button" class="btn btn-danger js-delete-row">Delete</button>
         </div>
       `;
     }
@@ -373,36 +532,59 @@
         <td>${m.conductivity ?? '-'}</td>
         <td>${m.density ?? '-'}</td>
         <td>${m.specificHeat ?? '-'}</td>
-        <td>${actionButtons(false)}</td>
+        <td>${actionButtons(false, '', 'material')}</td>
       </tr>
     `).join('');
 
-    const constructionRows = constructions.length ? constructions : [
+    let constructionRows = constructions.length ? constructions : [
       { id: 'cons-wall-ext-01', constructionClass: 'MassEquallyDistributed', outsideLayerMaterialId: 'mat-1', layerMaterialIds: ['mat-1', 'mat-2', 'mat-4'] },
-      { id: 'cons-roof-flat-01', constructionClass: 'MassConcentratedAtInternal', outsideLayerMaterialId: 'mat-3', layerMaterialIds: ['mat-3', 'mat-2', 'mat-1'] }
+      { id: 'cons-roof-flat-01', constructionClass: 'MassConcentratedAtInternal', outsideLayerMaterialId: 'mat-3', layerMaterialIds: ['mat-3', 'mat-2', 'mat-1'] },
+      { id: 'cons-wall-ext-04', constructionClass: 'MassEquallyDistributed', outsideLayerMaterialId: 'mat-1', layerMaterialIds: ['mat-1', 'mat-2', 'mat-3', 'mat-4'] }
     ];
 
-    document.getElementById('construction-body').innerHTML = constructionRows.map((c, idx) => {
-      const layers = Array.isArray(c.layerMaterialIds) ? c.layerMaterialIds : [];
-      const detailId = `layers-${idx}`;
-      return `
-        <tr>
-          <td>${c.id ?? 'n/a'}</td>
-          <td>${c.constructionClass ?? '-'}</td>
-          <td>${c.outsideLayerMaterialId ?? '-'}</td>
-          <td>
-            ${layers.length} layer(s)
-            <div id="${detailId}" class="layer-details">
-              <strong>Layers (outside -> inside)</strong>
-              <ol>
-                ${(layers.length ? layers : ['n/a', 'n/a', 'n/a', 'n/a']).map((l) => `<li>${l}</li>`).join('')}
-              </ol>
-            </div>
-          </td>
-          <td>${actionButtons(true, detailId)}</td>
-        </tr>
-      `;
-    }).join('');
+    // Ensure a visible 4-layer example exists even when data model already provides constructions.
+    if (!constructionRows.some((c) => Array.isArray(c?.layerMaterialIds) && c.layerMaterialIds.length >= 4)) {
+      constructionRows = [...constructionRows, {
+        id: 'cons-wall-ext-04',
+        constructionClass: 'MassEquallyDistributed',
+        outsideLayerMaterialId: 'mat-1',
+        layerMaterialIds: ['mat-1', 'mat-2', 'mat-3', 'mat-4']
+      }];
+    }
+
+    function renderConstructionsTable() {
+      document.getElementById('construction-body').innerHTML = constructionRows.map((raw, idx) => {
+        const c = normalizeConstruction(raw);
+        const layers = Array.isArray(c.layerMaterialIds) ? c.layerMaterialIds : [];
+        const detailId = `layers-${idx}`;
+        return `
+          <tr>
+            <td>${escapeHtml(c.id || 'n/a')}</td>
+            <td>${escapeHtml(c.constructionClass || '-')}</td>
+            <td>${escapeHtml(getMaterialLabelById(c.outsideLayerMaterialId || '-'))}</td>
+            <td>
+              ${buildLayersSummary(c)}
+              <div id="${detailId}" class="layer-details">
+                <strong>Layers (outside → inside)</strong>
+                <ol>
+                  ${(layers.length ? layers : ['n/a', 'n/a', 'n/a', 'n/a']).map((l, i) => `<li><strong>Layer ${i + 1}</strong>: ${escapeHtml(getMaterialLabelById(l))}</li>`).join('')}
+                </ol>
+              </div>
+            </td>
+            <td>${actionButtons(true, detailId, 'construction')}</td>
+          </tr>
+        `;
+      }).join('');
+
+      document.querySelectorAll('.js-open-layers').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const row = btn.closest('tr');
+          openAddEditModal('construction', row, 'edit');
+        });
+      });
+    }
+
+    renderConstructionsTable();
 
     const glazingRows = glazings.length ? glazings : [
       { id: 'glz-double-clear-01', uFactor: 1.3, solarHeatGainCoefficient: 0.52, visibleTransmittance: 0.72 },
@@ -415,7 +597,7 @@
         <td>${g.uFactor ?? '-'}</td>
         <td>${g.solarHeatGainCoefficient ?? '-'}</td>
         <td>${g.visibleTransmittance ?? '-'}</td>
-        <td>${actionButtons(false)}</td>
+        <td>${actionButtons(false, '', 'glazing')}</td>
       </tr>
     `).join('');
 
@@ -430,7 +612,7 @@
         <td>${s.id ?? 'n/a'}</td>
         <td>${s.type ?? '-'}</td>
         <td>${s.hourlyValue ?? '-'}</td>
-        <td>${actionButtons(false)}</td>
+        <td>${actionButtons(false, '', 'schedule')}</td>
       </tr>
     `).join('');
 
@@ -442,7 +624,7 @@
         <td>${t.id ?? 'n/a'}</td>
         <td>${t.constantHeatingSetpoint ?? '-'}</td>
         <td>${t.coolingSetpointSchedule ?? '-'}</td>
-        <td>${actionButtons(false)}</td>
+        <td>${actionButtons(false, '', 'thermostat')}</td>
       </tr>
     `).join('');
 
@@ -454,7 +636,7 @@
         <td>${h.id ?? 'n/a'}</td>
         <td>${h.constantDehumidificationSetpoint ?? '-'}</td>
         <td>${h.constantHumidificationSetpoint ?? '-'}</td>
-        <td>${actionButtons(false)}</td>
+        <td>${actionButtons(false, '', 'humidistat')}</td>
       </tr>
     `).join('');
 
@@ -472,19 +654,315 @@
       list.appendChild(li);
     });
 
-    document.querySelectorAll('.js-open-layers').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const targetId = btn.getAttribute('data-target');
-        const panel = targetId ? document.getElementById(targetId) : null;
-        if (!panel) return;
-        panel.classList.toggle('is-open');
+    const addConstructionBtn = document.getElementById('add-construction-btn');
+    const constructionsEditor = document.getElementById('component-constructions-editor');
+    const constructionForm = document.getElementById('construction-form');
+    const constructionIdInput = document.getElementById('construction-id-input');
+    const constructionClassInput = document.getElementById('construction-class-input');
+    const outsideLayerInput = document.getElementById('outside-layer-input');
+    const layersConfigList = document.getElementById('layers-config-list');
+    const addLayerBtn = document.getElementById('add-layer-btn');
+    const cancelConstructionBtn = document.getElementById('cancel-construction-btn');
+    const constructionFormError = document.getElementById('construction-form-error');
+
+    const layerState = [];
+
+    function getMaterialOptionsMarkup(selected = '') {
+      return materialRows.map((m) => {
+        const value = m.id || '';
+        const selectedAttr = selected === value ? 'selected' : '';
+        return `<option value="${escapeHtml(value)}" ${selectedAttr}>${escapeHtml(getMaterialLabelById(value))}</option>`;
+      }).join('');
+    }
+
+    function renderLayerInputs() {
+      layersConfigList.innerHTML = layerState.map((value, idx) => `
+        <li>
+          <label for="layer-${idx}">
+            <span>Layer ${idx + 1}${idx === 0 ? ' (Outside)' : ''}</span>
+            <select id="layer-${idx}" data-layer-index="${idx}">${getMaterialOptionsMarkup(value)}</select>
+          </label>
+        </li>
+      `).join('');
+
+      layersConfigList.querySelectorAll('select[data-layer-index]').forEach((select) => {
+        select.addEventListener('change', () => {
+          const idx = Number(select.getAttribute('data-layer-index'));
+          layerState[idx] = select.value;
+          if (idx === 0) outsideLayerInput.value = select.value;
+        });
       });
+    }
+
+    function resetConstructionForm() {
+      constructionForm.reset();
+      outsideLayerInput.innerHTML = `<option value="">Select outside layer</option>${getMaterialOptionsMarkup()}`;
+      const firstMaterialId = materialRows[0]?.id || '';
+      if (firstMaterialId) {
+        outsideLayerInput.value = firstMaterialId;
+        layerState.length = 0;
+        layerState.push(firstMaterialId);
+      } else {
+        layerState.length = 0;
+      }
+      renderLayerInputs();
+      constructionFormError.hidden = true;
+      constructionFormError.textContent = '';
+    }
+
+    outsideLayerInput.addEventListener('change', () => {
+      if (!layerState.length) layerState.push(outsideLayerInput.value);
+      layerState[0] = outsideLayerInput.value;
+      renderLayerInputs();
+    });
+
+    addConstructionBtn.addEventListener('click', () => {
+      openAddEditModal('construction', null, 'add');
+    });
+
+    addLayerBtn.addEventListener('click', () => {
+      layerState.push(materialRows[0]?.id || '');
+      renderLayerInputs();
+    });
+
+    cancelConstructionBtn.addEventListener('click', () => {
+      constructionsEditor.classList.remove('is-open');
+    });
+
+    constructionForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const id = constructionIdInput.value.trim();
+      const constructionClass = constructionClassInput.value;
+      const outsideLayerMaterialId = outsideLayerInput.value;
+      const layerMaterialIds = layerState.filter(Boolean);
+
+      let error = '';
+      if (!id) error = 'Construction is mandatory.';
+      else if (constructionRows.some((c) => c.id === id)) error = 'Construction id must be unique.';
+      else if (!constructionClass) error = 'Construction class is mandatory.';
+      else if (!outsideLayerMaterialId) error = 'Outside layer is mandatory.';
+      else if (!materialRows.some((m) => m.id === outsideLayerMaterialId)) error = 'Outside layer must reference an existing material.';
+      else if (!layerMaterialIds.length) error = 'At least one layer is required.';
+
+      if (error) {
+        constructionFormError.hidden = false;
+        constructionFormError.textContent = error;
+        return;
+      }
+
+      if (layerMaterialIds[0] !== outsideLayerMaterialId) {
+        layerMaterialIds.unshift(outsideLayerMaterialId);
+      }
+
+      constructionRows = [...constructionRows, { id, constructionClass, outsideLayerMaterialId, layerMaterialIds }];
+      renderConstructionsTable();
+      constructionsEditor.classList.remove('is-open');
     });
 
     const status = getStatusPresentation(epb?.orchestration?.status || 'READY_FOR_CALCULATION');
     const statusEl = document.getElementById('epb-status');
     statusEl.textContent = status.label;
     statusEl.className = status.className;
+
+    const modal = document.getElementById('component-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalMessage = document.getElementById('modal-message');
+    const modalContent = document.getElementById('modal-content');
+    const modalCancel = document.getElementById('modal-cancel');
+    const modalConfirm = document.getElementById('modal-confirm');
+
+    let pendingAction = null;
+
+    function openActionModal(config) {
+      pendingAction = config;
+      modalTitle.textContent = config.title || 'Action';
+      modalMessage.textContent = config.message || '';
+      modalContent.innerHTML = config.contentHtml || '';
+      modalConfirm.textContent = config.confirmLabel || 'Confirm';
+      modalConfirm.className = config.action === 'delete'
+        ? 'btn btn-danger'
+        : 'btn btn-default';
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeActionModal() {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      pendingAction = null;
+    }
+
+    function removeRowFromButton(button) {
+      const row = button.closest('tr');
+      if (!row) return;
+      row.remove();
+    }
+
+    function getEditFieldsHtml(itemType, row) {
+      const cells = Array.from(row?.querySelectorAll('td') || []).map((td) => td.textContent.trim());
+      const value = (idx) => escapeHtml(cells[idx] || '');
+      const templates = {
+        material: `
+          <label>Material Name<input type="text" value="${value(0)}"></label>
+          <label>Roughness<input type="text" value="${value(1)}"></label>
+          <label>Thickness<input type="text" value="${value(2)}"></label>
+          <label>Conductivity<input type="text" value="${value(3)}"></label>
+          <label>Density<input type="text" value="${value(4)}"></label>
+          <label>Specific Heat<input type="text" value="${value(5)}"></label>
+        `,
+        glazing: `
+          <label>Glazing ID<input type="text" value="${value(0)}"></label>
+          <label>U-Factor<input type="text" value="${value(1)}"></label>
+          <label>SHGC<input type="text" value="${value(2)}"></label>
+          <label>Visible transmittance<input type="text" value="${value(3)}"></label>
+        `,
+        schedule: `
+          <label>Schedule Name<input type="text" value="${value(0)}"></label>
+          <label>Type<input type="text" value="${value(1)}"></label>
+          <label>Value<input type="text" value="${value(2)}"></label>
+        `,
+        thermostat: `
+          <label>Thermostat ID<input type="text" value="${value(0)}"></label>
+          <label>Heating setpoint<input type="text" value="${value(1)}"></label>
+          <label>Cooling schedule<input type="text" value="${value(2)}"></label>
+        `,
+        humidistat: `
+          <label>Humidistat ID<input type="text" value="${value(0)}"></label>
+          <label>Dehumidification setpoint<input type="text" value="${value(1)}"></label>
+          <label>Humidification setpoint<input type="text" value="${value(2)}"></label>
+        `,
+        construction: `
+          <label>Construction (mandatory)
+            <input id="popup-construction-id" type="text" value="${value(0)}" placeholder="e.g., cons-wall-ext-02">
+          </label>
+          <label>Construction Class
+            <select id="popup-construction-class">
+              <option value="">Select class</option>
+              <option value="MassConcentratedAtInternal" ${value(1) === 'MassConcentratedAtInternal' ? 'selected' : ''}>Mass concentrated at internal</option>
+              <option value="MassConcentratedAtExternal" ${value(1) === 'MassConcentratedAtExternal' ? 'selected' : ''}>Mass concentrated at external</option>
+              <option value="MassEquallyDistributed" ${value(1) === 'MassEquallyDistributed' ? 'selected' : ''}>Mass equally distributed</option>
+              <option value="NoMass" ${value(1) === 'NoMass' ? 'selected' : ''}>No mass</option>
+            </select>
+          </label>
+          <div style="grid-column: 1 / -1;">
+            <strong>Layers Configuration</strong>
+            <p class="caption">Outside Layer (Layer 1) uses material IDs from Materials section.</p>
+            <ol id="popup-layers-list" class="layers-list"></ol>
+            <button id="popup-add-layer-btn" type="button" class="btn btn-default">+ Add Layer</button>
+          </div>
+        `
+      };
+
+      return `<form class="editor-grid">${templates[itemType] || '<label>Name<input type="text"></label>'}</form>`;
+    }
+
+    let popupConstructionLayerState = [];
+
+    function getPopupMaterialOptions(selected = '') {
+      return materialRows.map((m) => {
+        const id = m.id || '';
+        return `<option value="${escapeHtml(id)}" ${selected === id ? 'selected' : ''}>${escapeHtml(getMaterialLabelById(id))}</option>`;
+      }).join('');
+    }
+
+    function renderPopupConstructionLayers() {
+      const list = document.getElementById('popup-layers-list');
+      if (!list) return;
+      list.innerHTML = popupConstructionLayerState.map((layerId, idx) => `
+        <li>
+          <label>Layer ${idx + 1}${idx === 0 ? ' (Outside)' : ''}
+            <select data-popup-layer-index="${idx}">${getPopupMaterialOptions(layerId)}</select>
+          </label>
+        </li>
+      `).join('');
+
+      list.querySelectorAll('select[data-popup-layer-index]').forEach((select) => {
+        select.addEventListener('change', () => {
+          const idx = Number(select.getAttribute('data-popup-layer-index'));
+          popupConstructionLayerState[idx] = select.value;
+        });
+      });
+    }
+
+    function initConstructionPopup(row, mode) {
+      const constructionId = row?.querySelector('td')?.textContent?.trim() || '';
+      const source = constructionRows.find((c) => normalizeConstruction(c).id === constructionId);
+      const normalized = source ? normalizeConstruction(source) : null;
+
+      if (mode === 'edit' && normalized) {
+        popupConstructionLayerState = [...(normalized.layerMaterialIds || [])];
+      } else {
+        popupConstructionLayerState = [materialRows[0]?.id || ''].filter(Boolean);
+      }
+
+      if (!popupConstructionLayerState.length) popupConstructionLayerState = [''];
+      renderPopupConstructionLayers();
+
+      document.getElementById('popup-add-layer-btn')?.addEventListener('click', () => {
+        popupConstructionLayerState.push(materialRows[0]?.id || '');
+        renderPopupConstructionLayers();
+      });
+    }
+
+    function openAddEditModal(itemType, row = null, mode = 'edit') {
+      openActionModal({
+        action: 'edit',
+        rowElement: row,
+        title: `${mode === 'add' ? 'Add' : 'Edit'} ${itemType}`,
+        message: mode === 'add'
+          ? `Create a new ${itemType} using this popup form.`
+          : `You can edit this ${itemType} from this popup.`,
+        contentHtml: getEditFieldsHtml(itemType, row),
+        confirmLabel: 'Save'
+      });
+
+      if (itemType === 'construction') {
+        initConstructionPopup(row, mode);
+      }
+    }
+
+    document.addEventListener('click', (event) => {
+      const openGenericBtn = event.target.closest('.js-open-generic');
+      if (openGenericBtn) {
+        const row = openGenericBtn.closest('tr');
+        const firstCell = row?.querySelector('td')?.textContent?.trim() || 'this item';
+        const itemType = openGenericBtn.getAttribute('data-item-type') || 'item';
+        openAddEditModal(itemType, row, 'edit');
+        return;
+      }
+
+      const deleteBtn = event.target.closest('.js-delete-row');
+      if (deleteBtn) {
+        const row = deleteBtn.closest('tr');
+        const firstCell = row?.querySelector('td')?.textContent?.trim() || 'this item';
+        openActionModal({
+          action: 'delete',
+          triggerButton: deleteBtn,
+          title: 'Confirm delete',
+          message: `Are you sure you want to delete ${firstCell}?`,
+          contentHtml: '<p>This action removes the selected row from the current table view.</p>',
+          confirmLabel: 'Delete'
+        });
+      }
+    });
+
+    document.getElementById('add-material-btn')?.addEventListener('click', () => openAddEditModal('material', null, 'add'));
+    document.getElementById('add-construction-btn')?.addEventListener('click', () => openAddEditModal('construction', null, 'add'));
+    document.getElementById('add-glazing-btn')?.addEventListener('click', () => openAddEditModal('glazing', null, 'add'));
+    document.getElementById('add-schedule-btn')?.addEventListener('click', () => openAddEditModal('schedule', null, 'add'));
+    document.getElementById('add-thermostat-btn')?.addEventListener('click', () => openAddEditModal('thermostat', null, 'add'));
+    document.getElementById('add-humidistat-btn')?.addEventListener('click', () => openAddEditModal('humidistat', null, 'add'));
+
+    modalCancel?.addEventListener('click', closeActionModal);
+    modal?.addEventListener('click', (event) => {
+      if (event.target === modal) closeActionModal();
+    });
+    modalConfirm?.addEventListener('click', () => {
+      if (pendingAction?.action === 'delete' && pendingAction.triggerButton) {
+        removeRowFromButton(pendingAction.triggerButton);
+      }
+      closeActionModal();
+    });
   </script>
 </body>
 

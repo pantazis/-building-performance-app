@@ -7,7 +7,7 @@
   <title>Building Performance App</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="style.css" />
-</head>  <!-- CO  <!-- COMPONENT-INDEX: hamburger-menu, role-switcher, search-bar, breadcrumbs, typography-hierarchy, button-group, status-chips, login-form, social-login, validation-state, unordered-list, ordered-list, data-table, select-menu, checklist, accordion, steps-tabs, modal, toast, loader, empty-state, footer, gauge-svg-template, sri-results-table -->
+</head>  <!-- CO  <!-- COMPONENT-INDEX: hamburger-menu, role-switcher, search-bar, breadcrumbs, typography-hierarchy, button-group, status-chips, login-form, social-login, validation-state, unordered-list, ordered-list, data-table, select-menu, checklist, accordion, steps-tabs, modal, action-popup, toast, loader, empty-state, footer, gauge-svg-template, sri-results-table -->
   <header class="app-header">
     <div class="container">
       <a class="brand" href="#home"><img class="logo" src="logo.png" alt="Building Performance Logo"></a>
@@ -820,6 +820,20 @@
       <div class="toolbar">
         <button id="close-modal" type="button" class="btn">Cancel</button>
         <button type="button" class="btn btn-primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPONENT: action-popup -->
+  <div id="component-action-popup" class="c-modal c-action-popup" aria-hidden="true" role="dialog" aria-modal="true"
+    aria-labelledby="action-popup-title">
+    <div class="modal-card">
+      <h2 id="action-popup-title">Action details</h2>
+      <p id="action-popup-message">Details for selected action.</p>
+      <div id="action-popup-content" class="caption"></div>
+      <div class="toolbar">
+        <button id="action-popup-cancel" type="button" class="btn btn-default">Cancel</button>
+        <button id="action-popup-confirm" type="button" class="btn btn-danger">Confirm</button>
       </div>
     </div>
   </div>
