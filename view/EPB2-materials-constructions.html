@@ -86,6 +86,8 @@
 
     table { width: 100%; border-collapse: collapse; }
     th, td { border-bottom: 1px solid var(--line); padding: 10px; text-align: left; }
+    table th:last-child,
+    table td:last-child { width: 1%; white-space: nowrap; }
     .table-wrap { overflow-x: auto; }
     .section-head {
       display: flex;
@@ -95,11 +97,11 @@
       margin-bottom: var(--sp-sm);
       flex-wrap: wrap;
     }
-    .inline-actions {
-      display: inline-flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
+ .inline-actions {
+	display: grid;
+	gap: 6px;
+	grid-template-columns: auto auto;
+}
     .inline-actions .btn {
       padding: 6px 10px;
       font-size: 12px;
@@ -351,7 +353,7 @@
       return `
         <div class="inline-actions">
           ${extraOpen ? `<button type="button" class="btn btn-default js-open-layers" data-target="${openTarget}">Open</button>` : `<button type="button" class="btn btn-default">Open</button>`}
-          <button type="button" class="btn btn-warning">Duplicate</button>
+          
           <button type="button" class="btn btn-danger">Delete</button>
         </div>
       `;
