@@ -16,6 +16,24 @@
       --btn-color-danger: #ef3e23;
     }
 
+    .tab-layout {
+	display: grid;
+	grid-template-columns: repeat(12, minmax(0, 1fr));
+	gap: var(--sp-md);
+}
+.tab-actions {
+	display: grid;
+	gap: var(--sp-xs);
+}
+
+.inline-upload {
+	display: grid;
+	gap: 8px;
+	margin-top: var(--sp-xs);
+	padding-top: var(--sp-xs);
+	border-top: 1px solid var(--line);
+}
+
     .page-grid {
       display: grid;
       grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -73,6 +91,40 @@
       margin: 0;
       padding-left: 1.2rem;
     }
+
+    /* COMPONENT: modal */
+    .c-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(12, 18, 32, 0.45);
+      display: none;
+      place-items: center;
+      z-index: 200;
+      padding: var(--sp-lg);
+    }
+
+    .c-modal.is-open {
+      display: grid;
+    }
+
+    .modal-card {
+      background: #fff;
+      border-radius: var(--r-md);
+      border: 1px solid var(--line);
+      padding: var(--sp-lg);
+      max-width: 420px;
+      width: 100%;
+      display: grid;
+      gap: var(--sp-md);
+    }
+
+    .modal-actions {
+      display: grid;
+      grid-auto-flow: column;
+      justify-content: start;
+      gap: var(--sp-xs);
+    }
+    
   </style>
 </head>
 
@@ -112,8 +164,8 @@
 
         <div class="full">
           <article class="card">
-            <h2>Editable building profile</h2>
-            <p class="caption">Prefilled from <code>sri_epb_ui_data_model_v2.js</code>.</p>
+            <h2>Building information</h2>
+            
             <form id="edit-building-form" class="form-grid" novalidate>
               <label class="form-field">
                 <span>Building name</span>
@@ -192,15 +244,43 @@
               <div class="col-span-2" id="status-area"></div>
 
               <div class="inline-actions col-span-2">
-                <a class="btn btn-default" href="./A-projects-dashboard.html">Back to Dashboard (A)</a>
-                <button type="button" class="btn btn-warning" id="btn-mark-processing">Mark as processing</button>
-                <button type="submit" class="btn btn-primary">Save &amp; Continue to Building Tab (I)</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-danger" id="btn-delete-building">Delete Building</button>
               </div>
             </form>
           </article>
         </div>
 
   
+      </div>
+
+ 
+
+      <div class="tab-layout">
+
+        <div class="half">
+          <article class="card tab-actions">
+            <h2>EPB workflow</h2>
+            <div class="inline-upload" aria-label="EPB JSON import">
+              <label for="epb-json-file">Import EPB JSON model</label>
+              <input id="epb-json-file" type="file" accept=".json,application/json" />
+              <button type="button" id="epb-json-load" class="btn btn-default">Load JSON to EPB Engine</button>
+              <p id="epb-json-file-name" class="caption">No JSON file selected.</p>
+            </div>
+            <a class="btn btn-primary" href="./EPB1-calculation-settings.html">Go to EPB Dashboard</a>
+            <a class="btn btn-orange" href="./EPB4-results-summary.html">Open EPB4 · Performance Summary</a>
+          </article>
+        </div>
+
+        <div class="half">
+          <article class="card tab-actions">
+            <h2>SRI workflow</h2>
+            <a class="btn btn-primary" href="./SRI1-methodology-selection.html">Go to SRI Dashboard</a>
+            <a class="btn btn-orange" href="./SRI14-results.html">Open SRI14 · SRI Results</a>
+          </article>
+        </div>
+
+ 
       </div>
     </section>
   </main>
@@ -211,6 +291,48 @@
       <p>© 2026 OpenBEP · Contact · Privacy · Terms</p>
     </div>
   </footer>
+
+  <script>
+    const epbJsonInput = document.getElementById('epb-json-file');
+    const epbJsonFileName = document.getElementById('epb-json-file-name');
+    const epbJsonLoad = document.getElementById('epb-json-load');
+
+    epbJsonInput?.addEventListener('change', () => {
+      const selected = epbJsonInput.files && epbJsonInput.files[0];
+      epbJsonFileName.textContent = selected
+        ? `Selected file: ${selected.name}`
+        : 'No JSON file selected.';
+    });
+
+    epbJsonLoad?.addEventListener('click', () => {
+      if (!epbJsonInput?.files || !epbJsonInput.files[0]) {
+        epbJsonFileName.textContent = 'Please select a JSON file first.';
+        return;
+      }
+      epbJsonFileName.textContent = `JSON ready for import: ${epbJsonInput.files[0].name}`;
+    });
+  </script>
+
+
+
+  <!-- COMPONENT: footer -->
+  <footer id="component-footer" class="app-footer c-footer">
+    <div class="container">
+      <p>© 2026 OpenBEP · Contact · Privacy · Terms</p>
+    </div>
+  </footer>
+
+  <!-- COMPONENT: modal -->
+  <div id="component-modal" class="c-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <h2 id="modal-title">Confirm delete</h2>
+      <p id="modal-message">Are you sure you want to delete this building?</p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-default" id="modal-cancel">Cancel</button>
+        <button type="button" class="btn btn-danger" id="modal-confirm">Confirm</button>
+      </div>
+    </div>
+  </div>
 
  <script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
 
@@ -257,17 +379,58 @@
 
     const statusArea = document.getElementById('status-area');
     const form = document.getElementById('edit-building-form');
+    const deleteBuildingBtn = document.getElementById('btn-delete-building');
+    const markProcessingBtn = document.getElementById('btn-mark-processing');
+    const modal = document.getElementById('component-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalMessage = document.getElementById('modal-message');
+    const modalCancel = document.getElementById('modal-cancel');
+    const modalConfirm = document.getElementById('modal-confirm');
 
     function renderStatus(statusKey) {
       const status = getStatusPresentation(statusKey);
-      statusArea.innerHTML = `<p><strong>Current EPB status:</strong> <span class="${status.className}">${status.label}</span></p>`;
+      statusArea.innerHTML = ``;
     }
 
     renderStatus(building?.epb?.orchestration?.status ?? 'MISSING_DATA');
 
-    document.getElementById('btn-mark-processing').addEventListener('click', () => {
-      renderStatus('IN_PROGRESS');
-    });
+    if (markProcessingBtn) {
+      markProcessingBtn.addEventListener('click', () => {
+        renderStatus('IN_PROGRESS');
+      });
+    }
+
+    if (deleteBuildingBtn) {
+      deleteBuildingBtn.addEventListener('click', () => {
+        const buildingName = document.getElementById('building-name')?.value?.trim() || 'this building';
+        modalTitle.textContent = 'Confirm delete';
+        modalMessage.textContent = `Are you sure you want to delete ${buildingName}?`;
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+      });
+    }
+
+    function closeConfirmModal() {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+
+    if (modalCancel) {
+      modalCancel.addEventListener('click', closeConfirmModal);
+    }
+
+    if (modal) {
+      modal.addEventListener('click', (event) => {
+        if (event.target === modal) closeConfirmModal();
+      });
+    }
+
+    if (modalConfirm) {
+      modalConfirm.addEventListener('click', () => {
+        closeConfirmModal();
+        window.location.href = './A-projects-dashboard.html';
+      });
+    }
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();
