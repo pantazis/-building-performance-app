@@ -113,6 +113,8 @@ var AppDataModel = {
                 amplitudeOfInternalTemperatureVariations: 3,
                 minExternalTemperatureMonth: 1,
                 linearThermalTransmittance: 0.25,
+                // Compatibility alias kept for requested JSON spelling variant
+                linearThermalTrasmittance: 0.25,
                 conductivity: 1.8,
                 heatCapacity: 2.1
               }

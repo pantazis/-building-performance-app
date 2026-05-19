@@ -38,6 +38,65 @@
     }
     .c-breadcrumbs li+li::before { content: ">"; margin-right: var(--sp-xs); color: var(--muted); }
 
+    /* COMPONENT: steps-tabs */
+    .c-steps-tabs .steps-header {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--sp-sm);
+    }
+
+    .c-steps-tabs .step-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: var(--sp-xs);
+      text-decoration: none;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      background: #fff;
+      padding: 10px 12px;
+      transition: .2s ease;
+    }
+
+    .c-steps-tabs .step-number {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      border: 2px solid currentColor;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: .85rem;
+      line-height: 1;
+    }
+
+    .c-steps-tabs .step-title {
+      font-size: .9rem;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .c-steps-tabs .step-item.is-active {
+      color: var(--btn-color-success);
+      border-color: color-mix(in srgb, var(--btn-color-success) 45%, #ffffff 55%);
+      background: color-mix(in srgb, var(--btn-color-success) 10%, #ffffff 90%);
+      box-shadow: var(--shadow-1);
+    }
+
+    .c-steps-tabs .step-item:hover {
+      color: var(--ink);
+      border-color: var(--btn-color-default);
+    }
+
+    @media (max-width: 980px) {
+      .c-steps-tabs .steps-header { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      .c-steps-tabs .steps-header { grid-template-columns: 1fr; }
+    }
+
     .form-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -83,6 +142,16 @@
       justify-content: flex-end;
       gap: var(--sp-xs);
       flex-wrap: wrap;
+    }
+
+    .gtcp-single-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sp-sm);
+    }
+    .gtcp-single-grid .full-row { grid-column: 1 / -1; }
+    @media (max-width: 760px) {
+      .gtcp-single-grid { grid-template-columns: 1fr; }
     }
 
     /* COMPONENT: modal */
@@ -154,7 +223,6 @@
         <div class="full">
           <!-- COMPONENT: breadcrumbs -->
           <article id="component-breadcrumbs" class="card c-breadcrumbs">
-            
             <nav aria-label="Breadcrumb">
               <ol>
                 <li><a href="./A-projects-dashboard.html">Home</a></li>
@@ -166,37 +234,58 @@
           </article>
         </div>
 
-        <div class="half">
+        <div class="full">
+          <!-- COMPONENT: steps-tabs -->
+          <article id="component-steps-tabs" class="card c-steps-tabs" aria-label="EPB flow tabs">
+            <div class="steps-header" role="tablist" aria-label="EPB pages">
+              <a class="step-item is-active" role="tab" aria-selected="true" aria-current="page" href="./EPB1-calculation-settings.html">
+                <span class="step-number">1</span>
+                <span class="step-title">Calculation Settings</span>
+              </a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB2-materials-constructions.html">
+                <span class="step-number">2</span>
+                <span class="step-title">Materials &amp; Constructions</span>
+              </a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB3-thermal-zones-envelope.html">
+                <span class="step-number">3</span>
+                <span class="step-title">Thermal Zones &amp; Envelope Analysis</span>
+              </a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB4-results-summary.html">
+                <span class="step-number">4</span>
+                <span class="step-title">Performance Summary</span>
+              </a>
+            </div>
+          </article>
+        </div>
+
+        <div class="full">
           <article class="card">
             <h2>Simulation settings</h2>
             <form class="form-grid" aria-label="EPB settings form">
+              <p class="form-section-title full-row">Time Period</p>
               <label class="form-field">
-                <span>Begin month</span>
+                <span>Begin Date · Month</span>
                 <input id="run-begin-month" type="number" min="1" max="12" value="1" />
               </label>
               <label class="form-field">
-                <span>Begin day</span>
+                <span>Begin Date · Day</span>
                 <input id="run-begin-day" type="number" min="1" max="31" value="1" />
               </label>
               <label class="form-field">
-                <span>End month</span>
+                <span>End Date · Month</span>
                 <input id="run-end-month" type="number" min="1" max="12" value="12" />
               </label>
               <label class="form-field">
-                <span>End day</span>
+                <span>End Date · Day</span>
                 <input id="run-end-day" type="number" min="1" max="31" value="31" />
               </label>
+              <p class="form-section-title full-row">Time Step</p>
               <label class="form-field full-row">
                 <span>Number per hour (time step)</span>
                 <input id="run-step" type="number" min="1" value="1" />
               </label>
-              <label class="form-field">
-                <span>Input source route</span>
-                <select id="route-select">
-                  <option value="JSON">JSON</option>
-                  <option value="IFC4 Add2 DTV">IFC4 Add2 DTV</option>
-                </select>
-              </label>
+       
+              
               <div class="full-row action-row">
                 <a class="btn btn-default" href="./I-building-tab.html">Back to Building Tab</a>
                 <a class="btn btn-primary" href="./EPB2-materials-constructions.html">Continue to EPB2</a>
@@ -205,23 +294,9 @@
           </article>
         </div>
 
-        <div class="half">
-          <article class="card">
-            <h2>Engine readiness</h2>
-            <p><strong>Validation:</strong> <span id="validation-chip" class="chip chip--ready">Ready</span></p>
-            <p><strong>Transformation:</strong> <span id="transformation-status">READY</span></p>
-            <p><strong>Provenance source:</strong> <span id="provenance-source">-</span></p>
-            <h3>Execution order</h3>
-            <ol id="execution-order-list">
-              <li>Import</li>
-              <li>Validation</li>
-              <li>Transformation</li>
-              <li>Hourly Needs</li>
-              <li>Systems</li>
-              <li>Aggregation</li>
-            </ol>
-          </article>
-        </div>
+
+
+  
 
         <div class="full">
           <article class="card">
@@ -247,6 +322,10 @@
             </div>
             <div class="gtcp-actions">
               <button id="gtcp-open-add" class="btn btn-default" type="button">+ Add Ground Profile</button>
+            </div>
+            <div class="full-row action-row">
+              <a class="btn btn-default" href="./I-building-tab.html">Back to Building Tab</a>
+              <a class="btn btn-primary" href="./EPB2-materials-constructions.html">Continue to EPB2</a>
             </div>
           </article>
         </div>
@@ -326,34 +405,47 @@
       endMonthEl.value = d.endMonth ?? endMonthEl.value;
       endDayEl.value = d.endDayOfMonth ?? endDayEl.value;
     }
-    document.getElementById('run-step').value = epb?.settings?.timeStep?.numberPerHour || epb?.settings?.timestep || 1;
+      document.getElementById('run-step').value = epb?.settings?.timeStep?.numberPerHour || epb?.settings?.timestep || 1;
 
     const routeSelect = document.getElementById('route-select');
-    routeSelect.innerHTML = '';
-    (AppDataModel?.calculationEngine?.inputRoutes || []).forEach((route) => {
-      const option = document.createElement('option');
-      option.textContent = route;
-      option.value = route;
-      routeSelect.appendChild(option);
-    });
+    if (routeSelect) {
+      routeSelect.innerHTML = '';
+      (AppDataModel?.calculationEngine?.inputRoutes || []).forEach((route) => {
+        const option = document.createElement('option');
+        option.textContent = route;
+        option.value = route;
+        routeSelect.appendChild(option);
+      });
+    }
 
     const schemaValid = epb?.validation?.schemaValid && epb?.validation?.referenceIntegrityValid && epb?.validation?.semanticConstraintsValid;
     const statusKey = schemaValid ? 'READY_FOR_CALCULATION' : 'MISSING_DATA';
     const status = getStatusPresentation(statusKey);
     const validationChip = document.getElementById('validation-chip');
-    validationChip.textContent = status.label;
-    validationChip.className = status.className;
+    if (validationChip) {
+      validationChip.textContent = status.label;
+      validationChip.className = status.className;
+    }
 
-    document.getElementById('transformation-status').textContent = epb?.transformation?.status || 'Unknown';
-    document.getElementById('provenance-source').textContent = `${epb?.provenance?.sourceType || 'n/a'} · ${epb?.provenance?.sourceFile || 'n/a'}`;
+    const transformationStatusEl = document.getElementById('transformation-status');
+    if (transformationStatusEl) {
+      transformationStatusEl.textContent = epb?.transformation?.status || 'Unknown';
+    }
+
+    const provenanceSourceEl = document.getElementById('provenance-source');
+    if (provenanceSourceEl) {
+      provenanceSourceEl.textContent = `${epb?.provenance?.sourceType || 'n/a'} · ${epb?.provenance?.sourceFile || 'n/a'}`;
+    }
 
     const executionOrderList = document.getElementById('execution-order-list');
-    executionOrderList.innerHTML = '';
-    (epb?.orchestration?.executionOrder || []).forEach((step) => {
-      const li = document.createElement('li');
-      li.textContent = toTitleCaseFromEnum(step);
-      executionOrderList.appendChild(li);
-    });
+    if (executionOrderList) {
+      executionOrderList.innerHTML = '';
+      (epb?.orchestration?.executionOrder || []).forEach((step) => {
+        const li = document.createElement('li');
+        li.textContent = toTitleCaseFromEnum(step);
+        executionOrderList.appendChild(li);
+      });
+    }
 
     const monthOptions = [
         'January', 'February', 'March', 'April', 'May', 'June',
@@ -373,9 +465,50 @@
       heatCapacity: 2.1
     };
 
-    const gtcpRows = Array.isArray(epb?.settings?.groundTemperatureCalculationProperties)
+    const sourceGroundRows = Array.isArray(epb?.settings?.groundTemperatureCalculationProperties)
       ? epb.settings.groundTemperatureCalculationProperties
       : [demoGroundRow];
+
+    function normalizeGroundRow(row = {}) {
+      return {
+        id: row?.id,
+        name: row?.name ?? '',
+        externalWallsThickness: row?.externalWallsThickness,
+        exposedPerimeter: row?.exposedPerimeter,
+        annualMeanInternalTemperature: row?.annualMeanInternalTemperature,
+        amplitudeOfInternalTemperatureVariations: row?.amplitudeOfInternalTemperatureVariations,
+        minExternalTemperatureMonth: row?.minExternalTemperatureMonth,
+        linearThermalTransmittance: row?.linearThermalTransmittance ?? row?.linearThermalTrasmittance,
+        conductivity: row?.conductivity,
+        heatCapacity: row?.heatCapacity
+      };
+    }
+
+    const gtcpRows = sourceGroundRows.map(normalizeGroundRow);
+
+    const singleRow = gtcpRows[0] || normalizeGroundRow(demoGroundRow);
+    const singleMonthSelect = document.getElementById('gtcp-min-month');
+    if (singleMonthSelect) {
+      singleMonthSelect.innerHTML = monthOptions.map((m, i) => `<option value="${i + 1}">${m}</option>`).join('');
+      singleMonthSelect.value = String(singleRow?.minExternalTemperatureMonth ?? 1);
+    }
+
+    const gtcpNameEl = document.getElementById('gtcp-name');
+    if (gtcpNameEl) gtcpNameEl.value = singleRow?.name ?? '';
+    const gtcpThicknessEl = document.getElementById('gtcp-thickness');
+    if (gtcpThicknessEl) gtcpThicknessEl.value = singleRow?.externalWallsThickness ?? '';
+    const gtcpPerimeterEl = document.getElementById('gtcp-perimeter');
+    if (gtcpPerimeterEl) gtcpPerimeterEl.value = singleRow?.exposedPerimeter ?? '';
+    const gtcpAnnualEl = document.getElementById('gtcp-annual');
+    if (gtcpAnnualEl) gtcpAnnualEl.value = singleRow?.annualMeanInternalTemperature ?? '';
+    const gtcpAmplitudeEl = document.getElementById('gtcp-amplitude');
+    if (gtcpAmplitudeEl) gtcpAmplitudeEl.value = singleRow?.amplitudeOfInternalTemperatureVariations ?? '';
+    const gtcpLinearEl = document.getElementById('gtcp-linear');
+    if (gtcpLinearEl) gtcpLinearEl.value = singleRow?.linearThermalTransmittance ?? '';
+    const gtcpConductivityEl = document.getElementById('gtcp-conductivity');
+    if (gtcpConductivityEl) gtcpConductivityEl.value = singleRow?.conductivity ?? '';
+    const gtcpHeatEl = document.getElementById('gtcp-heat');
+    if (gtcpHeatEl) gtcpHeatEl.value = singleRow?.heatCapacity ?? '';
 
     function renderGroundRows() {
       gtcpBody.innerHTML = gtcpRows.map((row, index) => {
@@ -404,7 +537,9 @@
     const cancelAddBtn = document.getElementById('gtcp-cancel');
     const saveAddBtn = document.getElementById('gtcp-save');
     const monthSelectModal = document.getElementById('m-month');
-    monthSelectModal.innerHTML = monthOptions.map((m, i) => `<option value="${i + 1}" ${i === 0 ? 'selected' : ''}>${m}</option>`).join('');
+    if (monthSelectModal) {
+      monthSelectModal.innerHTML = monthOptions.map((m, i) => `<option value="${i + 1}" ${i === 0 ? 'selected' : ''}>${m}</option>`).join('');
+    }
 
     function openModal() {
       gtcpModal.classList.add('is-open');
@@ -415,11 +550,13 @@
       gtcpModal.setAttribute('aria-hidden', 'true');
     }
 
-    openAddBtn.addEventListener('click', openModal);
-    cancelAddBtn.addEventListener('click', closeModal);
-    gtcpModal.addEventListener('click', (e) => {
-      if (e.target === gtcpModal) closeModal();
-    });
+    if (openAddBtn) openAddBtn.addEventListener('click', openModal);
+    if (cancelAddBtn) cancelAddBtn.addEventListener('click', closeModal);
+    if (gtcpModal) {
+      gtcpModal.addEventListener('click', (e) => {
+        if (e.target === gtcpModal) closeModal();
+      });
+    }
 
     saveAddBtn.addEventListener('click', () => {
       const row = {

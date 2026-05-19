@@ -25,6 +25,58 @@
     .c-breadcrumbs ol { display: grid; grid-auto-flow: column; justify-content: start; gap: var(--sp-xs); margin: 0; padding: 0; list-style: none; }
     .c-breadcrumbs li+li::before { content: ">"; margin-right: var(--sp-xs); color: var(--muted); }
 
+    /* COMPONENT: steps-tabs */
+    .c-steps-tabs .steps-header {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--sp-sm);
+    }
+    .c-steps-tabs .step-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: var(--sp-xs);
+      text-decoration: none;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      background: #fff;
+      padding: 10px 12px;
+      transition: .2s ease;
+    }
+    .c-steps-tabs .step-number {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      border: 2px solid currentColor;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: .85rem;
+      line-height: 1;
+    }
+    .c-steps-tabs .step-title {
+      font-size: .9rem;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+    .c-steps-tabs .step-item.is-active {
+      color: var(--btn-color-success);
+      border-color: color-mix(in srgb, var(--btn-color-success) 45%, #ffffff 55%);
+      background: color-mix(in srgb, var(--btn-color-success) 10%, #ffffff 90%);
+      box-shadow: var(--shadow-1);
+    }
+    .c-steps-tabs .step-item:hover {
+      color: var(--ink);
+      border-color: var(--btn-color-default);
+    }
+    @media (max-width: 980px) {
+      .c-steps-tabs .steps-header { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .c-steps-tabs .steps-header { grid-template-columns: 1fr; }
+    }
+
     table { width: 100%; border-collapse: collapse; }
     th, td { border-bottom: 1px solid var(--line); padding: 10px; text-align: left; vertical-align: top; }
     .table-wrap { overflow-x: auto; }
@@ -73,6 +125,30 @@
                 <li aria-current="page">EPB3</li>
               </ol>
             </nav>
+          </article>
+        </div>
+
+        <div class="full">
+          <!-- COMPONENT: steps-tabs -->
+          <article id="component-steps-tabs" class="card c-steps-tabs" aria-label="EPB flow tabs">
+            <div class="steps-header" role="tablist" aria-label="EPB pages">
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB1-calculation-settings.html">
+                <span class="step-number">1</span>
+                <span class="step-title">Calculation Settings</span>
+              </a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB2-materials-constructions.html">
+                <span class="step-number">2</span>
+                <span class="step-title">Materials &amp; Constructions</span>
+              </a>
+              <a class="step-item is-active" role="tab" aria-selected="true" aria-current="page" href="./EPB3-thermal-zones-envelope.html">
+                <span class="step-number">3</span>
+                <span class="step-title">Thermal Zones &amp; Envelope Analysis</span>
+              </a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB4-results-summary.html">
+                <span class="step-number">4</span>
+                <span class="step-title">Performance Summary</span>
+              </a>
+            </div>
           </article>
         </div>
 
