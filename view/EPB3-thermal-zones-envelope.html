@@ -83,7 +83,11 @@
     table td:last-child { width: 1%; white-space: nowrap; }
     .table-wrap { overflow-x: auto; }
     .section-head { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-sm); margin-bottom: var(--sp-sm); flex-wrap: wrap; }
-    .inline-actions { display: inline-flex; gap: 6px; flex-wrap: wrap; }
+  .inline-actions {
+	display: grid;
+	gap: 6px;
+	grid-template-columns: auto auto;
+}
     .inline-actions .btn { padding: 6px 10px; font-size: 12px; }
     .surface-details { display: none; margin-top: var(--sp-md); }
     .surface-details.is-open { display: block; }
@@ -154,7 +158,7 @@
           </article>
         </div>
 
-        <div class="half">
+        <div class="full">
           <article class="card">
             <div class="section-head">
               <h2>Thermal zones</h2>
@@ -305,7 +309,7 @@
     function actionButtons(action, target = '') {
       return `<div class="inline-actions">
         <button type="button" class="btn btn-default js-open-${action}" data-target="${target}">Open</button>
-        <button type="button" class="btn btn-warning">Duplicate</button>
+
         <button type="button" class="btn btn-danger">Delete</button>
       </div>`;
     }
