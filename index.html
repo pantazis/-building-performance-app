@@ -154,8 +154,8 @@
           <h3>3) Add New Building (B)</h3>
           <p><strong>What this view is:</strong> Creation form for first-time building setup.</p>
           <p><strong>What you can do:</strong> Provide basic building metadata and create a new record.</p>
-          <p><strong>Relationship to schema:</strong> Node B; after creation, workflow hands off to Building Tab (I).</p>
-          <p><a href="./view/B-add-new-building.html">Open view/B-add-new-building.html</a></p>
+          <p><strong>Relationship to schema:</strong> Node B action uses the Open / Edit screen as the unified entry, then hands off to Building Tab (I).</p>
+          <p><a href="./view/C-open-edit-building.html">Open view/C-open-edit-building.html</a></p>
         </article>
 
         <article class="view-item">
@@ -186,7 +186,7 @@
           <h3>7) EPB View 1: Calculation Settings (EPB1)</h3>
           <p><strong>What this view is:</strong> Initial EPB simulation configuration screen.</p>
           <p><strong>What you can do:</strong> Define time period, simulation resolution, and core calculation settings.</p>
-          <p><strong>Relationship to schema:</strong> EPB sequence start: J → EPB1 → EPB2 → EPB3 → EPB4.</p>
+          <p><strong>Relationship to schema:</strong> EPB sequence start: J → EPB1 → EPB2 → EPB3 → EPB Spaces Tab → EPB4.</p>
           <p><a href="./view/EPB1-calculation-settings.html">Open view/EPB1-calculation-settings.html</a></p>
         </article>
 
@@ -202,20 +202,28 @@
           <h3>9) EPB View 3: Thermal Zones & Envelope Analysis (EPB3)</h3>
           <p><strong>What this view is:</strong> Thermal zoning and operational definition screen.</p>
           <p><strong>What you can do:</strong> Set zones/spaces, occupancy/equipment assumptions, and envelope analysis inputs.</p>
-          <p><strong>Relationship to schema:</strong> Third EPB stage immediately before results summary (EPB4).</p>
+          <p><strong>Relationship to schema:</strong> Third EPB stage, followed by Spaces Tab and then results summary (EPB4).</p>
           <p><a href="./view/EPB3-thermal-zones-envelope.html">Open view/EPB3-thermal-zones-envelope.html</a></p>
         </article>
 
         <article class="view-item">
-          <h3>10) EPB Results / Performance Summary (EPB4)</h3>
+          <h3>10) EPB Spaces Tab</h3>
+          <p><strong>What this view is:</strong> Detailed per-space EPB input screen for geometry and space-level attributes.</p>
+          <p><strong>What you can do:</strong> Review and edit space records before final EPB calculation and summary outputs.</p>
+          <p><strong>Relationship to schema:</strong> Fourth EPB stage inserted between thermal-zones analysis and EPB4 results.</p>
+          <p><a href="./view/EPB-spaces-tab.html">Open view/EPB-spaces-tab.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>11) EPB Results / Performance Summary (EPB4)</h3>
           <p><strong>What this view is:</strong> EPB outcome view with final energy-performance outputs.</p>
           <p><strong>What you can do:</strong> Review calculated indicators and summary KPI results.</p>
-          <p><strong>Relationship to schema:</strong> EPB chain endpoint and recipient of engine output (CE6 → EPB4).</p>
+          <p><strong>Relationship to schema:</strong> EPB chain endpoint after Spaces Tab and recipient of engine output (CE6 → EPB4).</p>
           <p><a href="./view/EPB4-results-summary.html">Open view/EPB4-results-summary.html</a></p>
         </article>
 
         <article class="view-item">
-          <h3>11) SRI View 1: Methodology Selection (SRI1)</h3>
+          <h3>12) SRI View 1: Methodology Selection (SRI1)</h3>
           <p><strong>What this view is:</strong> Entry point for Smart Readiness workflow configuration.</p>
           <p><strong>What you can do:</strong> Choose methodology path and initialize the SRI assessment process.</p>
           <p><strong>Relationship to schema:</strong> SRI chain start after Building Tab, before weighting decision flow.</p>
@@ -223,7 +231,7 @@
         </article>
 
         <article class="view-item">
-          <h3>12) SRI Decision: User-defined Weightings (SRI2)</h3>
+          <h3>13) SRI Decision: User-defined Weightings (SRI2)</h3>
           <p><strong>What this view is:</strong> Decision gate for using default or custom impact weightings.</p>
           <p><strong>What you can do:</strong> Select whether to proceed with user-defined weighting strategy.</p>
           <p><strong>Relationship to schema:</strong> Transition node between methodology selection and detailed weighting setup.</p>
@@ -231,7 +239,7 @@
         </article>
 
         <article class="view-item">
-          <h3>13) SRI View 2: Weighting Settings (SRI3)</h3>
+          <h3>14) SRI View 2: Weighting Settings (SRI3)</h3>
           <p><strong>What this view is:</strong> Configuration interface for SRI impact/category weighting values.</p>
           <p><strong>What you can do:</strong> Adjust and confirm custom weighting parameters used in scoring.</p>
           <p><strong>Relationship to schema:</strong> Follows SRI2 custom path and feeds the domain dashboard.</p>
@@ -239,7 +247,7 @@
         </article>
 
         <article class="view-item">
-          <h3>14) SRI View 3: Domain Dashboard (SRI4)</h3>
+          <h3>15) SRI View 3: Domain Dashboard (SRI4)</h3>
           <p><strong>What this view is:</strong> Central SRI domain navigator across technical service tabs.</p>
           <p><strong>What you can do:</strong> Review readiness progress and jump into each service domain form.</p>
           <p><strong>Relationship to schema:</strong> SRI hub branching to service tabs SRI5 through SRI13.</p>
@@ -247,7 +255,7 @@
         </article>
 
         <article class="view-item">
-          <h3>15) Heating Tab (SRI5)</h3>
+          <h3>16) Heating Tab (SRI5)</h3>
           <p><strong>What this view is:</strong> Heating services smart-readiness assessment tab.</p>
           <p><strong>What you can do:</strong> Enter functionality levels and controls for heating-related criteria.</p>
           <p><strong>Relationship to schema:</strong> One of the service-domain children of SRI4.</p>
@@ -255,7 +263,7 @@
         </article>
 
         <article class="view-item">
-          <h3>16) DHW Tab (SRI6)</h3>
+          <h3>17) DHW Tab (SRI6)</h3>
           <p><strong>What this view is:</strong> Domestic hot water smart-readiness assessment tab.</p>
           <p><strong>What you can do:</strong> Configure DHW service functionality and monitoring/control levels.</p>
           <p><strong>Relationship to schema:</strong> Service-domain branch from SRI4 in the SRI workflow set.</p>
@@ -263,7 +271,7 @@
         </article>
 
         <article class="view-item">
-          <h3>17) Cooling Tab (SRI7)</h3>
+          <h3>18) Cooling Tab (SRI7)</h3>
           <p><strong>What this view is:</strong> Cooling systems smart-readiness assessment tab.</p>
           <p><strong>What you can do:</strong> Set cooling automation, efficiency, and control capability levels.</p>
           <p><strong>Relationship to schema:</strong> Service-domain branch under the SRI4 dashboard.</p>
@@ -271,7 +279,7 @@
         </article>
 
         <article class="view-item">
-          <h3>18) Ventilation Tab (SRI8)</h3>
+          <h3>19) Ventilation Tab (SRI8)</h3>
           <p><strong>What this view is:</strong> Ventilation services smart-readiness input tab.</p>
           <p><strong>What you can do:</strong> Record ventilation capabilities for scoring and domain completeness.</p>
           <p><strong>Relationship to schema:</strong> Another technical-domain tab routed from SRI4.</p>
@@ -279,7 +287,7 @@
         </article>
 
         <article class="view-item">
-          <h3>19) Lighting Tab (SRI9)</h3>
+          <h3>20) Lighting Tab (SRI9)</h3>
           <p><strong>What this view is:</strong> Lighting services smart-readiness tab.</p>
           <p><strong>What you can do:</strong> Capture lighting control/intelligence functions for SRI computation.</p>
           <p><strong>Relationship to schema:</strong> Domain-specific node in the SRI4 service-tab group.</p>
@@ -287,7 +295,7 @@
         </article>
 
         <article class="view-item">
-          <h3>20) Dynamic Envelope Tab (SRI10)</h3>
+          <h3>21) Dynamic Envelope Tab (SRI10)</h3>
           <p><strong>What this view is:</strong> Assessment tab for adaptive envelope/building shell functions.</p>
           <p><strong>What you can do:</strong> Define dynamic envelope capabilities contributing to SRI score.</p>
           <p><strong>Relationship to schema:</strong> Domain branch from SRI4 alongside other service tabs.</p>
@@ -295,7 +303,7 @@
         </article>
 
         <article class="view-item">
-          <h3>21) Electricity Tab (SRI11)</h3>
+          <h3>22) Electricity Tab (SRI11)</h3>
           <p><strong>What this view is:</strong> Electricity-domain smart-readiness data-entry tab.</p>
           <p><strong>What you can do:</strong> Configure electrical service intelligence and responsiveness levels.</p>
           <p><strong>Relationship to schema:</strong> SRI4 child node for electricity-related functionalities.</p>
@@ -303,7 +311,7 @@
         </article>
 
         <article class="view-item">
-          <h3>22) EV Charging Tab (SRI12)</h3>
+          <h3>23) EV Charging Tab (SRI12)</h3>
           <p><strong>What this view is:</strong> Electric-vehicle charging readiness assessment tab.</p>
           <p><strong>What you can do:</strong> Enter EV charging intelligence and interaction features.</p>
           <p><strong>Relationship to schema:</strong> Service-domain branch in the SRI tabbed sequence.</p>
@@ -311,7 +319,7 @@
         </article>
 
         <article class="view-item">
-          <h3>23) Monitoring & Control Tab (SRI13)</h3>
+          <h3>24) Monitoring & Control Tab (SRI13)</h3>
           <p><strong>What this view is:</strong> Monitoring, automation, and control capability assessment tab.</p>
           <p><strong>What you can do:</strong> Define supervisory/control features that influence smart readiness.</p>
           <p><strong>Relationship to schema:</strong> Final service-domain input tab before SRI results aggregation.</p>
@@ -319,7 +327,7 @@
         </article>
 
         <article class="view-item">
-          <h3>24) SRI Results (SRI14)</h3>
+          <h3>25) SRI Results (SRI14)</h3>
           <p><strong>What this view is:</strong> Final SRI output screen with consolidated smart-readiness indicators.</p>
           <p><strong>What you can do:</strong> Review total score, domain performance, and final readiness class.</p>
           <p><strong>Relationship to schema:</strong> Endpoint of SRI workflow after domain/service evaluation.</p>
@@ -327,7 +335,7 @@
         </article>
 
         <article class="view-item">
-          <h3>25) About</h3>
+          <h3>26) About</h3>
           <p><strong>What this view is:</strong> Informational/support page describing the app context.</p>
           <p><strong>What you can do:</strong> Read project information and orientation content.</p>
           <p><strong>Relationship to schema:</strong> Auxiliary page, outside the core A→EPB/SRI transactional path.</p>
