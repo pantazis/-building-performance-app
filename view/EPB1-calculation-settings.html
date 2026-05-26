@@ -41,7 +41,7 @@
     /* COMPONENT: steps-tabs */
     .c-steps-tabs .steps-header {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(7, minmax(0, 1fr));
       gap: var(--sp-sm);
     }
 
@@ -327,20 +327,28 @@
                 <span class="step-number">1</span>
                 <span class="step-title">Calculation Settings</span>
               </a>
-              <a class="step-item" role="tab" aria-selected="false" href="./EPB2-materials-constructions.html">
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB1b-ground-temperature.html">
                 <span class="step-number">2</span>
-                <span class="step-title">Materials &amp; Constructions</span>
+                <span class="step-title">Ground Temperature</span>
+              </a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB2-materials-constructions.html">
+                <span class="step-number">3</span>
+                <span class="step-title">Building Envelopes</span>
               </a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB3-thermal-zones-envelope.html">
-                <span class="step-number">3</span>
+                <span class="step-number">4</span>
                 <span class="step-title">Thermal Zones &amp; Envelope Analysis</span>
               </a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB-spaces-tab.html">
-                <span class="step-number">4</span>
+                <span class="step-number">5</span>
                 <span class="step-title">Spaces Tab</span>
               </a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB-operations-tab.html">
+                <span class="step-number">6</span>
+                <span class="step-title">Operations</span>
+              </a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB4-results-summary.html">
-                <span class="step-number">5</span>
+                <span class="step-number">7</span>
                 <span class="step-title">Performance Summary</span>
               </a>
             </div>
@@ -386,20 +394,11 @@
 
         <div class="full">
           <article class="card">
-            <h2>Ground temperature calculation properties</h2>
-
-            <div style="overflow-x:auto;">
-              <div class="c-gtcp-grid" role="table" aria-label="Ground temperature calculation properties table">
-      
-                <div id="gtcp-body" class="c-gtcp-grid-body" role="rowgroup"></div>
-              </div>
-            </div>
-            <div class="gtcp-actions">
-              <button id="gtcp-open-add" class="btn btn-default" type="button">+ Add Ground Profile</button>
-            </div>
+            <h2>Next step</h2>
+            <p class="muted">Ground Temperature properties have been moved into a dedicated step (EPB1b) to keep settings and boundary-condition data separate.</p>
             <div class="full-row action-row">
               <a class="btn btn-default" href="./I-building-tab.html">Back to Building Tab</a>
-              <a class="btn btn-primary" href="./EPB2-materials-constructions.html">Continue to EPB2</a>
+              <a class="btn btn-primary" href="./EPB1b-ground-temperature.html">Continue to EPB1b</a>
             </div>
           </article>
         </div>

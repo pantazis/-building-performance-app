@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EPB · Operations Tab · OpenBEP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../building-performance-app/style.css" />
+  <style>
+    :root {
+      --btn-color-success: #2db34a;
+      --btn-color-default: #86c440;
+      --btn-color-warning: #fecf17;
+      --btn-color-orange: #f47721;
+      --btn-color-danger: #ef3e23;
+    }
+
+    .operations-layout { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--sp-md); }
+    .full { grid-column: 1 / -1; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px; text-align: left; }
+    table th:last-child, table td:last-child { width: 1%; white-space: nowrap; }
+    .section-head { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-sm); margin-bottom: var(--sp-sm); flex-wrap: wrap; }
+    .inline-actions { display: grid; gap: 6px; grid-template-columns: auto auto; }
+    .inline-actions .btn { padding: 6px 10px; font-size: 12px; }
+
+    /* COMPONENT: breadcrumbs */
+    .c-breadcrumbs ol { display: grid; grid-auto-flow: column; justify-content: start; gap: var(--sp-xs); margin: 0; padding: 0; list-style: none; }
+    .c-breadcrumbs li+li::before { content: ">"; margin-right: var(--sp-xs); color: var(--muted); }
+
+    /* COMPONENT: steps-tabs */
+    .c-steps-tabs .steps-header { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: var(--sp-sm); }
+    .c-steps-tabs .step-item { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: var(--sp-xs); text-decoration: none; color: var(--muted); border: 1px solid var(--line); border-radius: var(--r-sm); background: #fff; padding: 10px 12px; transition: .2s ease; }
+    .c-steps-tabs .step-number { width: 26px; height: 26px; border-radius: 999px; border: 2px solid currentColor; display: grid; place-items: center; font-weight: 700; font-size: .85rem; line-height: 1; }
+    .c-steps-tabs .step-title { font-size: .9rem; font-weight: 600; line-height: 1.2; }
+    .c-steps-tabs .step-item.is-active { color: var(--btn-color-success); border-color: color-mix(in srgb, var(--btn-color-success) 45%, #ffffff 55%); background: color-mix(in srgb, var(--btn-color-success) 10%, #ffffff 90%); box-shadow: var(--shadow-1); }
+    .c-steps-tabs .step-item:hover { color: var(--ink); border-color: var(--btn-color-default); }
+    @media (max-width: 980px) { .c-steps-tabs .steps-header { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 640px) { .c-steps-tabs .steps-header { grid-template-columns: 1fr; } }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="container">
+      <a class="brand" href="./A-projects-dashboard.html"><img class="logo" src="../building-performance-app/logo.png" alt="OpenBEP logo"></a>
+      <nav id="main-nav" class="nav" aria-label="Primary">
+        <a href="./A-projects-dashboard.html">Projects Dashboard</a>
+        <a href="./I-building-tab.html">Building Tab</a>
+        <a href="./EPB-operations-tab.html" aria-current="page">EPB Operations</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page" id="view-epb-operations">
+      <div class="page-header">
+        <h1>EPB · Operations Tab</h1>
+        <p class="muted">Manage schedules and controls (thermostats &amp; humidistats) used by EPB zones and systems.</p>
+      </div>
+
+      <div class="operations-layout">
+        <div class="full">
+          <!-- COMPONENT: breadcrumbs -->
+          <article id="component-breadcrumbs" class="card c-breadcrumbs">
+            <nav aria-label="Breadcrumb">
+              <ol>
+                <li><a href="./A-projects-dashboard.html">Home</a></li>
+                <li><a href="./I-building-tab.html">Building Tab</a></li>
+                <li><a href="./EPB-spaces-tab.html">Spaces</a></li>
+                <li aria-current="page">Operations</li>
+              </ol>
+            </nav>
+          </article>
+        </div>
+
+        <div class="full">
+          <!-- COMPONENT: steps-tabs -->
+          <article id="component-steps-tabs" class="card c-steps-tabs" aria-label="EPB flow tabs">
+            <div class="steps-header" role="tablist" aria-label="EPB pages">
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB1-calculation-settings.html"><span class="step-number">1</span><span class="step-title">Calculation Settings</span></a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB1b-ground-temperature.html"><span class="step-number">2</span><span class="step-title">Ground Temperature</span></a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB2-materials-constructions.html"><span class="step-number">3</span><span class="step-title">Building Envelopes</span></a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB3-thermal-zones-envelope.html"><span class="step-number">4</span><span class="step-title">Thermal Zones &amp; Envelope Analysis</span></a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB-spaces-tab.html"><span class="step-number">5</span><span class="step-title">Spaces Tab</span></a>
+              <a class="step-item is-active" role="tab" aria-selected="true" aria-current="page" href="./EPB-operations-tab.html"><span class="step-number">6</span><span class="step-title">Operations</span></a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB4-results-summary.html"><span class="step-number">7</span><span class="step-title">Performance Summary</span></a>
+            </div>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card">
+            <div class="section-head">
+              <h2>Schedules</h2>
+              <button class="btn btn-success" type="button">+ Add Schedule</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Schedule Name *</th><th>Type</th><th>Value</th><th>Actions</th></tr></thead>
+                <tbody id="schedules-body"></tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card">
+            <div class="section-head">
+              <h2>Controls (Thermostats &amp; Humidistats)</h2>
+              <div class="inline-actions">
+                <button class="btn btn-success" type="button">+ Add Thermostat</button>
+                <button class="btn btn-success" type="button">+ Add Humidistat</button>
+              </div>
+            </div>
+            <div class="table-wrap" style="margin-bottom: var(--sp-md);">
+              <table>
+                <thead><tr><th>Thermostat ID *</th><th>Constant heating setpoint (°C)</th><th>Cooling setpoint schedule</th><th>Actions</th></tr></thead>
+                <tbody id="thermostats-body"></tbody>
+              </table>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Humidistat ID *</th><th>Dehumidification setpoint (%)</th><th>Humidification setpoint (%)</th><th>Actions</th></tr></thead>
+                <tbody id="humidistats-body"></tbody>
+              </table>
+            </div>
+            <div class="action-row" style="margin-top: var(--sp-md);">
+              <a class="btn btn-default" href="./EPB-spaces-tab.html">Back to Spaces</a>
+              <a class="btn btn-primary" href="./EPB4-results-summary.html">Continue to EPB4</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- COMPONENT: footer -->
+  <footer id="component-footer" class="app-footer c-footer">
+    <div class="container"><p>© 2026 OpenBEP · Contact · Privacy · Terms</p></div>
+  </footer>
+
+  <script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
+  <script>
+    const epb = AppDataModel?.projects?.[0]?.building?.epb || {};
+    const schedules = Array.isArray(epb?.library?.scheduleConstant) ? epb.library.scheduleConstant : [];
+    const thermostats = Array.isArray(epb?.library?.thermostat) ? epb.library.thermostat : [];
+    const humidistats = Array.isArray(epb?.library?.humidistat) ? epb.library.humidistat : [];
+
+    function actionButtons() {
+      return `<div class="inline-actions"><button type="button" class="btn btn-default">Edit</button><button type="button" class="btn btn-danger">Delete</button></div>`;
+    }
+
+    const scheduleRows = schedules.length ? schedules : [
+      { id: 'sch-occ-1', type: 'Occupancy', hourlyValue: 1 },
+      { id: 'sch-act-1', type: 'Activity', hourlyValue: 120 },
+      { id: 'sch-cool-sp-1', type: 'CoolingSetpoint', hourlyValue: 26 },
+      { id: 'sch-vent-1', type: 'Ventilation', hourlyValue: 1 }
+    ];
+    document.getElementById('schedules-body').innerHTML = scheduleRows.map((s) => `
+      <tr><td>${s.id ?? 'n/a'}</td><td>${s.type ?? '-'}</td><td>${s.hourlyValue ?? '-'}</td><td>${actionButtons()}</td></tr>
+    `).join('');
+
+    const thermostatRows = thermostats.length ? thermostats : [
+      { id: 'th-1', constantHeatingSetpoint: 21, coolingSetpointSchedule: 'sch-cool-sp-1' }
+    ];
+    document.getElementById('thermostats-body').innerHTML = thermostatRows.map((t) => `
+      <tr><td>${t.id ?? 'n/a'}</td><td>${t.constantHeatingSetpoint ?? '-'}</td><td>${t.coolingSetpointSchedule ?? '-'}</td><td>${actionButtons()}</td></tr>
+    `).join('');
+
+    const humidistatRows = humidistats.length ? humidistats : [
+      { id: 'hum-1', constantDehumidificationSetpoint: 60, constantHumidificationSetpoint: 35 }
+    ];
+    document.getElementById('humidistats-body').innerHTML = humidistatRows.map((h) => `
+      <tr><td>${h.id ?? 'n/a'}</td><td>${h.constantDehumidificationSetpoint ?? '-'}</td><td>${h.constantHumidificationSetpoint ?? '-'}</td><td>${actionButtons()}</td></tr>
+    `).join('');
+  </script>
+</body>
+
+</html>

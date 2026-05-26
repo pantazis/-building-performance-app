@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EPB1b · Ground Temperature · OpenBEP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../building-performance-app/style.css" />
+  <style>
+    :root {
+      --btn-color-success: #2db34a;
+      --btn-color-default: #86c440;
+      --btn-color-warning: #fecf17;
+      --btn-color-orange: #f47721;
+      --btn-color-danger: #ef3e23;
+    }
+
+    .epb-layout { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--sp-md); }
+    .full { grid-column: 1 / -1; }
+
+    /* COMPONENT: breadcrumbs */
+    .c-breadcrumbs ol { display: grid; grid-auto-flow: column; justify-content: start; gap: var(--sp-xs); margin: 0; padding: 0; list-style: none; }
+    .c-breadcrumbs li+li::before { content: ">"; margin-right: var(--sp-xs); color: var(--muted); }
+
+    /* COMPONENT: steps-tabs */
+    .c-steps-tabs .steps-header { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: var(--sp-sm); }
+    .c-steps-tabs .step-item {
+      display: grid; grid-template-columns: auto 1fr; align-items: center; gap: var(--sp-xs);
+      text-decoration: none; color: var(--muted); border: 1px solid var(--line); border-radius: var(--r-sm);
+      background: #fff; padding: 10px 12px; transition: .2s ease;
+    }
+    .c-steps-tabs .step-number { width: 26px; height: 26px; border-radius: 999px; border: 2px solid currentColor; display: grid; place-items: center; font-weight: 700; font-size: .85rem; line-height: 1; }
+    .c-steps-tabs .step-title { font-size: .9rem; font-weight: 600; line-height: 1.2; }
+    .c-steps-tabs .step-item.is-active {
+      color: var(--btn-color-success);
+      border-color: color-mix(in srgb, var(--btn-color-success) 45%, #ffffff 55%);
+      background: color-mix(in srgb, var(--btn-color-success) 10%, #ffffff 90%);
+      box-shadow: var(--shadow-1);
+    }
+    .c-steps-tabs .step-item:hover { color: var(--ink); border-color: var(--btn-color-default); }
+    @media (max-width: 980px) { .c-steps-tabs .steps-header { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 640px) { .c-steps-tabs .steps-header { grid-template-columns: 1fr; } }
+
+    .gtcp-input,input[type="text"].gtcp-input,input[type="number"].gtcp-input,.gtcp-select {
+      width: 100%; border: 1px solid var(--line); border-radius: var(--r-sm); padding: 8px; font: inherit; background: #fff;
+    }
+    /* COMPONENT: gtcp-grid */
+    .c-gtcp-grid { display: grid; gap: var(--sp-sm); overflow: hidden; background: #fff; }
+    .c-gtcp-grid-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-sm); }
+    .c-gtcp-grid-row>div { display: grid; align-items: center; }
+    .gtcp-cell { display: grid; gap: 6px; }
+    .gtcp-cell-label { font-size: .78rem; color: var(--muted); font-weight: 700; line-height: 1.25; }
+
+    @media (max-width: 1100px) {
+      .c-gtcp-grid { min-width: 0; }
+      .c-gtcp-grid-row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-xs); padding: var(--sp-xs); border-bottom: 1px solid var(--line); }
+      .c-gtcp-grid-row>div { border: 1px solid var(--line); border-radius: var(--r-sm); background: #fff; }
+      .gtcp-cell-label { display: block; }
+    }
+    @media (max-width: 680px) { .c-gtcp-grid-row { grid-template-columns: 1fr; } }
+
+    .gtcp-actions { margin-top: var(--sp-sm); display: flex; justify-content: flex-end; gap: var(--sp-xs); flex-wrap: wrap; }
+
+    /* COMPONENT: modal */
+    .c-modal { position: fixed; inset: 0; background: rgba(12, 18, 32, 0.45); display: none; place-items: center; z-index: 200; padding: var(--sp-lg); }
+    .c-modal.is-open { display: grid; }
+    .modal-card { background: #fff; border-radius: var(--r-md); border: 1px solid var(--line); padding: var(--sp-lg); width: min(760px, 96vw); display: grid; gap: var(--sp-sm); max-height: 90vh; overflow: auto; }
+    .modal-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-sm); }
+    .modal-form-grid label { display: grid; gap: 6px; }
+    .modal-form-grid input,.modal-form-grid select { border: 1px solid var(--line); border-radius: var(--r-sm); padding: 8px; font: inherit; width: 100%; }
+    .modal-actions { display: flex; justify-content: flex-end; gap: var(--sp-xs); flex-wrap: wrap; }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="container">
+      <a class="brand" href="./A-projects-dashboard.html"><img class="logo" src="../building-performance-app/logo.png" alt="OpenBEP logo"></a>
+      <nav id="main-nav" class="nav" aria-label="Primary">
+        <a href="./A-projects-dashboard.html">Projects Dashboard</a>
+        <a href="./I-building-tab.html">Building Tab</a>
+        <a href="./EPB1b-ground-temperature.html" aria-current="page">EPB1b</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page" id="view-epb1b">
+      <div class="page-header">
+        <h1>EPB1b · Ground Temperature</h1>
+        <p class="muted">Manage ground temperature calculation properties used by EPB envelope boundary conditions.</p>
+      </div>
+
+      <div class="epb-layout">
+        <div class="full">
+          <!-- COMPONENT: breadcrumbs -->
+          <article id="component-breadcrumbs" class="card c-breadcrumbs">
+            <nav aria-label="Breadcrumb">
+              <ol>
+                <li><a href="./A-projects-dashboard.html">Home</a></li>
+                <li><a href="./I-building-tab.html">Building Tab</a></li>
+                <li><a href="./EPB1-calculation-settings.html">EPB1</a></li>
+                <li aria-current="page">EPB1b</li>
+              </ol>
+            </nav>
+          </article>
+        </div>
+
+        <div class="full">
+          <!-- COMPONENT: steps-tabs -->
+          <article id="component-steps-tabs" class="card c-steps-tabs" aria-label="EPB flow tabs">
+            <div class="steps-header" role="tablist" aria-label="EPB pages">
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB1-calculation-settings.html"><span class="step-number">1</span><span class="step-title">Calculation Settings</span></a>
+              <a class="step-item is-active" role="tab" aria-selected="true" aria-current="page" href="./EPB1b-ground-temperature.html"><span class="step-number">2</span><span class="step-title">Ground Temperature</span></a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB2-materials-constructions.html"><span class="step-number">3</span><span class="step-title">Building Envelopes</span></a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB3-thermal-zones-envelope.html"><span class="step-number">4</span><span class="step-title">Thermal Zones &amp; Envelope Analysis</span></a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB-spaces-tab.html"><span class="step-number">5</span><span class="step-title">Spaces Tab</span></a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB-operations-tab.html"><span class="step-number">6</span><span class="step-title">Operations</span></a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB4-results-summary.html"><span class="step-number">7</span><span class="step-title">Performance Summary</span></a>
+            </div>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card">
+            <h2>Ground temperature calculation properties</h2>
+            <div style="overflow-x:auto;">
+              <div class="c-gtcp-grid" role="table" aria-label="Ground temperature calculation properties table">
+                <div id="gtcp-body" class="c-gtcp-grid-body" role="rowgroup"></div>
+              </div>
+            </div>
+            <div class="gtcp-actions">
+              <button id="gtcp-open-add" class="btn btn-default" type="button">+ Add Ground Profile</button>
+            </div>
+            <div class="full-row action-row">
+              <a class="btn btn-default" href="./EPB1-calculation-settings.html">Back to EPB1</a>
+              <a class="btn btn-primary" href="./EPB2-materials-constructions.html">Continue to EPB2</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- COMPONENT: footer -->
+  <footer id="component-footer" class="app-footer c-footer">
+    <div class="container"><p>© 2026 OpenBEP · Contact · Privacy · Terms</p></div>
+  </footer>
+
+  <!-- COMPONENT: modal -->
+  <section id="gtcp-modal" class="c-modal" aria-hidden="true">
+    <article class="modal-card" role="dialog" aria-modal="true" aria-labelledby="gtcp-modal-title">
+      <h2 id="gtcp-modal-title">Add Ground Temperature Profile</h2>
+      <form id="gtcp-modal-form" class="modal-form-grid">
+        <label><span>Name *</span><input id="m-name" type="text" required value="Demo Ground Profile" /></label>
+        <label><span>External walls thickness (m)</span><input id="m-thickness" type="number" step="any" value="0.30" /></label>
+        <label><span>Exposed perimeter (m)</span><input id="m-perimeter" type="number" step="any" value="120" /></label>
+        <label><span>Annual mean internal temperature (°C)</span><input id="m-annual" type="number" step="any" value="21" /></label>
+        <label><span>Amplitude of internal temperature variations</span><input id="m-amplitude" type="number" step="any" value="3" /></label>
+        <label><span>Month of minimum external temperature</span><select id="m-month"></select></label>
+        <label><span>Linear thermal transmittance</span><input id="m-linear" type="number" step="any" value="0.25" /></label>
+        <label><span>Conductivity</span><input id="m-conductivity" type="number" step="any" value="1.8" /></label>
+        <label><span>Heat capacity</span><input id="m-heat" type="number" step="any" value="2.1" /></label>
+      </form>
+      <div class="modal-actions">
+        <button id="gtcp-cancel" type="button" class="btn btn-default">Cancel</button>
+        <button id="gtcp-save" type="button" class="btn btn-success">Add Row</button>
+      </div>
+    </article>
+  </section>
+
+  <script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
+  <script>
+    const epb = AppDataModel?.projects?.[0]?.building?.epb || {};
+    const monthOptions = ['January', 'February', 'March', 'April', 'May', 'June','July', 'August', 'September', 'October', 'November', 'December'];
+    const gtcpBody = document.getElementById('gtcp-body');
+    const demoGroundRow = { name: 'Demo Ground Profile', externalWallsThickness: 0.30, exposedPerimeter: 120, annualMeanInternalTemperature: 21, amplitudeOfInternalTemperatureVariations: 3, minExternalTemperatureMonth: 1, linearThermalTransmittance: 0.25, conductivity: 1.8, heatCapacity: 2.1 };
+
+    const sourceGroundRows = Array.isArray(epb?.settings?.groundTemperatureCalculationProperties)
+      ? epb.settings.groundTemperatureCalculationProperties
+      : [demoGroundRow];
+
+    function normalizeGroundRow(row = {}) {
+      return {
+        id: row?.id,
+        name: row?.name ?? '',
+        externalWallsThickness: row?.externalWallsThickness,
+        exposedPerimeter: row?.exposedPerimeter,
+        annualMeanInternalTemperature: row?.annualMeanInternalTemperature,
+        amplitudeOfInternalTemperatureVariations: row?.amplitudeOfInternalTemperatureVariations,
+        minExternalTemperatureMonth: row?.minExternalTemperatureMonth,
+        linearThermalTransmittance: row?.linearThermalTransmittance ?? row?.linearThermalTrasmittance,
+        conductivity: row?.conductivity,
+        heatCapacity: row?.heatCapacity
+      };
+    }
+
+    const gtcpRows = sourceGroundRows.map(normalizeGroundRow);
+
+    function renderGroundRows() {
+      gtcpBody.innerHTML = gtcpRows.map((row) => {
+        const selectedMonth = Number(row?.minExternalTemperatureMonth) || 1;
+        const monthHtml = monthOptions.map((m, i) => `<option value="${i + 1}" ${selectedMonth === i + 1 ? 'selected' : ''}>${m}</option>`).join('');
+        return `
+          <div class="c-gtcp-grid-row" role="row">
+            <div role="cell"><div class="gtcp-cell"><span class="gtcp-cell-label">Ground Temperature Calculation Properties Name *</span><input class="gtcp-input" type="text" value="${row?.name ?? ''}" placeholder="Ground profile name" /></div></div>
+            <div role="cell"><div class="gtcp-cell"><span class="gtcp-cell-label">External walls thickness (m)</span><input class="gtcp-input" type="number" step="any" value="${row?.externalWallsThickness ?? ''}" /></div></div>
+            <div role="cell"><div class="gtcp-cell"><span class="gtcp-cell-label">Exposed perimeter</span><input class="gtcp-input" type="number" step="any" value="${row?.exposedPerimeter ?? ''}" /></div></div>
+            <div role="cell"><div class="gtcp-cell"><span class="gtcp-cell-label">Annual mean internal temperature (°C)</span><input class="gtcp-input" type="number" step="any" value="${row?.annualMeanInternalTemperature ?? ''}" /></div></div>
+            <div role="cell"><div class="gtcp-cell"><span class="gtcp-cell-label">Amplitude of internal temperature variations</span><input class="gtcp-input" type="number" step="any" value="${row?.amplitudeOfInternalTemperatureVariations ?? ''}" /></div></div>
+            <div role="cell"><div class="gtcp-cell"><span class="gtcp-cell-label">Month of minimum external temperature</span><select class="gtcp-select">${monthHtml}</select></div></div>
+            <div role="cell"><div class="gtcp-cell"><span class="gtcp-cell-label">Linear thermal transmittance</span><input class="gtcp-input" type="number" step="any" value="${row?.linearThermalTransmittance ?? ''}" /></div></div>
+            <div role="cell"><div class="gtcp-cell"><span class="gtcp-cell-label">Conductivity</span><input class="gtcp-input" type="number" step="any" value="${row?.conductivity ?? ''}" /></div></div>
+            <div role="cell"><div class="gtcp-cell"><span class="gtcp-cell-label">Heat capacity</span><input class="gtcp-input" type="number" step="any" value="${row?.heatCapacity ?? ''}" /></div></div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    renderGroundRows();
+
+    const gtcpModal = document.getElementById('gtcp-modal');
+    const openAddBtn = document.getElementById('gtcp-open-add');
+    const cancelAddBtn = document.getElementById('gtcp-cancel');
+    const saveAddBtn = document.getElementById('gtcp-save');
+    const monthSelectModal = document.getElementById('m-month');
+    if (monthSelectModal) monthSelectModal.innerHTML = monthOptions.map((m, i) => `<option value="${i + 1}" ${i === 0 ? 'selected' : ''}>${m}</option>`).join('');
+
+    function openModal() { gtcpModal.classList.add('is-open'); gtcpModal.setAttribute('aria-hidden', 'false'); }
+    function closeModal() { gtcpModal.classList.remove('is-open'); gtcpModal.setAttribute('aria-hidden', 'true'); }
+    if (openAddBtn) openAddBtn.addEventListener('click', openModal);
+    if (cancelAddBtn) cancelAddBtn.addEventListener('click', closeModal);
+    if (gtcpModal) gtcpModal.addEventListener('click', (e) => { if (e.target === gtcpModal) closeModal(); });
+
+    saveAddBtn.addEventListener('click', () => {
+      const row = {
+        name: document.getElementById('m-name').value || 'Demo Ground Profile',
+        externalWallsThickness: document.getElementById('m-thickness').value,
+        exposedPerimeter: document.getElementById('m-perimeter').value,
+        annualMeanInternalTemperature: document.getElementById('m-annual').value,
+        amplitudeOfInternalTemperatureVariations: document.getElementById('m-amplitude').value,
+        minExternalTemperatureMonth: Number(document.getElementById('m-month').value) || 1,
+        linearThermalTransmittance: document.getElementById('m-linear').value,
+        conductivity: document.getElementById('m-conductivity').value,
+        heatCapacity: document.getElementById('m-heat').value
+      };
+      gtcpRows.push(row);
+      renderGroundRows();
+      closeModal();
+    });
+  </script>
+</body>
+
+</html>

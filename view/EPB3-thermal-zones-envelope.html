@@ -28,7 +28,7 @@
     /* COMPONENT: steps-tabs */
     .c-steps-tabs .steps-header {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(7, minmax(0, 1fr));
       gap: var(--sp-sm);
     }
     .c-steps-tabs .step-item {
@@ -142,20 +142,28 @@
                 <span class="step-number">1</span>
                 <span class="step-title">Calculation Settings</span>
               </a>
-              <a class="step-item" role="tab" aria-selected="false" href="./EPB2-materials-constructions.html">
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB1b-ground-temperature.html">
                 <span class="step-number">2</span>
-                <span class="step-title">Materials &amp; Constructions</span>
+                <span class="step-title">Ground Temperature</span>
+              </a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB2-materials-constructions.html">
+                <span class="step-number">3</span>
+                <span class="step-title">Building Envelopes</span>
               </a>
               <a class="step-item is-active" role="tab" aria-selected="true" aria-current="page" href="./EPB3-thermal-zones-envelope.html">
-                <span class="step-number">3</span>
+                <span class="step-number">4</span>
                 <span class="step-title">Thermal Zones &amp; Envelope Analysis</span>
               </a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB-spaces-tab.html">
-                <span class="step-number">4</span>
+                <span class="step-number">5</span>
                 <span class="step-title">Spaces Tab</span>
               </a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB-operations-tab.html">
+                <span class="step-number">6</span>
+                <span class="step-title">Operations</span>
+              </a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB4-results-summary.html">
-                <span class="step-number">5</span>
+                <span class="step-number">7</span>
                 <span class="step-title">Performance Summary</span>
               </a>
             </div>
@@ -240,9 +248,17 @@
                 </table>
               </div>
             </article><br><br>
+            <h3>Envelope checks and orchestration status</h3>
+            <p><strong>Status:</strong> <span id="status-chip" class="chip chip--processing">Processing</span></p>
+            <ul id="envelope-list">
+              <li>Zones and surfaces are loading from project data.</li>
+              <li>Envelope geometry is checked for area/height completeness.</li>
+              <li>Sub-surface links are validated per parent surface.</li>
+              <li>Ventilation and schedule references are verified.</li>
+            </ul>
                       <div class="action-row">
               <a class="btn btn-default" href="./EPB2-materials-constructions.html">Back to EPB2</a>
-              <a class="btn btn-primary" href="./EPB-spaces-tab.html">Open Spaces Tab</a>
+              <a class="btn btn-primary" href="./EPB-spaces-tab.html">Continue to Spaces</a>
             </div>
           </article>
         </div>
@@ -424,7 +440,7 @@
     });
 
     const envelopeList = document.getElementById('envelope-list');
-    envelopeList.innerHTML = '';
+    if (envelopeList) envelopeList.innerHTML = '';
     const zone = zoneRows[0] || {};
     const surface = surfaceRows[0] || {};
     const checks = [
@@ -434,7 +450,11 @@
       `Main surface area: ${surface?.area ?? 0} m²`,
       `Primary ventilation schedule: ${zone?.thermalZoneVentilationDesignFlowRate?.scheduleId ?? 'N/A'}`
     ];
+    while (checks.length < 4) {
+      checks.push('Envelope input check pending.');
+    }
     checks.forEach((item) => {
+      if (!envelopeList) return;
       const li = document.createElement('li');
       li.textContent = item;
       envelopeList.appendChild(li);
@@ -442,8 +462,10 @@
 
     const status = getStatusPresentation(epb?.orchestration?.status || 'IN_PROGRESS');
     const statusChip = document.getElementById('status-chip');
-    statusChip.textContent = status.label;
-    statusChip.className = status.className;
+    if (statusChip) {
+      statusChip.textContent = status.label;
+      statusChip.className = status.className;
+    }
 
   </script>
 </body>

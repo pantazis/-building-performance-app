@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>EPB2 · Materials & Constructions · OpenBEP</title>
+  <title>EPB2 · Building Envelopes · OpenBEP</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="../building-performance-app/style.css" />
   <style>
@@ -28,7 +28,7 @@
     /* COMPONENT: steps-tabs */
     .c-steps-tabs .steps-header {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(7, minmax(0, 1fr));
       gap: var(--sp-sm);
     }
 
@@ -214,7 +214,7 @@
   <main class="container">
     <section class="page" id="view-epb2">
       <div class="page-header">
-        <h1>EPB2 · Materials & Constructions</h1>
+        <h1>EPB2 · Building Envelopes</h1>
         <p class="muted">Manage reusable library items used by envelope and thermal calculations.</p>
       </div>
 
@@ -242,20 +242,28 @@
                 <span class="step-number">1</span>
                 <span class="step-title">Calculation Settings</span>
               </a>
-              <a class="step-item is-active" role="tab" aria-selected="true" aria-current="page" href="./EPB2-materials-constructions.html">
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB1b-ground-temperature.html">
                 <span class="step-number">2</span>
-                <span class="step-title">Materials &amp; Constructions</span>
+                <span class="step-title">Ground Temperature</span>
+              </a>
+              <a class="step-item is-active" role="tab" aria-selected="true" aria-current="page" href="./EPB2-materials-constructions.html">
+                <span class="step-number">3</span>
+                <span class="step-title">Building Envelopes</span>
               </a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB3-thermal-zones-envelope.html">
-                <span class="step-number">3</span>
+                <span class="step-number">4</span>
                 <span class="step-title">Thermal Zones &amp; Envelope Analysis</span>
               </a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB-spaces-tab.html">
-                <span class="step-number">4</span>
+                <span class="step-number">5</span>
                 <span class="step-title">Spaces Tab</span>
               </a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB-operations-tab.html">
+                <span class="step-number">6</span>
+                <span class="step-title">Operations</span>
+              </a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB4-results-summary.html">
-                <span class="step-number">5</span>
+                <span class="step-number">7</span>
                 <span class="step-title">Performance Summary</span>
               </a>
             </div>
@@ -367,60 +375,10 @@
 
         <div class="full">
           <article class="card">
-            <div class="section-head">
-              <h2>Schedules</h2>
-              <button id="add-schedule-btn" class="btn btn-success" type="button">+ Add Schedule</button>
-            </div>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr><th>Schedule Name *</th><th>Type</th><th>Value</th><th>Actions</th></tr>
-                </thead>
-                <tbody id="schedules-body">
-                  <tr><td colspan="4">No schedules</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </article>
-        </div>
-
-        <div class="full">
-          <article class="card">
-            <div class="section-head">
-              <h2>Controls (Thermostats & Humidistats)</h2>
-              <div class="inline-actions">
-                <button id="add-thermostat-btn" class="btn btn-success" type="button">+ Add Thermostat</button>
-                <button id="add-humidistat-btn" class="btn btn-success" type="button">+ Add Humidistat</button>
-              </div>
-            </div>
-            <div class="table-wrap" style="margin-bottom: var(--sp-md);">
-              <table>
-                <thead>
-                  <tr><th>Thermostat ID *</th><th>Constant heating setpoint (°C)</th><th>Cooling setpoint schedule</th><th>Actions</th></tr>
-                </thead>
-                <tbody id="thermostats-body">
-                  <tr><td colspan="4">No thermostats</td></tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr><th>Humidistat ID *</th><th>Dehumidification setpoint (%)</th><th>Humidification setpoint (%)</th><th>Actions</th></tr>
-                </thead>
-                <tbody id="humidistats-body">
-                  <tr><td colspan="4">No humidistats</td></tr>
-                </tbody>
-              </table>
-            </div>
-            <br><br>  
-      
             <div class="action-row">
-              <a class="btn btn-default" href="./EPB1-calculation-settings.html">Back to EPB1</a>
+              <a class="btn btn-default" href="./EPB1b-ground-temperature.html">Back to EPB1b</a>
               <a class="btn btn-primary" href="./EPB3-thermal-zones-envelope.html">Continue to EPB3</a>
             </div>
-          
-        </div>
           </article>
         </div>
 
@@ -470,9 +428,6 @@
     const materials = Array.isArray(epb?.library?.materialOpaque) ? epb.library.materialOpaque : [];
     const constructions = Array.isArray(epb?.library?.construction) ? epb.library.construction : [];
     const glazings = Array.isArray(epb?.library?.glazingSimpleSystem) ? epb.library.glazingSimpleSystem : [];
-    const schedules = Array.isArray(epb?.library?.scheduleConstant) ? epb.library.scheduleConstant : [];
-    const thermostats = Array.isArray(epb?.library?.thermostat) ? epb.library.thermostat : [];
-    const humidistats = Array.isArray(epb?.library?.humidistat) ? epb.library.humidistat : [];
 
     function escapeHtml(value) {
       return String(value ?? '').replace(/[&<>'"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
@@ -598,44 +553,6 @@
       </tr>
     `).join('');
 
-    const scheduleRows = schedules.length ? schedules : [
-      { id: 'sch-occ-1', type: 'Occupancy', hourlyValue: 1 },
-      { id: 'sch-act-1', type: 'Activity', hourlyValue: 120 },
-      { id: 'sch-cool-sp-1', type: 'CoolingSetpoint', hourlyValue: 26 },
-      { id: 'sch-vent-1', type: 'Ventilation', hourlyValue: 1 }
-    ];
-    document.getElementById('schedules-body').innerHTML = scheduleRows.map((s) => `
-      <tr>
-        <td>${s.id ?? 'n/a'}</td>
-        <td>${s.type ?? '-'}</td>
-        <td>${s.hourlyValue ?? '-'}</td>
-        <td>${actionButtons(false, '', 'schedule')}</td>
-      </tr>
-    `).join('');
-
-    const thermostatRows = thermostats.length ? thermostats : [
-      { id: 'th-1', constantHeatingSetpoint: 21, coolingSetpointSchedule: 'sch-cool-sp-1' }
-    ];
-    document.getElementById('thermostats-body').innerHTML = thermostatRows.map((t) => `
-      <tr>
-        <td>${t.id ?? 'n/a'}</td>
-        <td>${t.constantHeatingSetpoint ?? '-'}</td>
-        <td>${t.coolingSetpointSchedule ?? '-'}</td>
-        <td>${actionButtons(false, '', 'thermostat')}</td>
-      </tr>
-    `).join('');
-
-    const humidistatRows = humidistats.length ? humidistats : [
-      { id: 'hum-1', constantDehumidificationSetpoint: 60, constantHumidificationSetpoint: 35 }
-    ];
-    document.getElementById('humidistats-body').innerHTML = humidistatRows.map((h) => `
-      <tr>
-        <td>${h.id ?? 'n/a'}</td>
-        <td>${h.constantDehumidificationSetpoint ?? '-'}</td>
-        <td>${h.constantHumidificationSetpoint ?? '-'}</td>
-        <td>${actionButtons(false, '', 'humidistat')}</td>
-      </tr>
-    `).join('');
 
     const list = document.getElementById('completeness-list');
     list.innerHTML = '';
@@ -643,7 +560,7 @@
       `Materials: ${(epb?.library?.materialOpaque || []).length}`,
       `Glazing systems: ${(epb?.library?.glazingSimpleSystem || []).length}`,
       `Constructions: ${(epb?.library?.construction || []).length}`,
-      `Schedules: ${(epb?.library?.scheduleConstant || []).length}`
+      `Schedules & controls moved to Operations tab.`
     ];
     checks.forEach((item) => {
       const li = document.createElement('li');
@@ -946,9 +863,6 @@
     document.getElementById('add-material-btn')?.addEventListener('click', () => openAddEditModal('material', null, 'add'));
     document.getElementById('add-construction-btn')?.addEventListener('click', () => openAddEditModal('construction', null, 'add'));
     document.getElementById('add-glazing-btn')?.addEventListener('click', () => openAddEditModal('glazing', null, 'add'));
-    document.getElementById('add-schedule-btn')?.addEventListener('click', () => openAddEditModal('schedule', null, 'add'));
-    document.getElementById('add-thermostat-btn')?.addEventListener('click', () => openAddEditModal('thermostat', null, 'add'));
-    document.getElementById('add-humidistat-btn')?.addEventListener('click', () => openAddEditModal('humidistat', null, 'add'));
 
     modalCancel?.addEventListener('click', closeActionModal);
     modal?.addEventListener('click', (event) => {

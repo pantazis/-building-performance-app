@@ -1,34 +1,590 @@
-https://pantazis.github.io/-building-performance-app/view/A-projects-dashboard.html
-Buildings overview add new building button 
-Portfolio score snapshot fevgi
-Country - > full adresss 
-dublicate ->  remove 
-add buton to sri epb  desdabel if status false
-add popup on delite 
+Good programming code usually follows a set of engineering rules that make it:
 
-https://pantazis.github.io/-building-performance-app/view/C-open-edit-building.html
-remove Current EPB status: Calculation completed
-Checklist remove  Mark as processing
-group both view in to  1
-Editable building profile -> building information
-Prefilled from sri_epb_ui_data_model_v2.js.
-only save  and delite building 
+* easy to read
+* easy to debug
+* easy to extend
+* safe
+* fast enough
+* predictable
+* maintainable for years
 
-https://pantazis.github.io/-building-performance-app/view/EPB1-calculation-settings.html
-Simulation settings-> simulation peridode 
-Engine readiness
-Input source route -> delete 
-Tab 1 required fields (UI-EPB v4) -> Tab 1 required fields (UI-EPB v4)
-add values from Tab 1 required fields (UI-EPB v4)
-check varibles 
+Here are the core rules.
 
-https://pantazis.github.io/-building-performance-app/view/EPB2-materials-constructions.html
-fix ui 
-remove dublikate 
-ADD POP UP
-Layers summary CAN BE MEANY 
+---
 
-https://pantazis.github.io/-building-performance-app/view/EPB3-thermal-zones-envelope.html
-VAGZOUME DUBLIKATE 
+# 1. Code Must Be Readable First
 
-CLA-> MATERIAL ,THERMAL >SPASES 
+A human reads code far more often than a computer executes it.
+
+Bad:
+
+```js
+let x=a+b*c-d/e
+```
+
+Good:
+
+```js
+const totalPrice = basePrice + tax * quantity - discount / users;
+```
+
+Rules:
+
+* use clear names
+* avoid cryptic shortcuts
+* format consistently
+* keep logic visually clean
+
+---
+
+# 2. One Function = One Responsibility
+
+A function should do ONE thing.
+
+Bad:
+
+```js
+function processUser() {
+  validate();
+  saveToDb();
+  sendEmail();
+  generatePdf();
+}
+```
+
+Better:
+
+```js
+validateUser();
+saveUser();
+sendWelcomeEmail();
+generateUserPdf();
+```
+
+This is called:
+
+* Single Responsibility Principle (SRP)
+
+---
+
+# 3. Avoid Repetition (DRY)
+
+DRY = Don’t Repeat Yourself.
+
+Bad:
+
+```js
+if(user.role === 'admin') ...
+if(user.role === 'admin') ...
+if(user.role === 'admin') ...
+```
+
+Better:
+
+```js
+const isAdmin = user.role === 'admin';
+```
+
+Why:
+
+* fewer bugs
+* easier updates
+
+---
+
+# 4. Keep Functions Small
+
+Small functions are:
+
+* easier to test
+* easier to understand
+* easier to reuse
+
+Good size:
+
+* usually 5–30 lines
+
+Huge 500-line functions are dangerous.
+
+---
+
+# 5. Use Clear Naming
+
+Good naming is one of the biggest programming skills.
+
+Good:
+
+```js
+calculateOrderTotal()
+fetchUserProfile()
+isMarketTrending()
+```
+
+Bad:
+
+```js
+doThing()
+handleData()
+x1()
+tmp()
+```
+
+---
+
+# 6. Separate Logic Into Layers
+
+Do not mix everything together.
+
+Example architecture:
+
+```text
+UI Layer
+↓
+Business Logic
+↓
+Data Layer
+↓
+Database/API
+```
+
+Example:
+
+* UI should not contain SQL queries
+* database layer should not render HTML
+
+---
+
+# 7. Fail Safely
+
+Always handle:
+
+* missing data
+* API failures
+* invalid input
+* network issues
+
+Bad:
+
+```js
+const data = response.data.price.value;
+```
+
+Good:
+
+```js
+const price = response?.data?.price?.value ?? 0;
+```
+
+---
+
+# 8. Validate Inputs
+
+Never trust inputs.
+
+Check:
+
+* types
+* ranges
+* empty values
+* malicious values
+
+Example:
+
+```js
+if (!email.includes('@')) {
+   throw new Error('Invalid email');
+}
+```
+
+---
+
+# 9. Write Predictable Code
+
+Code should behave consistently.
+
+Avoid hidden side effects.
+
+Bad:
+
+```js
+updatePrice();
+```
+
+(But secretly it also deletes files.)
+
+Good:
+
+```js
+updatePriceOnly();
+```
+
+---
+
+# 10. Use Constants Instead of Magic Numbers
+
+Bad:
+
+```js
+if(rsi > 73)
+```
+
+Good:
+
+```js
+const OVERBOUGHT_RSI = 73;
+
+if (rsi > OVERBOUGHT_RSI)
+```
+
+---
+
+# 11. Comment WHY, Not WHAT
+
+Bad:
+
+```js
+// add 1 to i
+i++;
+```
+
+Good:
+
+```js
+// Prevent duplicate candle overlap
+currentIndex++;
+```
+
+The code already shows WHAT.
+Comments should explain WHY.
+
+---
+
+# 12. Organize Files Properly
+
+Good structure matters a lot.
+
+Example:
+
+```text
+src/
+ ├── api/
+ ├── services/
+ ├── strategies/
+ ├── utils/
+ ├── models/
+ ├── tests/
+```
+
+Avoid:
+
+```text
+final_v2_real_final_last.js
+```
+
+---
+
+# 13. Make Code Modular
+
+Build reusable pieces.
+
+Good:
+
+```js
+createOrder()
+calculateRisk()
+detectTrend()
+```
+
+instead of one giant monolith.
+
+---
+
+# 14. Write Testable Code
+
+Good code can be tested independently.
+
+Bad:
+
+```js
+function trade() {
+   fetchApi();
+   updateUi();
+   placeOrder();
+}
+```
+
+Hard to test.
+
+Better:
+
+```js
+calculateSignal(data)
+```
+
+Pure logic is easier to test.
+
+---
+
+# 15. Avoid Overengineering
+
+Do not build:
+
+* 20 abstractions for simple logic
+* unnecessary frameworks
+* fake complexity
+
+Simple > clever.
+
+---
+
+# 16. Consistency Is Critical
+
+Use:
+
+* same naming style
+* same file structure
+* same formatting
+* same patterns
+
+Consistency reduces mental load.
+
+---
+
+# 17. Log Important Things
+
+Especially for:
+
+* trading bots
+* APIs
+* AI systems
+* distributed systems
+
+Good logs:
+
+```js
+logger.info({
+   pair: 'BTC/USDT',
+   signal: 'LONG',
+   confidence: 0.82
+});
+```
+
+---
+
+# 18. Separate Configuration From Code
+
+Bad:
+
+```js
+apiKey = "abcd1234"
+```
+
+Good:
+
+```js
+process.env.API_KEY
+```
+
+Use:
+
+* `.env`
+* config files
+* environment variables
+
+---
+
+# 19. Security Matters
+
+Never:
+
+* trust user input
+* expose secrets
+* allow SQL injection
+* store passwords plainly
+
+Always:
+
+* sanitize inputs
+* validate permissions
+* protect APIs
+
+---
+
+# 20. Good Code Evolves
+
+Good programmers:
+
+* refactor
+* improve structure
+* remove dead code
+* simplify systems
+
+Programming is continuous improvement.
+
+---
+
+# 21. Think in Systems, Not Just Files
+
+Professional codebases are ecosystems.
+
+Ask:
+
+* How does this scale?
+* What breaks first?
+* Can another developer understand this?
+* Can AI/LLMs analyze this easily?
+* Is debugging easy?
+
+---
+
+# 22. Design for Observability
+
+Especially important for:
+
+* trading systems
+* AI agents
+* real-time bots
+
+Track:
+
+* state
+* decisions
+* confidence
+* errors
+* latency
+* memory
+
+Example:
+
+```json
+{
+  "time": "2026-05-22T12:00:00Z",
+  "signal": "EXIT",
+  "reason": "Momentum collapsed",
+  "confidence": 0.91
+}
+```
+
+---
+
+# 23. Separate Data, Logic, and Decisions
+
+Very important for AI systems.
+
+Bad:
+
+```js
+if(price > 100) buy()
+```
+
+Better:
+
+```text
+Raw Data
+→ Features
+→ Analysis
+→ Decision
+→ Risk Layer
+→ Execution
+```
+
+This makes systems:
+
+* explainable
+* debuggable
+* trainable
+
+---
+
+# 24. Build for Debugging
+
+A good system should explain itself.
+
+Especially for:
+
+* quant systems
+* LLM agents
+* automated trading
+
+You should be able to answer:
+
+* WHY did it enter?
+* WHY did it exit?
+* WHAT data caused the decision?
+* WHICH model changed behavior?
+
+---
+
+# 25. The Most Important Rule
+
+Code is communication.
+
+You are writing instructions:
+
+* for future developers
+* for your future self
+* for AI systems
+* for debugging
+* for scaling
+
+The best code feels obvious when read.
+
+---
+
+# Professional Mindset
+
+Great programmers optimize for:
+
+| Priority | Goal            |
+| -------- | --------------- |
+| 1        | Correctness     |
+| 2        | Readability     |
+| 3        | Maintainability |
+| 4        | Reliability     |
+| 5        | Scalability     |
+| 6        | Performance     |
+
+Not:
+
+* clever tricks
+* shortest code
+* “smart” hacks
+
+---
+
+# Simple Golden Rule
+
+> “Can a tired developer understand this at 3 AM during production failure?”
+
+If yes:
+the code is probably good.
+
+ Keep this file aligned with:
+   - `data stategy.txt`
+   - `algo bot.txt`
+   - `bot/*.md`
+   - `.clinerules/RULES.md
+
+ add unit test in folder /tests all tests happening with real data`
+Task Objective:
+Analyze the ENTIRE project comprehensively before defining the architecture or implementation details. Your final output must be written directly to the file: `.clinerules/execution.md`.
+
+Output File Requirements (`.clinerules/execution.md`):
+
+1. Comprehensive Project Analysis
+   - A detailed breakdown of the existing codebase, system boundaries, dependencies, and constraints.
+
+2. Architecture Mermaid Diagram
+   - A highly detailed, production-grade Mermaid diagram representing the system architecture based on your analysis.
+using import functions etc.
+
+3. Architectural Justification
+   - A rigorous engineering argument explaining *why* this architecture and plan is the optimal approach for the project.
+
+4. Key Tasks (Discrete & Trackable Implementation Steps)
+   - Break down the implementation into logical groups and individual tasks bast on the Mermaid diagram you created.
+   - Use the following syntax for task tracking:
+     - Group headers or individual tasks must be prefixed with `[ ]` to denote pending items.
+     - Note for future iterations: Upon completion, these brackets will be updated to `[*]` to mark them as done.
+
+Maintain strict adherence to clean documentation practices and architectural clarity.   
