@@ -18,83 +18,42 @@
 
     .epb-layout { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--sp-md); }
     .full { grid-column: 1 / -1; }
-    .half { grid-column: span 6; }
-    @media (max-width: 900px) { .half { grid-column: 1 / -1; } }
 
     /* COMPONENT: breadcrumbs */
     .c-breadcrumbs ol { display: grid; grid-auto-flow: column; justify-content: start; gap: var(--sp-xs); margin: 0; padding: 0; list-style: none; }
     .c-breadcrumbs li+li::before { content: ">"; margin-right: var(--sp-xs); color: var(--muted); }
 
     /* COMPONENT: steps-tabs */
-    .c-steps-tabs .steps-header {
-      display: grid;
-      grid-template-columns: repeat(7, minmax(0, 1fr));
-      gap: var(--sp-sm);
-    }
-    .c-steps-tabs .step-item {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      align-items: center;
-      gap: var(--sp-xs);
-      text-decoration: none;
-      color: var(--muted);
-      border: 1px solid var(--line);
-      border-radius: var(--r-sm);
-      background: #fff;
-      padding: 10px 12px;
-      transition: .2s ease;
-    }
-    .c-steps-tabs .step-number {
-      width: 26px;
-      height: 26px;
-      border-radius: 999px;
-      border: 2px solid currentColor;
-      display: grid;
-      place-items: center;
-      font-weight: 700;
-      font-size: .85rem;
-      line-height: 1;
-    }
-    .c-steps-tabs .step-title {
-      font-size: .9rem;
-      font-weight: 600;
-      line-height: 1.2;
-    }
-    .c-steps-tabs .step-item.is-active {
-      color: var(--btn-color-success);
-      border-color: color-mix(in srgb, var(--btn-color-success) 45%, #ffffff 55%);
-      background: color-mix(in srgb, var(--btn-color-success) 10%, #ffffff 90%);
-      box-shadow: var(--shadow-1);
-    }
-    .c-steps-tabs .step-item:hover {
-      color: var(--ink);
-      border-color: var(--btn-color-default);
-    }
-    @media (max-width: 980px) {
-      .c-steps-tabs .steps-header { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-    @media (max-width: 640px) {
-      .c-steps-tabs .steps-header { grid-template-columns: 1fr; }
-    }
+    .c-steps-tabs .steps-header { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: var(--sp-sm); }
+    .c-steps-tabs .step-item { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: var(--sp-xs); text-decoration: none; color: var(--muted); border: 1px solid var(--line); border-radius: var(--r-sm); background: #fff; padding: 10px 12px; transition: .2s ease; }
+    .c-steps-tabs .step-number { width: 26px; height: 26px; border-radius: 999px; border: 2px solid currentColor; display: grid; place-items: center; font-weight: 700; font-size: .85rem; }
+    .c-steps-tabs .step-title { font-size: .9rem; font-weight: 600; }
+    .c-steps-tabs .step-item.is-active { color: var(--btn-color-success); border-color: color-mix(in srgb, var(--btn-color-success) 45%, #ffffff 55%); background: color-mix(in srgb, var(--btn-color-success) 10%, #ffffff 90%); box-shadow: var(--shadow-1); }
+    .c-steps-tabs .step-item:hover { color: var(--ink); border-color: var(--btn-color-default); }
+    @media (max-width: 980px) { .c-steps-tabs .steps-header { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 640px) { .c-steps-tabs .steps-header { grid-template-columns: 1fr; } }
 
+    .table-wrap { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; }
     th, td { border-bottom: 1px solid var(--line); padding: 10px; text-align: left; vertical-align: top; }
-    table th:last-child,
-    table td:last-child { width: 1%; white-space: nowrap; }
-    .table-wrap { overflow-x: auto; }
-    .section-head { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-sm); margin-bottom: var(--sp-sm); flex-wrap: wrap; }
-  .inline-actions {
-	display: grid;
-	gap: 6px;
-	grid-template-columns: auto auto;
-}
+    .section-head { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-sm); flex-wrap: wrap; margin-bottom: var(--sp-sm); }
+    .inline-actions { display: flex; gap: 6px; flex-wrap: wrap; }
     .inline-actions .btn { padding: 6px 10px; font-size: 12px; }
-    .surface-details { display: none; margin-top: var(--sp-md); }
-    .surface-details.is-open { display: block; }
-    .detail-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--sp-sm); margin-bottom: var(--sp-sm); }
-    .detail-grid p { margin: 0; grid-column: span 4; }
-    @media (max-width: 900px) { .detail-grid p { grid-column: span 6; } }
-    @media (max-width: 600px) { .detail-grid p { grid-column: 1 / -1; } }
+
+    .c-modal[aria-hidden="true"] { display: none; }
+    .c-modal[aria-hidden="false"] { display: grid; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 1000; place-items: center; padding: var(--sp-md); }
+    .modal-card { width: min(1100px, 100%); max-height: 90vh; overflow: auto; background: #fff; border-radius: var(--r-md); box-shadow: var(--shadow-2); padding: var(--sp-md); }
+    .modal-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--sp-sm); }
+    .field { display: grid; gap: 6px; grid-column: span 4; }
+    .field-6 { grid-column: span 6; }
+    .field-12 { grid-column: 1 / -1; }
+    .field input, .field select { width: 100%; }
+    .group-title { grid-column: 1 / -1; margin: var(--sp-sm) 0 0; }
+    .toolbar { display: flex; gap: 8px; flex-wrap: wrap; margin-top: var(--sp-md); }
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid color-mix(in srgb, var(--btn-color-success) 55%, white 45%); outline-offset: 2px; }
+
+    @media (max-width: 900px) { .field, .field-6 { grid-column: span 6; } }
+    @media (max-width: 640px) { .field, .field-6, .field-12 { grid-column: 1 / -1; } }
   </style>
 </head>
 
@@ -115,22 +74,20 @@
     <section class="page" id="view-epb3">
       <div class="page-header">
         <h1>EPB3 · Thermal Zones</h1>
-        <p class="muted">Review thermal zones, surfaces and envelope subsurfaces before EPB result aggregation.</p>
+        <p class="muted">EPB3 -> Spaces -> Operations flow with zone, surfaces and openings management.</p>
       </div>
 
       <div class="epb-layout">
         <div class="full">
           <!-- COMPONENT: breadcrumbs -->
           <article id="component-breadcrumbs" class="card c-breadcrumbs">
-            
-            <nav aria-label="Breadcrumb">
-              <ol>
-                <li><a href="./A-projects-dashboard.html">Home</a></li>
-                <li><a href="./I-building-tab.html">Building Tab</a></li>
-                <li><a href="./EPB2-materials-constructions.html">EPB2</a></li>
-                <li aria-current="page">EPB3</li>
-              </ol>
-            </nav>
+            <h2>Breadcrumbs</h2>
+            <nav aria-label="Breadcrumb"><ol>
+              <li><a href="./A-projects-dashboard.html">Home</a></li>
+              <li><a href="./I-building-tab.html">Building Tab</a></li>
+              <li><a href="./EPB2-materials-constructions.html">EPB2</a></li>
+              <li aria-current="page">EPB3</li>
+            </ol></nav>
           </article>
         </div>
 
@@ -138,335 +95,251 @@
           <!-- COMPONENT: steps-tabs -->
           <article id="component-steps-tabs" class="card c-steps-tabs" aria-label="EPB flow tabs">
             <div class="steps-header" role="tablist" aria-label="EPB pages">
-              <a class="step-item" role="tab" aria-selected="false" href="./EPB1-calculation-settings.html">
-                <span class="step-number">1</span>
-                <span class="step-title">Calculation Settings</span>
-              </a>
-              <a class="step-item" role="tab" aria-selected="false" href="./EPB1b-ground-temperature.html">
-                <span class="step-number">2</span>
-                <span class="step-title">Climate Data</span>
-              </a>
-              <a class="step-item" role="tab" aria-selected="false" href="./EPB2-materials-constructions.html">
-                <span class="step-number">3</span>
-                <span class="step-title">Building Envelope</span>
-              </a>
-              <a class="step-item" role="tab" aria-selected="false" href="./EPB-operations-tab.html">
-                <span class="step-number">4</span>
-                <span class="step-title">Operations</span>
-              </a>
-              <a class="step-item is-active" role="tab" aria-selected="true" aria-current="page" href="./EPB3-thermal-zones-envelope.html">
-                <span class="step-number">5</span>
-                <span class="step-title">Thermal Zones</span>
-              </a>
-              <a class="step-item" role="tab" aria-selected="false" href="./EPB-spaces-tab.html">
-                <span class="step-number">6</span>
-                <span class="step-title">Spaces Tab</span>
-              </a>
-              <a class="step-item" role="tab" aria-selected="false" href="./EPB4-results-summary.html">
-                <span class="step-number">7</span>
-                <span class="step-title">Performance Summary</span>
-              </a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB1-calculation-settings.html"><span class="step-number">1</span><span class="step-title">Calculation Settings</span></a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB1b-ground-temperature.html"><span class="step-number">2</span><span class="step-title">Climate Data</span></a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB2-materials-constructions.html"><span class="step-number">3</span><span class="step-title">Building Envelope</span></a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB-operations-tab.html"><span class="step-number">4</span><span class="step-title">Operations</span></a>
+              <a class="step-item is-active" role="tab" aria-selected="true" aria-current="page" href="./EPB3-thermal-zones-envelope.html"><span class="step-number">5</span><span class="step-title">Thermal Zones</span></a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB-spaces-tab.html"><span class="step-number">6</span><span class="step-title">Spaces Tab</span></a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB4-results-summary.html"><span class="step-number">7</span><span class="step-title">Performance Summary</span></a>
             </div>
           </article>
         </div>
 
         <div class="full">
           <article class="card">
-            <div class="section-head">
-              <h2>Thermal zones</h2>
-              <button class="btn btn-success" type="button">+ Add Thermal Zone</button>
-            </div>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Zone</th>
-                    <th>Type</th>
-                    <th>Volume (m³)</th>
-                    <th>Floor area (m²)</th>
-                    <th>People</th>
-                    <th>Ventilation (ACH)</th>
-                    <th>Heating / Cooling (W)</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="zones-table-body">
-                  <tr><td colspan="8">No thermal zones</td></tr>
-                </tbody>
-              </table>
-            </div>
+            <div class="section-head"><h2>Thermal Zones table</h2><button id="add-zone" class="btn btn-success" type="button">+ Add Thermal Zone</button></div>
+            <div class="table-wrap"><table><thead><tr><th>Zone ID</th><th>Type</th><th>Volume (m³)</th><th>Floor Area (m²)</th><th>Actions</th></tr></thead><tbody id="zones-body"></tbody></table></div>
           </article>
         </div>
 
         <div class="full">
           <article class="card">
-            <div class="section-head">
-              <h2>Surface and subsurface inventory</h2>
-              <button class="btn btn-success" type="button">+ Add Surface</button>
-            </div>
-              <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Zone</th>
-                    <th>Surface ID</th>
-                    <th>Type</th>
-                    <th>Construction</th>
-                      <th>Outside boundary</th>
-                      <th>GTCP</th>
-                      <th>Area / Height</th>
-                      <th>Azimuth / Tilt</th>
-                    <th>Subsurfaces</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="surface-table-body"></tbody>
-              </table>
-            </div>
+            <div class="section-head"><h2>Surfaces & Geometry table</h2><button id="add-surface" class="btn btn-success" type="button">+ Add Surface</button></div>
+            <div class="table-wrap"><table><thead><tr><th>Zone</th><th>Surface ID</th><th>Type</th><th>Boundary</th><th>Construction</th><th>Area / Height</th><th>Azimuth / Tilt</th><th>Actions</th></tr></thead><tbody id="surfaces-body"></tbody></table></div>
+          </article>
+        </div>
 
-            <article id="surface-detail-card" class="card surface-details" aria-live="polite">
-              <div class="section-head">
-                <h3 id="surface-detail-title">Surface details</h3>
-                <button class="btn btn-success" type="button">+ Add Sub-surface</button>
-              </div>
-              <div id="surface-detail-meta" class="detail-grid" aria-label="Surface details metadata"></div>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Sub-surface ID</th>
-                      <th>Type</th>
-                      <th>Construction / Glazing</th>
-                      <th>Area (m²)</th>
-                      <th>Height (m)</th>
-                      <th>Azimuth (°)</th>
-                      <th>Tilt (°)</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody id="subsurface-table-body"></tbody>
-                </table>
-              </div>
-            </article><br><br>
-            <h3>Envelope checks and orchestration status</h3>
-            <p><strong>Status:</strong> <span id="status-chip" class="chip chip--processing">Processing</span></p>
-            <ul id="envelope-list">
-              <li>Zones and surfaces are loading from project data.</li>
-              <li>Envelope geometry is checked for area/height completeness.</li>
-              <li>Sub-surface links are validated per parent surface.</li>
-              <li>Ventilation and schedule references are verified.</li>
+        <div class="full">
+          <article class="card">
+            <div class="section-head"><h2>Sub-surface (Openings)</h2><button id="add-subsurface" class="btn btn-success" type="button">+ Add Sub-surface</button></div>
+            <div class="table-wrap"><table><thead><tr><th>Sub-surface ID</th><th>Parent Surface</th><th>Type</th><th>Construction</th><th>Area / Height</th><th>Azimuth / Tilt</th><th>Actions</th></tr></thead><tbody id="subsurfaces-body"></tbody></table></div>
+            <ul>
+              <li>Zone entries include Open/Edit, Duplicate, Delete actions.</li>
+              <li>Surface entries include Open/Edit, Duplicate, Delete actions.</li>
+              <li>Sub-surface entries include Open/Edit, Duplicate, Delete actions.</li>
+              <li>Ground boundary condition reveals ground temperature properties selector.</li>
             </ul>
-                      <div class="action-row">
-              <a class="btn btn-default" href="./EPB2-materials-constructions.html">Back to EPB2</a>
-              <a class="btn btn-primary" href="./EPB-spaces-tab.html">Continue to Spaces</a>
-            </div>
+            <div class="action-row"><a class="btn btn-default" href="./EPB2-materials-constructions.html">Back to EPB2</a><a class="btn btn-primary" href="./EPB-spaces-tab.html">Continue to Spaces</a></div>
           </article>
         </div>
-
-        
-       
-  
-         
-    
       </div>
     </section>
   </main>
 
+  <!-- COMPONENT: modal -->
+  <div id="component-modal" class="c-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <h2 id="modal-title">Edit</h2>
+      <form id="entity-form" class="modal-grid"></form>
+      <div class="toolbar">
+        <button id="modal-save" type="button" class="btn btn-success">Save</button>
+        <button id="modal-duplicate" type="button" class="btn btn-warning">Duplicate</button>
+        <button id="modal-delete" type="button" class="btn btn-danger">Delete</button>
+        <button id="modal-cancel" type="button" class="btn btn-default">Cancel</button>
+      </div>
+    </div>
+  </div>
+
   <!-- COMPONENT: footer -->
-  <footer id="component-footer" class="app-footer c-footer">
-    <div class="container"><p>© 2026 OpenBEP · Contact · Privacy · Terms</p></div>
-  </footer>
+  <footer id="component-footer" class="app-footer c-footer"><div class="container"><p>© 2026 OpenBEP · Contact · Privacy · Terms</p></div></footer>
 
- <script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
-
-
-<script >
-
-    function toTitleCaseFromEnum(status) {
-      return String(status || 'UNKNOWN_STATUS').toLowerCase().split('_').map((s) => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
-    }
-    function getStatusPresentation(status) {
-      const map = {
-        READY_FOR_CALCULATION: { label: 'Ready', className: 'chip chip--ready' },
-        MISSING_DATA: { label: 'Incomplete data', className: 'chip chip--incomplete' },
-        IN_PROGRESS: { label: 'Processing', className: 'chip chip--processing' },
-        PROCESSING: { label: 'Processing', className: 'chip chip--processing' },
-        CALCULATION_COMPLETED: { label: 'Calculation completed', className: 'chip chip--ready' }
-      };
-      return map[status] || { label: toTitleCaseFromEnum(status), className: 'chip' };
-    }
-
+  <script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
+  <script>
     const epb = AppDataModel?.projects?.[0]?.building?.epb || {};
-    const zones = Array.isArray(epb?.zones) ? epb.zones : [];
-    const zoneRows = zones.length ? zones : [
-      {
-        id: 'zone-main',
-        type: 'thermal zone',
-        volume: 300,
-        floorArea: 100,
-        people: 8,
-        ventilationAch: 1.5,
-        thermalZoneVentilationDesignFlowRate: { scheduleId: 'sch-vent-1' },
-        maxHeatingPower: 4600,
-        maxCoolingPower: 3900
-      },
-      {
-        id: 'zone-secondary',
-        type: 'thermal zone',
-        volume: 180,
-        floorArea: 60,
-        people: 3,
-        ventilationAch: 1.1,
-        thermalZoneVentilationDesignFlowRate: { scheduleId: 'sch-vent-1' },
-        maxHeatingPower: 2600,
-        maxCoolingPower: 2200
-      }
-    ];
+    const lib = epb.library || {};
+    const schedules = lib.scheduleConstant || [];
+    const thermostats = lib.thermostat || [];
+    const humidistats = lib.humidistat || [];
+    const constructions = [...(lib.construction || []), ...(lib.glazingSimpleSystem || [])];
+    const groundProps = epb.settings?.groundTemperatureCalculationProperties || [];
 
-    function actionButtons(action, target = '') {
-      return `<div class="inline-actions">
-        <button type="button" class="btn btn-default js-open-${action}" data-target="${target}">Open</button>
+    const uid = (prefix) => `${prefix}-${Math.random().toString(36).slice(2, 8)}`;
+    const mapOptions = (arr, idKey = 'id', labelKey = 'id') => arr.map((item) => `<option value="${item[idKey]}">${item[labelKey] || item[idKey]}</option>`).join('');
+    const n = (v, fallback = 0) => Number.isFinite(Number(v)) ? Number(v) : fallback;
 
-        <button type="button" class="btn btn-danger">Delete</button>
-      </div>`;
+    const zones = (epb.zones || []).map((z, i) => ({
+      id: z.id || uid('zone'),
+      type: z.type || 'Thermal Zone',
+      volume: n(z.volume, 0),
+      floorArea: n(z.floorArea, 0),
+      thermalZonePeopleGains: z.thermalZonePeopleGains || { id: uid('tzpg'), numberOfPeopleSchedule: '', numberOfPeopleCalculationMethod: 'people', numberOfPeople: 0, activityLevelSchedule: '', fractionRadiant: 0.5 },
+      thermalZoneEquipmentGains: z.thermalZoneEquipmentGains || { id: uid('tzeg'), fuelType: 'Electricity', schedule: '', designLevelCalculationMethod: 'EquipmentLevel', designLevel: 0, fractionLatent: 0, fractionRadiant: 0.3, fractionLost: 0 },
+      thermalZoneNeedsSystem: z.thermalZoneNeedsSystem || { id: uid('tzns'), maxHeatingPower: 0, maxCoolingPower: 0, thermostatId: '', humidistatId: '' },
+      thermalZoneVentilationDesignFlowRate: z.thermalZoneVentilationDesignFlowRate || { id: uid('tzv'), calculationMethod: 'AirChangesPerHour', airChangesPerHour: 0, scheduleId: '' },
+      surfaces: (z.surfaces || []).map((s) => ({ ...s, id: s.id || uid('surface'), zoneId: z.id || `zone-${i+1}`, subsurfaces: (s.subsurfaces || []).map((ss) => ({...ss, id: ss.id || uid('subsurface')})) }))
+    }));
+
+    if (!zones.length) zones.push({ id: uid('zone'), type: 'Thermal Zone', volume: 0, floorArea: 0, thermalZonePeopleGains: { id: uid('tzpg'), numberOfPeopleSchedule: '', numberOfPeopleCalculationMethod: 'people', numberOfPeople: 0, activityLevelSchedule: '', fractionRadiant: 0.5 }, thermalZoneEquipmentGains: { id: uid('tzeg'), fuelType: 'Electricity', schedule: '', designLevelCalculationMethod: 'EquipmentLevel', designLevel: 0, fractionLatent: 0, fractionRadiant: 0.3, fractionLost: 0 }, thermalZoneNeedsSystem: { id: uid('tzns'), maxHeatingPower: 0, maxCoolingPower: 0, thermostatId: '', humidistatId: '' }, thermalZoneVentilationDesignFlowRate: { id: uid('tzv'), calculationMethod: 'AirChangesPerHour', airChangesPerHour: 0, scheduleId: '' }, surfaces: [] });
+
+    const allSurfaces = () => zones.flatMap((z) => (z.surfaces || []).map((s) => ({ ...s, zoneId: z.id })));
+    const allSubsurfaces = () => allSurfaces().flatMap((s) => (s.subsurfaces || []).map((ss) => ({ ...ss, parentSurfaceId: s.id })));
+
+    const actions = (entity, id) => `<div class="inline-actions"><button class="btn btn-default js-open" data-entity="${entity}" data-id="${id}" type="button">Open/Edit</button><button class="btn btn-orange js-dup" data-entity="${entity}" data-id="${id}" type="button">Duplicate</button><button class="btn btn-danger js-del" data-entity="${entity}" data-id="${id}" type="button">Delete</button></div>`;
+
+    function render() {
+      document.getElementById('zones-body').innerHTML = zones.map((z) => `<tr><td>${z.id}</td><td>${z.type}</td><td>${z.volume}</td><td>${z.floorArea}</td><td>${actions('zone', z.id)}</td></tr>`).join('');
+      const surfaces = allSurfaces();
+      document.getElementById('surfaces-body').innerHTML = (surfaces.length ? surfaces : [{id:'-',zoneId:'-',surfaceType:'-',outsideBoundaryCondition:'-',constructionId:'-',area:'-',height:'-',azimuth_angle:'-',tilt_angle:'-'}]).map((s) => `<tr><td>${s.zoneId}</td><td>${s.id}</td><td>${s.surfaceType || s.type || '-'}</td><td>${s.outsideBoundaryCondition || '-'}</td><td>${s.constructionId || '-'}</td><td>${s.area ?? '-'} / ${s.height ?? '-'}</td><td>${s.azimuth_angle ?? s.azimuth ?? '-'} / ${s.tilt_angle ?? s.tilt ?? '-'}</td><td>${s.id !== '-' ? actions('surface', s.id) : '-'}</td></tr>`).join('');
+      const subs = allSubsurfaces();
+      document.getElementById('subsurfaces-body').innerHTML = (subs.length ? subs : [{id:'-',parentSurfaceId:'-',surfaceType:'-',constructionId:'-',area:'-',height:'-',azimuth_angle:'-',tilt_angle:'-'}]).map((ss) => `<tr><td>${ss.id}</td><td>${ss.parentSurfaceId}</td><td>${ss.surfaceType || ss.type || '-'}</td><td>${ss.constructionId || '-'}</td><td>${ss.area ?? '-'} / ${ss.height ?? '-'}</td><td>${ss.azimuth_angle ?? ss.azimuth ?? '-'} / ${ss.tilt_angle ?? ss.tilt ?? '-'}</td><td>${ss.id !== '-' ? actions('subsurface', ss.id) : '-'}</td></tr>`).join('');
+      bindRowActions();
     }
 
-    document.getElementById('zones-table-body').innerHTML = zoneRows.map((z) => `
-      <tr>
-        <td>${z.id}</td>
-        <td>${z.type ?? 'thermal zone'}</td>
-        <td>${z.volume ?? '-'}</td>
-        <td>${z.floorArea ?? '-'}</td>
-        <td>${z.people ?? '-'}</td>
-        <td>${z?.thermalZoneVentilationDesignFlowRate?.airChangesPerHour ?? z?.ventilation?.airChangesPerHour ?? z.ventilationAch ?? '-'}</td>
-        <td>${z.maxHeatingPower ?? '-'} / ${z.maxCoolingPower ?? '-'}</td>
-        <td>${actionButtons('zone')}</td>
-      </tr>
-    `).join('');
+    const modal = document.getElementById('component-modal');
+    const form = document.getElementById('entity-form');
+    const title = document.getElementById('modal-title');
+    let ctx = { entity: null, id: null };
+    let lastFocus = null;
 
-    const surfaceRows = zoneRows.flatMap((z, i) => {
-      const zoneSurfaces = Array.isArray(z?.surfaces) ? z.surfaces : [];
-      if (zoneSurfaces.length) {
-        return zoneSurfaces.map((s) => ({ ...s, zoneId: z.id }));
+    function openModal(entity, id) {
+      ctx = { entity, id };
+      lastFocus = document.activeElement;
+      title.textContent = `Open/Edit ${entity}`;
+      form.innerHTML = entityFormHtml(entity, id);
+      modal.setAttribute('aria-hidden', 'false');
+      const first = form.querySelector('input,select,button');
+      if (first) first.focus();
+      const boundary = form.querySelector('#surface-outside-boundary');
+      if (boundary) boundary.addEventListener('change', toggleGroundField);
+      toggleGroundField();
+    }
+
+    function closeModal() {
+      modal.setAttribute('aria-hidden', 'true');
+      form.innerHTML = '';
+      if (lastFocus) lastFocus.focus();
+    }
+
+    function toggleGroundField() {
+      const boundary = document.getElementById('surface-outside-boundary');
+      const ground = document.getElementById('ground-props-wrap');
+      if (boundary && ground) ground.style.display = boundary.value === 'Ground' ? 'grid' : 'none';
+    }
+
+    function findZone(id) { return zones.find((z) => z.id === id); }
+    function findSurface(id) {
+      for (const z of zones) {
+        const s = (z.surfaces || []).find((x) => x.id === id);
+        if (s) return { zone: z, surface: s };
       }
-      const base = i + 1;
-      return [
-        {
-          zoneId: z.id,
-          id: `surf-wall-${base}`,
-          surfaceType: 'Wall',
-          constructionId: 'cons-wall-ext-01',
-          outsideBoundaryCondition: 'Outdoors',
-          groundTemperatureCalculationPropertiesId: '-',
-          area: 48,
-          height: 3,
-          azimuth_angle: 90,
-          tilt_angle: 90,
-          subsurfaces: [
-            { id: `win-${base}-01`, surfaceType: 'Window', constructionId: 'glz-double-clear-01', area: 6, height: 1.4, azimuth_angle: 90, tilt_angle: 90 },
-            { id: `door-${base}-01`, surfaceType: 'Door', constructionId: 'cons-door-01', area: 2.2, height: 2.1, azimuth_angle: 90, tilt_angle: 90 }
-          ]
-        },
-        {
-          zoneId: z.id,
-          id: `surf-roof-${base}`,
-          surfaceType: 'Roof',
-          constructionId: 'cons-roof-flat-01',
-          outsideBoundaryCondition: 'Outdoors',
-          groundTemperatureCalculationPropertiesId: '-',
-          area: 50,
-          height: 0.3,
-          azimuth_angle: 0,
-          tilt_angle: 0,
-          subsurfaces: [
-            { id: `skylight-${base}-01`, surfaceType: 'Window', constructionId: 'glz-triple-lowe-01', area: 1.8, height: 0.8, azimuth_angle: 0, tilt_angle: 0 }
-          ]
-        }
-      ];
-    });
+      return null;
+    }
 
-    document.getElementById('surface-table-body').innerHTML = surfaceRows.map((s, idx) => `
-      <tr>
-        <td>${s.zoneId}</td>
-        <td>${s.id}</td>
-        <td>${s.surfaceType ?? s.type ?? '-'}</td>
-        <td>${s.constructionId}</td>
-        <td>${s.outsideBoundaryCondition ?? '-'}</td>
-        <td>${s.outsideBoundaryCondition === 'Ground' ? (s.groundTemperatureCalculationPropertiesId ?? '-') : '-'}</td>
-        <td>${s.area ?? '-'} / ${s.height ?? '-'}</td>
-        <td>${s.azimuth_angle ?? s.azimuth ?? '-'} / ${s.tilt_angle ?? s.tilt ?? '-'}</td>
-        <td>${(s.subsurfaces || []).length}</td>
-        <td>${actionButtons('surface', String(idx))}</td>
-      </tr>
-    `).join('');
+    function entityFormHtml(entity, id) {
+      if (entity === 'zone') {
+        const z = findZone(id) || zones[0];
+        const p = z.thermalZonePeopleGains;
+        const e = z.thermalZoneEquipmentGains;
+        const ns = z.thermalZoneNeedsSystem;
+        const v = z.thermalZoneVentilationDesignFlowRate;
+        return `
+          <h3 class="group-title">Zone</h3>
+          <label class="field"><span>Zone ID</span><input name="zone.id" value="${z.id}" /></label>
+          <label class="field"><span>Type</span><input name="zone.type" value="${z.type}" /></label>
+          <label class="field"><span>Volume (m³)</span><input type="number" name="zone.volume" value="${z.volume}" /></label>
+          <label class="field"><span>Floor Area (m²)</span><input type="number" name="zone.floorArea" value="${z.floorArea}" /></label>
 
-    const detailCard = document.getElementById('surface-detail-card');
-    const detailTitle = document.getElementById('surface-detail-title');
-    const detailMeta = document.getElementById('surface-detail-meta');
-    const subsurfaceBody = document.getElementById('subsurface-table-body');
+          <h3 class="group-title">Occupancy – People Gains</h3>
+          <label class="field"><span>ID (auto)</span><input readonly value="${p.id || uid('tzpg')}" /></label>
+          <label class="field"><span>Number of People Schedule</span><select>${mapOptions(schedules)}<option selected>${p.numberOfPeopleSchedule || ''}</option></select></label>
+          <label class="field"><span>Number of People Calculation Method</span><select><option ${p.numberOfPeopleCalculationMethod==='people'?'selected':''}>people</option><option ${p.numberOfPeopleCalculationMethod==='peoplePerArea'?'selected':''}>peoplePerArea</option></select></label>
+          <label class="field"><span>Number of People</span><input min="0" type="number" value="${n(p.numberOfPeople,0)}" /></label>
+          <label class="field"><span>Activity Level Schedule</span><select>${mapOptions(schedules)}<option selected>${p.activityLevelSchedule || ''}</option></select></label>
+          <label class="field"><span>Fraction Radiant (0..1)</span><input min="0" max="1" step="0.01" type="number" value="${n(p.fractionRadiant,0)}" /></label>
 
-    document.querySelectorAll('.js-open-surface').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const idx = Number(btn.getAttribute('data-target'));
-        const surface = surfaceRows[idx];
-        if (!surface) return;
-        detailTitle.textContent = `Surface details · ${surface.id}`;
-        detailMeta.innerHTML = `
-          <p><strong>Zone:</strong> ${surface.zoneId}</p>
-          <p><strong>Type:</strong> ${surface.surfaceType ?? surface.type ?? '-'}</p>
-          <p><strong>Construction:</strong> ${surface.constructionId ?? '-'}</p>
-          <p><strong>Outside boundary:</strong> ${surface.outsideBoundaryCondition ?? '-'}</p>
-          <p><strong>Ground temp props:</strong> ${surface.outsideBoundaryCondition === 'Ground' ? (surface.groundTemperatureCalculationPropertiesId ?? '-') : 'N/A'}</p>
-          <p><strong>Area:</strong> ${surface.area ?? '-'} m²</p>
-          <p><strong>Height:</strong> ${surface.height ?? '-'} m</p>
-          <p><strong>Azimuth:</strong> ${surface.azimuth_angle ?? surface.azimuth ?? '-'}°</p>
-          <p><strong>Tilt:</strong> ${surface.tilt_angle ?? surface.tilt ?? '-'}°</p>
+          <h3 class="group-title">Equipment Gains</h3>
+          <label class="field"><span>ID (auto)</span><input readonly value="${e.id || uid('tzeg')}" /></label>
+          <label class="field"><span>Fuel Type</span><select><option ${e.fuelType==='Electricity'?'selected':''}>Electricity</option><option ${e.fuelType==='NaturalGas'?'selected':''}>NaturalGas</option></select></label>
+          <label class="field"><span>Schedule</span><select>${mapOptions(schedules)}<option selected>${e.schedule || ''}</option></select></label>
+          <label class="field"><span>Design Level Calculation Method</span><select><option ${e.designLevelCalculationMethod==='EquipmentLevel'?'selected':''}>EquipmentLevel</option><option ${e.designLevelCalculationMethod==='WattsPerArea'?'selected':''}>WattsPerArea</option></select></label>
+          <label class="field"><span>Design Level</span><input type="number" value="${n(e.designLevel,0)}" /></label>
+          <label class="field"><span>Fraction Latent</span><input type="number" step="0.01" value="${n(e.fractionLatent,0)}" /></label>
+          <label class="field"><span>Fraction Radiant</span><input type="number" step="0.01" value="${n(e.fractionRadiant,0)}" /></label>
+          <label class="field"><span>Fraction Lost</span><input type="number" step="0.01" value="${n(e.fractionLost,0)}" /></label>
+
+          <h3 class="group-title">Operational Data</h3>
+          <label class="field"><span>Thermal Zone Needs System ID (auto)</span><input readonly value="${ns.id || uid('tzns')}" /></label>
+          <label class="field"><span>Max Heating Power</span><input type="number" value="${n(ns.maxHeatingPower,0)}" /></label>
+          <label class="field"><span>Max Cooling Power</span><input type="number" value="${n(ns.maxCoolingPower,0)}" /></label>
+          <label class="field"><span>Select Thermostat</span><select>${mapOptions(thermostats)}</select></label>
+          <label class="field"><span>Select Humidistat</span><select>${mapOptions(humidistats)}</select></label>
+          <label class="field"><span>Ventilation ID (auto)</span><input readonly value="${v.id || uid('tzv')}" /></label>
+          <label class="field"><span>Ventilation Method</span><select><option ${v.calculationMethod==='AirChangesPerHour'?'selected':''}>AirChangesPerHour</option><option ${v.calculationMethod==='FlowPerArea'?'selected':''}>FlowPerArea</option></select></label>
+          <label class="field"><span>Air Changes Per Hour</span><input type="number" value="${n(v.airChangesPerHour,0)}" /></label>
+          <label class="field"><span>Ventilation Schedule</span><select>${mapOptions(schedules)}<option selected>${v.scheduleId || ''}</option></select></label>
         `;
-        const subs = Array.isArray(surface.subsurfaces) ? surface.subsurfaces : [];
-        subsurfaceBody.innerHTML = (subs.length ? subs : [{ id: 'none', surfaceType: '-', constructionId: '-', area: '-', height: '-', azimuth_angle: '-', tilt_angle: '-' }]).map((sub) => `
-          <tr>
-            <td>${sub.id}</td>
-            <td>${sub.surfaceType ?? sub.type ?? '-'}</td>
-            <td>${sub.constructionId ?? '-'}</td>
-            <td>${sub.area ?? '-'}</td>
-            <td>${sub.height ?? '-'}</td>
-            <td>${sub.azimuth_angle ?? sub.azimuth ?? '-'}</td>
-            <td>${sub.tilt_angle ?? sub.tilt ?? '-'}</td>
-            <td>${actionButtons('subsurface')}</td>
-          </tr>
-        `).join('');
-        detailCard.classList.add('is-open');
-      });
-    });
+      }
 
-    const envelopeList = document.getElementById('envelope-list');
-    if (envelopeList) envelopeList.innerHTML = '';
-    const zone = zoneRows[0] || {};
-    const surface = surfaceRows[0] || {};
-    const checks = [
-      `Total zones loaded: ${zones.length}`,
-      `Primary zone floor area: ${zone?.floorArea ?? 0} m²`,
-      `Primary zone volume: ${zone?.volume ?? 0} m³`,
-      `Main surface area: ${surface?.area ?? 0} m²`,
-      `Primary ventilation schedule: ${zone?.thermalZoneVentilationDesignFlowRate?.scheduleId ?? 'N/A'}`
-    ];
-    while (checks.length < 4) {
-      checks.push('Envelope input check pending.');
-    }
-    checks.forEach((item) => {
-      if (!envelopeList) return;
-      const li = document.createElement('li');
-      li.textContent = item;
-      envelopeList.appendChild(li);
-    });
+      if (entity === 'surface') {
+        const fs = findSurface(id);
+        const s = fs?.surface || { id: uid('surface'), zoneId: zones[0]?.id || '', surfaceType: 'Wall', constructionId: '', outsideBoundaryCondition: 'Outdoors', groundTemperatureCalculationPropertiesId: '', area: 0, height: 0, azimuth_angle: 0, tilt_angle: 90 };
+        return `
+          <h3 class="group-title">Surface popup</h3>
+          <label class="field"><span>Surface ID</span><input value="${s.id}" /></label>
+          <label class="field"><span>Surface Type</span><select><option ${s.surfaceType==='Wall'?'selected':''}>Wall</option><option ${s.surfaceType==='Roof'?'selected':''}>Roof</option><option ${s.surfaceType==='Floor'?'selected':''}>Floor</option></select></label>
+          <label class="field"><span>Construction ID</span><select>${mapOptions(constructions)}</select></label>
+          <label class="field"><span>Outside Boundary Condition</span><select id="surface-outside-boundary"><option ${s.outsideBoundaryCondition==='Outdoors'?'selected':''}>Outdoors</option><option ${s.outsideBoundaryCondition==='Ground'?'selected':''}>Ground</option><option ${s.outsideBoundaryCondition==='Adiabatic'?'selected':''}>Adiabatic</option></select></label>
+          <label id="ground-props-wrap" class="field"><span>Ground Temperature Calculation Properties</span><select>${mapOptions(groundProps)}</select></label>
+          <label class="field"><span>Area (m²)</span><input type="number" value="${n(s.area,0)}" /></label>
+          <label class="field"><span>Height (m)</span><input type="number" value="${n(s.height,0)}" /></label>
+          <label class="field"><span>Azimuth Angle (°)</span><input type="number" value="${n(s.azimuth_angle ?? s.azimuth,0)}" /></label>
+          <label class="field"><span>Tilt Angle (°)</span><input type="number" value="${n(s.tilt_angle ?? s.tilt,0)}" /></label>
+        `;
+      }
 
-    const status = getStatusPresentation(epb?.orchestration?.status || 'IN_PROGRESS');
-    const statusChip = document.getElementById('status-chip');
-    if (statusChip) {
-      statusChip.textContent = status.label;
-      statusChip.className = status.className;
+      const subs = allSubsurfaces();
+      const ss = subs.find((x) => x.id === id) || { id: uid('subsurface'), parentSurfaceId: allSurfaces()[0]?.id || '', surfaceType: 'Window', constructionId: '', area: 0, height: 0, azimuth_angle: 0, tilt_angle: 90 };
+      return `
+        <h3 class="group-title">Sub-surface popup</h3>
+        <label class="field"><span>Sub-surface ID</span><input value="${ss.id}" /></label>
+        <label class="field"><span>Parent Surface ID</span><input readonly value="${ss.parentSurfaceId}" /></label>
+        <label class="field"><span>Sub-surface Type</span><select><option ${ss.surfaceType==='Window'?'selected':''}>Window</option><option ${ss.surfaceType==='Door'?'selected':''}>Door</option><option ${ss.surfaceType==='Skylight'?'selected':''}>Skylight</option></select></label>
+        <label class="field"><span>Construction</span><select>${mapOptions(constructions)}</select></label>
+        <label class="field"><span>Area (m²)</span><input type="number" value="${n(ss.area,0)}" /></label>
+        <label class="field"><span>Height (m)</span><input type="number" value="${n(ss.height,0)}" /></label>
+        <label class="field"><span>Azimuth Angle (°)</span><input type="number" value="${n(ss.azimuth_angle ?? ss.azimuth,0)}" /></label>
+        <label class="field"><span>Tilt Angle (°)</span><input type="number" value="${n(ss.tilt_angle ?? ss.tilt,0)}" /></label>
+      `;
     }
 
+    function bindRowActions() {
+      document.querySelectorAll('.js-open').forEach((btn) => btn.onclick = () => openModal(btn.dataset.entity, btn.dataset.id));
+      document.querySelectorAll('.js-dup').forEach((btn) => btn.onclick = () => openModal(btn.dataset.entity, btn.dataset.id));
+      document.querySelectorAll('.js-del').forEach((btn) => btn.onclick = () => openModal(btn.dataset.entity, btn.dataset.id));
+    }
+
+    document.getElementById('modal-cancel').onclick = closeModal;
+    document.getElementById('modal-save').onclick = closeModal;
+    document.getElementById('modal-duplicate').onclick = closeModal;
+    document.getElementById('modal-delete').onclick = closeModal;
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', (e) => {
+      if (modal.getAttribute('aria-hidden') === 'false' && e.key === 'Escape') closeModal();
+      if (modal.getAttribute('aria-hidden') === 'false' && e.key === 'Tab') {
+        const focusable = [...modal.querySelectorAll('button,[href],input,select,[tabindex]:not([tabindex="-1"])')].filter((el) => !el.disabled);
+        if (!focusable.length) return;
+        const first = focusable[0], last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+
+    document.getElementById('add-zone').onclick = () => openModal('zone', zones[0].id);
+    document.getElementById('add-surface').onclick = () => openModal('surface', allSurfaces()[0]?.id || '');
+    document.getElementById('add-subsurface').onclick = () => openModal('subsurface', allSubsurfaces()[0]?.id || '');
+
+    render();
   </script>
 </body>
 
