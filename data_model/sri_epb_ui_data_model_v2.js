@@ -102,7 +102,7 @@ var AppDataModel = {
               numberPerHour: 1
             },
 
-            // Tab 1: Ground Temperature Calculation Properties
+            // Tab 1: Climate Data Calculation Properties
             groundTemperatureCalculationProperties: [
               {
                 id: "gtcp-1",

@@ -80,7 +80,7 @@ Temperature properties
 
 👉 Like setting the rules of the simulation
 
-🔹 Tab 2: Building Envelopes
+🔹 Tab 2: Building Envelope
 
 You define:
 

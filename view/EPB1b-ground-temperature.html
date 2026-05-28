@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>EPB1b · Ground Temperature · OpenBEP</title>
+  <title>EPB1b · Climate Data · OpenBEP</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="../building-performance-app/style.css" />
   <style>
@@ -88,8 +88,8 @@
   <main class="container">
     <section class="page" id="view-epb1b">
       <div class="page-header">
-        <h1>EPB1b · Ground Temperature</h1>
-        <p class="muted">Manage ground temperature calculation properties used by EPB envelope boundary conditions.</p>
+        <h1>EPB1b · Climate Data</h1>
+        <p class="muted">Manage Climate Data calculation properties used by EPB envelope boundary conditions.</p>
       </div>
 
       <div class="epb-layout">
@@ -112,11 +112,11 @@
           <article id="component-steps-tabs" class="card c-steps-tabs" aria-label="EPB flow tabs">
             <div class="steps-header" role="tablist" aria-label="EPB pages">
               <a class="step-item" role="tab" aria-selected="false" href="./EPB1-calculation-settings.html"><span class="step-number">1</span><span class="step-title">Calculation Settings</span></a>
-              <a class="step-item is-active" role="tab" aria-selected="true" aria-current="page" href="./EPB1b-ground-temperature.html"><span class="step-number">2</span><span class="step-title">Ground Temperature</span></a>
-              <a class="step-item" role="tab" aria-selected="false" href="./EPB2-materials-constructions.html"><span class="step-number">3</span><span class="step-title">Building Envelopes</span></a>
-              <a class="step-item" role="tab" aria-selected="false" href="./EPB3-thermal-zones-envelope.html"><span class="step-number">4</span><span class="step-title">Thermal Zones &amp; Envelope Analysis</span></a>
-              <a class="step-item" role="tab" aria-selected="false" href="./EPB-spaces-tab.html"><span class="step-number">5</span><span class="step-title">Spaces Tab</span></a>
-              <a class="step-item" role="tab" aria-selected="false" href="./EPB-operations-tab.html"><span class="step-number">6</span><span class="step-title">Operations</span></a>
+              <a class="step-item is-active" role="tab" aria-selected="true" aria-current="page" href="./EPB1b-ground-temperature.html"><span class="step-number">2</span><span class="step-title">Climate Data</span></a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB2-materials-constructions.html"><span class="step-number">3</span><span class="step-title">Building Envelope</span></a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB-operations-tab.html"><span class="step-number">4</span><span class="step-title">Operations</span></a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB3-thermal-zones-envelope.html"><span class="step-number">5</span><span class="step-title">Thermal Zones &amp; Envelope Analysis</span></a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB-spaces-tab.html"><span class="step-number">6</span><span class="step-title">Spaces Tab</span></a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB4-results-summary.html"><span class="step-number">7</span><span class="step-title">Performance Summary</span></a>
             </div>
           </article>
@@ -124,9 +124,9 @@
 
         <div class="full">
           <article class="card">
-            <h2>Ground temperature calculation properties</h2>
+            <h2>Climate Data calculation properties</h2>
             <div style="overflow-x:auto;">
-              <div class="c-gtcp-grid" role="table" aria-label="Ground temperature calculation properties table">
+              <div class="c-gtcp-grid" role="table" aria-label="Climate Data calculation properties table">
                 <div id="gtcp-body" class="c-gtcp-grid-body" role="rowgroup"></div>
               </div>
             </div>
@@ -151,7 +151,7 @@
   <!-- COMPONENT: modal -->
   <section id="gtcp-modal" class="c-modal" aria-hidden="true">
     <article class="modal-card" role="dialog" aria-modal="true" aria-labelledby="gtcp-modal-title">
-      <h2 id="gtcp-modal-title">Add Ground Temperature Profile</h2>
+      <h2 id="gtcp-modal-title">Add Climate Data Profile</h2>
       <form id="gtcp-modal-form" class="modal-form-grid">
         <label><span>Name *</span><input id="m-name" type="text" required value="Demo Ground Profile" /></label>
         <label><span>External walls thickness (m)</span><input id="m-thickness" type="number" step="any" value="0.30" /></label>
@@ -204,7 +204,7 @@
         const monthHtml = monthOptions.map((m, i) => `<option value="${i + 1}" ${selectedMonth === i + 1 ? 'selected' : ''}>${m}</option>`).join('');
         return `
           <div class="c-gtcp-grid-row" role="row">
-            <div role="cell"><div class="gtcp-cell"><span class="gtcp-cell-label">Ground Temperature Calculation Properties Name *</span><input class="gtcp-input" type="text" value="${row?.name ?? ''}" placeholder="Ground profile name" /></div></div>
+            <div role="cell"><div class="gtcp-cell"><span class="gtcp-cell-label">Climate Data Calculation Properties Name *</span><input class="gtcp-input" type="text" value="${row?.name ?? ''}" placeholder="Ground profile name" /></div></div>
             <div role="cell"><div class="gtcp-cell"><span class="gtcp-cell-label">External walls thickness (m)</span><input class="gtcp-input" type="number" step="any" value="${row?.externalWallsThickness ?? ''}" /></div></div>
             <div role="cell"><div class="gtcp-cell"><span class="gtcp-cell-label">Exposed perimeter</span><input class="gtcp-input" type="number" step="any" value="${row?.exposedPerimeter ?? ''}" /></div></div>
             <div role="cell"><div class="gtcp-cell"><span class="gtcp-cell-label">Annual mean internal temperature (°C)</span><input class="gtcp-input" type="number" step="any" value="${row?.annualMeanInternalTemperature ?? ''}" /></div></div>

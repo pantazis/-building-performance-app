@@ -30,8 +30,8 @@ docs123\UI-SRI v4(1).docx
 
 
 4) γενικα για πεδια στο epb σου λειπουν πεδια οποτε να δεις πιο αναλυτικα το αρχειο epb v4 ****
-5) στο EPB1 · Calculation Settings στα Ground temperature calculation properties βλεπω αρκετες αλλαγες
-6) στο EPB2 · Building Envelopes 
+5) στο EPB1 · Calculation Settings στα Climate Data calculation properties βλεπω αρκετες αλλαγες
+6) στο EPB2 · Building Envelope 
 Αλλαξε το ονομα Materials  library σε σκετο Materials και θέλει ) ένα κουμπι add νέο και διπλα από τα ηδη καταχωρημενα να βαλουμε open, duplicate,delete όπως εχεις στον πινακα του Buildings overview στο A · Projects Dashboard (αυτή η αλλαγη να γινει σε οσα θα σου εχω διπλα σαν σχολιο «προσθηκη επιλογων πινακα»
 τα Constructions εχουν πολλα layers και ξεκινανε από το outside και μετα ο χρηστης προσθετει και αλλα μεχρι να εχει όλα τα απαραιτητα layers . τα layers αυτά είναι επι της ουσιας τα materials από πανω. Οποτε θελει αντιστοχια με αυτά και μηπως επειδη μπορει να είναι πολλα, να τα βλεπει ο χρηστης αναλυτικα τα layers μονο όταν θα πατησει open? (Νομιζω αυτό είναι καλυτερα για να μην υπαρχει πολύ πληροφορια
 Λειπουν τα Schedules και  Controls (Thermostats & Humidistats) και αυτά πινακες με add και «προσθηκη επιλογων πινακα»
@@ -74,7 +74,7 @@ o	Surfaces & Geometry (νεος πινακας όπως το εχεις
 •	Construction ID (Drop-down: Linked to Tab 2 Constractions ID or Name) [JSON surface -> constructionId] 
 •	Outside Boundary Condition (Drop-down: Outdoors, Ground, etc.) [JSON surface -> outsideBoundaryCondition] 
 •	If Outside Boundary Condition ==’Ground’
-o	Select  Ground Temperature Calculation Properties (drop-down list from Ground Tempature Calculation Properties Name of tab 1) [ JSON surface->groundTemperatureCalculationPropertiesId
+o	Select  Climate Data Calculation Properties (drop-down list from Climate Data Calculation Properties Name of tab 1) [ JSON surface->groundTemperatureCalculationPropertiesId
 •	Area (Input Field (m²)) [JSON surface -> area] 
 •	Height (Input Field (m)) [JSON surface -> height] 
 •	Azimuth Angle (Input Field (degrees)) [JSON surface -> azimuth_angle] 

@@ -329,23 +329,23 @@
               </a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB1b-ground-temperature.html">
                 <span class="step-number">2</span>
-                <span class="step-title">Ground Temperature</span>
+                <span class="step-title">Climate Data</span>
               </a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB2-materials-constructions.html">
                 <span class="step-number">3</span>
-                <span class="step-title">Building Envelopes</span>
+                <span class="step-title">Building Envelope</span>
+              </a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB-operations-tab.html">
+                <span class="step-number">4</span>
+                <span class="step-title">Operations</span>
               </a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB3-thermal-zones-envelope.html">
-                <span class="step-number">4</span>
+                <span class="step-number">5</span>
                 <span class="step-title">Thermal Zones &amp; Envelope Analysis</span>
               </a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB-spaces-tab.html">
-                <span class="step-number">5</span>
-                <span class="step-title">Spaces Tab</span>
-              </a>
-              <a class="step-item" role="tab" aria-selected="false" href="./EPB-operations-tab.html">
                 <span class="step-number">6</span>
-                <span class="step-title">Operations</span>
+                <span class="step-title">Spaces Tab</span>
               </a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB4-results-summary.html">
                 <span class="step-number">7</span>
@@ -376,12 +376,7 @@
                 <span>End Date · Day</span>
                 <input id="run-end-day" type="number" min="1" max="31" value="31" />
               </label>
-              <p class="form-section-title full-row">Time Step</p>
-              <label class="form-field full-row">
-                <span>Number per hour (time step)</span>
-                <input id="run-step" type="number" min="1" value="1" />
-              </label>
-       
+             
               
               
             </form>
@@ -395,7 +390,7 @@
         <div class="full">
           <article class="card">
             <h2>Next step</h2>
-            <p class="muted">Ground Temperature properties have been moved into a dedicated step (EPB1b) to keep settings and boundary-condition data separate.</p>
+            <p class="muted">Climate Data properties have been moved into a dedicated step (EPB1b) to keep settings and boundary-condition data separate.</p>
             <div class="full-row action-row">
               <a class="btn btn-default" href="./I-building-tab.html">Back to Building Tab</a>
               <a class="btn btn-primary" href="./EPB1b-ground-temperature.html">Continue to EPB1b</a>
@@ -414,7 +409,7 @@
   <!-- COMPONENT: modal -->
   <section id="gtcp-modal" class="c-modal" aria-hidden="true">
     <article class="modal-card" role="dialog" aria-modal="true" aria-labelledby="gtcp-modal-title">
-      <h2 id="gtcp-modal-title">Add Ground Temperature Profile</h2>
+      <h2 id="gtcp-modal-title">Add Climate Data Profile</h2>
       <form id="gtcp-modal-form" class="modal-form-grid">
         <label><span>Name *</span><input id="m-name" type="text" required value="Demo Ground Profile" /></label>
         <label><span>External walls thickness (m)</span><input id="m-thickness" type="number" step="any" value="0.30" /></label>
@@ -589,7 +584,7 @@
         const monthHtml = monthOptions.map((m, i) => `<option value="${i + 1}" ${selectedMonth === i + 1 ? 'selected' : ''}>${m}</option>`).join('');
         return `
           <div class="c-gtcp-grid-row" role="row">
-            <div role="cell"><div class="gtcp-cell"><span class="gtcp-cell-label">Ground Temperature Calculation Properties Name *</span><input class="gtcp-input" type="text" value="${row?.name ?? ''}" placeholder="Ground profile name" /></div></div>
+            <div role="cell"><div class="gtcp-cell"><span class="gtcp-cell-label">Climate Data Calculation Properties Name *</span><input class="gtcp-input" type="text" value="${row?.name ?? ''}" placeholder="Ground profile name" /></div></div>
             <div role="cell"><div class="gtcp-cell"><span class="gtcp-cell-label">External walls thickness (m)</span><input class="gtcp-input" type="number" step="any" value="${row?.externalWallsThickness ?? ''}" /></div></div>
             <div role="cell"><div class="gtcp-cell"><span class="gtcp-cell-label">Exposed perimeter</span><input class="gtcp-input" type="number" step="any" value="${row?.exposedPerimeter ?? ''}" /></div></div>
             <div role="cell"><div class="gtcp-cell"><span class="gtcp-cell-label">Annual mean internal temperature (°C)</span><input class="gtcp-input" type="number" step="any" value="${row?.annualMeanInternalTemperature ?? ''}" /></div></div>
