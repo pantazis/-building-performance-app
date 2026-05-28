@@ -1,0 +1,18 @@
+building envelope  - > s
+climate data -> groun tempatures
+Tab 1 να φύγει το time step
+
+tab 2 να μεταονομαστει σε "Climate Data" και να εχει πανω επιλογη Upload “EPBW” file
+
+το operations να παει 4ο
+
+tab 5 να γινει σκετο thermal zones
+
+στο spaces να μπει drop-down list με τα thermal zone
+
+ 
+στο thermal zones και τα spaces να γινουν τα pop up του open που θα περιλαμβανουν ολες τις μεταβλητες
+
+στο spaces να φυγει το people
+ 
+
