@@ -124,12 +124,7 @@
           <article class="card">
             <div class="section-head"><h2>Sub-surface (Openings)</h2><button id="add-subsurface" class="btn btn-success" type="button">+ Add Sub-surface</button></div>
             <div class="table-wrap"><table><thead><tr><th>Sub-surface ID</th><th>Parent Surface</th><th>Type</th><th>Construction</th><th>Area / Height</th><th>Azimuth / Tilt</th><th>Actions</th></tr></thead><tbody id="subsurfaces-body"></tbody></table></div>
-            <ul>
-              <li>Zone entries include Open/Edit, Duplicate, Delete actions.</li>
-              <li>Surface entries include Open/Edit, Duplicate, Delete actions.</li>
-              <li>Sub-surface entries include Open/Edit, Duplicate, Delete actions.</li>
-              <li>Ground boundary condition reveals ground temperature properties selector.</li>
-            </ul>
+             <br><br>
             <div class="action-row"><a class="btn btn-default" href="./EPB2-materials-constructions.html">Back to EPB2</a><a class="btn btn-primary" href="./EPB-spaces-tab.html">Continue to Spaces</a></div>
           </article>
         </div>
@@ -143,8 +138,7 @@
       <h2 id="modal-title">Edit</h2>
       <form id="entity-form" class="modal-grid"></form>
       <div class="toolbar">
-        <button id="modal-save" type="button" class="btn btn-success">Save</button>
-        <button id="modal-duplicate" type="button" class="btn btn-warning">Duplicate</button>
+        <button id="modal-save" type="button" class="btn btn-success">Save</button>      
         <button id="modal-delete" type="button" class="btn btn-danger">Delete</button>
         <button id="modal-cancel" type="button" class="btn btn-default">Cancel</button>
       </div>
@@ -185,7 +179,7 @@
     const allSurfaces = () => zones.flatMap((z) => (z.surfaces || []).map((s) => ({ ...s, zoneId: z.id })));
     const allSubsurfaces = () => allSurfaces().flatMap((s) => (s.subsurfaces || []).map((ss) => ({ ...ss, parentSurfaceId: s.id })));
 
-    const actions = (entity, id) => `<div class="inline-actions"><button class="btn btn-default js-open" data-entity="${entity}" data-id="${id}" type="button">Open/Edit</button><button class="btn btn-orange js-dup" data-entity="${entity}" data-id="${id}" type="button">Duplicate</button><button class="btn btn-danger js-del" data-entity="${entity}" data-id="${id}" type="button">Delete</button></div>`;
+    const actions = (entity, id) => `<div class="inline-actions"><button class="btn btn-default js-open" data-entity="${entity}" data-id="${id}" type="button">Open/Edit</button><button class="btn btn-danger js-del" data-entity="${entity}" data-id="${id}" type="button">Delete</button></div>`;
 
     function render() {
       document.getElementById('zones-body').innerHTML = zones.map((z) => `<tr><td>${z.id}</td><td>${z.type}</td><td>${z.volume}</td><td>${z.floorArea}</td><td>${actions('zone', z.id)}</td></tr>`).join('');
@@ -321,7 +315,7 @@
 
     document.getElementById('modal-cancel').onclick = closeModal;
     document.getElementById('modal-save').onclick = closeModal;
-    document.getElementById('modal-duplicate').onclick = closeModal;
+    
     document.getElementById('modal-delete').onclick = closeModal;
     modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
     document.addEventListener('keydown', (e) => {
