@@ -36,7 +36,7 @@ docs123\UI-SRI v4(1).docx
 τα Constructions εχουν πολλα layers και ξεκινανε από το outside και μετα ο χρηστης προσθετει και αλλα μεχρι να εχει όλα τα απαραιτητα layers . τα layers αυτά είναι επι της ουσιας τα materials από πανω. Οποτε θελει αντιστοχια με αυτά και μηπως επειδη μπορει να είναι πολλα, να τα βλεπει ο χρηστης αναλυτικα τα layers μονο όταν θα πατησει open? (Νομιζω αυτό είναι καλυτερα για να μην υπαρχει πολύ πληροφορια
 Λειπουν τα Schedules και  Controls (Thermostats & Humidistats) και αυτά πινακες με add και «προσθηκη επιλογων πινακα»
 Στο Constructions & glazing παλι 2 κουμπια  add Construction και add glazing  και «προσθηκη επιλογων πινακα» για τα ηδη καταχωρημενα
-7) στο EPB3 · Thermal Zones & Envelope Analysis
+7) στο EPB3 · Thermal Zones
 Το Envelope analysis checklist να παει τερμα κατω
 Το Zones and spaces να γινει Thermal zones και να φυγει το spaces αφου θα γινει ξεχωριστο tab
 Το Surface and subsurface inventory ωραιο που το εχεις ξεχωριστο πινακα που δειχνει σε thermal zone. Παλι προσθηκη 1 κουμπι  add surface και «προσθηκη επιλογων πινακα» για τα ηδη καταχωρημενα και μετα αφου πατησει ο χρηστης σε ένα συγκεκριμενο surface μεσα στην νεα καρτελα εκτος από τις πληροφοριες του surface να εχει έναν πινακα με τα sub surfaces και αντιστοιχα με κουμπι add sub surface  και «προσθηκη επιλογων πινακα» για τα ηδη καταχωρημενα

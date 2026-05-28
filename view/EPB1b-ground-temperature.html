@@ -62,6 +62,14 @@
 
     .gtcp-actions { margin-top: var(--sp-sm); display: flex; justify-content: flex-end; gap: var(--sp-xs); flex-wrap: wrap; }
 
+    .inline-upload {
+      display: grid;
+      gap: 8px;
+      margin-top: var(--sp-sm);
+      padding-top: var(--sp-sm);
+      border-top: 1px solid var(--line);
+    }
+
     /* COMPONENT: modal */
     .c-modal { position: fixed; inset: 0; background: rgba(12, 18, 32, 0.45); display: none; place-items: center; z-index: 200; padding: var(--sp-lg); }
     .c-modal.is-open { display: grid; }
@@ -115,7 +123,7 @@
               <a class="step-item is-active" role="tab" aria-selected="true" aria-current="page" href="./EPB1b-ground-temperature.html"><span class="step-number">2</span><span class="step-title">Climate Data</span></a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB2-materials-constructions.html"><span class="step-number">3</span><span class="step-title">Building Envelope</span></a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB-operations-tab.html"><span class="step-number">4</span><span class="step-title">Operations</span></a>
-              <a class="step-item" role="tab" aria-selected="false" href="./EPB3-thermal-zones-envelope.html"><span class="step-number">5</span><span class="step-title">Thermal Zones &amp; Envelope Analysis</span></a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB3-thermal-zones-envelope.html"><span class="step-number">5</span><span class="step-title">Thermal Zones</span></a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB-spaces-tab.html"><span class="step-number">6</span><span class="step-title">Spaces Tab</span></a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB4-results-summary.html"><span class="step-number">7</span><span class="step-title">Performance Summary</span></a>
             </div>
@@ -129,6 +137,11 @@
               <div class="c-gtcp-grid" role="table" aria-label="Climate Data calculation properties table">
                 <div id="gtcp-body" class="c-gtcp-grid-body" role="rowgroup"></div>
               </div>
+            </div>
+            <div class="inline-upload" aria-label="EPBW import">
+              <label for="epbw-file">Upload EPBW file</label>
+              <input id="epbw-file" type="file" accept=".epbw" />
+              <p id="epbw-file-name" class="caption">No EPBW file selected.</p>
             </div>
             <div class="gtcp-actions">
               <button id="gtcp-open-add" class="btn btn-default" type="button">+ Add Ground Profile</button>
@@ -175,6 +188,8 @@
     const epb = AppDataModel?.projects?.[0]?.building?.epb || {};
     const monthOptions = ['January', 'February', 'March', 'April', 'May', 'June','July', 'August', 'September', 'October', 'November', 'December'];
     const gtcpBody = document.getElementById('gtcp-body');
+    const epbwInput = document.getElementById('epbw-file');
+    const epbwFileName = document.getElementById('epbw-file-name');
     const demoGroundRow = { name: 'Demo Ground Profile', externalWallsThickness: 0.30, exposedPerimeter: 120, annualMeanInternalTemperature: 21, amplitudeOfInternalTemperatureVariations: 3, minExternalTemperatureMonth: 1, linearThermalTransmittance: 0.25, conductivity: 1.8, heatCapacity: 2.1 };
 
     const sourceGroundRows = Array.isArray(epb?.settings?.groundTemperatureCalculationProperties)
@@ -219,6 +234,13 @@
     }
 
     renderGroundRows();
+
+    epbwInput?.addEventListener('change', () => {
+      const selected = epbwInput.files && epbwInput.files[0];
+      epbwFileName.textContent = selected
+        ? `Selected file: ${selected.name}`
+        : 'No EPBW file selected.';
+    });
 
     const gtcpModal = document.getElementById('gtcp-modal');
     const openAddBtn = document.getElementById('gtcp-open-add');
