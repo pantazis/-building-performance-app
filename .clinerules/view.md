@@ -66,7 +66,7 @@
 #### EPB Tabs Group
 10. [*] `EPB1` - EPB View 1: Calculation Settings
 11. [*] `EPB2` - EPB View 2: Building Envelope
-12. [*] `EPB3` - EPB View 3: Thermal Zones
+12. [*] `EPB3` - EPB View 3: Thermal Zone
 13. [*] `EPB4` - EPB Results / Performance Summary
 
 #### SRI Tabs Group

@@ -19,10 +19,13 @@
     .spaces-layout { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--sp-md); }
     .full { grid-column: 1 / -1; }
     .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; }
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
     th, td { border-bottom: 1px solid var(--line); padding: 10px; text-align: left; }
+    th:not(:last-child), td:not(:last-child) { width: 1%; }
+    th:last-child, td:last-child { width: 1%; white-space: nowrap; text-align: right; }
+    td:last-child .inline-actions { justify-content: flex-end; }
     .section-head { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-sm); flex-wrap: wrap; margin-bottom: var(--sp-sm); }
-    .inline-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    .inline-actions { display: grid; gap: 6px; grid-template-columns: auto auto; }
     .inline-actions .btn { padding: 6px 10px; font-size: 12px; }
 
     /* COMPONENT: breadcrumbs */
@@ -67,7 +70,7 @@
     <section class="page" id="view-epb-spaces">
       <div class="page-header">
         <h1>EPB · Spaces Tab</h1>
-        <p class="muted">Link spaces to EPB3 thermal zones before continuing to Operations.</p>
+        <p class="muted">Link spaces to EPB3 Thermal Zone before continuing to Operations.</p>
       </div>
 
       <div class="spaces-layout">
@@ -92,7 +95,7 @@
               <a class="step-item" role="tab" aria-selected="false" href="./EPB1b-ground-temperature.html"><span class="step-number">2</span><span class="step-title">Climate Data</span></a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB2-materials-constructions.html"><span class="step-number">3</span><span class="step-title">Building Envelope</span></a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB-operations-tab.html"><span class="step-number">4</span><span class="step-title">Operations</span></a>
-              <a class="step-item" role="tab" aria-selected="false" href="./EPB3-thermal-zones-envelope.html"><span class="step-number">5</span><span class="step-title">Thermal Zones</span></a>
+              <a class="step-item" role="tab" aria-selected="false" href="./EPB3-thermal-zones-envelope.html"><span class="step-number">5</span><span class="step-title">Thermal Zone</span></a>
               <a class="step-item is-active" role="tab" aria-selected="true" aria-current="page" href="./EPB-spaces-tab.html"><span class="step-number">6</span><span class="step-title">Spaces Tab</span></a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB4-results-summary.html"><span class="step-number">7</span><span class="step-title">Performance Summary</span></a>
             </div>
@@ -103,12 +106,7 @@
           <article class="card">
             <div class="section-head"><h2>Spaces table</h2><button id="add-space" class="btn btn-success" type="button">+ Add Space</button></div>
             <div class="table-wrap"><table><thead><tr><th>Space ID</th><th>Thermal Zone</th><th>Service Area</th><th>Volume (m³)</th><th>Floor Area (m²)</th><th>Actions</th></tr></thead><tbody id="spaces-body"></tbody></table></div>
-            <ul>
-              <li>Each space supports Open/Edit action.</li>
-              <li>Each space supports Duplicate action.</li>
-              <li>Each space supports Delete action.</li>
-              <li>Thermal Zone links come from EPB3 zone data.</li>
-            </ul>
+             <br><br>
             <div class="action-row">
               <a class="btn btn-default" href="./EPB3-thermal-zones-envelope.html">Back to EPB3</a>
               <a class="btn btn-primary" href="./EPB-operations-tab.html">Continue to Operations</a>
@@ -126,7 +124,7 @@
       <form id="space-form" class="modal-grid"></form>
       <div class="toolbar">
         <button id="modal-save" type="button" class="btn btn-success">Save</button>
-        <button id="modal-duplicate" type="button" class="btn btn-warning">Duplicate</button>
+       
         <button id="modal-delete" type="button" class="btn btn-danger">Delete</button>
         <button id="modal-cancel" type="button" class="btn btn-default">Cancel</button>
       </div>
@@ -159,7 +157,7 @@
       );
     }
 
-    const actions = (id) => `<div class="inline-actions"><button class="btn btn-default js-open" data-id="${id}" type="button">Open/Edit</button><button class="btn btn-orange js-dup" data-id="${id}" type="button">Duplicate</button><button class="btn btn-danger js-del" data-id="${id}" type="button">Delete</button></div>`;
+    const actions = (id) => `<div class="inline-actions"><button class="btn btn-default js-open" data-id="${id}" type="button">Open/Edit</button><button class="btn btn-danger js-del" data-id="${id}" type="button">Delete</button></div>`;
     const zoneOptions = () => zones.map((z) => `<option value="${z.id}">${z.id}</option>`).join('');
 
     function render() {
@@ -204,7 +202,7 @@
 
     document.getElementById('modal-cancel').onclick = closeModal;
     document.getElementById('modal-save').onclick = closeModal;
-    document.getElementById('modal-duplicate').onclick = closeModal;
+  
     document.getElementById('modal-delete').onclick = closeModal;
     modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
     document.addEventListener('keydown', (e) => {

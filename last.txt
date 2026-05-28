@@ -6,12 +6,12 @@ tab 2 να μεταονομαστει σε "Climate Data" και να εχει �
 
 το operations να παει 4ο
 
-tab 5 να γινει σκετο thermal zones
+tab 5 να γινει σκετο Thermal Zone
 
 στο spaces να μπει drop-down list με τα thermal zone
 
  
-στο thermal zones και τα spaces να γινουν τα pop up του open που θα περιλαμβανουν ολες τις μεταβλητες
+στο Thermal Zone και τα spaces να γινουν τα pop up του open που θα περιλαμβανουν ολες τις μεταβλητες
 
 στο spaces να φυγει το people
  

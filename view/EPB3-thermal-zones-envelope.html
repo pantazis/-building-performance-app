@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>EPB3 · Thermal Zones · OpenBEP</title>
+  <title>EPB3 · Thermal Zone · OpenBEP</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="../building-performance-app/style.css" />
   <style>
@@ -34,10 +34,13 @@
     @media (max-width: 640px) { .c-steps-tabs .steps-header { grid-template-columns: 1fr; } }
 
     .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; }
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
     th, td { border-bottom: 1px solid var(--line); padding: 10px; text-align: left; vertical-align: top; }
+    th:not(:last-child), td:not(:last-child) { width: 1%; }
+    th:last-child, td:last-child { width: 1%; white-space: nowrap; text-align: right; }
+    td:last-child .inline-actions { justify-content: flex-end; }
     .section-head { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-sm); flex-wrap: wrap; margin-bottom: var(--sp-sm); }
-    .inline-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    .inline-actions { display: grid; gap: 6px; grid-template-columns: auto auto; }
     .inline-actions .btn { padding: 6px 10px; font-size: 12px; }
 
     .c-modal[aria-hidden="true"] { display: none; }
@@ -73,7 +76,7 @@
   <main class="container">
     <section class="page" id="view-epb3">
       <div class="page-header">
-        <h1>EPB3 · Thermal Zones</h1>
+        <h1>EPB3 · Thermal Zone</h1>
         <p class="muted">EPB3 -> Spaces -> Operations flow with zone, surfaces and openings management.</p>
       </div>
 
@@ -99,7 +102,7 @@
               <a class="step-item" role="tab" aria-selected="false" href="./EPB1b-ground-temperature.html"><span class="step-number">2</span><span class="step-title">Climate Data</span></a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB2-materials-constructions.html"><span class="step-number">3</span><span class="step-title">Building Envelope</span></a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB-operations-tab.html"><span class="step-number">4</span><span class="step-title">Operations</span></a>
-              <a class="step-item is-active" role="tab" aria-selected="true" aria-current="page" href="./EPB3-thermal-zones-envelope.html"><span class="step-number">5</span><span class="step-title">Thermal Zones</span></a>
+              <a class="step-item is-active" role="tab" aria-selected="true" aria-current="page" href="./EPB3-thermal-zones-envelope.html"><span class="step-number">5</span><span class="step-title">Thermal Zone</span></a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB-spaces-tab.html"><span class="step-number">6</span><span class="step-title">Spaces Tab</span></a>
               <a class="step-item" role="tab" aria-selected="false" href="./EPB4-results-summary.html"><span class="step-number">7</span><span class="step-title">Performance Summary</span></a>
             </div>
@@ -108,7 +111,7 @@
 
         <div class="full">
           <article class="card">
-            <div class="section-head"><h2>Thermal Zones table</h2><button id="add-zone" class="btn btn-success" type="button">+ Add Thermal Zone</button></div>
+            <div class="section-head"><h2>Thermal Zone table</h2><button id="add-zone" class="btn btn-success" type="button">+ Add Thermal Zone</button></div>
             <div class="table-wrap"><table><thead><tr><th>Zone ID</th><th>Type</th><th>Volume (m³)</th><th>Floor Area (m²)</th><th>Actions</th></tr></thead><tbody id="zones-body"></tbody></table></div>
           </article>
         </div>
