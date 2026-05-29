@@ -47,7 +47,7 @@
 - For breadcrumbs specifically, reuse the canonical block pattern:
   - `<!-- COMPONENT: breadcrumbs -->`
   - `<article id="component-breadcrumbs" class="card c-breadcrumbs">`
-  - `<h2>Breadcrumbs</h2>`
+  - ``
   - `<nav aria-label="Breadcrumb"><ol>...</ol></nav>`
 - If a view needs a different breadcrumb text/path, only change the list item content/links, not the component skeleton.
 
