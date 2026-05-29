@@ -143,6 +143,7 @@
   </footer>
 
   <script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
+  <script src="./epb-steps-tabs.js"></script>
   <script>
     const epb = AppDataModel?.projects?.[0]?.building?.epb || {};
     const schedules = Array.isArray(epb?.library?.scheduleConstant) ? epb.library.scheduleConstant : [];
