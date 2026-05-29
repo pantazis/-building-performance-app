@@ -42,10 +42,3 @@
 
 
 
-Calculation Settings
-Climate Data
-Building Envelope
-Operations
-Thermal Zone
-Spaces Tab
-Performance Summary
