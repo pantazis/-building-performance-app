@@ -67,6 +67,12 @@
     'epb4-results-summary.html': [
       { label: 'Projects Dashboard', href: './A-projects-dashboard.html' },
       { label: 'Building Tab', href: './C-open-edit-building.html' },
+      { label: 'EPB: Calculation Settings', href: './EPB1-calculation-settings.html' },
+      { label: 'EPB: Climate Data', href: './EPB1b-ground-temperature.html' },
+      { label: 'EPB: Building Envelope', href: './EPB2-materials-constructions.html' },
+      { label: 'EPB: Operations', href: './EPB-operations-tab.html' },
+      { label: 'EPB: Thermal Zone', href: './EPB3-thermal-zones-envelope.html' },
+      { label: 'EPB: Spaces Tab' , href: './EPB-spaces-tab.html'  },
       { label: 'EPB: Performance Summary' }
     ],
 
@@ -112,17 +118,45 @@
 
   const toFileName = (path) => (path || '').split('/').pop().toLowerCase();
 
+  const toShortLabel = (label = '') => {
+    const text = String(label).trim();
+    if (text.length <= 3) return text;
+    return `${text.slice(0, 3)}...`;
+  };
+
+  function getDisplayTrail(trail = []) {
+    if (trail.length <= 3) return trail;
+
+    return trail.map((item, index) => {
+      const isFirst = index === 0;
+      const isSecond = index === 1;
+      const isLast = index === trail.length - 1;
+
+      if (isFirst || isSecond || isLast) {
+        return { ...item, displayLabel: item.label, title: item.label };
+      }
+
+      return {
+        ...item,
+        displayLabel: toShortLabel(item.label),
+        title: item.label
+      };
+    });
+  }
+
   function renderBreadcrumbs() {
     const host = document.querySelector('#component-breadcrumbs nav ol');
     if (!host) return;
     const trail = BREADCRUMB_MAP[toFileName(window.location.pathname)];
     if (!trail?.length) return;
 
-    host.innerHTML = trail
+    const displayTrail = getDisplayTrail(trail);
+
+    host.innerHTML = displayTrail
       .map((item, index) =>
-        index === trail.length - 1
-          ? `<li aria-current="page">${item.label}</li>`
-          : `<li><a href="${item.href || '#'}">${item.label}</a></li>`
+        index === displayTrail.length - 1
+          ? `<li aria-current="page" title="${item.title || item.label}">${item.displayLabel || item.label}</li>`
+          : `<li><a href="${item.href || '#'}" title="${item.title || item.label}">${item.displayLabel || item.label}</a></li>`
       )
       .join('');
   }

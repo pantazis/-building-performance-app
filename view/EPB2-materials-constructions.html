@@ -556,18 +556,20 @@
 
 
     const list = document.getElementById('completeness-list');
-    list.innerHTML = '';
     const checks = [
       `Materials: ${(epb?.library?.materialOpaque || []).length}`,
       `Glazing systems: ${(epb?.library?.glazingSimpleSystem || []).length}`,
       `Constructions: ${(epb?.library?.construction || []).length}`,
       `Schedules & controls moved to Operations tab.`
     ];
-    checks.forEach((item) => {
-      const li = document.createElement('li');
-      li.textContent = item;
-      list.appendChild(li);
-    });
+    if (list) {
+      list.innerHTML = '';
+      checks.forEach((item) => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        list.appendChild(li);
+      });
+    }
 
     const addConstructionBtn = document.getElementById('add-construction-btn');
     const constructionsEditor = document.getElementById('component-constructions-editor');
