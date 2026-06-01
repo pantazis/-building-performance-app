@@ -235,6 +235,10 @@
       return null;
     }
 
+    function zoneOptions(selectedId = '') {
+      return zones.map((z) => `<option value="${z.id}" ${z.id === selectedId ? 'selected' : ''}>${z.id}</option>`).join('');
+    }
+
     function entityFormHtml(entity, id) {
       if (entity === 'zone') {
         const z = findZone(id) || zones[0];
@@ -285,15 +289,16 @@
         const s = fs?.surface || { id: uid('surface'), zoneId: zones[0]?.id || '', surfaceType: 'Wall', constructionId: '', outsideBoundaryCondition: 'Outdoors', groundTemperatureCalculationPropertiesId: '', area: 0, height: 0, azimuth_angle: 0, tilt_angle: 90 };
         return `
           <h3 class="group-title">Surface popup</h3>
-          <label class="field"><span>Surface ID</span><input value="${s.id}" /></label>
-          <label class="field"><span>Surface Type</span><select><option ${s.surfaceType==='Wall'?'selected':''}>Wall</option><option ${s.surfaceType==='Roof'?'selected':''}>Roof</option><option ${s.surfaceType==='Floor'?'selected':''}>Floor</option></select></label>
-          <label class="field"><span>Construction ID</span><select>${mapOptions(constructions)}</select></label>
+          <label class="field"><span>Surface ID</span><input id="surface-id" value="${s.id}" /></label>
+          <label class="field"><span>Thermal Zone</span><select id="surface-zone-id">${zoneOptions(s.zoneId || fs?.zone?.id || zones[0]?.id || '')}</select></label>
+          <label class="field"><span>Surface Type</span><select id="surface-type"><option ${s.surfaceType==='Wall'?'selected':''}>Wall</option><option ${s.surfaceType==='Roof'?'selected':''}>Roof</option><option ${s.surfaceType==='Floor'?'selected':''}>Floor</option></select></label>
+          <label class="field"><span>Construction ID</span><select id="surface-construction-id">${mapOptions(constructions)}<option selected>${s.constructionId || ''}</option></select></label>
           <label class="field"><span>Outside Boundary Condition</span><select id="surface-outside-boundary"><option ${s.outsideBoundaryCondition==='Outdoors'?'selected':''}>Outdoors</option><option ${s.outsideBoundaryCondition==='Ground'?'selected':''}>Ground</option><option ${s.outsideBoundaryCondition==='Adiabatic'?'selected':''}>Adiabatic</option></select></label>
-          <label id="ground-props-wrap" class="field"><span>Ground Temperature Calculation Properties</span><select>${mapOptions(groundProps)}</select></label>
-          <label class="field"><span>Area (m²)</span><input type="number" value="${n(s.area,0)}" /></label>
-          <label class="field"><span>Height (m)</span><input type="number" value="${n(s.height,0)}" /></label>
-          <label class="field"><span>Azimuth Angle (°)</span><input type="number" value="${n(s.azimuth_angle ?? s.azimuth,0)}" /></label>
-          <label class="field"><span>Tilt Angle (°)</span><input type="number" value="${n(s.tilt_angle ?? s.tilt,0)}" /></label>
+          <label id="ground-props-wrap" class="field"><span>Ground Temperature Calculation Properties</span><select id="surface-ground-props">${mapOptions(groundProps)}<option selected>${s.groundTemperatureCalculationPropertiesId || ''}</option></select></label>
+          <label class="field"><span>Area (m²)</span><input id="surface-area" type="number" value="${n(s.area,0)}" /></label>
+          <label class="field"><span>Height (m)</span><input id="surface-height" type="number" value="${n(s.height,0)}" /></label>
+          <label class="field"><span>Azimuth Angle (°)</span><input id="surface-azimuth" type="number" value="${n(s.azimuth_angle ?? s.azimuth,0)}" /></label>
+          <label class="field"><span>Tilt Angle (°)</span><input id="surface-tilt" type="number" value="${n(s.tilt_angle ?? s.tilt,0)}" /></label>
         `;
       }
 
@@ -318,8 +323,41 @@
       document.querySelectorAll('.js-del').forEach((btn) => btn.onclick = () => openModal(btn.dataset.entity, btn.dataset.id));
     }
 
+    function saveSurfaceFromForm() {
+      const prev = findSurface(ctx.id);
+      const prevSurface = prev?.surface || {};
+      const targetZoneId = document.getElementById('surface-zone-id')?.value || zones[0]?.id;
+      const targetZone = findZone(targetZoneId);
+      if (!targetZone) return;
+
+      const updated = {
+        ...prevSurface,
+        id: document.getElementById('surface-id')?.value?.trim() || prevSurface.id || uid('surface'),
+        zoneId: targetZoneId,
+        surfaceType: document.getElementById('surface-type')?.value || prevSurface.surfaceType || 'Wall',
+        constructionId: document.getElementById('surface-construction-id')?.value || prevSurface.constructionId || '',
+        outsideBoundaryCondition: document.getElementById('surface-outside-boundary')?.value || prevSurface.outsideBoundaryCondition || 'Outdoors',
+        groundTemperatureCalculationPropertiesId: document.getElementById('surface-ground-props')?.value || prevSurface.groundTemperatureCalculationPropertiesId || '',
+        area: n(document.getElementById('surface-area')?.value, 0),
+        height: n(document.getElementById('surface-height')?.value, 0),
+        azimuth_angle: n(document.getElementById('surface-azimuth')?.value, 0),
+        tilt_angle: n(document.getElementById('surface-tilt')?.value, 0),
+        subsurfaces: prevSurface.subsurfaces || []
+      };
+
+      if (prev?.zone?.surfaces) {
+        prev.zone.surfaces = prev.zone.surfaces.filter((s) => s.id !== prev.surface.id);
+      }
+      targetZone.surfaces = targetZone.surfaces || [];
+      targetZone.surfaces.push(updated);
+      render();
+    }
+
     document.getElementById('modal-cancel').onclick = closeModal;
-    document.getElementById('modal-save').onclick = closeModal;
+    document.getElementById('modal-save').onclick = () => {
+      if (ctx.entity === 'surface') saveSurfaceFromForm();
+      closeModal();
+    };
     
     document.getElementById('modal-delete').onclick = closeModal;
     modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
@@ -335,7 +373,7 @@
     });
 
     document.getElementById('add-zone').onclick = () => openModal('zone', zones[0].id);
-    document.getElementById('add-surface').onclick = () => openModal('surface', allSurfaces()[0]?.id || '');
+    document.getElementById('add-surface').onclick = () => openModal('surface', '');
     document.getElementById('add-subsurface').onclick = () => openModal('subsurface', allSubsurfaces()[0]?.id || '');
 
     render();
