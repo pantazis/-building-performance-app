@@ -26,9 +26,9 @@ EPB3 --> EPBSPACES[EPB Spaces Tab\nview/EPB-spaces-tab.html]
 EPBSPACES --> EPB4[EPB Results Performance Summary\nview/EPB4-results-summary.html]
 
 K --> SRI1[SRI View 1 Methodology Selection\nview/SRI1-methodology-selection.html]
-SRI1 --> SRI2{User-defined Weightings}
-SRI2 -->|Yes| SRI3[SRI View 2 Weighting Settings\nview/SRI3-weighting-settings.html]
-SRI2 -->|No| SRI4[SRI View 3 Domain Dashboard\nview/SRI4-domain-dashboard.html]
+SRI1 --> SRI2{Confirm SRI Rules}
+SRI1 -->|EU + User-defined| SRI4[SRI View 3 Domain Dashboard\nview/SRI4-domain-dashboard.html]
+SRI2 -->|Default or user-defined confirmed| SRI4[SRI View 3 Domain Dashboard\nview/SRI4-domain-dashboard.html]
 SRI3 --> SRI4
 
 SRI4 --> SRI5[Heating Tab\nview/SRI5-heating-tab.html]

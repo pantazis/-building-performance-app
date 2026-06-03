@@ -22,9 +22,9 @@ EPBSPACES --> EPBOPS[EPB Operations Tab]
 EPBOPS --> EPB4[EPB Results Performance Summary]
 
 K --> SRI1[SRI View 1 Methodology Selection]
-SRI1 --> SRI2{User-defined Weightings}
-SRI2 -->|Yes| SRI3[SRI View 2 Weighting Settings]
-SRI2 -->|No| SRI4[SRI View 3 Domain Dashboard]
+SRI1 --> SRI2{Confirm SRI Rules}
+SRI1 -->|EU + User-defined| SRI4[SRI View 3 Domain Dashboard]
+SRI2 -->|Default or user-defined confirmed| SRI4[SRI View 3 Domain Dashboard]
 SRI3 --> SRI4
 
 SRI4 --> SRI5[Heating Tab]

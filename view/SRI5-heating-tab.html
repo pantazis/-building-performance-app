@@ -74,6 +74,28 @@
     }
 
     .service-table .num { text-align: right; }
+
+    .service-table select,
+    .service-table input[type="number"] {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 6px;
+      font: inherit;
+    }
+
+    .entry-row {
+      display: grid;
+      grid-template-columns: minmax(96px, 1fr) 90px;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .is-disabled {
+      opacity: .55;
+      pointer-events: none;
+    }
+
   </style>
 </head>
 
@@ -123,7 +145,8 @@
             <p><strong>Domain score:</strong> <span id="domain-score" class="chip">0%</span></p>
             <div class="action-row">
               <a class="btn btn-default" href="./SRI4-domain-dashboard.html">Back to SRI4</a>
-              <a class="btn btn-primary" href="./SRI6-dhw-tab.html">Continue to SRI6</a>
+              <a id="continue-next" class="btn btn-primary" href="./SRI6-dhw-tab.html">Continue to SRI6</a>
+              <a id="continue-results" class="btn btn-default" href="./SRI14-results.html">Continue to SRI14</a>
             </div>
           </article>
         </div>
@@ -131,20 +154,21 @@
         <div class="span-8">
           <article class="card">
             <h2>Heating services table</h2>
-            <p class="caption">Static service rows based on <code>serviceCatalogues.methodA.heating</code> and <code>services.heating</code>.</p>
+            <p class="caption">Editable service rows based on <code>serviceCatalogues.methodA.heating</code> and <code>services.heating</code>.</p>
             <div class="service-table-wrap">
-              <table class="service-table" id="heating-service-table">
+              <table class="service-table" id="service-table">
                 <thead>
                   <tr>
                     <th scope="col">Service ID</th>
                     <th scope="col">Applicable</th>
                     <th scope="col">Triage</th>
                     <th scope="col">Selected level</th>
-                    <th scope="col">Compliance</th>
+                    <th scope="col">Entries (level + compliance %)</th>
+                    <th scope="col">Add entry</th>
                     <th scope="col">Status</th>
                   </tr>
                 </thead>
-                <tbody id="heating-service-body"></tbody>
+                <tbody id="service-body"></tbody>
               </table>
             </div>
           </article>
@@ -170,118 +194,15 @@
     <div class="container"><p>© 2026 OpenBEP · Contact · Privacy · Terms</p></div>
       </footer>
 <script src="./breadcrumbs.js"></script>
+<script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
 
   <script>
-    function toTitleCaseFromEnum(status) {
-      return String(status || 'UNKNOWN_STATUS').toLowerCase().split('_').map((s) => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
-    }
-
-    function getStatusPresentation(status) {
-      const map = {
-        READY_FOR_CALCULATION: { label: 'Ready', className: 'chip chip--ready' },
-        MISSING_DATA: { label: 'Incomplete data', className: 'chip chip--incomplete' },
-        IN_PROGRESS: { label: 'Processing', className: 'chip chip--processing' },
-        PROCESSING: { label: 'Processing', className: 'chip chip--processing' },
-        CALCULATION_COMPLETED: { label: 'Calculation completed', className: 'chip chip--ready' }
-      };
-      return map[status] || { label: toTitleCaseFromEnum(status), className: 'chip' };
-    }
-
-    const staticModel = {
-      projects: [{
-        building: {
-          name: 'Office Athens',
-          sri: {
-            method: 'A',
-            domainsPresence: {
-              heating: 1
-            },
-            serviceCatalogues: {
-              methodA: {
-                heating: ['H1a', 'H1c', 'H2a', 'H2b', 'H3']
-              }
-            },
-            services: {
-              heating: [
-                {
-                  id: 'H1a',
-                  applicable: true,
-                  triage: true,
-                  level: 2,
-                  compliance: 1,
-                  entries: [{ level: 2, compliance: 1 }]
-                }
-              ]
-            },
-            results: {
-              domains: {
-                heating: 80
-              }
-            }
-          }
-        }
-      }]
+    window.SRI_DOMAIN_CONFIG = {
+      key: 'heating',
+      label: 'Heating'
     };
-
-    const AppDataModel = window.AppDataModel || staticModel;
-    const project = AppDataModel?.projects?.[0] || {};
-    const building = project?.building || {};
-    const sri = building?.sri || {};
-
-    document.getElementById('building-name').textContent = building?.name || 'Building';
-    document.getElementById('method-label').textContent = `Method ${sri?.method || 'A'}`;
-
-    const methodKey = (sri?.method || 'A') === 'B' ? 'methodB' : 'methodA';
-    const catalogueServices = sri?.serviceCatalogues?.[methodKey]?.heating || [];
-    const definedServices = sri?.services?.heating || [];
-    const serviceMap = Object.fromEntries(definedServices.map((service) => [service.id, service]));
-
-    const body = document.getElementById('heating-service-body');
-    let readyRows = 0;
-
-    catalogueServices.forEach((serviceId) => {
-      const service = serviceMap[serviceId] || {
-        id: serviceId,
-        applicable: true,
-        triage: false,
-        level: 0,
-        compliance: 0
-      };
-
-      const isReady = service.applicable && Number(service.level) > 0 && Number(service.compliance) > 0;
-      if (isReady) readyRows += 1;
-      const status = getStatusPresentation(isReady ? 'READY_FOR_CALCULATION' : 'IN_PROGRESS');
-
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td><strong>${service.id}</strong></td>
-        <td>${service.applicable ? 'Yes' : 'No'}</td>
-        <td>${service.triage ? 'Yes' : 'No'}</td>
-        <td class="num">${Number(service.level || 0)}</td>
-        <td class="num">${Number(service.compliance || 0).toFixed(2)}</td>
-        <td><span class="${status.className}">${status.label}</span></td>
-      `;
-      body.appendChild(tr);
-    });
-
-    const completion = catalogueServices.length ? Math.round((readyRows / catalogueServices.length) * 100) : 0;
-    const completionStatus = getStatusPresentation(completion === 100 ? 'READY_FOR_CALCULATION' : 'IN_PROGRESS');
-    const presenceStatus = getStatusPresentation(Number(sri?.domainsPresence?.heating || 0) === 1 ? 'READY_FOR_CALCULATION' : 'MISSING_DATA');
-    const scoreStatus = getStatusPresentation(Number(sri?.results?.domains?.heating || 0) > 0 ? 'CALCULATION_COMPLETED' : 'IN_PROGRESS');
-
-    const domainStatusEl = document.getElementById('domain-status');
-    domainStatusEl.className = presenceStatus.className;
-    domainStatusEl.textContent = presenceStatus.label;
-
-    const completionChip = document.getElementById('completion-chip');
-    completionChip.className = completionStatus.className;
-    completionChip.textContent = `${completion}%`;
-
-    const domainScore = Number(sri?.results?.domains?.heating || 0);
-    const domainScoreEl = document.getElementById('domain-score');
-    domainScoreEl.className = scoreStatus.className;
-    domainScoreEl.textContent = `${domainScore}%`;
   </script>
+  <script src="./sri-domain-tab.js"></script>
 </body>
 
 </html>

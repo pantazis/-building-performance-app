@@ -68,7 +68,7 @@
     <section class="page" id="view-sri2">
       <div class="page-header">
         <h1>SRI2 · User-defined Weightings Decision</h1>
-        <p class="muted">Decide whether to keep default impact/domain weightings or continue with user-defined weightings.</p>
+        <p class="muted">Confirm the selected weighting rule and continue to the SRI Domain Dashboard.</p>
       </div>
 
       <div class="sri-layout">
@@ -108,8 +108,8 @@
             <ol class="decision-list">
               <li>For <strong>EU</strong> assessments, default or user-defined mode can be selected.</li>
               <li>For <strong>NON_EU</strong> assessments, user-defined weightings are mandatory.</li>
-              <li>If user-defined mode is active, the next step is <strong>SRI3 · Weighting Settings</strong>.</li>
-              <li>If default mode is active, the next step is <strong>SRI4 · Domain Dashboard</strong>.</li>
+              <li>If user-defined mode is active, the next step is now <strong>SRI4 · Domain Dashboard</strong>.</li>
+              <li>If default mode is active, the next step is also <strong>SRI4 · Domain Dashboard</strong>.</li>
             </ol>
             <p class="muted" id="weights-summary">Impact weights total: 0%</p>
           </article>
@@ -135,7 +135,7 @@
 
     const isNonEu = sri?.jurisdiction?.region === 'NON_EU';
     const useDefaultWeightings = isNonEu ? false : Boolean(sri?.hasDefaultWeightings);
-    const nextHref = useDefaultWeightings ? './SRI4-domain-dashboard.html' : './SRI3-weighting-settings.html';
+    const nextHref = './SRI4-domain-dashboard.html';
 
     document.getElementById('building-name').textContent = building?.name || 'Building';
     document.getElementById('method-label').textContent = `Method ${sri?.method || 'A'}`;
@@ -147,7 +147,7 @@
 
     const continueLink = document.getElementById('continue-link');
     continueLink.href = nextHref;
-    continueLink.textContent = useDefaultWeightings ? 'Continue to SRI4' : 'Continue to SRI3';
+    continueLink.textContent = 'Continue to SRI4';
 
     const impacts = sri?.weighting?.impacts || {};
     const impactTotal = Object.values(impacts).reduce((sum, value) => sum + Number(value || 0), 0);

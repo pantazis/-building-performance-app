@@ -63,12 +63,72 @@
       gap: 6px;
     }
 
-    .form-field select {
+    .form-field select,
+    .form-field input {
       border: 1px solid var(--line);
       border-radius: var(--r-sm);
       padding: 10px;
       font: inherit;
       width: 100%;
+    }
+
+    .setup-help {
+      border-left: 4px solid var(--brand);
+      padding-left: var(--sp-sm);
+    }
+
+    .domain-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sp-sm);
+      margin-top: var(--sp-sm);
+    }
+
+    @media (max-width: 760px) {
+      .domain-grid { grid-template-columns: 1fr; }
+    }
+
+    .domain-control {
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: var(--sp-sm);
+      display: grid;
+      gap: 8px;
+      background: var(--surface);
+    }
+
+    .domain-control span {
+      font-weight: 700;
+    }
+
+    .rule-note {
+      margin-top: var(--sp-sm);
+      padding: var(--sp-sm);
+      border-radius: var(--r-sm);
+      background: rgba(254, 207, 23, 0.18);
+      border: 1px solid rgba(254, 207, 23, 0.55);
+    }
+
+    .bottom-actions {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      align-items: center;
+      gap: var(--sp-sm);
+    }
+
+    .next-route-note {
+      margin: 0;
+    }
+
+    @media (max-width: 700px) {
+      .bottom-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .bottom-actions .btn {
+        justify-content: center;
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -108,6 +168,13 @@
           </article>
         </div>
 
+        <div class="full">
+          <article class="card setup-help">
+            <h2>What this page does</h2>
+            <p>This is the first setup page for the SRI “smartness test”. Choose the rulebook, the grading/weighting mode, the assessment context, and which building systems exist before moving to the detailed SRI tabs.</p>
+          </article>
+        </div>
+
         <div class="half">
           <article class="card">
             <h2>Method setup</h2>
@@ -127,22 +194,21 @@
               </label>
               <label class="form-field">
                 <span>Assessment date</span>
-                <select id="assessment-date" disabled>
-                  <option>2026-04-29</option>
+                <input id="assessment-date" type="date" />
+              </label>
+              <label class="form-field">
+                <span>Region rules</span>
+                <select id="region-select">
+                  <option value="EU">EU</option>
+                  <option value="NON_EU">Non-EU</option>
                 </select>
               </label>
               <label class="form-field">
-                <span>Weighting mode</span>
-                <select id="weighting-mode" disabled>
-                  <option>Default weightings</option>
-                </select>
+                <span>Country</span>
+                <input id="country-input" type="text" placeholder="Country" />
               </label>
               <div class="full-row">
                 <p><strong>SRI preparation status:</strong> <span id="sri-status" class="chip chip--ready">Ready</span></p>
-              </div>
-              <div class="full-row action-row">
-                <a class="btn btn-default" href="./I-building-tab.html">Back to Building Tab</a>
-                <a class="btn btn-primary" href="./SRI2-user-defined-weightings.html">Continue to SRI2</a>
               </div>
             </form>
           </article>
@@ -150,16 +216,36 @@
 
         <div class="half">
           <article class="card">
-            <h2>Detected SRI domains</h2>
-            <p class="caption">From <code>sri_epb_ui_data_model_v2.js</code> domainsPresence map.</p>
-            <ul id="domains-list">
-              <li>Heating: Available</li>
-              <li>Cooling: Available</li>
-              <li>DHW: Available</li>
-              <li>Ventilation: Available</li>
-            </ul>
-            <p class="muted" id="domains-summary">0/0 domains available</p>
+            <h2>Weighting setup</h2>
+            <div class="form-grid">
+              <label class="form-field full-row">
+                <span>Weighting mode</span>
+                <select id="weighting-mode">
+                  <option value="default">Default weightings</option>
+                  <option value="custom">User-defined weightings</option>
+                </select>
+              </label>
+            </div>
+            <p class="muted">Default weightings use the normal SRI grading system. User-defined weightings let the user decide what matters more.</p>
+            <p id="non-eu-note" class="rule-note" hidden>Non-EU assessments must use user-defined weightings.</p>
             <p class="muted" id="services-summary">Method services: 0</p>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card">
+            <h2>Building systems / SRI domains</h2>
+            <p class="caption">Choose which systems exist in the building. These choices decide which detailed SRI domain tabs are used later.</p>
+            <div id="domains-list" class="domain-grid" aria-label="SRI domain presence controls"></div>
+            <p class="muted" id="domains-summary">0/0 domains available</p>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card bottom-actions" aria-label="SRI1 navigation actions">
+            <p id="next-route-note" class="muted next-route-note">Next: SRI2 · User-defined Weightings decision</p>
+            <a class="btn btn-default" href="./I-building-tab.html">Back to Building Tab</a>
+            <a id="continue-link" class="btn btn-primary" href="./SRI2-user-defined-weightings.html">Continue</a>
           </article>
         </div>
       </div>
@@ -199,11 +285,12 @@
 
     document.getElementById('building-select').innerHTML = `<option value="${building?.id || 'building-1'}">${building?.name || 'Building'}</option>`;
     document.getElementById('method-select').value = sri?.method || 'A';
-    document.getElementById('assessment-date').innerHTML = `<option>${sri?.assessmentDate || 'N/A'}</option>`;
+    document.getElementById('assessment-date').value = sri?.assessmentDate || '';
+    document.getElementById('region-select').value = sri?.jurisdiction?.region || 'EU';
+    document.getElementById('country-input').value = sri?.jurisdiction?.country || building?.general?.country || '';
 
-    const isNonEu = sri?.jurisdiction?.region === 'NON_EU';
-    const useDefaultWeightings = isNonEu ? false : Boolean(sri?.hasDefaultWeightings);
-    document.getElementById('weighting-mode').innerHTML = `<option>${useDefaultWeightings ? 'Default weightings' : 'User-defined weightings'}</option>`;
+    const weightingModeEl = document.getElementById('weighting-mode');
+    weightingModeEl.value = sri?.hasDefaultWeightings ? 'default' : 'custom';
 
     const domainLabelMap = {
       heating: 'Heating',
@@ -217,32 +304,70 @@
       monitoring: 'Monitoring & control'
     };
 
-    const listEl = document.getElementById('domains-list');
-    listEl.innerHTML = '';
-
     const keys = Object.keys(domainLabelMap);
-    let availableCount = 0;
-    keys.forEach((key) => {
-      const available = Number(domainsPresence[key] || 0) === 1;
-      if (available) availableCount += 1;
-      const li = document.createElement('li');
-      li.textContent = `${domainLabelMap[key]}: ${available ? 'Available' : 'Not available'}`;
-      listEl.appendChild(li);
-    });
+    const listEl = document.getElementById('domains-list');
 
-    document.getElementById('domains-summary').textContent = `${availableCount}/${keys.length} domains available`;
+    function createDomainControls() {
+      listEl.innerHTML = '';
+      keys.forEach((key) => {
+        const label = document.createElement('label');
+        label.className = 'domain-control';
+        label.innerHTML = `
+          <span>${domainLabelMap[key]}</span>
+          <select class="domain-presence" data-domain="${key}">
+            <option value="1">Present</option>
+            <option value="2">Absent but mandatory</option>
+            <option value="0">Absent and not mandatory</option>
+          </select>
+        `;
+        label.querySelector('select').value = String(domainsPresence[key] ?? 0);
+        listEl.appendChild(label);
+      });
+    }
 
-    const catalogues = sri?.serviceCatalogues || {};
-    const methodKey = (sri?.method || 'A') === 'B' ? 'methodB' : 'methodA';
-    const selectedCatalogue = catalogues[methodKey] || {};
-    const serviceCount = Object.values(selectedCatalogue).reduce((total, services) => total + (Array.isArray(services) ? services.length : 0), 0);
-    document.getElementById('services-summary').textContent = `Method services: ${serviceCount}`;
+    function getAvailableCount() {
+      return Array.from(document.querySelectorAll('.domain-presence')).filter((select) => select.value === '1').length;
+    }
 
-    const statusKey = availableCount >= 4 ? 'READY_FOR_CALCULATION' : 'MISSING_DATA';
-    const status = getStatusPresentation(statusKey);
-    const statusEl = document.getElementById('sri-status');
-    statusEl.textContent = status.label;
-    statusEl.className = status.className;
+    function refreshSetupSummary() {
+      const region = document.getElementById('region-select').value;
+      const isNonEu = region === 'NON_EU';
+      if (isNonEu) weightingModeEl.value = 'custom';
+      weightingModeEl.disabled = isNonEu;
+      document.getElementById('non-eu-note').hidden = !isNonEu;
+
+      const useCustomWeightings = isNonEu || weightingModeEl.value === 'custom';
+      const continueLink = document.getElementById('continue-link');
+      const nextRouteNote = document.getElementById('next-route-note');
+      continueLink.href = useCustomWeightings ? './SRI4-domain-dashboard.html' : './SRI2-user-defined-weightings.html';
+      continueLink.textContent = useCustomWeightings ? 'Continue to SRI4' : 'Continue to SRI2';
+      nextRouteNote.textContent = useCustomWeightings
+        ? 'Next: SRI4 · Domain Dashboard because user-defined/default SRI rules are already selected.'
+        : 'Next: SRI2 · User-defined Weightings decision because EU default weightings are selected.';
+
+      const availableCount = getAvailableCount();
+      document.getElementById('domains-summary').textContent = `${availableCount}/${keys.length} domains present`;
+
+      const catalogues = sri?.serviceCatalogues || {};
+      const methodKey = document.getElementById('method-select').value === 'B' ? 'methodB' : 'methodA';
+      const selectedCatalogue = catalogues[methodKey] || {};
+      const serviceCount = Object.values(selectedCatalogue).reduce((total, services) => total + (Array.isArray(services) ? services.length : 0), 0);
+      document.getElementById('services-summary').textContent = `Method services: ${serviceCount}`;
+
+      const statusKey = availableCount >= 4 ? 'READY_FOR_CALCULATION' : 'MISSING_DATA';
+      const status = getStatusPresentation(statusKey);
+      const statusEl = document.getElementById('sri-status');
+      statusEl.textContent = status.label;
+      statusEl.className = status.className;
+    }
+
+    createDomainControls();
+    refreshSetupSummary();
+
+    document.getElementById('method-select').addEventListener('change', refreshSetupSummary);
+    document.getElementById('region-select').addEventListener('change', refreshSetupSummary);
+    weightingModeEl.addEventListener('change', refreshSetupSummary);
+    document.querySelectorAll('.domain-presence').forEach((select) => select.addEventListener('change', refreshSetupSummary));
   </script>
 </body>
 

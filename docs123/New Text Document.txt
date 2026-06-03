@@ -1,0 +1,12 @@
+Region = EU 
+
+user can choose either:
+
+- __Default weightings__ → use normal/default SRI rules
+- __User-defined weightings__ → user chooses custom percentages
+ if ### If Region = Non-EU
+
+The app should force:
+
+- __User-defined weightings__
+

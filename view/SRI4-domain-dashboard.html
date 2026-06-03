@@ -79,6 +79,8 @@
       align-items: center;
     }
 
+    .domain-card--flagged { border-color: var(--btn-color-warning); background: #fffaf0; }
+
     .domain-card .actions {
       display: flex;
       flex-wrap: wrap;
@@ -112,7 +114,6 @@
         <a href="./I-building-tab.html">Building Tab</a>
         <a href="./SRI1-methodology-selection.html">SRI1</a>
         <a href="./SRI2-user-defined-weightings.html">SRI2</a>
-        <a href="./SRI3-weighting-settings.html">SRI3</a>
         <a href="./SRI4-domain-dashboard.html" aria-current="page">SRI4</a>
       </nav>
     </div>
@@ -135,7 +136,6 @@
                 <li><a href="./A-projects-dashboard.html">Home</a></li>
                 <li><a href="./I-building-tab.html">Building Tab</a></li>
                 <li><a href="./SRI1-methodology-selection.html">SRI1</a></li>
-                <li><a href="./SRI2-user-defined-weightings.html">SRI2</a></li>
                 <li aria-current="page">SRI4 Domain Dashboard</li>
               </ol>
             </nav>
@@ -205,7 +205,7 @@
             <ul class="summary-list">
               <li>Open each active domain and set service level values (0–4) for applicable services.</li>
               <li>Confirm inapplicable services are intentionally marked to avoid score distortion.</li>
-              <li>Review weighting consistency from SRI3 before moving to results.</li>
+              <li>Review the selected SRI rule mode before moving to results.</li>
               <li>Continue to SRI14 to verify total score, class, and impact/domain breakdown.</li>
             </ul>
           </article>
@@ -219,6 +219,7 @@
     <div class="container"><p>© 2026 OpenBEP · Contact · Privacy · Terms</p></div>
       </footer>
 <script src="./breadcrumbs.js"></script>
+<script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
 
   <script>
 
@@ -237,7 +238,7 @@
       return map[status] || { label: toTitleCaseFromEnum(status), className: 'chip' };
     }
 
-    const staticModel = {
+    const fallbackModel = {
       projects: [{
         building: {
           name: 'Office Athens',
@@ -276,8 +277,8 @@
       }]
     };
 
-    const AppDataModel = window.AppDataModel || staticModel;
-    const project = AppDataModel?.projects?.[0] || {};
+    const model = window.AppDataModel || fallbackModel;
+    const project = model?.projects?.[0] || {};
     const building = project?.building || {};
     const sri = building?.sri || {};
     const domainsPresence = sri?.domainsPresence || {};
@@ -309,29 +310,35 @@
     let activeCount = 0;
 
     domainConfig.forEach((domain) => {
-      const presence = Number(domainsPresence?.[domain.key] || 0);
-      const isActive = presence === 1;
+      const presence = Number(domainsPresence?.[domain.key] ?? 0);
       const score = Number(domainScores?.[domain.key] || 0);
 
-      if (isActive) {
+      if (presence === 0) return;
+
+      const isEditable = presence === 1;
+      if (isEditable) {
         activeCount += 1;
         if (score > 0) readyCount += 1;
       }
 
-      const statusKey = !isActive ? 'MISSING_DATA' : (score > 0 ? 'READY_FOR_CALCULATION' : 'IN_PROGRESS');
+      const statusKey = presence === 2 ? 'MISSING_DATA' : (score > 0 ? 'READY_FOR_CALCULATION' : 'IN_PROGRESS');
       const status = getStatusPresentation(statusKey);
+      const statusLabel = presence === 2 ? 'Mandatory but absent' : status.label;
+      const explanatoryText = presence === 2
+        ? 'Presence flag: 2 · Flagged mandatory/absent; normal editing is disabled and it should not be opened as a normal tab.'
+        : `Presence flag: ${presence} · Open tab to continue editable service-level inputs.`;
 
       const card = document.createElement('article');
-      card.className = 'domain-card';
+      card.className = `domain-card ${presence === 2 ? 'domain-card--flagged' : ''}`;
       card.innerHTML = `
         <h3>${domain.label}</h3>
         <div class="meta">
-          <span class="${status.className}">${isActive ? status.label : 'Not active'}</span>
-          <span class="chip">Score: ${score}%</span>
+          <span class="${status.className}">${statusLabel}</span>
+          <span class="chip">${isEditable ? `Score: ${score}%` : 'Excluded from normal editing'}</span>
         </div>
-        <p class="muted">Presence flag: ${presence} · Open tab to continue service-level inputs.</p>
+        <p class="muted">${explanatoryText}</p>
         <div class="actions">
-          <a class="btn btn-default" href="${domain.href}">Open ${domain.label}</a>
+          ${isEditable ? `<a class="btn btn-default" href="${domain.href}">Open ${domain.label}</a>` : '<span class="chip chip--incomplete">No normal editing</span>'}
         </div>
       `;
       domainsGrid.appendChild(card);

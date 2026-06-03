@@ -1,0 +1,20 @@
+file:///C:/Users/pvast/Documents/OpenBEP$EU/view/SRI1-methodology-selection.html
+
+If Region = EU
+The user can choose either:
+
+Default weightings → use normal/default SRI rules
+User-defined weightings → user chooses custom percentages
+Navigation:
+
+EU + Default → go to SRI2-user-defined-weightings.html
+EU + User-defined → go to SRI3-weighting-settings.html
+If Region = Non-EU
+The app should force:
+
+User-defined weightings
+Because outside the EU, the default EU weightings may not be valid.
+
+Navigation:
+
+Non-EU → force User-defined → go to SRI3-weighting-settings.html

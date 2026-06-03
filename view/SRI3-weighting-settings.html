@@ -220,7 +220,7 @@
             </div>
             <div class="action-row">
               <a class="btn btn-default" href="./SRI2-user-defined-weightings.html">Back to SRI2</a>
-              <a class="btn btn-primary" href="./SRI4-domain-dashboard.html">Continue to SRI4</a>
+              <a id="continue-sri4" class="btn btn-primary" href="./SRI4-domain-dashboard.html" aria-disabled="true">Continue to SRI4</a>
             </div>
           </article>
         </div>
@@ -353,7 +353,7 @@
     };
 
     async function loadDataModel() {
-      return AppDataModel || fallbackModel;
+      return window.AppDataModel || fallbackModel;
     }
 
     async function init() {
@@ -430,6 +430,16 @@
       domainBody.appendChild(tr);
     });
 
+    function updateContinueState() {
+      const impactTotal = impactKeys.reduce((sum, key) => sum + Number(document.getElementById(`impact-${key}`)?.value || 0), 0);
+      const rowTotals = impactKeys.map((impactKey) => Array.from(document.querySelectorAll(`input[data-impact="${impactKey}"]`)).reduce((sum, input) => sum + Number(input.value || 0), 0));
+      const isValid = impactTotal === 100 && rowTotals.every((total) => total === 100);
+      const continueLink = document.getElementById('continue-sri4');
+      continueLink.classList.toggle('is-disabled', !isValid);
+      continueLink.setAttribute('aria-disabled', String(!isValid));
+      continueLink.tabIndex = isValid ? 0 : -1;
+    }
+
     function updateImpactTotals() {
       const total = impactKeys.reduce((sum, key) => sum + Number(document.getElementById(`impact-${key}`)?.value || 0), 0);
       const totalEl = document.getElementById('impact-total');
@@ -437,6 +447,7 @@
       const presentation = getStatusPresentation(statusKey);
       totalEl.textContent = `${total}%`;
       totalEl.className = presentation.className;
+      updateContinueState();
     }
 
     function updateMatrixChecks() {
@@ -456,10 +467,16 @@
       const matrixStatus = getStatusPresentation(allRowsValid ? 'READY_FOR_CALCULATION' : 'MISSING_DATA');
       matrixStatusEl.textContent = allRowsValid ? 'All rows = 100%' : 'Rows need adjustment';
       matrixStatusEl.className = matrixStatus.className;
+      updateContinueState();
     }
 
     document.querySelectorAll('#impact-form input').forEach((input) => input.addEventListener('input', updateImpactTotals));
     document.querySelectorAll('#domain-table input').forEach((input) => input.addEventListener('input', updateMatrixChecks));
+
+    document.addEventListener('click', (event) => {
+      const disabledLink = event.target.closest('a.is-disabled');
+      if (disabledLink) event.preventDefault();
+    });
 
     updateImpactTotals();
     updateMatrixChecks();
