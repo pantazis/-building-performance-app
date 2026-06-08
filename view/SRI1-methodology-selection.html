@@ -74,7 +74,7 @@
 
     .setup-help {
       border-left: 4px solid var(--brand);
-      padding-left: var(--sp-sm);
+     
     }
 
     .domain-grid {
@@ -243,9 +243,9 @@
 
         <div class="full">
           <article class="card bottom-actions" aria-label="SRI1 navigation actions">
-            <p id="next-route-note" class="muted next-route-note">Next: SRI2 · User-defined Weightings decision</p>
+            <p id="next-route-note" class="muted next-route-note">Next: SRI2 · Confirm SRI rules because default weightings are selected.</p>
             <a class="btn btn-default" href="./I-building-tab.html">Back to Building Tab</a>
-            <a id="continue-link" class="btn btn-primary" href="./SRI2-user-defined-weightings.html">Continue</a>
+            <a id="continue-link" class="btn btn-primary" href="./SRI2-user-defined-weightings.html">Continue to SRI2</a>
           </article>
         </div>
       </div>
@@ -339,11 +339,11 @@
       const useCustomWeightings = isNonEu || weightingModeEl.value === 'custom';
       const continueLink = document.getElementById('continue-link');
       const nextRouteNote = document.getElementById('next-route-note');
-      continueLink.href = useCustomWeightings ? './SRI4-domain-dashboard.html' : './SRI2-user-defined-weightings.html';
-      continueLink.textContent = useCustomWeightings ? 'Continue to SRI4' : 'Continue to SRI2';
+      continueLink.href = useCustomWeightings ? './SRI3-weighting-settings.html' : './SRI2-user-defined-weightings.html';
+      continueLink.textContent = useCustomWeightings ? 'Continue to SRI3' : 'Continue to SRI2';
       nextRouteNote.textContent = useCustomWeightings
-        ? 'Next: SRI4 · Domain Dashboard because user-defined/default SRI rules are already selected.'
-        : 'Next: SRI2 · User-defined Weightings decision because EU default weightings are selected.';
+        ? 'Next: SRI3 · Weighting Settings because user-defined weightings are selected.'
+        : 'Next: SRI2 · Confirm SRI rules because default weightings are selected.';
 
       const availableCount = getAvailableCount();
       document.getElementById('domains-summary').textContent = `${availableCount}/${keys.length} domains present`;

@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SRI2 · User-defined Weightings Decision · OpenBEP</title>
+  <title>SRI2 · Default Values Confirmation · OpenBEP</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="../building-performance-app/style.css" />
   <style>
@@ -48,6 +48,40 @@
 
     .decision-list li { margin-bottom: 8px; }
     .decision-panel { display: grid; gap: var(--sp-sm); }
+
+    .default-values-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--sp-sm);
+      margin-top: var(--sp-sm);
+    }
+
+    .default-value-card {
+      display: grid;
+      gap: 6px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      background: #fff;
+    }
+
+    .default-value-card strong {
+      font-size: 1.1rem;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sp-sm);
+      margin-top: var(--sp-sm);
+    }
+
+    @media (max-width: 900px) {
+      .default-values-grid,
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 
@@ -67,8 +101,8 @@
   <main class="container">
     <section class="page" id="view-sri2">
       <div class="page-header">
-        <h1>SRI2 · User-defined Weightings Decision</h1>
-        <p class="muted">Confirm the selected weighting rule and continue to the SRI Domain Dashboard.</p>
+        <h1>SRI2 · Default Values Confirmation</h1>
+        <p class="muted">Confirm the selected default values or weighting rule and continue to the SRI Domain Dashboard.</p>
       </div>
 
       <div class="sri-layout">
@@ -114,6 +148,30 @@
             <p class="muted" id="weights-summary">Impact weights total: 0%</p>
           </article>
         </div>
+
+        <div class="full">
+          <article class="card">
+            <h2>Default values summary</h2>
+            <p class="caption">These are the current baseline impact weighting values loaded from the SRI data model. SRI2 confirms these values; SRI3 is the detailed editor for changing them.</p>
+            <div id="default-values-grid" class="default-values-grid" aria-label="Default impact weighting values"></div>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card">
+            <h2>Difference between SRI2 and SRI3</h2>
+            <div class="comparison-grid">
+              <div class="default-value-card">
+                <h3>SRI2 · Confirmation</h3>
+                <p>Use this page to review the selected mode and confirm the default values before continuing to the Domain Dashboard.</p>
+              </div>
+              <div class="default-value-card">
+                <h3>SRI3 · Settings editor</h3>
+                <p>Use this page only when custom/user-defined weighting values need to be edited and validated.</p>
+              </div>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
   </main>
@@ -152,6 +210,29 @@
     const impacts = sri?.weighting?.impacts || {};
     const impactTotal = Object.values(impacts).reduce((sum, value) => sum + Number(value || 0), 0);
     document.getElementById('weights-summary').textContent = `Impact weights total: ${impactTotal}%`;
+
+    const impactLabelMap = {
+      energyEfficiency: 'Energy efficiency',
+      maintenance: 'Maintenance & fault prediction',
+      comfort: 'Comfort',
+      convenience: 'Convenience',
+      health: 'Health & accessibility',
+      info: 'Information to occupants',
+      flexibility: 'Energy flexibility & storage'
+    };
+
+    const defaultValuesGrid = document.getElementById('default-values-grid');
+    defaultValuesGrid.innerHTML = Object.entries(impactLabelMap).map(([key, label]) => `
+      <div class="default-value-card">
+        <span class="caption">${label}</span>
+        <strong>${Number(impacts[key] || 0)}%</strong>
+      </div>
+    `).join('') + `
+      <div class="default-value-card">
+        <span class="caption">Total</span>
+        <strong>${impactTotal}%</strong>
+      </div>
+    `;
   </script>
 </body>
 

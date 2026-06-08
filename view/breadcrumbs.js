@@ -92,7 +92,6 @@
       { label: 'Projects Dashboard', href: './A-projects-dashboard.html' },
       { label: 'Building Tab', href: './C-open-edit-building.html' },
       { label: 'SRI: Methodology Selection', href: './SRI1-methodology-selection.html' },
-      { label: 'SRI: User-defined Weightings', href: './SRI2-user-defined-weightings.html' },
       { label: 'SRI: Weighting Settings' }
     ],
     'sri4-domain-dashboard.html': [
