@@ -82,6 +82,12 @@
         grid-template-columns: 1fr;
       }
     }
+
+    /* COMPONENT: setup-help */
+    .c-setup-help,
+    .setup-help {
+      border-left: 4px solid var(--brand);
+    }
   </style>
 </head>
 
@@ -91,7 +97,7 @@
       <a class="brand" href="./A-projects-dashboard.html"><img class="logo" src="../building-performance-app/logo.png" alt="OpenBEP logo"></a>
       <nav id="main-nav" class="nav" aria-label="Primary">
         <a href="./A-projects-dashboard.html">Projects Dashboard</a>
-        <a href="./I-building-tab.html">Building Tab</a>
+        <a href="./C-open-edit-building.html">Building Tab</a>
         <a href="./SRI1-methodology-selection.html">SRI1</a>
         <a href="./SRI2-user-defined-weightings.html" aria-current="page">SRI2</a>
       </nav>
@@ -113,11 +119,19 @@
             <nav aria-label="Breadcrumb">
               <ol>
                 <li><a href="./A-projects-dashboard.html">Home</a></li>
-                <li><a href="./I-building-tab.html">Building Tab</a></li>
+                <li><a href="./C-open-edit-building.html">Building Tab</a></li>
                 <li><a href="./SRI1-methodology-selection.html">SRI1</a></li>
                 <li aria-current="page">SRI2 Decision</li>
               </ol>
             </nav>
+          </article>
+        </div>
+
+        <div class="full">
+          <!-- COMPONENT: setup-help -->
+          <article id="component-setup-help" class="card c-setup-help setup-help">
+            <h2>What this page does</h2>
+            <p>This is the first setup page for the SRI “smartness test”. Choose the rulebook, the grading/weighting mode, the assessment context, and which building systems exist before moving to the detailed SRI tabs.</p>
           </article>
         </div>
 

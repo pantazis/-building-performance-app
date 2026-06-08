@@ -58,6 +58,13 @@
       .form-grid { grid-template-columns: 1fr; }
     }
 
+
+    /* COMPONENT: setup-help */
+    .c-setup-help,
+    .setup-help {
+      border-left: 4px solid var(--brand);
+    }
+
     .form-field {
       display: grid;
       gap: 6px;
@@ -139,7 +146,7 @@
       <a class="brand" href="./A-projects-dashboard.html"><img class="logo" src="../building-performance-app/logo.png" alt="OpenBEP logo"></a>
       <nav id="main-nav" class="nav" aria-label="Primary">
         <a href="./A-projects-dashboard.html">Projects Dashboard</a>
-        <a href="./I-building-tab.html">Building Tab</a>
+        <a href="./C-open-edit-building.html">Building Tab</a>
         <a href="./SRI1-methodology-selection.html" aria-current="page">SRI1</a>
       </nav>
     </div>
@@ -160,7 +167,7 @@
             <nav aria-label="Breadcrumb">
               <ol>
                 <li><a href="./A-projects-dashboard.html">Home</a></li>
-                <li><a href="./I-building-tab.html">Building Tab</a></li>
+                <li><a href="./C-open-edit-building.html">Building Tab</a></li>
                 <li><a href="./SRI1-methodology-selection.html">SRI</a></li>
                 <li aria-current="page">Methodology Selection</li>
               </ol>
@@ -169,12 +176,12 @@
         </div>
 
         <div class="full">
-          <article class="card setup-help">
+          <!-- COMPONENT: setup-help -->
+          <article id="component-setup-help" class="card c-setup-help setup-help">
             <h2>What this page does</h2>
             <p>This is the first setup page for the SRI “smartness test”. Choose the rulebook, the grading/weighting mode, the assessment context, and which building systems exist before moving to the detailed SRI tabs.</p>
           </article>
         </div>
-
         <div class="half">
           <article class="card">
             <h2>Method setup</h2>
@@ -244,7 +251,7 @@
         <div class="full">
           <article class="card bottom-actions" aria-label="SRI1 navigation actions">
             <p id="next-route-note" class="muted next-route-note">Next: SRI2 · Confirm SRI rules because default weightings are selected.</p>
-            <a class="btn btn-default" href="./I-building-tab.html">Back to Building Tab</a>
+            <a class="btn btn-default" href="./C-open-edit-building.html">Back to Building Tab</a>
             <a id="continue-link" class="btn btn-primary" href="./SRI2-user-defined-weightings.html">Continue to SRI2</a>
           </article>
         </div>
