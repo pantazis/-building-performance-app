@@ -9,12 +9,32 @@
   <link rel="stylesheet" href="../building-performance-app/style.css" />
   <style>
     :root {
-      --btn-color-success: #1f543b;
-      --btn-color-default: #6d8a3e;
-      --btn-color-warning: #b8a43a;
-      --btn-color-orange: #c96a2b;
-      --btn-color-danger: #e6363c;
+      --btn-color-success: #2db34a;
+      --btn-color-default: #86c440;
+      --btn-color-warning: #fecf17;
+      --btn-color-orange: #f47721;
+      --btn-color-danger: #ef3e23;
+      --sri-table-group-energy: var(--btn-color-success);
+      --sri-table-group-occupant: var(--btn-color-default);
+      --sri-table-group-grid: var(--btn-color-orange);
     }
+    .domains-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--sp-sm);
+}
+    @media (max-width: 760px) {
+      .domains-grid { grid-template-columns: 1fr; }
+    }
+
+.domain-card {
+	border: 1px solid var(--line);
+	border-radius: var(--r-sm);
+	padding: 12px;
+	background: #fff;
+	display: grid;
+	gap: 8px;
+}
 
     .results-layout {
       display: grid;
@@ -105,9 +125,9 @@
       font-weight: 700;
     }
 
-    .c-sri-results-table .group-energy { background: #4c8f3a; }
-    .c-sri-results-table .group-occupant { background: #3f7f95; }
-    .c-sri-results-table .group-grid { background: #7b5aa6; }
+    .c-sri-results-table .group-energy { background: var(--sri-table-group-energy); }
+    .c-sri-results-table .group-occupant { background: var(--sri-table-group-occupant); }
+    .c-sri-results-table .group-grid { background: var(--sri-table-group-grid); }
 
     .c-sri-results-table .disabled {
       color: #9aa4ad;
@@ -118,6 +138,59 @@
     .c-setup-help,
     .setup-help {
       border-left: 4px solid var(--brand);
+    }
+
+    /* COMPONENT: sri-query-state-panel */
+    .c-sri-query-state-panel {
+      display: grid;
+      gap: var(--sp-sm);
+      border-left: 4px solid var(--btn-color-default);
+    }
+
+    .query-state-links {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--sp-xs);
+    }
+
+    .query-state-explanation {
+      display: grid;
+      gap: 6px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--btn-color-default);
+      border-radius: var(--r-sm);
+      background: #f7faf7;
+    }
+
+    .query-state-explanation h3,
+    .query-state-explanation p { margin: 0; }
+
+    .query-state-guide {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--sp-xs);
+    }
+
+    .query-state-guide-card {
+      display: grid;
+      gap: 6px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      background: #fff;
+    }
+
+    .query-state-guide-card strong,
+    .query-state-guide-card span { display: block; }
+
+    .query-state--danger { border-left-color: var(--btn-color-danger); background: #fff5f5; }
+    .query-state--warning { border-left-color: var(--btn-color-warning); background: #fffaf0; }
+    .query-state--success { border-left-color: var(--btn-color-success); background: #f2fbf4; }
+
+    @media (max-width: 760px) {
+      .query-state-links { grid-template-columns: 1fr; }
+      .query-state-guide { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -136,7 +209,7 @@
   </header>
 
   <main class="container">
-    <section class="page" id="view-sri14">
+   <section class="page" id="view-sri14">
       <div class="page-header">
         <h1>SRI14 · SRI Results</h1>
         <p class="muted">Full-page SRI results table and score summary using model data aligned with the UI data model.</p>
@@ -148,12 +221,7 @@
           <article id="component-breadcrumbs" class="card c-breadcrumbs">
             
             <nav aria-label="Breadcrumb">
-              <ol>
-                <li><a href="./A-projects-dashboard.html">Home</a></li>
-                <li><a href="./C-open-edit-building.html">Building Tab</a></li>
-                <li><a href="./SRI4-domain-dashboard.html">SRI Domain Dashboard</a></li>
-                <li aria-current="page">SRI14 Results</li>
-              </ol>
+              <ol><li><a href="./A-projects-dashboard.html" title="Projects Dashboard">Projects Dashboard</a></li><li><a href="./C-open-edit-building.html" title="Building Tab">Building Tab</a></li><li><a href="./SRI1-methodology-selection.html" title="SRI: Methodology Selection">SRI...</a></li><li><a href="./SRI4-domain-dashboard.html" title="SRI: Domain Dashboard">SRI...</a></li><li aria-current="page" title="SRI: Results">SRI: Results</li></ol>
             </nav>
           </article>
         </div>
@@ -162,7 +230,7 @@
           <!-- COMPONENT: setup-help -->
           <article id="component-setup-help" class="card c-setup-help setup-help">
             <h2>What this page does</h2>
-            <p>This is the first setup page for the SRI “smartness test”. Choose the rulebook, the grading/weighting mode, the assessment context, and which building systems exist before moving to the detailed SRI tabs.</p>
+            <p>Review the final Smart Readiness Indicator outcome: the overall SRI score, performance class, impact score breakdown, domain score breakdown, and any detailed or aggregated score information available from the calculation.</p>
           </article>
         </div>
 
@@ -173,20 +241,166 @@
             <div class="decision-panel-grid" aria-label="Assessment summary decision panel">
             <p><strong>Building:</strong> <span id="building-name">Office Athens</span></p>
             <p><strong>Method:</strong> <span id="method-label">Method A</span></p>
-            <p><strong>Total SRI score:</strong> <span id="sri-score-chip" class="chip">0%</span></p>
-            <p><strong>SRI class:</strong> <span id="sri-class-chip" class="chip">-</span></p>
-            <p><strong>Result status:</strong> <span id="result-status-chip" class="chip">Loading</span></p>
+            <p><strong>Total SRI score:</strong> <span id="sri-score-chip" class="chip chip--ready">75%</span></p>
+            <p><strong>SRI class:</strong> <span id="sri-class-chip" class="chip chip--ready">Class B</span></p>
+            <p><strong>Result status:</strong> <span id="result-status-chip" class="chip chip--ready">Calculation completed</span></p>
             </div>
-            <div class="action-row">
-              <a class="btn btn-default" href="./SRI13-monitoring-control-tab.html">Back to SRI13</a>
-              <a class="btn btn-primary" href="./A-projects-dashboard.html">Finish</a>
-            </div>
+           
           </article>
         </div>
 
-        <div class="span-4">
+        <div class="full">
+          <!-- COMPONENT: sri-query-state-panel -->
+          <article id="component-sri-query-state-panel" class="card c-sri-query-state-panel">
+            <h2>Query parameter result states</h2>
+            <p class="caption">Use these JSON-backed query parameters to preview the whole SRI14 page: Assessment summary, Domain cards, and SRI Results View table.</p>
+            <div class="query-state-links" aria-label="SRI14 JSON data state demos">
+              <a class="btn btn-default" href="./SRI14-results.html">Default model</a>
+              <a class="btn btn-danger" href="./SRI14-results.html?nodata">?nodata</a>
+              <a class="btn btn-warning" href="./SRI14-results.html?halfdata">?halfdata</a>
+              <a class="btn btn-success" href="./SRI14-results.html?fulldata">?fulldata</a>
+            </div>
+            <div class="query-state-guide" aria-label="What should happen for each query parameter">
+              <div class="query-state-guide-card query-state--danger">
+                <strong><code>?nodata</code></strong>
+                <span>No SRI result exists yet. The page turns to a missing-data state: score is 0%, class is N/A, domain cards are incomplete, and the results table shows unavailable cells.</span>
+              </div>
+              <div class="query-state-guide-card query-state--warning">
+                <strong><code>?halfdata</code></strong>
+                <span>Only part of the assessment is complete. The page shows a provisional score/class, completed domains get scores, and missing domains/cells remain clearly marked.</span>
+              </div>
+              <div class="query-state-guide-card query-state--success">
+                <strong><code>?fulldata</code></strong>
+                <span>The SRI result is ready. The summary, gauge, domain cards, impact row, detailed matrix, and aggregated summary are populated for final review.</span>
+              </div>
+            </div>
+            <div id="query-state-explanation" class="query-state-explanation query-state--default" role="status" aria-live="polite"><h3>Default model: Default model data</h3><p>The page is using the current SRI results available from sri_epb_ui_data_model_v2.js.</p></div>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card">
+            <h2>Domain cards</h2>
+            <p class="caption">Open each domain tab and complete smart service levels before final SRI results.</p>
+            <div id="domains-grid" class="domains-grid" aria-live="polite"><article class="domain-card">
+        <h3>Heating</h3>
+        <div class="meta">
+          <span class="chip chip--ready">Calculation completed</span>
+          <span class="chip">Score: 80%</span>
+        </div>
+        <p class="muted">Presence flag: 1 · Open tab to continue editable service-level inputs.</p>
+        <div class="actions">
+          <a class="btn btn-default" href="./SRI5-heating-tab.html">Open Heating</a>
+        </div>
+      </article><article class="domain-card">
+        <h3>Domestic hot water</h3>
+        <div class="meta">
+          <span class="chip chip--processing">Processing</span>
+          <span class="chip">Score: Unavailable</span>
+        </div>
+        <p class="muted">Presence flag: 1 · Open tab to continue editable service-level inputs.</p>
+        <div class="actions">
+          <a class="btn btn-default" href="./SRI6-dhw-tab.html">Open Domestic hot water</a>
+        </div>
+      </article><article class="domain-card">
+        <h3>Cooling</h3>
+        <div class="meta">
+          <span class="chip chip--ready">Calculation completed</span>
+          <span class="chip">Score: 70%</span>
+        </div>
+        <p class="muted">Presence flag: 1 · Open tab to continue editable service-level inputs.</p>
+        <div class="actions">
+          <a class="btn btn-default" href="./SRI7-cooling-tab.html">Open Cooling</a>
+        </div>
+      </article><article class="domain-card">
+        <h3>Ventilation</h3>
+        <div class="meta">
+          <span class="chip chip--processing">Processing</span>
+          <span class="chip">Score: Unavailable</span>
+        </div>
+        <p class="muted">Presence flag: 1 · Open tab to continue editable service-level inputs.</p>
+        <div class="actions">
+          <a class="btn btn-default" href="./SRI8-ventilation-tab.html">Open Ventilation</a>
+        </div>
+      </article><article class="domain-card">
+        <h3>Lighting</h3>
+        <div class="meta">
+          <span class="chip chip--processing">Processing</span>
+          <span class="chip">Score: Unavailable</span>
+        </div>
+        <p class="muted">Presence flag: 1 · Open tab to continue editable service-level inputs.</p>
+        <div class="actions">
+          <a class="btn btn-default" href="./SRI9-lighting-tab.html">Open Lighting</a>
+        </div>
+      </article><article class="domain-card">
+        <h3>Dynamic building envelope</h3>
+        <div class="meta">
+          <span class="chip chip--processing">Processing</span>
+          <span class="chip">Score: Unavailable</span>
+        </div>
+        <p class="muted">Presence flag: 1 · Open tab to continue editable service-level inputs.</p>
+        <div class="actions">
+          <a class="btn btn-default" href="./SRI10-dynamic-envelope-tab.html">Open Dynamic building envelope</a>
+        </div>
+      </article><article class="domain-card">
+        <h3>Electricity</h3>
+        <div class="meta">
+          <span class="chip chip--processing">Processing</span>
+          <span class="chip">Score: Unavailable</span>
+        </div>
+        <p class="muted">Presence flag: 1 · Open tab to continue editable service-level inputs.</p>
+        <div class="actions">
+          <a class="btn btn-default" href="./SRI11-electricity-tab.html">Open Electricity</a>
+        </div>
+      </article><article class="domain-card">
+        <h3>EV charging</h3>
+        <div class="meta">
+          <span class="chip chip--processing">Processing</span>
+          <span class="chip">Score: Unavailable</span>
+        </div>
+        <p class="muted">Presence flag: 0 · Domain is absent and excluded from the current calculation.</p>
+        <div class="actions">
+          <a class="btn btn-default" href="./SRI12-ev-charging-tab.html">Open EV charging</a>
+        </div>
+      </article><article class="domain-card">
+        <h3>Monitoring and control</h3>
+        <div class="meta">
+          <span class="chip chip--processing">Processing</span>
+          <span class="chip">Score: Unavailable</span>
+        </div>
+        <p class="muted">Presence flag: 1 · Open tab to continue editable service-level inputs.</p>
+        <div class="actions">
+          <a class="btn btn-default" href="./SRI13-monitoring-control-tab.html">Open Monitoring and control</a>
+        </div>
+      </article></div>
+          </article>
+        </div>
+
+
+
+
+
+
+
+
+       
+
+        <div class="full">
+          <!-- COMPONENT: sri-results-table -->
+          <article id="component-sri-results-table" class="card c-sri-results-table">
+            <h2>SRI Results View table</h2>
+            <div class="sri-card">
+              <div class="sri-title" id="sri-title">Overall SRI Score: 75% · Class B</div>
+              <table class="sri-table">
+                <thead>
+                  <tr>
+                    <th class="empty" rowspan="2" aria-label="SRI result domain column">
+
+
+                      
+     
           <!-- COMPONENT: gauge-svg-template -->
-          <article id="component-gauge-svg-template" class="card c-gauge-svg-template">
+          <article id="component-gauge-svg-template" class=" c-gauge-svg-template">
             <h2>SRI score gauge</h2>
             <div id="gaugeparent">
               <svg id="gauge" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 226.71 120.91" width="100%">
@@ -201,40 +415,43 @@
                   </style>
                 </defs>
                 <g id="b">
-                  <path class="e" d="M183.92,110.89h42.79c-.5-23.06-7.88-44.42-20.17-62.11l-34.6,25.14c7.17,10.62,11.51,23.31,11.99,36.97Z" />
-                  <path class="d" d="M113.35,42.76c6.74,0,13.26,.97,19.43,2.73l13.23-40.7C135.67,1.68,124.71,0,113.35,0s-22.32,1.68-32.66,4.78l13.23,40.7c6.18-1.76,12.69-2.73,19.43-2.73Z" />
-                  <path class="f" d="M168.98,69.88l34.62-25.15c-13.34-17.5-31.65-31.01-52.82-38.41l-13.22,40.68c12.51,4.56,23.36,12.58,31.43,22.87Z" />
-                  <path class="h" d="M89.16,47.01L75.94,6.33c-21.18,7.4-39.49,20.9-52.82,38.41l34.62,25.15c8.06-10.3,18.91-18.31,31.43-22.87Z" />
-                  <path class="g" d="M54.77,73.92L20.17,48.78C7.88,66.47,.5,87.83,0,110.89H42.79c.48-13.67,4.82-26.35,11.99-36.97Z" />
+                  <path class="e" d="M183.92,110.89h42.79c-.5-23.06-7.88-44.42-20.17-62.11l-34.6,25.14c7.17,10.62,11.51,23.31,11.99,36.97Z"></path>
+                  <path class="d" d="M113.35,42.76c6.74,0,13.26,.97,19.43,2.73l13.23-40.7C135.67,1.68,124.71,0,113.35,0s-22.32,1.68-32.66,4.78l13.23,40.7c6.18-1.76,12.69-2.73,19.43-2.73Z"></path>
+                  <path class="f" d="M168.98,69.88l34.62-25.15c-13.34-17.5-31.65-31.01-52.82-38.41l-13.22,40.68c12.51,4.56,23.36,12.58,31.43,22.87Z"></path>
+                  <path class="h" d="M89.16,47.01L75.94,6.33c-21.18,7.4-39.49,20.9-52.82,38.41l34.62,25.15c8.06-10.3,18.91-18.31,31.43-22.87Z"></path>
+                  <path class="g" d="M54.77,73.92L20.17,48.78C7.88,66.47,.5,87.83,0,110.89H42.79c.48-13.67,4.82-26.35,11.99-36.97Z"></path>
                 </g>
-                <g id="needle" class="needle-sweep">
-                  <path class="i" d="M115.26,16.86l-10.13,91.91c0,5.6,4.54,10.13,10.13,10.13s10.13-4.54,10.13-10.13l-10.13-91.91Zm0,97.87c-3.29,0-5.96-2.67-5.96-5.96s2.67-5.96,5.96-5.96,5.96,2.67,5.96,5.96-2.67,5.96-5.96,5.96Z" />
-                  <circle class="i" cx="115.26" cy="109.1" r="1.9" />
+                <g id="needle" class="needle-sweep" style="transform: rotate(45deg);">
+                  <path class="i" d="M115.26,16.86l-10.13,91.91c0,5.6,4.54,10.13,10.13,10.13s10.13-4.54,10.13-10.13l-10.13-91.91Zm0,97.87c-3.29,0-5.96-2.67-5.96-5.96s2.67-5.96,5.96-5.96,5.96,2.67,5.96,5.96-2.67,5.96-5.96,5.96Z"></path>
+                  <circle class="i" cx="115.26" cy="109.1" r="1.9"></circle>
                 </g>
               </svg>
               <div class="gaugetitle">
-                <h4>SRI Score <span id="gauge-percent">0%</span></h4>
+                <h4>SRI Score <span id="gauge-percent">75%</span></h4>
               </div>
             </div>
           </article>
-        </div>
 
-        <div class="span-8">
-          <!-- COMPONENT: sri-results-table -->
-          <article id="component-sri-results-table" class="card c-sri-results-table">
-            <h2>SRI Results View table</h2>
-            <div class="sri-card">
-              <div class="sri-title" id="sri-title">Overall SRI Score (%) + SRI Class</div>
-              <table class="sri-table">
-                <thead>
-                  <tr>
-                    <th class="empty"></th>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    </th>
                     <th colspan="2" class="group group-energy">⚡ Optimise energy efficiency and overall in-use performance</th>
                     <th colspan="4" class="group group-occupant">👥 Adapt its operation to the needs of the occupant</th>
                     <th class="group group-grid">🗼 Adapt to signals from the grid</th>
                   </tr>
                   <tr>
-                    <th class="empty"></th>
                     <th>⚙️<br>Energy efficiency</th>
                     <th>🔧<br>Maintenance &amp; fault prediction</th>
                     <th>🌡️<br>Comfort</th>
@@ -244,23 +461,17 @@
                     <th>🔋<br>Energy flexibility &amp; storage</th>
                   </tr>
                 </thead>
-                <tbody id="sri-results-body"></tbody>
+                <tbody id="sri-results-body"><tr><th>🔥 Heating<br><span class="caption">Domain score: 80%</span></th><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td></tr><tr><th>🚿 Domestic hot water<br><span class="caption">Domain score: Unavailable</span></th><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td></tr><tr><th>❄️ Cooling<br><span class="caption">Domain score: 70%</span></th><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td></tr><tr><th>🌬️ Ventilation<br><span class="caption">Domain score: Unavailable</span></th><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td></tr><tr><th>💡 Lighting<br><span class="caption">Domain score: Unavailable</span></th><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td></tr><tr><th>🪟 Dynamic building envelope<br><span class="caption">Domain score: Unavailable</span></th><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td></tr><tr><th>⚡ Electricity<br><span class="caption">Domain score: Unavailable</span></th><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td></tr><tr><th>🚗 EV charging<br><span class="caption">Domain score: Unavailable</span></th><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td></tr><tr><th>🖥️ Monitoring and control<br><span class="caption">Domain score: Unavailable</span></th><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td><td class="disabled">No detailed result</td></tr><tr><th>ImpactScores</th><td>70%</td><td class="disabled">Unavailable</td><td>80%</td><td class="disabled">Unavailable</td><td class="disabled">Unavailable</td><td class="disabled">Unavailable</td><td class="disabled">Unavailable</td></tr><tr><th>AggregatedScores</th><td colspan="7" class="disabled">Aggregated score details are not available in the current result model.</td></tr></tbody>
               </table>
+            </div>
+            <br><br>
+             <div class="action-row">
+              <a class="btn btn-default" href="./C-open-edit-building.html">Back to Building</a>
             </div>
           </article>
         </div>
 
-        <div class="full">
-          <article class="card">
-            <h2>Result interpretation notes</h2>
-            <ul>
-              <li>Total score and class come from <code>sri.results.totalScore</code> and <code>sri.results.class</code>.</li>
-              <li>Domain rows align with SRI domains listed in the model and prototype results table structure.</li>
-              <li>Unavailable cells are displayed as an em dash for non-applicable impact-domain combinations.</li>
-              <li>Status chips use enum-to-label mapping and never expose raw enum keys in the UI.</li>
-            </ul>
-          </article>
-        </div>
+  
       </div>
     </section>
   </main>
@@ -271,130 +482,8 @@
       </footer>
 <script src="./breadcrumbs.js"></script>
 <script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
+<script src="./sri14-results-state.js"></script>
 
-  <script>
-    function toTitleCaseFromEnum(status) {
-      return String(status || 'UNKNOWN_STATUS').toLowerCase().split('_').map((s) => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
-    }
-
-    function getStatusPresentation(status) {
-      const map = {
-        READY_FOR_CALCULATION: { label: 'Ready', className: 'chip chip--ready' },
-        MISSING_DATA: { label: 'Incomplete data', className: 'chip chip--incomplete' },
-        IN_PROGRESS: { label: 'Processing', className: 'chip chip--processing' },
-        PROCESSING: { label: 'Processing', className: 'chip chip--processing' },
-        CALCULATION_COMPLETED: { label: 'Calculation completed', className: 'chip chip--ready' }
-      };
-      return map[status] || { label: toTitleCaseFromEnum(status), className: 'chip' };
-    }
-
-    const fallbackModel = {
-      projects: [{
-        building: {
-          name: 'Office Athens',
-          sri: {
-            method: 'A',
-            results: {
-              totalScore: 75,
-              class: 'B',
-              impacts: { energyEfficiency: 70, comfort: 80 },
-              domains: { heating: 80, cooling: 70 }
-            }
-          }
-        }
-      }]
-    };
-
-    const model = window.AppDataModel || fallbackModel;
-    const project = model?.projects?.[0] || {};
-    const building = project?.building || {};
-    const sri = building?.sri || {};
-    const results = sri?.results || {};
-
-    const totalScore = Number(results?.totalScore || 0);
-    const sriClass = String(results?.class || 'N/A');
-
-    document.getElementById('building-name').textContent = building?.name || 'Building';
-    document.getElementById('method-label').textContent = `Method ${sri?.method || 'A'}`;
-    document.getElementById('sri-title').textContent = `Overall SRI Score: ${totalScore}% · Class ${sriClass}`;
-    document.getElementById('gauge-percent').textContent = `${totalScore}%`;
-
-    const scoreChip = document.getElementById('sri-score-chip');
-    scoreChip.className = 'chip chip--ready';
-    scoreChip.textContent = `${totalScore}%`;
-
-    const classChip = document.getElementById('sri-class-chip');
-    classChip.className = 'chip chip--ready';
-    classChip.textContent = `Class ${sriClass}`;
-
-    const resultStatus = getStatusPresentation(totalScore > 0 ? 'CALCULATION_COMPLETED' : 'IN_PROGRESS');
-    const resultStatusChip = document.getElementById('result-status-chip');
-    resultStatusChip.className = resultStatus.className;
-    resultStatusChip.textContent = resultStatus.label;
-
-    const needle = document.getElementById('needle');
-    const rotation = -90 + (Math.max(0, Math.min(100, totalScore)) * 1.8);
-    needle.style.transform = `rotate(${rotation}deg)`;
-
-    const impactLabels = {
-      energyEfficiency: 'Energy efficiency',
-      maintenance: 'Maintenance & fault prediction',
-      comfort: 'Comfort',
-      convenience: 'Convenience',
-      health: 'Health & accessibility',
-      info: 'Information to occupants',
-      flexibility: 'Energy flexibility & storage'
-    };
-
-    const domainLabels = {
-      heating: '🔥 Heating',
-      dhw: '🚿 Domestic hot water',
-      cooling: '❄️ Cooling',
-      ventilation: '🌬️ Ventilation',
-      lighting: '💡 Lighting',
-      envelope: '🪟 Dynamic building envelope',
-      electricity: '⚡ Electricity',
-      ev: '🚗 EV charging',
-      monitoring: '🖥️ Monitoring and control'
-    };
-
-    const body = document.getElementById('sri-results-body');
-    const detailedScores = results?.detailedScores;
-    const domainScores = results?.domains || {};
-    const impactScores = results?.impacts || {};
-    const impactKeys = Object.keys(impactLabels);
-
-    Object.entries(domainLabels).forEach(([domainKey, domainLabel]) => {
-      const tr = document.createElement('tr');
-      const domainScore = domainScores[domainKey];
-      const cells = impactKeys.map((impactKey) => {
-        const detailedValue = detailedScores?.[domainKey]?.[impactKey];
-        if (typeof detailedValue === 'number') return `<td>${detailedValue}%</td>`;
-        return '<td class="disabled">No detailed result</td>';
-      }).join('');
-      tr.innerHTML = `<th>${domainLabel}<br><span class="caption">Domain score: ${typeof domainScore === 'number' ? `${domainScore}%` : 'Unavailable'}</span></th>` + cells;
-      body.appendChild(tr);
-    });
-
-    if (!results?.aggregatedScores) {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<th>AggregatedScores</th><td colspan="7" class="disabled">Aggregated score details are not available in the current result model.</td>`;
-      body.appendChild(tr);
-    }
-
-    if (Object.keys(impactScores).length) {
-      const tr = document.createElement('tr');
-      tr.innerHTML = '<th>ImpactScores</th>' + impactKeys.map((impactKey) => {
-        const value = impactScores[impactKey];
-        return typeof value === 'number' ? `<td>${value}%</td>` : '<td class="disabled">Unavailable</td>';
-      }).join('');
-      body.appendChild(tr);
-    } else {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<th>ImpactScores</th><td colspan="7" class="disabled">Impact score breakdown is unavailable.</td>`;
-      body.appendChild(tr);
-    }
-  </script>
 </body>
 
 </html>

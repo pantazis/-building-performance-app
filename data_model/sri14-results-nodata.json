@@ -1,0 +1,34 @@
+{
+  "state": "nodata",
+  "stateLabel": "No data",
+  "stateStatus": "MISSING_DATA",
+  "stateTone": "danger",
+  "stateTitle": "No SRI result data is available yet",
+  "stateMessage": "The assessment has not collected enough domain/service information to calculate the SRI result. The user should return to the domain tabs and complete the required inputs before using this page as a final result.",
+  "assessmentSummary": {
+    "buildingName": "Office Athens",
+    "method": "A",
+    "totalScore": 0,
+    "class": "N/A",
+    "status": "MISSING_DATA"
+  },
+  "domainCards": [
+    { "key": "heating", "label": "Heating", "presence": 1, "score": null, "status": "MISSING_DATA", "message": "No heating service levels have been completed yet.", "href": "./SRI5-heating-tab.html" },
+    { "key": "dhw", "label": "DHW", "presence": 1, "score": null, "status": "MISSING_DATA", "message": "No domestic hot water service levels have been completed yet.", "href": "./SRI6-dhw-tab.html" },
+    { "key": "cooling", "label": "Cooling", "presence": 1, "score": null, "status": "MISSING_DATA", "message": "No cooling service levels have been completed yet.", "href": "./SRI7-cooling-tab.html" },
+    { "key": "ventilation", "label": "Ventilation", "presence": 1, "score": null, "status": "MISSING_DATA", "message": "No ventilation service levels have been completed yet.", "href": "./SRI8-ventilation-tab.html" },
+    { "key": "lighting", "label": "Lighting", "presence": 1, "score": null, "status": "MISSING_DATA", "message": "No lighting service levels have been completed yet.", "href": "./SRI9-lighting-tab.html" },
+    { "key": "envelope", "label": "Dynamic Envelope", "presence": 1, "score": null, "status": "MISSING_DATA", "message": "No dynamic envelope service levels have been completed yet.", "href": "./SRI10-dynamic-envelope-tab.html" },
+    { "key": "electricity", "label": "Electricity", "presence": 1, "score": null, "status": "MISSING_DATA", "message": "No electricity service levels have been completed yet.", "href": "./SRI11-electricity-tab.html" },
+    { "key": "ev", "label": "EV Charging", "presence": 0, "score": null, "status": "MISSING_DATA", "message": "EV charging is absent and excluded until domain presence is changed.", "href": "./SRI12-ev-charging-tab.html" },
+    { "key": "monitoring", "label": "Monitoring & Control", "presence": 1, "score": null, "status": "MISSING_DATA", "message": "No monitoring and control service levels have been completed yet.", "href": "./SRI13-monitoring-control-tab.html" }
+  ],
+  "results": {
+    "totalScore": 0,
+    "class": "N/A",
+    "impacts": {},
+    "domains": {},
+    "detailedScores": {},
+    "aggregatedScores": null
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "state": "halfdata",
+  "stateLabel": "Half data",
+  "stateStatus": "IN_PROGRESS",
+  "stateTone": "warning",
+  "stateTitle": "Partial SRI result preview",
+  "stateMessage": "Some domains have enough information to show a preview, but missing domains and missing impact cells mean this is not a final SRI result. The user should complete the incomplete domain cards before export or certification.",
+  "assessmentSummary": {
+    "buildingName": "Office Athens",
+    "method": "A",
+    "totalScore": 42,
+    "class": "D",
+    "status": "IN_PROGRESS"
+  },
+  "domainCards": [
+    { "key": "heating", "label": "Heating", "presence": 1, "score": 68, "status": "CALCULATION_COMPLETED", "message": "Heating services are complete and included in the partial result.", "href": "./SRI5-heating-tab.html" },
+    { "key": "dhw", "label": "DHW", "presence": 1, "score": 44, "status": "CALCULATION_COMPLETED", "message": "DHW services are complete and included in the partial result.", "href": "./SRI6-dhw-tab.html" },
+    { "key": "cooling", "label": "Cooling", "presence": 1, "score": 55, "status": "CALCULATION_COMPLETED", "message": "Cooling services are complete and included in the partial result.", "href": "./SRI7-cooling-tab.html" },
+    { "key": "ventilation", "label": "Ventilation", "presence": 1, "score": null, "status": "MISSING_DATA", "message": "Ventilation compliance rows are incomplete.", "href": "./SRI8-ventilation-tab.html" },
+    { "key": "lighting", "label": "Lighting", "presence": 1, "score": 35, "status": "CALCULATION_COMPLETED", "message": "Lighting has a partial score but still needs review.", "href": "./SRI9-lighting-tab.html" },
+    { "key": "envelope", "label": "Dynamic Envelope", "presence": 1, "score": null, "status": "MISSING_DATA", "message": "Dynamic envelope service data is missing.", "href": "./SRI10-dynamic-envelope-tab.html" },
+    { "key": "electricity", "label": "Electricity", "presence": 1, "score": 50, "status": "IN_PROGRESS", "message": "Electricity data is partially complete.", "href": "./SRI11-electricity-tab.html" },
+    { "key": "ev", "label": "EV Charging", "presence": 0, "score": null, "status": "MISSING_DATA", "message": "EV charging is absent and excluded from this partial calculation.", "href": "./SRI12-ev-charging-tab.html" },
+    { "key": "monitoring", "label": "Monitoring & Control", "presence": 1, "score": null, "status": "MISSING_DATA", "message": "Monitoring and control services still require input.", "href": "./SRI13-monitoring-control-tab.html" }
+  ],
+  "results": {
+    "totalScore": 42,
+    "class": "D",
+    "impacts": {
+      "energyEfficiency": 48,
+      "maintenance": 32,
+      "comfort": 46,
+      "convenience": 40
+    },
+    "domains": {
+      "heating": 68,
+      "dhw": 44,
+      "cooling": 55,
+      "lighting": 35,
+      "electricity": 50
+    },
+    "detailedScores": {
+      "heating": { "energyEfficiency": 70, "maintenance": 60, "comfort": 66, "convenience": 62 },
+      "dhw": { "energyEfficiency": 46, "maintenance": 35, "comfort": 42, "convenience": 39 },
+      "cooling": { "energyEfficiency": 58, "maintenance": 40, "comfort": 57, "convenience": 50 },
+      "lighting": { "energyEfficiency": 35, "comfort": 38, "convenience": 33 },
+      "electricity": { "energyEfficiency": 50, "flexibility": 52 }
+    },
+    "aggregatedScores": {
+      "availableDomains": 5,
+      "missingDomains": 4,
+      "finalReady": false
+    }
+  }
+}

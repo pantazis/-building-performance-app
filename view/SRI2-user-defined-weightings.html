@@ -8,6 +8,14 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="../building-performance-app/style.css" />
   <style>
+    :root {
+      --btn-color-success: #1f543b;
+      --btn-color-default: #6d8a3e;
+      --btn-color-warning: #b8a43a;
+      --btn-color-orange: #c96a2b;
+      --btn-color-danger: #e6363c;
+    }
+
     .sri-layout {
       display: grid;
       grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -39,23 +47,153 @@
     }
 
     .decision-list li { margin-bottom: var(--sp-xs); }
-    .decision-panel { display: grid; gap: var(--sp-md); }
 
-    .decision-panel-grid {
+    .weight-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: var(--sp-md);
-      margin: var(--sp-sm) 0 var(--sp-md);
+      gap: var(--sp-sm);
     }
 
-    .decision-panel-grid p {
+    .weight-row {
       display: grid;
-      gap: var(--sp-xs);
-      margin: 0;
-      padding: var(--sp-sm) var(--sp-md);
+      grid-template-columns: 1fr 110px;
+      align-items: center;
+      gap: var(--sp-sm);
+      padding: 10px;
       border: 1px solid var(--line);
       border-radius: var(--r-sm);
-      background: var(--panel);
+      background: #fff;
+    }
+
+    .weight-row input,
+    .domain-table input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 8px;
+      font: inherit;
+    }
+
+    .weight-row input[readonly],
+    .domain-table input[readonly] {
+      cursor: default;
+      color: var(--ink);
+      background: #f7faf7;
+    }
+
+    .weight-row label {
+      font-weight: 600;
+    }
+
+    .totals-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sp-sm);
+    }
+
+    /* COMPONENT: decision-panel */
+    .c-decision-panel,
+    .decision-panel {
+      display: grid;
+      gap: var(--sp-md);
+    }
+
+    .c-decision-panel h2,
+    .decision-panel h2 {
+      margin-bottom: 0;
+    }
+
+    .c-decision-panel .decision-panel-grid,
+    .decision-panel .decision-panel-grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--sp-sm) var(--sp-lg);
+      align-items: start;
+    }
+
+    .c-decision-panel .decision-panel-grid p,
+    .decision-panel .decision-panel-grid p {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px 6px;
+      grid-column: span 2;
+      margin: 0;
+      min-width: 0;
+    }
+
+    .c-decision-panel .decision-panel-grid p:nth-child(4),
+    .decision-panel .decision-panel-grid p:nth-child(4) {
+      grid-column: span 3;
+    }
+
+    .c-decision-panel .decision-panel-grid p:nth-child(5),
+    .decision-panel .decision-panel-grid p:nth-child(5) {
+      grid-column: span 2;
+    }
+
+    .c-decision-panel .decision-panel-grid p:nth-child(6),
+    .decision-panel .decision-panel-grid p:nth-child(6) {
+      grid-column: span 3;
+    }
+
+    .c-decision-panel .decision-panel-grid strong,
+    .decision-panel .decision-panel-grid strong {
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+
+    .c-decision-panel .decision-panel-grid .chip,
+    .decision-panel .decision-panel-grid .chip {
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      white-space: normal;
+    }
+
+    .c-decision-panel .action-row,
+    .decision-panel .action-row {
+      margin-top: var(--sp-md);
+    }
+
+    @media (max-width: 1180px) {
+      .c-decision-panel .decision-panel-grid,
+      .decision-panel .decision-panel-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--sp-sm) var(--sp-md);
+      }
+
+      .c-decision-panel .decision-panel-grid p,
+      .decision-panel .decision-panel-grid p,
+      .c-decision-panel .decision-panel-grid p:nth-child(4),
+      .decision-panel .decision-panel-grid p:nth-child(4),
+      .c-decision-panel .decision-panel-grid p:nth-child(5),
+      .decision-panel .decision-panel-grid p:nth-child(5),
+      .c-decision-panel .decision-panel-grid p:nth-child(6),
+      .decision-panel .decision-panel-grid p:nth-child(6) {
+        grid-column: auto;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .c-decision-panel .decision-panel-grid,
+      .decision-panel .decision-panel-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .c-decision-panel .decision-panel-grid p,
+      .decision-panel .decision-panel-grid p {
+        justify-content: space-between;
+        padding-block: 2px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .c-decision-panel .decision-panel-grid p,
+      .decision-panel .decision-panel-grid p {
+        display: grid;
+        grid-template-columns: 1fr;
+        justify-content: start;
+      }
     }
 
     .default-values-grid {
@@ -85,8 +223,81 @@
       margin-top: var(--sp-sm);
     }
 
+    .domain-table-wrap {
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+    }
+
+    .domain-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 860px;
+    }
+
+    .domain-table th,
+    .domain-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 8px;
+      text-align: left;
+      vertical-align: middle;
+      background: #fff;
+    }
+
+    .domain-table th:first-child,
+    .domain-table td:first-child {
+      position: sticky;
+      left: 0;
+      background: #f7faf7;
+      z-index: 1;
+    }
+
+    .domain-table .is-disabled {
+      opacity: .55;
+      background: #f5f5f5;
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-sm);
+      margin-top: var(--sp-sm);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--sp-sm);
+    }
+
+    @media (max-width: 980px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 580px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .stat-card {
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 10px;
+      background: #fff;
+    }
+
+    .stat-card .caption {
+      margin: 0 0 6px;
+    }
+
+    .stat-card strong {
+      font-size: 1.15rem;
+    }
+
     @media (max-width: 900px) {
-      .decision-panel-grid,
       .default-values-grid,
       .comparison-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -94,7 +305,6 @@
     }
 
     @media (max-width: 600px) {
-      .decision-panel-grid,
       .default-values-grid,
       .comparison-grid {
         grid-template-columns: 1fr;
@@ -153,34 +363,364 @@
           </article>
         </div>
 
-        <div class="full">
-          <article class="card decision-panel">            
-            <div class="decision-panel-grid" aria-label="SRI rules decision summary">
+      <div class="full">
+          <!-- COMPONENT: decision-panel -->
+          <article id="component-decision-panel" class="card c-decision-panel decision-panel">
+            <h2>Assessment context</h2>
+            <div class="decision-panel-grid" aria-label="SRI weighting settings decision summary">
               <p><strong>Building:</strong> <span id="building-name">Office Athens</span></p>
               <p><strong>Method:</strong> <span id="method-label">Method A</span></p>
               <p><strong>Region:</strong> <span id="region-label">EU</span></p>
-              <p><strong>Selected mode:</strong> <span id="weighting-mode-chip" class="chip chip--ready">Default weightings</span></p>
+              <p><strong>Weighting mode:</strong> <span id="mode-chip" class="chip chip--processing">Default weightings</span></p>
+              <p><strong>Impact total:</strong> <span id="impact-total" class="chip chip--ready">100%</span></p>
+              <p><strong>Matrix check:</strong> <span id="matrix-status" class="chip chip--ready">All rows = 100%</span></p>
             </div>
-
-      
+           
           </article>
         </div>
 
  
+<div class="full">
+          <article class="card">
+            <h2>Impact weighting (%)</h2>
+            <p class="caption">Each value is editable. Total must be 100%.</p>
+            <form id="impact-form" class="weight-grid" aria-label="Impact weighting settings"><div class="weight-row">
+        <label for="impact-energyEfficiency">Energy efficiency</label>
+        <input id="impact-energyEfficiency" type="number" min="0" max="100" step="1" value="20">
+      </div><div class="weight-row">
+        <label for="impact-maintenance">Maintenance &amp; fault prediction</label>
+        <input id="impact-maintenance" type="number" min="0" max="100" step="1" value="10">
+      </div><div class="weight-row">
+        <label for="impact-comfort">Comfort</label>
+        <input id="impact-comfort" type="number" min="0" max="100" step="1" value="15">
+      </div><div class="weight-row">
+        <label for="impact-convenience">Convenience</label>
+        <input id="impact-convenience" type="number" min="0" max="100" step="1" value="15">
+      </div><div class="weight-row">
+        <label for="impact-health">Health &amp; accessibility</label>
+        <input id="impact-health" type="number" min="0" max="100" step="1" value="10">
+      </div><div class="weight-row">
+        <label for="impact-info">Information to occupants</label>
+        <input id="impact-info" type="number" min="0" max="100" step="1" value="10">
+      </div><div class="weight-row">
+        <label for="impact-flexibility">Energy flexibility &amp; storage</label>
+        <input id="impact-flexibility" type="number" min="0" max="100" step="1" value="20">
+      </div></form>
+          </article>
+        </div>
+        <div class="full">
+          <article class="card">
+            <h2>Static reference data</h2>
+            <p class="caption">Quick baseline values from the current SRI weighting template.</p>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <p class="caption">EU baseline profile</p>
+                <strong>Balanced</strong>
+              </div>
+              <div class="stat-card">
+                <p class="caption">Most weighted impact</p>
+                <strong>Energy efficiency (20%)</strong>
+              </div>
+              <div class="stat-card">
+                <p class="caption">Least weighted impacts</p>
+                <strong>Maintenance / Health / Info (10%)</strong>
+              </div>
+              <div class="stat-card">
+                <p class="caption">Domain availability</p>
+                <strong>8 of 9 active</strong>
+              </div>
+            </div>
+            <ul>
+              <li>Impact weighting total target = 100%</li>
+              <li>Each domain-by-impact row total target = 100%</li>
+              <li>EV is optional in this sample project and can be inactive</li>
+              <li>User-defined mode should continue to SRI4 after validation</li>
+            </ul>
+          </article>
+        </div>
 
         <div class="full">
           <article class="card">
-            <h2>Default values summary</h2>
-            <p class="caption">These are the current baseline impact weighting values loaded from the SRI data model. SRI2 confirms these values; SRI3 is the detailed editor for changing them.</p>
-            <p id="weights-summary" class="caption" aria-live="polite">Impact weights total: loading…</p>
-            <div id="default-values-grid" class="default-values-grid" aria-label="Default impact weighting values"></div>
-         
-          <br><br>
-            <div class="action-row">
-              <a class="btn btn-default" href="./SRI1-methodology-selection.html">Back to SRI1</a>
-              <a id="continue-link" class="btn btn-primary" href="./SRI4-domain-dashboard.html">Continue</a>
+            <h2>Domain weighting by impact (%)</h2>
+            <p class="caption">Each impact row should sum to 100%. Disabled domains are read-only when not present in the building.</p>
+            <div class="domain-table-wrap">
+              <table class="domain-table" id="domain-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Impact \ Domain</th>
+                    <th scope="col">Heating</th>
+                    <th scope="col">DHW</th>
+                    <th scope="col">Cooling</th>
+                    <th scope="col">Ventilation</th>
+                    <th scope="col">Lighting</th>
+                    <th scope="col">Envelope</th>
+                    <th scope="col">Electricity</th>
+                    <th scope="col">EV</th>
+                    <th scope="col">Monitoring</th>
+                    <th scope="col">Row total</th>
+                  </tr>
+                </thead>
+                <tbody id="domain-table-body"><tr><th scope="row">Energy efficiency</th>
+          <td class="">
+            <input data-impact="energyEfficiency" data-domain="heating" type="number" min="0" max="100" step="1" value="20" aria-label="Energy efficiency - Heating">
+          </td>
+        
+          <td class="">
+            <input data-impact="energyEfficiency" data-domain="dhw" type="number" min="0" max="100" step="1" value="10" aria-label="Energy efficiency - DHW">
+          </td>
+        
+          <td class="">
+            <input data-impact="energyEfficiency" data-domain="cooling" type="number" min="0" max="100" step="1" value="15" aria-label="Energy efficiency - Cooling">
+          </td>
+        
+          <td class="">
+            <input data-impact="energyEfficiency" data-domain="ventilation" type="number" min="0" max="100" step="1" value="10" aria-label="Energy efficiency - Ventilation">
+          </td>
+        
+          <td class="">
+            <input data-impact="energyEfficiency" data-domain="lighting" type="number" min="0" max="100" step="1" value="10" aria-label="Energy efficiency - Lighting">
+          </td>
+        
+          <td class="">
+            <input data-impact="energyEfficiency" data-domain="envelope" type="number" min="0" max="100" step="1" value="10" aria-label="Energy efficiency - Envelope">
+          </td>
+        
+          <td class="">
+            <input data-impact="energyEfficiency" data-domain="electricity" type="number" min="0" max="100" step="1" value="10" aria-label="Energy efficiency - Electricity">
+          </td>
+        
+          <td class="is-disabled">
+            <input data-impact="energyEfficiency" data-domain="ev" type="number" min="0" max="100" step="1" value="5" readonly="" aria-label="Energy efficiency - EV">
+          </td>
+        
+          <td class="">
+            <input data-impact="energyEfficiency" data-domain="monitoring" type="number" min="0" max="100" step="1" value="10" aria-label="Energy efficiency - Monitoring">
+          </td>
+        <td><span class="chip chip--ready" id="row-total-energyEfficiency">100%</span></td></tr><tr><th scope="row">Maintenance &amp; fault prediction</th>
+          <td class="">
+            <input data-impact="maintenance" data-domain="heating" type="number" min="0" max="100" step="1" value="15" aria-label="Maintenance &amp; fault prediction - Heating">
+          </td>
+        
+          <td class="">
+            <input data-impact="maintenance" data-domain="dhw" type="number" min="0" max="100" step="1" value="10" aria-label="Maintenance &amp; fault prediction - DHW">
+          </td>
+        
+          <td class="">
+            <input data-impact="maintenance" data-domain="cooling" type="number" min="0" max="100" step="1" value="15" aria-label="Maintenance &amp; fault prediction - Cooling">
+          </td>
+        
+          <td class="">
+            <input data-impact="maintenance" data-domain="ventilation" type="number" min="0" max="100" step="1" value="10" aria-label="Maintenance &amp; fault prediction - Ventilation">
+          </td>
+        
+          <td class="">
+            <input data-impact="maintenance" data-domain="lighting" type="number" min="0" max="100" step="1" value="10" aria-label="Maintenance &amp; fault prediction - Lighting">
+          </td>
+        
+          <td class="">
+            <input data-impact="maintenance" data-domain="envelope" type="number" min="0" max="100" step="1" value="10" aria-label="Maintenance &amp; fault prediction - Envelope">
+          </td>
+        
+          <td class="">
+            <input data-impact="maintenance" data-domain="electricity" type="number" min="0" max="100" step="1" value="10" aria-label="Maintenance &amp; fault prediction - Electricity">
+          </td>
+        
+          <td class="is-disabled">
+            <input data-impact="maintenance" data-domain="ev" type="number" min="0" max="100" step="1" value="10" readonly="" aria-label="Maintenance &amp; fault prediction - EV">
+          </td>
+        
+          <td class="">
+            <input data-impact="maintenance" data-domain="monitoring" type="number" min="0" max="100" step="1" value="10" aria-label="Maintenance &amp; fault prediction - Monitoring">
+          </td>
+        <td><span class="chip chip--ready" id="row-total-maintenance">100%</span></td></tr><tr><th scope="row">Comfort</th>
+          <td class="">
+            <input data-impact="comfort" data-domain="heating" type="number" min="0" max="100" step="1" value="20" aria-label="Comfort - Heating">
+          </td>
+        
+          <td class="">
+            <input data-impact="comfort" data-domain="dhw" type="number" min="0" max="100" step="1" value="10" aria-label="Comfort - DHW">
+          </td>
+        
+          <td class="">
+            <input data-impact="comfort" data-domain="cooling" type="number" min="0" max="100" step="1" value="20" aria-label="Comfort - Cooling">
+          </td>
+        
+          <td class="">
+            <input data-impact="comfort" data-domain="ventilation" type="number" min="0" max="100" step="1" value="15" aria-label="Comfort - Ventilation">
+          </td>
+        
+          <td class="">
+            <input data-impact="comfort" data-domain="lighting" type="number" min="0" max="100" step="1" value="10" aria-label="Comfort - Lighting">
+          </td>
+        
+          <td class="">
+            <input data-impact="comfort" data-domain="envelope" type="number" min="0" max="100" step="1" value="10" aria-label="Comfort - Envelope">
+          </td>
+        
+          <td class="">
+            <input data-impact="comfort" data-domain="electricity" type="number" min="0" max="100" step="1" value="5" aria-label="Comfort - Electricity">
+          </td>
+        
+          <td class="is-disabled">
+            <input data-impact="comfort" data-domain="ev" type="number" min="0" max="100" step="1" value="0" readonly="" aria-label="Comfort - EV">
+          </td>
+        
+          <td class="">
+            <input data-impact="comfort" data-domain="monitoring" type="number" min="0" max="100" step="1" value="10" aria-label="Comfort - Monitoring">
+          </td>
+        <td><span class="chip chip--ready" id="row-total-comfort">100%</span></td></tr><tr><th scope="row">Convenience</th>
+          <td class="">
+            <input data-impact="convenience" data-domain="heating" type="number" min="0" max="100" step="1" value="15" aria-label="Convenience - Heating">
+          </td>
+        
+          <td class="">
+            <input data-impact="convenience" data-domain="dhw" type="number" min="0" max="100" step="1" value="10" aria-label="Convenience - DHW">
+          </td>
+        
+          <td class="">
+            <input data-impact="convenience" data-domain="cooling" type="number" min="0" max="100" step="1" value="15" aria-label="Convenience - Cooling">
+          </td>
+        
+          <td class="">
+            <input data-impact="convenience" data-domain="ventilation" type="number" min="0" max="100" step="1" value="10" aria-label="Convenience - Ventilation">
+          </td>
+        
+          <td class="">
+            <input data-impact="convenience" data-domain="lighting" type="number" min="0" max="100" step="1" value="15" aria-label="Convenience - Lighting">
+          </td>
+        
+          <td class="">
+            <input data-impact="convenience" data-domain="envelope" type="number" min="0" max="100" step="1" value="10" aria-label="Convenience - Envelope">
+          </td>
+        
+          <td class="">
+            <input data-impact="convenience" data-domain="electricity" type="number" min="0" max="100" step="1" value="10" aria-label="Convenience - Electricity">
+          </td>
+        
+          <td class="is-disabled">
+            <input data-impact="convenience" data-domain="ev" type="number" min="0" max="100" step="1" value="5" readonly="" aria-label="Convenience - EV">
+          </td>
+        
+          <td class="">
+            <input data-impact="convenience" data-domain="monitoring" type="number" min="0" max="100" step="1" value="10" aria-label="Convenience - Monitoring">
+          </td>
+        <td><span class="chip chip--ready" id="row-total-convenience">100%</span></td></tr><tr><th scope="row">Health &amp; accessibility</th>
+          <td class="">
+            <input data-impact="health" data-domain="heating" type="number" min="0" max="100" step="1" value="15" aria-label="Health &amp; accessibility - Heating">
+          </td>
+        
+          <td class="">
+            <input data-impact="health" data-domain="dhw" type="number" min="0" max="100" step="1" value="10" aria-label="Health &amp; accessibility - DHW">
+          </td>
+        
+          <td class="">
+            <input data-impact="health" data-domain="cooling" type="number" min="0" max="100" step="1" value="15" aria-label="Health &amp; accessibility - Cooling">
+          </td>
+        
+          <td class="">
+            <input data-impact="health" data-domain="ventilation" type="number" min="0" max="100" step="1" value="20" aria-label="Health &amp; accessibility - Ventilation">
+          </td>
+        
+          <td class="">
+            <input data-impact="health" data-domain="lighting" type="number" min="0" max="100" step="1" value="15" aria-label="Health &amp; accessibility - Lighting">
+          </td>
+        
+          <td class="">
+            <input data-impact="health" data-domain="envelope" type="number" min="0" max="100" step="1" value="10" aria-label="Health &amp; accessibility - Envelope">
+          </td>
+        
+          <td class="">
+            <input data-impact="health" data-domain="electricity" type="number" min="0" max="100" step="1" value="5" aria-label="Health &amp; accessibility - Electricity">
+          </td>
+        
+          <td class="is-disabled">
+            <input data-impact="health" data-domain="ev" type="number" min="0" max="100" step="1" value="0" readonly="" aria-label="Health &amp; accessibility - EV">
+          </td>
+        
+          <td class="">
+            <input data-impact="health" data-domain="monitoring" type="number" min="0" max="100" step="1" value="10" aria-label="Health &amp; accessibility - Monitoring">
+          </td>
+        <td><span class="chip chip--ready" id="row-total-health">100%</span></td></tr><tr><th scope="row">Information to occupants</th>
+          <td class="">
+            <input data-impact="info" data-domain="heating" type="number" min="0" max="100" step="1" value="10" aria-label="Information to occupants - Heating">
+          </td>
+        
+          <td class="">
+            <input data-impact="info" data-domain="dhw" type="number" min="0" max="100" step="1" value="10" aria-label="Information to occupants - DHW">
+          </td>
+        
+          <td class="">
+            <input data-impact="info" data-domain="cooling" type="number" min="0" max="100" step="1" value="10" aria-label="Information to occupants - Cooling">
+          </td>
+        
+          <td class="">
+            <input data-impact="info" data-domain="ventilation" type="number" min="0" max="100" step="1" value="10" aria-label="Information to occupants - Ventilation">
+          </td>
+        
+          <td class="">
+            <input data-impact="info" data-domain="lighting" type="number" min="0" max="100" step="1" value="10" aria-label="Information to occupants - Lighting">
+          </td>
+        
+          <td class="">
+            <input data-impact="info" data-domain="envelope" type="number" min="0" max="100" step="1" value="10" aria-label="Information to occupants - Envelope">
+          </td>
+        
+          <td class="">
+            <input data-impact="info" data-domain="electricity" type="number" min="0" max="100" step="1" value="10" aria-label="Information to occupants - Electricity">
+          </td>
+        
+          <td class="is-disabled">
+            <input data-impact="info" data-domain="ev" type="number" min="0" max="100" step="1" value="10" readonly="" aria-label="Information to occupants - EV">
+          </td>
+        
+          <td class="">
+            <input data-impact="info" data-domain="monitoring" type="number" min="0" max="100" step="1" value="20" aria-label="Information to occupants - Monitoring">
+          </td>
+        <td><span class="chip chip--ready" id="row-total-info">100%</span></td></tr><tr><th scope="row">Energy flexibility &amp; storage</th>
+          <td class="">
+            <input data-impact="flexibility" data-domain="heating" type="number" min="0" max="100" step="1" value="15" aria-label="Energy flexibility &amp; storage - Heating">
+          </td>
+        
+          <td class="">
+            <input data-impact="flexibility" data-domain="dhw" type="number" min="0" max="100" step="1" value="10" aria-label="Energy flexibility &amp; storage - DHW">
+          </td>
+        
+          <td class="">
+            <input data-impact="flexibility" data-domain="cooling" type="number" min="0" max="100" step="1" value="10" aria-label="Energy flexibility &amp; storage - Cooling">
+          </td>
+        
+          <td class="">
+            <input data-impact="flexibility" data-domain="ventilation" type="number" min="0" max="100" step="1" value="10" aria-label="Energy flexibility &amp; storage - Ventilation">
+          </td>
+        
+          <td class="">
+            <input data-impact="flexibility" data-domain="lighting" type="number" min="0" max="100" step="1" value="10" aria-label="Energy flexibility &amp; storage - Lighting">
+          </td>
+        
+          <td class="">
+            <input data-impact="flexibility" data-domain="envelope" type="number" min="0" max="100" step="1" value="10" aria-label="Energy flexibility &amp; storage - Envelope">
+          </td>
+        
+          <td class="">
+            <input data-impact="flexibility" data-domain="electricity" type="number" min="0" max="100" step="1" value="15" aria-label="Energy flexibility &amp; storage - Electricity">
+          </td>
+        
+          <td class="is-disabled">
+            <input data-impact="flexibility" data-domain="ev" type="number" min="0" max="100" step="1" value="10" readonly="" aria-label="Energy flexibility &amp; storage - EV">
+          </td>
+        
+          <td class="">
+            <input data-impact="flexibility" data-domain="monitoring" type="number" min="0" max="100" step="1" value="10" aria-label="Energy flexibility &amp; storage - Monitoring">
+          </td>
+        <td><span class="chip chip--ready" id="row-total-flexibility">100%</span></td></tr></tbody>
+              </table>
             </div>
-             </article>
+            <br><br>
+             <div class="action-row">
+              <a class="btn btn-default" href="./SRI1-methodology-selection.html">Back to SRI1</a>
+              <a id="continue-sri4" class="btn btn-primary" href="./SRI4-domain-dashboard.html" aria-disabled="false" tabindex="0">Continue to SRI4</a>
+            </div>
+          </article>
         </div>
 
 
@@ -219,7 +759,7 @@
 
       const modeChip = document.getElementById('weighting-mode-chip');
       if (modeChip) {
-        modeChip.textContent = useDefaultWeightings ? 'Default weightings' : 'User-defined weightings';
+        modeChip.textContent = useDefaultWeightings ? 'Default weightings' : 'Default weightings';
         modeChip.className = useDefaultWeightings ? 'chip chip--ready' : 'chip chip--processing';
       }
 
@@ -257,6 +797,11 @@
           </div>
         `;
       }
+
+      document.querySelectorAll('#impact-form input, #domain-table input').forEach((input) => {
+        input.readOnly = true;
+        input.setAttribute('aria-readonly', 'true');
+      });
     });
   </script>
 </body>

@@ -1,0 +1,66 @@
+{
+  "state": "fulldata",
+  "stateLabel": "Full data",
+  "stateStatus": "CALCULATION_COMPLETED",
+  "stateTone": "success",
+  "stateTitle": "Complete SRI result ready",
+  "stateMessage": "All relevant SRI domains and impact scores are populated. The user can review the final score, class, domain breakdown, impact breakdown, detailed scores, and aggregated summary.",
+  "assessmentSummary": {
+    "buildingName": "Office Athens",
+    "method": "A",
+    "totalScore": 75,
+    "class": "B",
+    "status": "CALCULATION_COMPLETED"
+  },
+  "domainCards": [
+    { "key": "heating", "label": "Heating", "presence": 1, "score": 80, "status": "CALCULATION_COMPLETED", "message": "Heating result is complete.", "href": "./SRI5-heating-tab.html" },
+    { "key": "dhw", "label": "DHW", "presence": 1, "score": 72, "status": "CALCULATION_COMPLETED", "message": "DHW result is complete.", "href": "./SRI6-dhw-tab.html" },
+    { "key": "cooling", "label": "Cooling", "presence": 1, "score": 70, "status": "CALCULATION_COMPLETED", "message": "Cooling result is complete.", "href": "./SRI7-cooling-tab.html" },
+    { "key": "ventilation", "label": "Ventilation", "presence": 1, "score": 76, "status": "CALCULATION_COMPLETED", "message": "Ventilation result is complete.", "href": "./SRI8-ventilation-tab.html" },
+    { "key": "lighting", "label": "Lighting", "presence": 1, "score": 82, "status": "CALCULATION_COMPLETED", "message": "Lighting result is complete.", "href": "./SRI9-lighting-tab.html" },
+    { "key": "envelope", "label": "Dynamic Envelope", "presence": 1, "score": 69, "status": "CALCULATION_COMPLETED", "message": "Dynamic envelope result is complete.", "href": "./SRI10-dynamic-envelope-tab.html" },
+    { "key": "electricity", "label": "Electricity", "presence": 1, "score": 74, "status": "CALCULATION_COMPLETED", "message": "Electricity result is complete.", "href": "./SRI11-electricity-tab.html" },
+    { "key": "ev", "label": "EV Charging", "presence": 0, "score": null, "status": "CALCULATION_COMPLETED", "message": "EV charging is absent and correctly excluded from the final calculation.", "href": "./SRI12-ev-charging-tab.html" },
+    { "key": "monitoring", "label": "Monitoring & Control", "presence": 1, "score": 78, "status": "CALCULATION_COMPLETED", "message": "Monitoring and control result is complete.", "href": "./SRI13-monitoring-control-tab.html" }
+  ],
+  "results": {
+    "totalScore": 75,
+    "class": "B",
+    "impacts": {
+      "energyEfficiency": 74,
+      "maintenance": 71,
+      "comfort": 79,
+      "convenience": 77,
+      "health": 73,
+      "info": 76,
+      "flexibility": 72
+    },
+    "domains": {
+      "heating": 80,
+      "dhw": 72,
+      "cooling": 70,
+      "ventilation": 76,
+      "lighting": 82,
+      "envelope": 69,
+      "electricity": 74,
+      "monitoring": 78
+    },
+    "detailedScores": {
+      "heating": { "energyEfficiency": 82, "maintenance": 78, "comfort": 84, "convenience": 80, "health": 76, "info": 79, "flexibility": 74 },
+      "dhw": { "energyEfficiency": 73, "maintenance": 69, "comfort": 75, "convenience": 72, "health": 70, "info": 71, "flexibility": 68 },
+      "cooling": { "energyEfficiency": 71, "maintenance": 67, "comfort": 74, "convenience": 70, "health": 69, "info": 72, "flexibility": 66 },
+      "ventilation": { "energyEfficiency": 75, "maintenance": 72, "comfort": 78, "convenience": 76, "health": 79, "info": 74, "flexibility": 70 },
+      "lighting": { "energyEfficiency": 84, "maintenance": 76, "comfort": 83, "convenience": 85, "health": 80, "info": 82, "flexibility": 73 },
+      "envelope": { "energyEfficiency": 70, "maintenance": 65, "comfort": 72, "convenience": 68, "health": 69, "info": 66, "flexibility": 67 },
+      "electricity": { "energyEfficiency": 76, "maintenance": 72, "comfort": 70, "convenience": 73, "health": 69, "info": 75, "flexibility": 82 },
+      "monitoring": { "energyEfficiency": 81, "maintenance": 78, "comfort": 80, "convenience": 79, "health": 76, "info": 84, "flexibility": 77 }
+    },
+    "aggregatedScores": {
+      "availableDomains": 8,
+      "excludedDomains": 1,
+      "impactAverage": 75,
+      "domainAverage": 75,
+      "finalReady": true
+    }
+  }
+}
