@@ -242,6 +242,29 @@ body {
   background: #eef2ff;
   color: #3730a3; }
 
+/* COMPONENT: decision-panel */
+.c-decision-panel .decision-panel-grid,
+.decision-panel .decision-panel-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--sp-md);
+  align-items: center; }
+
+.c-decision-panel .decision-panel-grid p,
+.decision-panel .decision-panel-grid p {
+  margin: 0;
+  min-width: 0; }
+
+@media (max-width: 960px) {
+  .c-decision-panel .decision-panel-grid,
+  .decision-panel .decision-panel-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+@media (max-width: 640px) {
+  .c-decision-panel .decision-panel-grid,
+  .decision-panel .decision-panel-grid {
+    grid-template-columns: 1fr; } }
+
 /* =======================
    Table-like list (CSS Grid)
    ======================= */

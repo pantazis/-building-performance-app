@@ -93,6 +93,112 @@
       gap: var(--sp-sm);
     }
 
+    /* COMPONENT: decision-panel */
+    .c-decision-panel,
+    .decision-panel {
+      display: grid;
+      gap: var(--sp-md);
+    }
+
+    .c-decision-panel h2,
+    .decision-panel h2 {
+      margin-bottom: 0;
+    }
+
+    .c-decision-panel .decision-panel-grid,
+    .decision-panel .decision-panel-grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--sp-sm) var(--sp-lg);
+      align-items: start;
+    }
+
+    .c-decision-panel .decision-panel-grid p,
+    .decision-panel .decision-panel-grid p {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px 6px;
+      grid-column: span 2;
+      margin: 0;
+      min-width: 0;
+    }
+
+    .c-decision-panel .decision-panel-grid p:nth-child(4),
+    .decision-panel .decision-panel-grid p:nth-child(4) {
+      grid-column: span 3;
+    }
+
+    .c-decision-panel .decision-panel-grid p:nth-child(5),
+    .decision-panel .decision-panel-grid p:nth-child(5) {
+      grid-column: span 2;
+    }
+
+    .c-decision-panel .decision-panel-grid p:nth-child(6),
+    .decision-panel .decision-panel-grid p:nth-child(6) {
+      grid-column: span 3;
+    }
+
+    .c-decision-panel .decision-panel-grid strong,
+    .decision-panel .decision-panel-grid strong {
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+
+    .c-decision-panel .decision-panel-grid .chip,
+    .decision-panel .decision-panel-grid .chip {
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      white-space: normal;
+    }
+
+    .c-decision-panel .action-row,
+    .decision-panel .action-row {
+      margin-top: var(--sp-md);
+    }
+
+    @media (max-width: 1180px) {
+      .c-decision-panel .decision-panel-grid,
+      .decision-panel .decision-panel-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--sp-sm) var(--sp-md);
+      }
+
+      .c-decision-panel .decision-panel-grid p,
+      .decision-panel .decision-panel-grid p,
+      .c-decision-panel .decision-panel-grid p:nth-child(4),
+      .decision-panel .decision-panel-grid p:nth-child(4),
+      .c-decision-panel .decision-panel-grid p:nth-child(5),
+      .decision-panel .decision-panel-grid p:nth-child(5),
+      .c-decision-panel .decision-panel-grid p:nth-child(6),
+      .decision-panel .decision-panel-grid p:nth-child(6) {
+        grid-column: auto;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .c-decision-panel .decision-panel-grid,
+      .decision-panel .decision-panel-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .c-decision-panel .decision-panel-grid p,
+      .decision-panel .decision-panel-grid p {
+        justify-content: space-between;
+        padding-block: 2px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .c-decision-panel .decision-panel-grid p,
+      .decision-panel .decision-panel-grid p {
+        display: grid;
+        grid-template-columns: 1fr;
+        justify-content: start;
+      }
+    }
+
     .domain-table-wrap {
       overflow: auto;
       border: 1px solid var(--line);
@@ -215,29 +321,27 @@
           <!-- COMPONENT: setup-help -->
           <article id="component-setup-help" class="card c-setup-help setup-help">
             <h2>What this page does</h2>
-            <p>This is the first setup page for the SRI “smartness test”. Choose the rulebook, the grading/weighting mode, the assessment context, and which building systems exist before moving to the detailed SRI tabs.</p>
+            <p>Use this page only when user-defined SRI weighting settings are required. Set the impact percentages and domain-by-impact matrix according to the documented SRI methodology before continuing to the domain dashboard.</p>
           </article>
         </div>
 
-        <div class="span-4">
-          <article class="card">
+        <div class="full">
+          <!-- COMPONENT: decision-panel -->
+          <article id="component-decision-panel" class="card c-decision-panel decision-panel">
             <h2>Assessment context</h2>
-            <p><strong>Building:</strong> <span id="building-name">Office Athens</span></p>
-            <p><strong>Method:</strong> <span id="method-label">Method A</span></p>
-            <p><strong>Region:</strong> <span id="region-label">EU</span></p>
-            <p><strong>Weighting mode:</strong> <span id="mode-chip" class="chip chip--processing">User-defined weightings</span></p>
-            <div class="totals-row">
+            <div class="decision-panel-grid" aria-label="SRI weighting settings decision summary">
+              <p><strong>Building:</strong> <span id="building-name">Office Athens</span></p>
+              <p><strong>Method:</strong> <span id="method-label">Method A</span></p>
+              <p><strong>Region:</strong> <span id="region-label">EU</span></p>
+              <p><strong>Weighting mode:</strong> <span id="mode-chip" class="chip chip--processing">User-defined weightings</span></p>
               <p><strong>Impact total:</strong> <span id="impact-total" class="chip chip--ready">100%</span></p>
               <p><strong>Matrix check:</strong> <span id="matrix-status" class="chip chip--ready">All rows = 100%</span></p>
             </div>
-            <div class="action-row">
-              <a class="btn btn-default" href="./SRI1-methodology-selection.html">Back to SRI1</a>
-              <a id="continue-sri4" class="btn btn-primary" href="./SRI4-domain-dashboard.html" aria-disabled="true">Continue to SRI4</a>
-            </div>
+           
           </article>
         </div>
 
-        <div class="span-8">
+        <div class="full">
           <article class="card">
             <h2>Impact weighting (%)</h2>
             <p class="caption">Each value is editable. Total must be 100%.</p>
@@ -299,6 +403,11 @@
                 </thead>
                 <tbody id="domain-table-body"></tbody>
               </table>
+            </div>
+            <br><br>
+             <div class="action-row">
+              <a class="btn btn-default" href="./SRI1-methodology-selection.html">Back to SRI1</a>
+              <a id="continue-sri4" class="btn btn-primary" href="./SRI4-domain-dashboard.html" aria-disabled="true">Continue to SRI4</a>
             </div>
           </article>
         </div>

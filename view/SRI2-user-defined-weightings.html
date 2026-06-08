@@ -8,14 +8,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="../building-performance-app/style.css" />
   <style>
-    :root {
-      --btn-color-success: #1f543b;
-      --btn-color-default: #6d8a3e;
-      --btn-color-warning: #b8a43a;
-      --btn-color-orange: #c96a2b;
-      --btn-color-danger: #e6363c;
-    }
-
     .sri-layout {
       display: grid;
       grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -46,8 +38,25 @@
       color: var(--muted);
     }
 
-    .decision-list li { margin-bottom: 8px; }
-    .decision-panel { display: grid; gap: var(--sp-sm); }
+    .decision-list li { margin-bottom: var(--sp-xs); }
+    .decision-panel { display: grid; gap: var(--sp-md); }
+
+    .decision-panel-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--sp-md);
+      margin: var(--sp-sm) 0 var(--sp-md);
+    }
+
+    .decision-panel-grid p {
+      display: grid;
+      gap: var(--sp-xs);
+      margin: 0;
+      padding: var(--sp-sm) var(--sp-md);
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      background: var(--panel);
+    }
 
     .default-values-grid {
       display: grid;
@@ -77,6 +86,15 @@
     }
 
     @media (max-width: 900px) {
+      .decision-panel-grid,
+      .default-values-grid,
+      .comparison-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .decision-panel-grid,
       .default-values-grid,
       .comparison-grid {
         grid-template-columns: 1fr;
@@ -130,62 +148,42 @@
         <div class="full">
           <!-- COMPONENT: setup-help -->
           <article id="component-setup-help" class="card c-setup-help setup-help">
-            <h2>What this page does</h2>
-            <p>This is the first setup page for the SRI “smartness test”. Choose the rulebook, the grading/weighting mode, the assessment context, and which building systems exist before moving to the detailed SRI tabs.</p>
+            <h2>Confirmation</h2>
+            <p>Use this page to review the selected mode and confirm the default values before continuing to the Domain Dashboard.</p>
           </article>
         </div>
 
-        <div class="half">
-          <article class="card decision-panel">
-            <h2>Decision panel</h2>
-            <p><strong>Building:</strong> <span id="building-name">Office Athens</span></p>
-            <p><strong>Method:</strong> <span id="method-label">Method A</span></p>
-            <p><strong>Region:</strong> <span id="region-label">EU</span></p>
-            <p><strong>Selected mode:</strong> <span id="weighting-mode-chip" class="chip chip--ready">Default weightings</span></p>
-
-            <div class="action-row">
-              <a class="btn btn-default" href="./SRI1-methodology-selection.html">Back to SRI1</a>
-              <a id="continue-link" class="btn btn-primary" href="./SRI4-domain-dashboard.html">Continue</a>
+        <div class="full">
+          <article class="card decision-panel">            
+            <div class="decision-panel-grid" aria-label="SRI rules decision summary">
+              <p><strong>Building:</strong> <span id="building-name">Office Athens</span></p>
+              <p><strong>Method:</strong> <span id="method-label">Method A</span></p>
+              <p><strong>Region:</strong> <span id="region-label">EU</span></p>
+              <p><strong>Selected mode:</strong> <span id="weighting-mode-chip" class="chip chip--ready">Default weightings</span></p>
             </div>
+
+      
           </article>
         </div>
 
-        <div class="half">
-          <article class="card">
-            <h2>Decision rules</h2>
-            <ol class="decision-list">
-              <li>For <strong>EU</strong> assessments, default or user-defined mode can be selected.</li>
-              <li>For <strong>NON_EU</strong> assessments, user-defined weightings are mandatory.</li>
-              <li>If user-defined mode is active, the next step is now <strong>SRI4 · Domain Dashboard</strong>.</li>
-              <li>If default mode is active, the next step is also <strong>SRI4 · Domain Dashboard</strong>.</li>
-            </ol>
-            <p class="muted" id="weights-summary">Impact weights total: 0%</p>
-          </article>
-        </div>
+ 
 
         <div class="full">
           <article class="card">
             <h2>Default values summary</h2>
             <p class="caption">These are the current baseline impact weighting values loaded from the SRI data model. SRI2 confirms these values; SRI3 is the detailed editor for changing them.</p>
+            <p id="weights-summary" class="caption" aria-live="polite">Impact weights total: loading…</p>
             <div id="default-values-grid" class="default-values-grid" aria-label="Default impact weighting values"></div>
-          </article>
+         
+          <br><br>
+            <div class="action-row">
+              <a class="btn btn-default" href="./SRI1-methodology-selection.html">Back to SRI1</a>
+              <a id="continue-link" class="btn btn-primary" href="./SRI4-domain-dashboard.html">Continue</a>
+            </div>
+             </article>
         </div>
 
-        <div class="full">
-          <article class="card">
-            <h2>Difference between SRI2 and SRI3</h2>
-            <div class="comparison-grid">
-              <div class="default-value-card">
-                <h3>SRI2 · Confirmation</h3>
-                <p>Use this page to review the selected mode and confirm the default values before continuing to the Domain Dashboard.</p>
-              </div>
-              <div class="default-value-card">
-                <h3>SRI3 · Settings editor</h3>
-                <p>Use this page only when custom/user-defined weighting values need to be edited and validated.</p>
-              </div>
-            </div>
-          </article>
-        </div>
+
       </div>
     </section>
   </main>
@@ -201,52 +199,65 @@
 
 <script >
 
-    const project = AppDataModel?.projects?.[0] || {};
-    const building = project?.building || {};
-    const sri = building?.sri || {};
+    document.addEventListener('DOMContentLoaded', () => {
+      const setText = (id, value) => {
+        const element = document.getElementById(id);
+        if (element) element.textContent = value;
+      };
 
-    const isNonEu = sri?.jurisdiction?.region === 'NON_EU';
-    const useDefaultWeightings = isNonEu ? false : Boolean(sri?.hasDefaultWeightings);
-    const nextHref = './SRI4-domain-dashboard.html';
+      const project = window.AppDataModel?.projects?.[0] || {};
+      const building = project?.building || {};
+      const sri = building?.sri || {};
 
-    document.getElementById('building-name').textContent = building?.name || 'Building';
-    document.getElementById('method-label').textContent = `Method ${sri?.method || 'A'}`;
-    document.getElementById('region-label').textContent = sri?.jurisdiction?.region || 'EU';
+      const isNonEu = sri?.jurisdiction?.region === 'NON_EU';
+      const useDefaultWeightings = isNonEu ? false : Boolean(sri?.hasDefaultWeightings);
+      const nextHref = './SRI4-domain-dashboard.html';
 
-    const modeChip = document.getElementById('weighting-mode-chip');
-    modeChip.textContent = useDefaultWeightings ? 'Default weightings' : 'User-defined weightings';
-    modeChip.className = useDefaultWeightings ? 'chip chip--ready' : 'chip chip--processing';
+      setText('building-name', building?.name || 'Building');
+      setText('method-label', `Method ${sri?.method || 'A'}`);
+      setText('region-label', sri?.jurisdiction?.region || 'EU');
 
-    const continueLink = document.getElementById('continue-link');
-    continueLink.href = nextHref;
-    continueLink.textContent = 'Continue to SRI4';
+      const modeChip = document.getElementById('weighting-mode-chip');
+      if (modeChip) {
+        modeChip.textContent = useDefaultWeightings ? 'Default weightings' : 'User-defined weightings';
+        modeChip.className = useDefaultWeightings ? 'chip chip--ready' : 'chip chip--processing';
+      }
 
-    const impacts = sri?.weighting?.impacts || {};
-    const impactTotal = Object.values(impacts).reduce((sum, value) => sum + Number(value || 0), 0);
-    document.getElementById('weights-summary').textContent = `Impact weights total: ${impactTotal}%`;
+      const continueLink = document.getElementById('continue-link');
+      if (continueLink) {
+        continueLink.href = nextHref;
+        continueLink.textContent = 'Continue to SRI4';
+      }
 
-    const impactLabelMap = {
-      energyEfficiency: 'Energy efficiency',
-      maintenance: 'Maintenance & fault prediction',
-      comfort: 'Comfort',
-      convenience: 'Convenience',
-      health: 'Health & accessibility',
-      info: 'Information to occupants',
-      flexibility: 'Energy flexibility & storage'
-    };
+      const impacts = sri?.weighting?.impacts || {};
+      const impactTotal = Object.values(impacts).reduce((sum, value) => sum + Number(value || 0), 0);
+      setText('weights-summary', `Impact weights total: ${impactTotal}%`);
 
-    const defaultValuesGrid = document.getElementById('default-values-grid');
-    defaultValuesGrid.innerHTML = Object.entries(impactLabelMap).map(([key, label]) => `
-      <div class="default-value-card">
-        <span class="caption">${label}</span>
-        <strong>${Number(impacts[key] || 0)}%</strong>
-      </div>
-    `).join('') + `
-      <div class="default-value-card">
-        <span class="caption">Total</span>
-        <strong>${impactTotal}%</strong>
-      </div>
-    `;
+      const impactLabelMap = {
+        energyEfficiency: 'Energy efficiency',
+        maintenance: 'Maintenance & fault prediction',
+        comfort: 'Comfort',
+        convenience: 'Convenience',
+        health: 'Health & accessibility',
+        info: 'Information to occupants',
+        flexibility: 'Energy flexibility & storage'
+      };
+
+      const defaultValuesGrid = document.getElementById('default-values-grid');
+      if (defaultValuesGrid) {
+        defaultValuesGrid.innerHTML = Object.entries(impactLabelMap).map(([key, label]) => `
+          <div class="default-value-card">
+            <span class="caption">${label}</span>
+            <strong>${Number(impacts[key] || 0)}%</strong>
+          </div>
+        `).join('') + `
+          <div class="default-value-card">
+            <span class="caption">Total</span>
+            <strong>${impactTotal}%</strong>
+          </div>
+        `;
+      }
+    });
   </script>
 </body>
 

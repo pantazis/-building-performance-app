@@ -7,7 +7,7 @@
   <title>Building Performance App</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="style.css" />
-</head>  <!-- CO  <!-- COMPONENT-INDEX: hamburger-menu, role-switcher, search-bar, breadcrumbs, setup-help, typography-hierarchy, button-group, status-chips, login-form, social-login, validation-state, unordered-list, ordered-list, data-table, select-menu, checklist, accordion, steps-tabs, modal, action-popup, toast, loader, empty-state, footer, gauge-svg-template, sri-results-table -->
+</head>  <!-- CO  <!-- COMPONENT-INDEX: hamburger-menu, role-switcher, search-bar, breadcrumbs, setup-help, typography-hierarchy, button-group, status-chips, decision-panel, login-form, social-login, validation-state, unordered-list, ordered-list, data-table, select-menu, checklist, accordion, steps-tabs, modal, action-popup, toast, loader, empty-state, footer, gauge-svg-template, sri-results-table -->
   <header class="app-header">
     <div class="container">
       <a class="brand" href="#home"><img class="logo" src="logo.png" alt="Building Performance Logo"></a>
@@ -195,6 +195,16 @@
               <span class="icon"><i class="fa-solid fa-circle-check"></i></span>
               <span class="chip chip--ready">Calculation Completed</span>
             </div>
+          </div>
+        </article>
+
+        <!-- COMPONENT: decision-panel -->
+        <article id="component-decision-panel" class="card c-decision-panel decision-panel">
+          <div class="decision-panel-grid" aria-label="SRI rules decision summary">
+            <p><strong>Building:</strong> <span id="building-name">Office Athens</span></p>
+            <p><strong>Method:</strong> <span id="method-label">Method A</span></p>
+            <p><strong>Region:</strong> <span id="region-label">EU</span></p>
+            <p><strong>Selected mode:</strong> <span id="weighting-mode-chip" class="chip chip--ready">Default weightings</span></p>
           </div>
         </article>
 
