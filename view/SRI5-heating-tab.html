@@ -97,6 +97,64 @@
     }
 
 
+
+
+    /* COMPONENT: steps-tabs */
+    .c-steps-tabs .steps-header {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: var(--sp-sm);
+    }
+
+    .c-steps-tabs .step-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: var(--sp-xs);
+      text-decoration: none;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      background: #fff;
+      padding: 10px 12px;
+      transition: .2s ease;
+    }
+
+    .c-steps-tabs .step-item:hover {
+      color: var(--ink);
+      border-color: var(--btn-color-default);
+    }
+
+    .c-steps-tabs .step-item.is-active {
+      color: var(--ink);
+      border-color: var(--btn-color-success);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--btn-color-success) 18%, transparent);
+    }
+
+    .c-steps-tabs .step-number {
+      display: inline-grid;
+      place-items: center;
+      min-width: 28px;
+      min-height: 28px;
+      border-radius: 999px;
+      background: #eef5ea;
+      color: var(--btn-color-success);
+      font-weight: 700;
+    }
+
+    .c-steps-tabs .step-title {
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    @media (max-width: 980px) {
+      .c-steps-tabs .steps-header { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      .c-steps-tabs .steps-header { grid-template-columns: 1fr; }
+    }
+
     /* COMPONENT: setup-help */
     .c-setup-help,
     .setup-help {
@@ -141,6 +199,15 @@
           </article>
         </div>
 
+
+
+        <div class="full">
+          <!-- COMPONENT: steps-tabs -->
+          <article id="component-steps-tabs" class="card c-steps-tabs" aria-label="SRI domain flow tabs">
+            <div class="steps-header" role="tablist" aria-label="SRI domain pages"></div>
+          </article>
+        </div>
+
         <div class="full">
           <!-- COMPONENT: setup-help -->
           <article id="component-setup-help" class="card c-setup-help setup-help">
@@ -149,23 +216,25 @@
           </article>
         </div>
 
-        <div class="span-4">
-          <article class="card">
+        <div class="full">
+          <!-- COMPONENT: decision-panel -->
+          <article id="component-decision-panel" class="card c-decision-panel decision-panel">
             <h2>Heating summary</h2>
+            <div class="decision-panel-grid" aria-label="Heating summary decision panel">
             <p><strong>Building:</strong> <span id="building-name">Office Athens</span></p>
             <p><strong>Method:</strong> <span id="method-label">Method A</span></p>
             <p><strong>Domain status:</strong> <span id="domain-status" class="chip">Loading</span></p>
             <p><strong>Service completion:</strong> <span id="completion-chip" class="chip">0%</span></p>
             <p><strong>Domain score:</strong> <span id="domain-score" class="chip">0%</span></p>
+            </div>
             <div class="action-row">
-              <a class="btn btn-default" href="./SRI4-domain-dashboard.html">Back to SRI4</a>
-              <a id="continue-next" class="btn btn-primary" href="./SRI6-dhw-tab.html">Continue to SRI6</a>
-              <a id="continue-results" class="btn btn-default" href="./SRI14-results.html">Continue to SRI14</a>
+              <a class="btn btn-default" href="./SRI4-domain-dashboard.html">Prev</a>
+              <a id="continue-next" class="btn btn-primary" href="./SRI6-dhw-tab.html">Next</a>
             </div>
           </article>
         </div>
 
-        <div class="span-8">
+        <div class="full">
           <article class="card">
             <h2>Heating services table</h2>
             <p class="caption">Editable service rows based on <code>serviceCatalogues.methodA.heating</code> and <code>services.heating</code>.</p>
@@ -209,6 +278,7 @@
       </footer>
 <script src="./breadcrumbs.js"></script>
 <script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
+<script src="./sri-steps-tabs.js"></script>
 
   <script>
     window.SRI_DOMAIN_CONFIG = {

@@ -166,20 +166,25 @@
           </article>
         </div>
 
-        <div class="span-4">
-          <article class="card">
+        <div class="full">
+          <!-- COMPONENT: decision-panel -->
+          <article id="component-decision-panel" class="card c-decision-panel decision-panel">
             <h2>Assessment summary</h2>
+            <div class="decision-panel-grid" aria-label="Assessment summary decision panel">
             <p><strong>Building:</strong> <span id="building-name">Office Athens</span></p>
             <p><strong>Method:</strong> <span id="method-label">Method A</span></p>
             <p><strong>Total SRI score:</strong> <span id="sri-score-chip" class="chip">0%</span></p>
             <p><strong>SRI class:</strong> <span id="sri-class-chip" class="chip">-</span></p>
             <p><strong>Result status:</strong> <span id="result-status-chip" class="chip">Loading</span></p>
+            </div>
             <div class="action-row">
               <a class="btn btn-default" href="./SRI13-monitoring-control-tab.html">Back to SRI13</a>
               <a class="btn btn-primary" href="./A-projects-dashboard.html">Finish</a>
             </div>
           </article>
+        </div>
 
+        <div class="span-4">
           <!-- COMPONENT: gauge-svg-template -->
           <article id="component-gauge-svg-template" class="card c-gauge-svg-template">
             <h2>SRI score gauge</h2>
