@@ -2,7 +2,7 @@ building envelope  - > s
 climate data -> groun tempatures
 Tab 1 να φύγει το time step
 
-tab 2 να μεταονομαστει σε "Climate Data" και να εχει πανω επιλογη Upload “EPBW” file
+tab 2 να μεταονομαστει σε "Climate Data" και να εχει πανω επιλογη Upload “EPW” file
 
 το operations να παει 4ο
 

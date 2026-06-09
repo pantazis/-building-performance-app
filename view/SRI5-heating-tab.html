@@ -241,7 +241,6 @@
                     <th scope="col">Service ID</th>
                     <th scope="col">Applicable</th>
                     <th scope="col">Triage</th>
-                    <th scope="col">Selected level</th>
                     <th scope="col">Entries (level + compliance %)</th>
                     <th scope="col">Add entry</th>
                     <th scope="col">Status</th>
@@ -272,7 +271,8 @@
   <script>
     window.SRI_DOMAIN_CONFIG = {
       key: 'heating',
-      label: 'Heating'
+      label: 'Heating',
+      hideSelectedLevelColumn: true
     };
   </script>
   <script src="./sri-domain-tab.js"></script>

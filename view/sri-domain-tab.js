@@ -135,6 +135,7 @@
   function initDomainTab() {
     const config = window.SRI_DOMAIN_CONFIG;
     if (!config) return;
+    const hideSelectedLevelColumn = Boolean(config.hideSelectedLevelColumn);
 
     const model = getModel();
     const project = model?.projects?.[0] || {};
@@ -165,7 +166,7 @@
     body.innerHTML = '';
 
     if (presence !== 1) {
-      body.innerHTML = `<tr><td colspan="7"><p class="muted">${presence === 2 ? 'This domain is flagged as mandatory but absent. Normal editing is disabled.' : 'This domain is excluded from calculation and has no editable service rows.'}</p></td></tr>`;
+      body.innerHTML = `<tr><td colspan="${hideSelectedLevelColumn ? 6 : 7}"><p class="muted">${presence === 2 ? 'This domain is flagged as mandatory but absent. Normal editing is disabled.' : 'This domain is excluded from calculation and has no editable service rows.'}</p></td></tr>`;
       updateValidation();
       return;
     }
@@ -187,12 +188,12 @@
         <td>
           <label><input class="triage-input" type="checkbox" ${service.triage ? 'checked' : ''}> Affect max score</label>
         </td>
-        <td>
+        ${hideSelectedLevelColumn ? '' : `<td>
           <label class="sr-only" for="${rowId}-level">${service.id} selected level</label>
           <select id="${rowId}-level" class="level-input" data-service="${rowId}">
             ${[-1, 0, 1, 2, 3, 4].map((level) => `<option value="${level}" ${service.level === level ? 'selected' : ''}>${level === -1 ? 'N/A' : `Level ${level}`}</option>`).join('')}
           </select>
-        </td>
+        </td>`}
         <td class="entries-cell">${renderEntries(service, rowId)}</td>
         <td><button class="btn btn-sm btn-default add-entry" type="button" data-service="${rowId}">Add entry</button></td>
         <td><span id="${rowId}-status" class="chip">Checking</span></td>
