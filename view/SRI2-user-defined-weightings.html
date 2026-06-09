@@ -718,7 +718,7 @@
             <br><br>
              <div class="action-row">
               <a class="btn btn-default" href="./SRI1-methodology-selection.html">Back to SRI1</a>
-              <a id="continue-sri14" class="btn btn-primary" href="./SRI14-results.html" aria-disabled="false" tabindex="0">Continue to SRI14</a>
+              <a id="continue-sri14" class="btn btn-primary" href="./SRI14-results.html?nodata" aria-disabled="false" tabindex="0">Continue to SRI14</a>
             </div>
           </article>
         </div>
@@ -751,7 +751,7 @@
 
       const isNonEu = sri?.jurisdiction?.region === 'NON_EU';
       const useDefaultWeightings = isNonEu ? false : Boolean(sri?.hasDefaultWeightings);
-      const nextHref = './SRI14-results.html';
+      const nextHref = './SRI14-results.html?nodata';
 
       setText('building-name', building?.name || 'Building');
       setText('method-label', `Method ${sri?.method || 'A'}`);
