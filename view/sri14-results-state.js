@@ -231,7 +231,7 @@
         </div>
         <p class="muted">Presence flag: ${domain.presence} · ${domain.message}</p>
         <div class="actions">
-          <a class="btn btn-default" href="${domain.href || domainRoutes[domain.key] || './SRI4-domain-dashboard.html'}">Open ${domain.label}</a>
+          <a class="btn btn-default" href="${domain.href || domainRoutes[domain.key] || './SRI14-results.html'}">Open ${domain.label}</a>
         </div>
       `;
       grid.appendChild(article);

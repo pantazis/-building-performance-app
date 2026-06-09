@@ -41,7 +41,7 @@ The SRI journey starts after the user has selected or created a building.
 | `SRI1` | Methodology Selection | `../view/SRI1-methodology-selection.html` | `I` | `SRI2` for default confirmation, `SRI4` for EU + User-defined | Choose Method A or B, default/user-defined weightings, assessment date, and which SRI domains exist. |
 | `SRI2` | User-defined Weightings Decision | `../view/SRI2-user-defined-weightings.html` | `SRI1` | `SRI4` | Confirm selected SRI rules and continue to the domain dashboard. |
 | `SRI3` | Weighting Settings | `../view/SRI3-weighting-settings.html` | Legacy/manual access | `SRI4` | Legacy weighting settings view; not part of the current EU + User-defined live route. |
-| `SRI4` | Domain Dashboard | `../view/SRI4-domain-dashboard.html` | `SRI1` or `SRI2` | `SRI5`-`SRI13`, then `SRI14` | Shows available SRI domains and their completion state based on domain presence and method. |
+| `SRI4` | Results | `../view/SRI14-results.html` | `SRI1` or `SRI2` | `SRI5`-`SRI13`, then `SRI14` | Shows available SRI domains and their completion state based on domain presence and method. |
 | `SRI5` | Heating Tab | `../view/SRI5-heating-tab.html` | `SRI4` | `SRI14` | Fill Heating service categories and functionality levels. |
 | `SRI6` | Domestic Hot Water Tab | `../view/SRI6-dhw-tab.html` | `SRI4` | `SRI14` | Fill DHW service categories and functionality levels. |
 | `SRI7` | Cooling Tab | `../view/SRI7-cooling-tab.html` | `SRI4` | `SRI14` | Fill Cooling service categories and functionality levels. |
@@ -58,13 +58,13 @@ The SRI journey starts after the user has selected or created a building.
 `../view/breadcrumbs.js` confirms the user-facing breadcrumb pattern:
 
 ```text
-Projects Dashboard → Building Tab → SRI: Methodology Selection → SRI: Domain Dashboard → Domain Tab / Results
+Projects Dashboard → Building Tab → SRI: Methodology Selection → SRI: Results → Domain Tab / Results
 ```
 
 For domain pages, the current breadcrumb keeps a grouped label `SRI: Domain Tabs` before the specific domain tab, for example:
 
 ```text
-Projects Dashboard → Building Tab → SRI: Methodology Selection → SRI: Domain Dashboard → SRI: Domain Tabs → Heating Tab
+Projects Dashboard → Building Tab → SRI: Methodology Selection → SRI: Results → SRI: Domain Tabs → Heating Tab
 ```
 
 ## Main Data Location
@@ -152,12 +152,12 @@ Validation:
 - For each impact category, domain weightings must equal **100%**.
 - The Next button should remain disabled until all required totals are valid.
 
-### `SRI4` - Domain Dashboard
+### `SRI4` - Results
 
 Relative file:
 
 ```text
-../view/SRI4-domain-dashboard.html
+../view/SRI14-results.html
 ```
 
 Needs these data fields:

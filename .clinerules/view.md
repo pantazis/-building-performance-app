@@ -73,7 +73,7 @@
 14. [*] `SRI1` - SRI View 1: Methodology Selection
 15. [*] `SRI2` - SRI Decision: User-defined Weightings
 16. [*] `SRI3` - SRI View 2: Weighting Settings
-17. [*] `SRI4` - SRI View 3: Domain Dashboard
+17. [*] `SRI14` - SRI Results / Domain Hub
 18. [*] `SRI5` - Heating Tab
 19. [*] `SRI6` - DHW Tab
 20. [*] `SRI7` - Cooling Tab

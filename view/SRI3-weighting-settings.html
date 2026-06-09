@@ -375,7 +375,7 @@
               <li>Impact weighting total target = 100%</li>
               <li>Each domain-by-impact row total target = 100%</li>
               <li>EV is optional in this sample project and can be inactive</li>
-              <li>User-defined mode should continue to SRI4 after validation</li>
+              <li>User-defined mode should continue to SRI14 after validation</li>
             </ul>
           </article>
         </div>
@@ -407,7 +407,7 @@
             <br><br>
              <div class="action-row">
               <a class="btn btn-default" href="./SRI1-methodology-selection.html">Back to SRI1</a>
-              <a id="continue-sri4" class="btn btn-primary" href="./SRI4-domain-dashboard.html" aria-disabled="true">Continue to SRI4</a>
+              <a id="continue-sri14" class="btn btn-primary" href="./SRI14-results.html" aria-disabled="true">Continue to SRI14</a>
             </div>
           </article>
         </div>
@@ -555,7 +555,7 @@
       const impactTotal = impactKeys.reduce((sum, key) => sum + Number(document.getElementById(`impact-${key}`)?.value || 0), 0);
       const rowTotals = impactKeys.map((impactKey) => Array.from(document.querySelectorAll(`input[data-impact="${impactKey}"]`)).reduce((sum, input) => sum + Number(input.value || 0), 0));
       const isValid = impactTotal === 100 && rowTotals.every((total) => total === 100);
-      const continueLink = document.getElementById('continue-sri4');
+      const continueLink = document.getElementById('continue-sri14');
       continueLink.classList.toggle('is-disabled', !isValid);
       continueLink.setAttribute('aria-disabled', String(!isValid));
       continueLink.tabIndex = isValid ? 0 : -1;

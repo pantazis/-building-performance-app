@@ -9,7 +9,7 @@
     { number: 7, title: 'Electricity', href: './SRI11-electricity-tab.html' },
     { number: 8, title: 'EV Charging', href: './SRI12-ev-charging-tab.html' },
     { number: 9, title: 'Monitoring & Control', href: './SRI13-monitoring-control-tab.html' },
-    { number: 10, title: 'SRI Results', href: './SRI14-results.html' }
+    { number: 10, title: 'SRI Results', href: './SRI14-results.html?fulldata' }
   ];
 
   function toFileName(path) {

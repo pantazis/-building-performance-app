@@ -9,11 +9,10 @@
   <link rel="stylesheet" href="../building-performance-app/style.css" />
   <style>
     :root {
-      --btn-color-success: #2db34a;
-      --btn-color-default: #86c440;
-      --btn-color-warning: #fecf17;
-      --btn-color-orange: #f47721;
-      --btn-color-danger: #ef3e23;
+      --sri-table-bg: var(--panel);
+      --sri-table-header-bg: color-mix(in srgb, var(--green-10) 65%, var(--panel) 35%);
+      --sri-table-row-header-bg: color-mix(in srgb, var(--green-10) 35%, var(--panel) 65%);
+      --sri-table-disabled-bg: color-mix(in srgb, var(--line) 62%, var(--panel) 38%);
       --sri-table-group-energy: var(--btn-color-success);
       --sri-table-group-occupant: var(--btn-color-default);
       --sri-table-group-grid: var(--btn-color-orange);
@@ -31,7 +30,7 @@
 	border: 1px solid var(--line);
 	border-radius: var(--r-sm);
 	padding: 12px;
-	background: #fff;
+	background: var(--panel);
 	display: grid;
 	gap: 8px;
 }
@@ -90,14 +89,14 @@
       overflow: auto;
       border: 1px solid var(--line);
       border-radius: var(--r-sm);
-      background: #fff;
+      background: var(--sri-table-bg);
     }
 
     .c-sri-results-table .sri-title {
       font-weight: 700;
       padding: 12px;
       border-bottom: 1px solid var(--line);
-      background: #f7faf7;
+      background: var(--sri-table-header-bg);
     }
 
     .c-sri-results-table .sri-table {
@@ -117,11 +116,11 @@
     .c-sri-results-table .sri-table tbody th {
       text-align: left;
       white-space: nowrap;
-      background: #fcfdfc;
+      background: var(--sri-table-row-header-bg);
     }
 
     .c-sri-results-table .group {
-      color: #fff;
+      color: var(--panel);
       font-weight: 700;
     }
 
@@ -130,8 +129,8 @@
     .c-sri-results-table .group-grid { background: var(--sri-table-group-grid); }
 
     .c-sri-results-table .disabled {
-      color: #9aa4ad;
-      background: #f2f4f6;
+      color: var(--muted);
+      background: var(--sri-table-disabled-bg);
     }
 
     /* COMPONENT: setup-help */
@@ -160,7 +159,7 @@
       border: 1px solid var(--line);
       border-left: 4px solid var(--btn-color-default);
       border-radius: var(--r-sm);
-      background: #f7faf7;
+      background: var(--sri-table-header-bg);
     }
 
     .query-state-explanation h3,
@@ -178,15 +177,15 @@
       padding: 12px;
       border: 1px solid var(--line);
       border-radius: var(--r-sm);
-      background: #fff;
+      background: var(--panel);
     }
 
     .query-state-guide-card strong,
     .query-state-guide-card span { display: block; }
 
-    .query-state--danger { border-left-color: var(--btn-color-danger); background: #fff5f5; }
-    .query-state--warning { border-left-color: var(--btn-color-warning); background: #fffaf0; }
-    .query-state--success { border-left-color: var(--btn-color-success); background: #f2fbf4; }
+    .query-state--danger { border-left-color: var(--btn-color-danger); background: var(--red-10); }
+    .query-state--warning { border-left-color: var(--btn-color-warning); background: color-mix(in srgb, var(--btn-color-warning) 18%, var(--panel) 82%); }
+    .query-state--success { border-left-color: var(--btn-color-success); background: var(--green-10); }
 
     @media (max-width: 760px) {
       .query-state-links { grid-template-columns: 1fr; }
@@ -203,7 +202,7 @@
         <a href="./A-projects-dashboard.html">Projects Dashboard</a>
         <a href="./C-open-edit-building.html">Building Tab</a>
         <a href="./SRI14-results.html" aria-current="page">SRI14</a>
-        <a href="./SRI4-domain-dashboard.html">SRI Domain Dashboard</a>
+        <a href="./SRI14-results.html">SRI Results</a>
       </nav>
     </div>
   </header>
@@ -221,7 +220,7 @@
           <article id="component-breadcrumbs" class="card c-breadcrumbs">
             
             <nav aria-label="Breadcrumb">
-              <ol><li><a href="./A-projects-dashboard.html" title="Projects Dashboard">Projects Dashboard</a></li><li><a href="./C-open-edit-building.html" title="Building Tab">Building Tab</a></li><li><a href="./SRI1-methodology-selection.html" title="SRI: Methodology Selection">SRI...</a></li><li><a href="./SRI4-domain-dashboard.html" title="SRI: Domain Dashboard">SRI...</a></li><li aria-current="page" title="SRI: Results">SRI: Results</li></ol>
+              <ol><li><a href="./A-projects-dashboard.html" title="Projects Dashboard">Projects Dashboard</a></li><li><a href="./C-open-edit-building.html" title="Building Tab">Building Tab</a></li><li><a href="./SRI1-methodology-selection.html" title="SRI: Methodology Selection">SRI...</a></li><li><a href="./SRI14-results.html" title="SRI: Results">SRI...</a></li><li aria-current="page" title="SRI: Results">SRI: Results</li></ol>
             </nav>
           </article>
         </div>
@@ -249,7 +248,7 @@
           </article>
         </div>
 
-        <div class="full">
+        <div class="full" style="display: none;">
           <!-- COMPONENT: sri-query-state-panel -->
           <article id="component-sri-query-state-panel" class="card c-sri-query-state-panel">
             <h2>Query parameter result states</h2>
@@ -406,12 +405,12 @@
               <svg id="gauge" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 226.71 120.91" width="100%">
                 <defs>
                   <style>
-                    .d { fill: #b8a43a }
-                    .e { fill: #1f543b }
-                    .f { fill: #6d8a3e }
-                    .g { fill: #e6363c }
-                    .h { fill: #c96a2b }
-                    .i { fill: #231f20 }
+                    .d { fill: var(--btn-color-warning) }
+                    .e { fill: var(--btn-color-success) }
+                    .f { fill: var(--btn-color-default) }
+                    .g { fill: var(--btn-color-danger) }
+                    .h { fill: var(--btn-color-orange) }
+                    .i { fill: var(--ink) }
                   </style>
                 </defs>
                 <g id="b">

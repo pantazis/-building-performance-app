@@ -336,7 +336,7 @@
     <section class="page" id="view-sri2">
       <div class="page-header">
         <h1>SRI2 · Default Values Confirmation</h1>
-        <p class="muted">Confirm the selected default values or weighting rule and continue to the SRI Domain Dashboard.</p>
+        <p class="muted">Confirm the selected default values or weighting rule and continue to the SRI Results.</p>
       </div>
 
       <div class="sri-layout">
@@ -359,7 +359,7 @@
           <!-- COMPONENT: setup-help -->
           <article id="component-setup-help" class="card c-setup-help setup-help">
             <h2>Confirmation</h2>
-            <p>Use this page to review the selected mode and confirm the default values before continuing to the Domain Dashboard.</p>
+            <p>Use this page to review the selected mode and confirm the default values before continuing to the Results.</p>
           </article>
         </div>
 
@@ -434,7 +434,7 @@
               <li>Impact weighting total target = 100%</li>
               <li>Each domain-by-impact row total target = 100%</li>
               <li>EV is optional in this sample project and can be inactive</li>
-              <li>User-defined mode should continue to SRI4 after validation</li>
+              <li>User-defined mode should continue to SRI14 after validation</li>
             </ul>
           </article>
         </div>
@@ -718,7 +718,7 @@
             <br><br>
              <div class="action-row">
               <a class="btn btn-default" href="./SRI1-methodology-selection.html">Back to SRI1</a>
-              <a id="continue-sri4" class="btn btn-primary" href="./SRI4-domain-dashboard.html" aria-disabled="false" tabindex="0">Continue to SRI4</a>
+              <a id="continue-sri14" class="btn btn-primary" href="./SRI14-results.html" aria-disabled="false" tabindex="0">Continue to SRI14</a>
             </div>
           </article>
         </div>
@@ -751,7 +751,7 @@
 
       const isNonEu = sri?.jurisdiction?.region === 'NON_EU';
       const useDefaultWeightings = isNonEu ? false : Boolean(sri?.hasDefaultWeightings);
-      const nextHref = './SRI4-domain-dashboard.html';
+      const nextHref = './SRI14-results.html';
 
       setText('building-name', building?.name || 'Building');
       setText('method-label', `Method ${sri?.method || 'A'}`);
@@ -763,10 +763,10 @@
         modeChip.className = useDefaultWeightings ? 'chip chip--ready' : 'chip chip--processing';
       }
 
-      const continueLink = document.getElementById('continue-link');
+      const continueLink = document.getElementById('continue-sri14');
       if (continueLink) {
         continueLink.href = nextHref;
-        continueLink.textContent = 'Continue to SRI4';
+        continueLink.textContent = 'Continue to SRI14';
       }
 
       const impacts = sri?.weighting?.impacts || {};
