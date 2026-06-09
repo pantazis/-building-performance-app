@@ -79,6 +79,16 @@
       width: 100%;
     }
 
+    .form-field select:disabled,
+    .form-field input:disabled,
+    #region-select:disabled {
+      color: var(--muted);
+      background: color-mix(in srgb, var(--surface) 82%, var(--line));
+      border-color: var(--line);
+      cursor: not-allowed;
+      opacity: 1;
+    }
+
     .setup-help {
       border-left: 4px solid var(--brand);
      
@@ -205,7 +215,7 @@
               </label>
               <label class="form-field">
                 <span>Region rules</span>
-                <select id="region-select">
+                <select id="region-select" disabled>
                   <option value="EU">EU</option>
                   <option value="NON_EU">Non-EU</option>
                 </select>
@@ -214,9 +224,7 @@
                 <span>Country</span>
                 <input id="country-input" type="text" placeholder="Country" />
               </label>
-              <div class="full-row">
-                <p><strong>SRI preparation status:</strong> <span id="sri-status" class="chip chip--ready">Ready</span></p>
-              </div>
+          
             </form>
           </article>
         </div>

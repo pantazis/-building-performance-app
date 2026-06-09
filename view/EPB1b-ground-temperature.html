@@ -141,7 +141,7 @@
             <div class="inline-upload" aria-label="EPBW import">
               <label for="epbw-file">Upload EPBW file</label>
               <input id="epbw-file" type="file" accept=".epbw" />
-              <p id="epbw-file-name" class="caption">No EPBW file selected.</p>
+              <p id="epbw-file-name" class="caption">No EPW file selected.</p>
             </div>
             <div class="gtcp-actions">
               <button id="gtcp-open-add" class="btn btn-default" type="button">+ Add Ground Profile</button>
@@ -241,7 +241,7 @@
       const selected = epbwInput.files && epbwInput.files[0];
       epbwFileName.textContent = selected
         ? `Selected file: ${selected.name}`
-        : 'No EPBW file selected.';
+        : 'No EPW file selected.';
     });
 
     const gtcpModal = document.getElementById('gtcp-modal');
