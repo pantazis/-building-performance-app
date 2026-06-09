@@ -253,6 +253,7 @@
             <p class="caption">Choose which systems exist in the building. These choices decide which detailed SRI domain tabs are used later.</p>
             <div id="domains-list" class="domain-grid" aria-label="SRI domain presence controls"></div>
             <p class="muted" id="domains-summary">0/0 domains available</p>
+            <p class="muted">Setup status: <span id="sri-status" class="chip chip--incomplete">Incomplete data</span></p>
           </article>
         </div>
 
@@ -372,8 +373,10 @@
       const statusKey = availableCount >= 4 ? 'READY_FOR_CALCULATION' : 'MISSING_DATA';
       const status = getStatusPresentation(statusKey);
       const statusEl = document.getElementById('sri-status');
-      statusEl.textContent = status.label;
-      statusEl.className = status.className;
+      if (statusEl) {
+        statusEl.textContent = status.label;
+        statusEl.className = status.className;
+      }
     }
 
     createDomainControls();
