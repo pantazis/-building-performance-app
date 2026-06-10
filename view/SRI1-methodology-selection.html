@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 
 <head>
@@ -215,7 +215,7 @@
               </label>
               <label class="form-field">
                 <span>Region rules</span>
-                <select id="region-select" disabled>
+                <select id="region-select" >
                   <option value="EU">EU</option>
                   <option value="NON_EU">Non-EU</option>
                 </select>
@@ -241,8 +241,8 @@
                 </select>
               </label>
             </div>
-            <p class="muted">Default weightings use the normal SRI grading system. User-defined weightings let the user decide what matters more.</p>
-            <p id="non-eu-note" class="rule-note" hidden>Non-EU assessments must use user-defined weightings.</p>
+            <p class="muted">Default weightings use the normal SRI grading system. User-defined weightings let the user decide what matters more and now continue directly to the SRI domain hub/results view.</p>
+            <p id="non-eu-note" class="rule-note" hidden>Non-EU assessments must use user-defined weightings. The weighting mode is locked to user-defined and continues directly to SRI14.</p>
             <p class="muted" id="services-summary">Method services: 0</p>
           </article>
         </div>
@@ -261,7 +261,7 @@
           <article class="card bottom-actions" aria-label="SRI1 navigation actions">
             <p id="next-route-note" class="muted next-route-note">Next: SRI2 · Confirm SRI rules because default weightings are selected.</p>
             <a class="btn btn-default" href="./C-open-edit-building.html">Back to Building Tab</a>
-            <a id="continue-link" class="btn btn-primary" href="./SRI2-user-defined-weightings.html">Continue to SRI2</a>
+            <a id="continue-link" class="btn btn-primary" href="./SRI2-Default-weightings.html">Continue to SRI2</a>
           </article>
         </div>
       </div>
@@ -355,10 +355,10 @@
       const useCustomWeightings = isNonEu || weightingModeEl.value === 'custom';
       const continueLink = document.getElementById('continue-link');
       const nextRouteNote = document.getElementById('next-route-note');
-      continueLink.href = useCustomWeightings ? './SRI3-weighting-settings.html' : './SRI2-user-defined-weightings.html';
-      continueLink.textContent = useCustomWeightings ? 'Continue to SRI3' : 'Continue to SRI2';
+      continueLink.href = useCustomWeightings ? './SRI14-results.html?nodata' : './SRI2-Default-weightings.html';
+      continueLink.textContent = useCustomWeightings ? 'Continue to SRI14' : 'Continue to SRI2';
       nextRouteNote.textContent = useCustomWeightings
-        ? 'Next: SRI3 · Weighting Settings because user-defined weightings are selected.'
+        ? 'Next: SRI14 · Domain hub/results because user-defined weightings are selected.'
         : 'Next: SRI2 · Confirm SRI rules because default weightings are selected.';
 
       const availableCount = getAvailableCount();

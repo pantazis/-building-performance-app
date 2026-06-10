@@ -7,47 +7,47 @@ flowchart TD
 
     Auth -->|Yes| AdminCheck{Is user a site admin?}
 
-    AdminCheck -->|No| OrgCheck{Does user already belong to an organisation?}
-    OrgCheck -->|No| CreateOrg[Create organisation]
-    CreateOrg --> BecomeOwner[User becomes organisation owner]
+    AdminCheck -->|No| ProjectCheck{Does user already belong to a project?}
+    ProjectCheck -->|No| CreateProject[Create project]
+    CreateProject --> BecomeOwner[User becomes project owner]
     BecomeOwner --> OwnerManagementPage
 
-    OrgCheck -->|No: browse existing| OrgList[Organisation list page]
-    OrgList --> OrgDetail[Organisation detail page]
-    OrgDetail --> AskMembership[User asks to become a member]
+    ProjectCheck -->|No: browse existing| ProjectList[Project list page]
+    ProjectList --> ProjectDetail[Project detail page]
+    ProjectDetail --> AskMembership[User asks to become a member]
     AskMembership --> MembershipRequest[Membership request waits for owner approval]
     MembershipRequest --> Pending[Pending invitation: wait for owner decision]
     MembershipRequest -->|Visible only to owner| OwnerManagementPage
 
-    OrgCheck -->|Yes: already member of specific organisation| ApprovedUser[Approved organisation user]
+    ProjectCheck -->|Yes: already member of specific project| ApprovedUser[Approved project user]
 
     OwnerManagementPage -->|Owner adds or invites member by email| DirectMember[Invited user accepts membership]
-    Pending --> NoAccess[No organisation building access yet]
+    Pending --> NoAccess[No project building access yet]
 
     ApprovedUser --> UserPage[User management and projects access]
     UserPage --> UserCreate[Can create buildings]
     UserPage --> UserEditOwn[Can edit only own buildings]
     UserPage --> UserNoEditOthers[Cannot edit buildings created by other users]
 
-    OrgCheck -->|Yes: organisation owner| OwnerManagementPage[Owner organisation area / user management page<br/>Can manage organisation users<br/>Can invite member by email]
+    ProjectCheck -->|Yes: project owner| OwnerManagementPage[Owner project area / user management page<br/>Can manage project users<br/>Can invite member by email]
     OwnerManagementPage -->|Owner reviews pending requests| OwnerDecision{Approve invitation?}
     OwnerDecision -->|Approve| OwnerApprove[Invitation becomes approved]
     OwnerDecision -->|Disapprove| OwnerDisapprove[Invitation becomes disapproved]
     OwnerApprove --> ApprovedUser
     OwnerDisapprove --> NoAccess
     DirectMember --> ApprovedUser
-    OwnerManagementPage --> OwnerEditAll[Can edit all buildings under own organisation]
+    OwnerManagementPage --> OwnerEditAll[Can edit all buildings under own project]
 
     AdminCheck -->|Yes| SiteAdminPage[Site admin console]
-    SiteAdminPage --> SiteAdminAllOrgs[Can access all organisations]
-    SiteAdminPage --> SiteAdminEditAll[Can edit all buildings in all organisations]
+    SiteAdminPage --> SiteAdminAllProjects[Can access all projects]
+    SiteAdminPage --> SiteAdminEditAll[Can edit all buildings in all projects]
     SiteAdminPage --> SiteAdminCreateAny[Can create buildings with no restrictions]
-    SiteAdminPage --> SiteAdminManageAll[Can manage users and invitations across organisations]
+    SiteAdminPage --> SiteAdminManageAll[Can manage users and invitations across projects]
 
     subgraph AccessRules[Final building access rules]
         Rule1[Approved regular user: create building + edit own buildings only]
-        Rule2[Organisation owner: edit all buildings in their organisation]
-        Rule3[Site admin: create and edit all buildings across all organisations]
+        Rule2[Project owner: edit all buildings in their project]
+        Rule3[Site admin: create and edit all buildings across all projects]
     end
 
     UserCreate --> Rule1
@@ -63,9 +63,9 @@ flowchart TD
     classDef role fill:#f3eefc,stroke:#6f42c1,stroke-width:2px,color:#25113f
     classDef rule fill:#f7f7f7,stroke:#666,stroke-width:1px,color:#222
 
-    class Login,Pending,UserPage,OwnerManagementPage,SiteAdminPage,CreateOrg,OrgList,OrgDetail,AskMembership,MembershipRequest page
-    class Auth,AdminCheck,OrgCheck,OwnerDecision decision
+    class Login,Pending,UserPage,OwnerManagementPage,SiteAdminPage,CreateProject,ProjectList,ProjectDetail,AskMembership,MembershipRequest page
+    class Auth,AdminCheck,ProjectCheck,OwnerDecision decision
     class ApprovedUser,UserCreate,UserEditOwn,OwnerApprove,BecomeOwner,DirectMember approved
     class Denied,NoAccess,UserNoEditOthers,OwnerDisapprove rejected
-    class OwnerEditAll,SiteAdminAllOrgs,SiteAdminEditAll,SiteAdminCreateAny,SiteAdminManageAll role
+    class OwnerEditAll,SiteAdminAllProjects,SiteAdminEditAll,SiteAdminCreateAny,SiteAdminManageAll role
     class Rule1,Rule2,Rule3 rule

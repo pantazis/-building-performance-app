@@ -1,4 +1,4 @@
-# SRI Current Human-Readable Flow and Data Map
+﻿# SRI Current Human-Readable Flow and Data Map
 
 This file documents the current **SRI UI journey** in plain language. It maps the SRI flow to the existing relative HTML files in `/view` and lists the data each page needs from the default data model.
 
@@ -39,7 +39,7 @@ The SRI journey starts after the user has selected or created a building.
 |---|---|---|---|---|---|
 | `I` | Building Tab | `../view/I-building-tab.html` | Projects Dashboard / Add Building / Open Building | `SRI1` | Entry point for EPB and SRI workflows after a building exists. |
 | `SRI1` | Methodology Selection | `../view/SRI1-methodology-selection.html` | `I` | `SRI2` for default confirmation, `SRI4` for EU + User-defined | Choose Method A or B, default/user-defined weightings, assessment date, and which SRI domains exist. |
-| `SRI2` | User-defined Weightings Decision | `../view/SRI2-user-defined-weightings.html` | `SRI1` | `SRI4` | Confirm selected SRI rules and continue to the domain dashboard. |
+| `SRI2` | User-defined Weightings Decision | `../view/SRI2-Default-weightings.html` | `SRI1` | `SRI4` | Confirm selected SRI rules and continue to the domain dashboard. |
 | `SRI3` | Weighting Settings | `../view/SRI3-weighting-settings.html` | Legacy/manual access | `SRI4` | Legacy weighting settings view; not part of the current EU + User-defined live route. |
 | `SRI4` | Results | `../view/SRI14-results.html` | `SRI1` or `SRI2` | `SRI5`-`SRI13`, then `SRI14` | Shows available SRI domains and their completion state based on domain presence and method. |
 | `SRI5` | Heating Tab | `../view/SRI5-heating-tab.html` | `SRI4` | `SRI14` | Fill Heating service categories and functionality levels. |
@@ -115,7 +115,7 @@ Domain presence values:
 Relative file:
 
 ```text
-../view/SRI2-user-defined-weightings.html
+../view/SRI2-Default-weightings.html
 ```
 
 Needs these data fields:

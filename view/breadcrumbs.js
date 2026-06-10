@@ -1,4 +1,4 @@
-(() => {
+﻿(() => {
   // Generated from links.mmd flow (title + link aware)
   const BREADCRUMB_MAP = {
     'login.html': [{ label: 'Login' }],
@@ -6,40 +6,35 @@
     'about.html': [{ label: 'About' }],
     'c-open-edit-building.html': [
       { label: 'Projects Dashboard', href: './A-projects-dashboard.html' },
-      { label: 'Building Tab' }
-    ],
-    'f-global-resource-library.html': [
-      { label: 'Projects Dashboard', href: './A-projects-dashboard.html' },
-      { label: 'Global Resource Library' }
+      { label: 'Open / Edit Building' }
     ],
     'C-open-edit-building.html': [
       { label: 'Projects Dashboard', href: './A-projects-dashboard.html' },
-      { label: 'Building Tab', href: './C-open-edit-building.html' },
-      { label: 'Building Tab' }
+      { label: 'Open / Edit Building' }
     ],
 
     // EPB branch (order aligned with links.mmd)
     'epb1-calculation-settings.html': [
       { label: 'Projects Dashboard', href: './A-projects-dashboard.html' },
-      { label: 'Building Tab', href: './C-open-edit-building.html' },
+      { label: 'Open / Edit Building', href: './C-open-edit-building.html' },
       { label: 'EPB: Calculation Settings' }
     ],
     'epb1b-ground-temperature.html': [
       { label: 'Projects Dashboard', href: './A-projects-dashboard.html' },
-      { label: 'Building Tab', href: './C-open-edit-building.html' },
+      { label: 'Open / Edit Building', href: './C-open-edit-building.html' },
       { label: 'EPB: Calculation Settings', href: './EPB1-calculation-settings.html' },
       { label: 'EPB: Climate Data' }
     ],
     'epb2-materials-constructions.html': [
       { label: 'Projects Dashboard', href: './A-projects-dashboard.html' },
-      { label: 'Building Tab', href: './C-open-edit-building.html' },
+      { label: 'Open / Edit Building', href: './C-open-edit-building.html' },
       { label: 'EPB: Calculation Settings', href: './EPB1-calculation-settings.html' },
       { label: 'EPB: Climate Data', href: './EPB1b-ground-temperature.html' },
       { label: 'EPB: Building Envelope' }
     ],
     'epb-operations-tab.html': [
       { label: 'Projects Dashboard', href: './A-projects-dashboard.html' },
-      { label: 'Building Tab', href: './C-open-edit-building.html' },
+      { label: 'Open / Edit Building', href: './C-open-edit-building.html' },
       { label: 'EPB: Calculation Settings', href: './EPB1-calculation-settings.html' },
       { label: 'EPB: Climate Data', href: './EPB1b-ground-temperature.html' },
       { label: 'EPB: Building Envelope', href: './EPB2-materials-constructions.html' },
@@ -47,7 +42,7 @@
     ],
     'epb3-thermal-zones-envelope.html': [
       { label: 'Projects Dashboard', href: './A-projects-dashboard.html' },
-      { label: 'Building Tab', href: './C-open-edit-building.html' },
+      { label: 'Open / Edit Building', href: './C-open-edit-building.html' },
       { label: 'EPB: Calculation Settings', href: './EPB1-calculation-settings.html' },
       { label: 'EPB: Climate Data', href: './EPB1b-ground-temperature.html' },
       { label: 'EPB: Building Envelope', href: './EPB2-materials-constructions.html' },
@@ -56,7 +51,7 @@
     ],
     'epb-spaces-tab.html': [
       { label: 'Projects Dashboard', href: './A-projects-dashboard.html' },
-      { label: 'Building Tab', href: './C-open-edit-building.html' },
+      { label: 'Open / Edit Building', href: './C-open-edit-building.html' },
       { label: 'EPB: Calculation Settings', href: './EPB1-calculation-settings.html' },
       { label: 'EPB: Climate Data', href: './EPB1b-ground-temperature.html' },
       { label: 'EPB: Building Envelope', href: './EPB2-materials-constructions.html' },
@@ -66,7 +61,7 @@
     ],
     'epb4-results-summary.html': [
       { label: 'Projects Dashboard', href: './A-projects-dashboard.html' },
-      { label: 'Building Tab', href: './C-open-edit-building.html' },
+      { label: 'Open / Edit Building', href: './C-open-edit-building.html' },
       { label: 'EPB: Calculation Settings', href: './EPB1-calculation-settings.html' },
       { label: 'EPB: Climate Data', href: './EPB1b-ground-temperature.html' },
       { label: 'EPB: Building Envelope', href: './EPB2-materials-constructions.html' },
@@ -79,39 +74,39 @@
     // SRI branch
     'sri1-methodology-selection.html': [
       { label: 'Projects Dashboard', href: './A-projects-dashboard.html' },
-      { label: 'Building Tab', href: './C-open-edit-building.html' },
+      { label: 'Open / Edit Building', href: './C-open-edit-building.html' },
       { label: 'SRI: Methodology Selection' }
     ],
     'sri2-user-defined-weightings.html': [
       { label: 'Projects Dashboard', href: './A-projects-dashboard.html' },
-      { label: 'Building Tab', href: './C-open-edit-building.html' },
+      { label: 'Open / Edit Building', href: './C-open-edit-building.html' },
       { label: 'SRI: Methodology Selection', href: './SRI1-methodology-selection.html' },
       { label: 'SRI: User-defined Weightings' }
     ],
     'sri3-weighting-settings.html': [
       { label: 'Projects Dashboard', href: './A-projects-dashboard.html' },
-      { label: 'Building Tab', href: './C-open-edit-building.html' },
+      { label: 'Open / Edit Building', href: './C-open-edit-building.html' },
       { label: 'SRI: Methodology Selection', href: './SRI1-methodology-selection.html' },
       { label: 'SRI: Weighting Settings' }
     ],
     'sri4-domain-dashboard.html': [
       { label: 'Projects Dashboard', href: './A-projects-dashboard.html' },
-      { label: 'Building Tab', href: './C-open-edit-building.html' },
+      { label: 'Open / Edit Building', href: './C-open-edit-building.html' },
       { label: 'SRI: Methodology Selection', href: './SRI1-methodology-selection.html' },
       { label: 'SRI: Results' }
     ],
-    'sri5-heating-tab.html': [{ label: 'Projects Dashboard', href: './A-projects-dashboard.html' }, { label: 'Building Tab', href: './C-open-edit-building.html' }, { label: 'SRI: Methodology Selection', href: './SRI1-methodology-selection.html' }, { label: 'SRI: Results', href: './SRI14-results.html?nodata' }, { label: 'Heating Tab' }],
-    'sri6-dhw-tab.html': [{ label: 'Projects Dashboard', href: './A-projects-dashboard.html' }, { label: 'Building Tab', href: './C-open-edit-building.html' }, { label: 'SRI: Methodology Selection', href: './SRI1-methodology-selection.html' }, { label: 'SRI: Results', href: './SRI14-results.html?nodata' }, { label: 'DHW Tab' }],
-    'sri7-cooling-tab.html': [{ label: 'Projects Dashboard', href: './A-projects-dashboard.html' }, { label: 'Building Tab', href: './C-open-edit-building.html' }, { label: 'SRI: Methodology Selection', href: './SRI1-methodology-selection.html' }, { label: 'SRI: Results', href: './SRI14-results.html?nodata' }, { label: 'Cooling Tab' }],
-    'sri8-ventilation-tab.html': [{ label: 'Projects Dashboard', href: './A-projects-dashboard.html' }, { label: 'Building Tab', href: './C-open-edit-building.html' }, { label: 'SRI: Methodology Selection', href: './SRI1-methodology-selection.html' }, { label: 'SRI: Results', href: './SRI14-results.html?nodata' }, { label: 'Ventilation Tab' }],
-    'sri9-lighting-tab.html': [{ label: 'Projects Dashboard', href: './A-projects-dashboard.html' }, { label: 'Building Tab', href: './C-open-edit-building.html' }, { label: 'SRI: Methodology Selection', href: './SRI1-methodology-selection.html' }, { label: 'SRI: Results', href: './SRI14-results.html?nodata' }, { label: 'Lighting Tab' }],
-    'sri10-dynamic-envelope-tab.html': [{ label: 'Projects Dashboard', href: './A-projects-dashboard.html' }, { label: 'Building Tab', href: './C-open-edit-building.html' }, { label: 'SRI: Methodology Selection', href: './SRI1-methodology-selection.html' }, { label: 'SRI: Results', href: './SRI14-results.html?nodata' }, { label: 'Dynamic Envelope Tab' }],
-    'sri11-electricity-tab.html': [{ label: 'Projects Dashboard', href: './A-projects-dashboard.html' }, { label: 'Building Tab', href: './C-open-edit-building.html' }, { label: 'SRI: Methodology Selection', href: './SRI1-methodology-selection.html' }, { label: 'SRI: Results', href: './SRI14-results.html?nodata' }, { label: 'Electricity Tab' }],
-    'sri12-ev-charging-tab.html': [{ label: 'Projects Dashboard', href: './A-projects-dashboard.html' }, { label: 'Building Tab', href: './C-open-edit-building.html' }, { label: 'SRI: Methodology Selection', href: './SRI1-methodology-selection.html' }, { label: 'SRI: Results', href: './SRI14-results.html?nodata' }, { label: 'EV Charging Tab' }],
-    'sri13-monitoring-control-tab.html': [{ label: 'Projects Dashboard', href: './A-projects-dashboard.html' }, { label: 'Building Tab', href: './C-open-edit-building.html' }, { label: 'SRI: Methodology Selection', href: './SRI1-methodology-selection.html' }, { label: 'SRI: Results', href: './SRI14-results.html?nodata' }, { label: 'Monitoring & Control Tab' }],
+    'sri5-heating-tab.html': [{ label: 'Projects Dashboard', href: './A-projects-dashboard.html' }, { label: 'Open / Edit Building', href: './C-open-edit-building.html' }, { label: 'SRI: Methodology Selection', href: './SRI1-methodology-selection.html' }, { label: 'SRI: Results', href: './SRI14-results.html?nodata' }, { label: 'Heating Tab' }],
+    'sri6-dhw-tab.html': [{ label: 'Projects Dashboard', href: './A-projects-dashboard.html' }, { label: 'Open / Edit Building', href: './C-open-edit-building.html' }, { label: 'SRI: Methodology Selection', href: './SRI1-methodology-selection.html' }, { label: 'SRI: Results', href: './SRI14-results.html?nodata' }, { label: 'DHW Tab' }],
+    'sri7-cooling-tab.html': [{ label: 'Projects Dashboard', href: './A-projects-dashboard.html' }, { label: 'Open / Edit Building', href: './C-open-edit-building.html' }, { label: 'SRI: Methodology Selection', href: './SRI1-methodology-selection.html' }, { label: 'SRI: Results', href: './SRI14-results.html?nodata' }, { label: 'Cooling Tab' }],
+    'sri8-ventilation-tab.html': [{ label: 'Projects Dashboard', href: './A-projects-dashboard.html' }, { label: 'Open / Edit Building', href: './C-open-edit-building.html' }, { label: 'SRI: Methodology Selection', href: './SRI1-methodology-selection.html' }, { label: 'SRI: Results', href: './SRI14-results.html?nodata' }, { label: 'Ventilation Tab' }],
+    'sri9-lighting-tab.html': [{ label: 'Projects Dashboard', href: './A-projects-dashboard.html' }, { label: 'Open / Edit Building', href: './C-open-edit-building.html' }, { label: 'SRI: Methodology Selection', href: './SRI1-methodology-selection.html' }, { label: 'SRI: Results', href: './SRI14-results.html?nodata' }, { label: 'Lighting Tab' }],
+    'sri10-dynamic-envelope-tab.html': [{ label: 'Projects Dashboard', href: './A-projects-dashboard.html' }, { label: 'Open / Edit Building', href: './C-open-edit-building.html' }, { label: 'SRI: Methodology Selection', href: './SRI1-methodology-selection.html' }, { label: 'SRI: Results', href: './SRI14-results.html?nodata' }, { label: 'Dynamic Envelope Tab' }],
+    'sri11-electricity-tab.html': [{ label: 'Projects Dashboard', href: './A-projects-dashboard.html' }, { label: 'Open / Edit Building', href: './C-open-edit-building.html' }, { label: 'SRI: Methodology Selection', href: './SRI1-methodology-selection.html' }, { label: 'SRI: Results', href: './SRI14-results.html?nodata' }, { label: 'Electricity Tab' }],
+    'sri12-ev-charging-tab.html': [{ label: 'Projects Dashboard', href: './A-projects-dashboard.html' }, { label: 'Open / Edit Building', href: './C-open-edit-building.html' }, { label: 'SRI: Methodology Selection', href: './SRI1-methodology-selection.html' }, { label: 'SRI: Results', href: './SRI14-results.html?nodata' }, { label: 'EV Charging Tab' }],
+    'sri13-monitoring-control-tab.html': [{ label: 'Projects Dashboard', href: './A-projects-dashboard.html' }, { label: 'Open / Edit Building', href: './C-open-edit-building.html' }, { label: 'SRI: Methodology Selection', href: './SRI1-methodology-selection.html' }, { label: 'SRI: Results', href: './SRI14-results.html?nodata' }, { label: 'Monitoring & Control Tab' }],
     'sri14-results.html': [
       { label: 'Projects Dashboard', href: './A-projects-dashboard.html' },
-      { label: 'Building Tab', href: './C-open-edit-building.html' },
+      { label: 'Open / Edit Building', href: './C-open-edit-building.html' },
       { label: 'SRI: Methodology Selection', href: './SRI1-methodology-selection.html' },
       { label: 'SRI: Results' }
     ]

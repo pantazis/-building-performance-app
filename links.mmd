@@ -7,29 +7,26 @@ A --> B[Add New Building\nview/C-open-edit-building.html]
 A --> C[Open Edit Building\nview/C-open-edit-building.html]
 A --> D[Duplicate Building]
 A --> E[Delete Building]
-A --> F[Global Resource Library\nview/F-global-resource-library.html]
 A --> G[Language Selection]
 A --> H[User Profile]
 
-B --> I[Building Tab\nview/I-building-tab.html]
-C --> I
+B --> C
 
-I --> J[Go to EPB Dashboard]
-I --> K[Go to SRI Dashboard]
+C --> J[Go to EPB Dashboard]
+C --> SRI1[SRI View 1 Methodology Selection\nview/SRI1-methodology-selection.html]
 
 J --> EPB1[EPB View 1 Calculation Settings\nview/EPB1-calculation-settings.html]
 EPB1 --> EPB1B[EPB View 1b Climate Data\nview/EPB1b-ground-temperature.html]
 EPB1B --> EPB2[EPB View 2 Building Envelope\nview/EPB2-materials-constructions.html]
-EPB2 --> EPBOPS[EPB Operations Tab\nview/EPB-operations-tab.html]
-EPBOPS --> EPB3[EPB View 3 Thermal Zone\nview/EPB3-thermal-zones-envelope.html]
+EPB2 --> EPB3[EPB View 3 Thermal Zone\nview/EPB3-thermal-zones-envelope.html]
 EPB3 --> EPBSPACES[EPB Spaces Tab\nview/EPB-spaces-tab.html]
-EPBSPACES --> EPB4[EPB Results Performance Summary\nview/EPB4-results-summary.html]
+EPBSPACES --> EPBOPS[EPB Operations Tab\nview/EPB-operations-tab.html]
+EPBOPS --> EPB4[EPB Results Performance Summary\nview/EPB4-results-summary.html]
 
-K --> SRI1[SRI View 1 Methodology Selection\nview/SRI1-methodology-selection.html]
-SRI1 --> SRI2{Confirm SRI Rules}
-SRI1 -->|EU + User-defined| SRI14[SRI14 Results\nview/SRI14-results.html]
-SRI2 -->|Default or user-defined confirmed| SRI14[SRI14 Results\nview/SRI14-results.html]
-SRI3 --> SRI14
+SRI1 -->|User-defined weightings| SRI2[SRI2 User-defined Weightings\nview/SRI2-user-defined-weightings.html]
+SRI1 -->|Weighting settings| SRI3[SRI3 Weighting Settings\nview/SRI3-weighting-settings.html]
+SRI2 -->|Continue| SRI14[SRI14 Results\nview/SRI14-results.html]
+SRI3 -->|Continue| SRI14
 
 SRI14 --> SRI5[Heating Tab\nview/SRI5-heating-tab.html]
 SRI14 --> SRI6[DHW Tab\nview/SRI6-dhw-tab.html]
@@ -52,7 +49,7 @@ SRI12 --> SRI14
 SRI13 --> SRI14
 
 %% D2.2 Advanced EU Kernel EPC Engine integration
-I --> CE0[Run OpenBEP4EU Calculation Engine D2.2]
+C --> CE0[Run OpenBEP4EU Calculation Engine D2.2]
 
 subgraph CE[OpenBEP4EU Calculation Engine D2.2]
 direction TB
