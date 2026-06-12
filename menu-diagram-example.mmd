@@ -1,0 +1,152 @@
+﻿flowchart TD
+
+%% Combined from input.mmd and user-management-permissions.mmd
+
+subgraph APP[Application menu and calculation workflow]
+direction TD
+
+A[Projects Dashboard] --> B[Add New Building]
+A --> C[Open Edit Building]
+
+B --> C
+
+C --> SRI1[SRI View 1 Methodology Selection]
+
+C --> EPB1[EPB View 1 Calculation Settings]
+EPB1 --> EPB1B[EPB View 1b Climate Data]
+EPB1B --> EPB2[EPB View 2 Building Envelope]
+EPB2 --> EPB3[EPB View 3 Thermal Zone]
+EPB3 --> EPBSPACES[EPB Spaces Tab]
+EPBSPACES --> EPBOPS[EPB Operations Tab]
+EPBOPS --> EPB4[EPB Results Performance Summary]
+
+SRI1 -->|User-defined weightings| SRI2[SRI2 User-defined Weightings]
+SRI1 -->|Weighting settings| SRI3[SRI3 Weighting Settings]
+SRI2 -->|Continue| SRI14[SRI14 Results]
+SRI3 -->|Continue| SRI14
+
+SRI14 --> SRI5[Heating Tab]
+SRI14 --> SRI6[DHW Tab]
+SRI14 --> SRI7[Cooling Tab]
+SRI14 --> SRI8[Ventilation Tab]
+SRI14 --> SRI9[Lighting Tab]
+SRI14 --> SRI10[Dynamic Envelope Tab]
+SRI14 --> SRI11[Electricity Tab]
+SRI14 --> SRI12[EV Charging Tab]
+SRI14 --> SRI13[Monitoring & Control Tab]
+
+SRI5 --> SRI14[SRI Results]
+SRI6 --> SRI14[SRI Results]
+SRI7 --> SRI14[SRI Results]
+SRI8 --> SRI14[SRI Results]
+SRI9 --> SRI14[SRI Results]
+SRI10 --> SRI14[SRI Results]
+SRI11 --> SRI14[SRI Results]
+SRI12 --> SRI14[SRI Results]
+SRI13 --> SRI14[SRI Results]
+
+%% D2.2 Advanced EU Kernel EPC Engine integration
+C --> CE0[Run OpenBEP4EU Calculation Engine D2.2]
+
+subgraph CE[OpenBEP4EU Calculation Engine D2.2]
+direction TB
+CE1[Data Import\nJSON OpenBEP model or IFC4 Add2 DTV]
+CE2[Data Validation\nSchema, references, semantic constraints]
+CE3[Data Transformation\nHelpers prepare module-specific inputs]
+CE4[Simulation Core Modules\nEN ISO 52016-1 hourly needs\nEN ISO 6946/13370/13789 envelope\nEN ISO 52010-1 climate\nEN 16798-1 indoor/operation\nEN 15316 and ISO 52031/52032 systems]
+CE5[Orchestration Layer\nExecution sequence + intermediate results]
+CE6[EPC-relevant Outputs\nFinal energy by carrier\nPrimary energy\nOperational GHG emissions\nOn-site RES share]
+end
+
+CE0 --> CE1 --> CE2 --> CE3 --> CE4 --> CE5 --> CE6
+CE6 --> EPB4
+end
+
+subgraph UM[User management and permissions workflow]
+direction TD
+
+    OpenApp([User opens app]) --> HasAccount{Does user have an account?}
+    HasAccount -->|No| Register[Register account]
+    Register --> RegistrationSuccess[Registration successful]
+    RegistrationSuccess --> Login([User logs in])
+    HasAccount -->|Yes| Login
+    Login --> Auth{Is user authenticated?}
+
+    Auth -->|No| Denied[Access denied: show login error]
+    Denied --> Login
+
+    Auth -->|Yes| AuthenticatedUser[Authenticated user]
+    AuthenticatedUser --> ProfilePage[User profile page]
+    ProfilePage --> EditOwnProfile[Can edit own profile data]
+    AuthenticatedUser --> AdminCheck{Is user a site admin?}
+
+    AdminCheck -->|No| ProjectCheck{Does user already belong to a project?}
+    ProjectCheck -->|No| CreateProject[Create project]
+    CreateProject --> BecomeOwner[User becomes project owner]
+    BecomeOwner --> OwnerManagementPage
+
+    ProjectCheck -->|No: browse existing| ProjectList[Project list page]
+    ProjectList --> ProjectDetail[Project detail page]
+    ProjectDetail --> AskMembership[User asks to become a member]
+    AskMembership --> MembershipRequest[Membership request waits for owner approval]
+    MembershipRequest --> Pending[Pending invitation: wait for owner decision]
+    MembershipRequest -->|Visible only to owner| OwnerManagementPage
+
+    ProjectCheck -->|Yes: already member of specific project| ApprovedUser[Approved project user]
+
+    OwnerManagementPage -->|Owner adds or invites member by email| DirectMember[Invited user accepts membership]
+    Pending --> NoAccess[No project building access yet]
+
+    ApprovedUser --> UserPage[User management and projects access]
+    UserPage --> UserCreate[Can create buildings]
+    UserPage --> UserEditOwn[Can edit only own buildings]
+    UserPage --> UserNoEditOthers[Cannot edit buildings created by other users]
+
+    ProjectCheck -->|Yes: project owner| OwnerManagementPage[Owner project area / user management page<br/>Can manage project users<br/>Can invite member by email]
+    OwnerManagementPage -->|Owner reviews pending requests| OwnerDecision{Approve invitation?}
+    OwnerDecision -->|Approve| OwnerApprove[Invitation becomes approved]
+    OwnerDecision -->|Disapprove| OwnerDisapprove[Invitation becomes disapproved]
+    OwnerApprove --> ApprovedUser
+    OwnerDisapprove --> NoAccess
+    DirectMember --> ApprovedUser
+    OwnerManagementPage --> OwnerEditAll[Can edit all buildings under own project]
+
+    AdminCheck -->|Yes| SiteAdminPage[Site admin console]
+    SiteAdminPage --> SiteAdminAllProjects[Can access all projects]
+    SiteAdminPage --> SiteAdminEditAll[Can edit all buildings in all projects]
+    SiteAdminPage --> SiteAdminCreateAny[Can create buildings with no restrictions]
+    SiteAdminPage --> SiteAdminManageAll[Can manage users and invitations across projects]
+
+    subgraph AccessRules[Final building access rules]
+        Rule1[Approved regular user: create building + edit own buildings only]
+        Rule2[Project owner: edit all buildings in their project]
+        Rule3[Site admin: create and edit all buildings across all projects]
+        Rule4[Authenticated user: edit own profile data]
+    end
+
+    EditOwnProfile --> Rule4
+    UserCreate --> Rule1
+    UserEditOwn --> Rule1
+    OwnerEditAll --> Rule2
+    SiteAdminEditAll --> Rule3
+    SiteAdminCreateAny --> Rule3
+
+    classDef page fill:#e8f4ff,stroke:#1f77b4,stroke-width:2px,color:#102a43
+    classDef decision fill:#fff3cd,stroke:#d39e00,stroke-width:2px,color:#3d2b00
+    classDef approved fill:#eaf7ea,stroke:#2db34a,stroke-width:2px,color:#123d1b
+    classDef rejected fill:#fdecea,stroke:#ef3e23,stroke-width:2px,color:#4a120a
+    classDef role fill:#f3eefc,stroke:#6f42c1,stroke-width:2px,color:#25113f
+    classDef rule fill:#f7f7f7,stroke:#666,stroke-width:1px,color:#222
+
+    class OpenApp,Login,Register,RegistrationSuccess,Pending,UserPage,ProfilePage,OwnerManagementPage,SiteAdminPage,CreateProject,ProjectList,ProjectDetail,AskMembership,MembershipRequest page
+    class HasAccount,Auth,AdminCheck,ProjectCheck,OwnerDecision decision
+    class AuthenticatedUser,ApprovedUser,UserCreate,UserEditOwn,EditOwnProfile,OwnerApprove,BecomeOwner,DirectMember approved
+    class Denied,NoAccess,UserNoEditOthers,OwnerDisapprove rejected
+    class OwnerEditAll,SiteAdminAllProjects,SiteAdminEditAll,SiteAdminCreateAny,SiteAdminManageAll role
+    class Rule1,Rule2,Rule3,Rule4 rule
+end
+
+%% Cross-flow handoff
+ApprovedUser --> A
+OwnerEditAll --> A
+SiteAdminAllProjects --> A

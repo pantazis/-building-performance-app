@@ -1,71 +1,26 @@
 flowchart TD
 
-    Login([User opens app and logs in]) --> Auth{Is user authenticated?}
+    Login[Login] --> Dashboard[Projects Dashboard]
+    Login --> AccessDenied[Access Denied / Login Error]
+    AccessDenied --> Login
+    Register[Register Account] --> Login
 
-    Auth -->|No| Denied[Access denied: show login error]
-    Denied --> Login
+    Dashboard --> UserProfile[User Profile]
+    Dashboard --> ProjectList[Project List Page]
+    Dashboard --> OwnerUserManagement[Owner Project Area / User Management Page]
+    Dashboard --> AddBuilding[Add New Building]
+    Dashboard --> OpenEditBuilding[Open / Edit Building]
+    Dashboard --> DeleteBuilding[Delete Building Popup]
 
-    Auth -->|Yes| AdminCheck{Is user a site admin?}
-
-    AdminCheck -->|No| ProjectCheck{Does user already belong to a project?}
-    ProjectCheck -->|No| CreateProject[Create project]
-    CreateProject --> BecomeOwner[User becomes project owner]
-    BecomeOwner --> OwnerManagementPage
-
-    ProjectCheck -->|No: browse existing| ProjectList[Project list page]
-    ProjectList --> ProjectDetail[Project detail page]
-    ProjectDetail --> AskMembership[User asks to become a member]
-    AskMembership --> MembershipRequest[Membership request waits for owner approval]
-    MembershipRequest --> Pending[Pending invitation: wait for owner decision]
-    MembershipRequest -->|Visible only to owner| OwnerManagementPage
-
-    ProjectCheck -->|Yes: already member of specific project| ApprovedUser[Approved project user]
-
-    OwnerManagementPage -->|Owner adds or invites member by email| DirectMember[Invited user accepts membership]
-    Pending --> NoAccess[No project building access yet]
-
-    ApprovedUser --> UserPage[User management and projects access]
-    UserPage --> UserCreate[Can create buildings]
-    UserPage --> UserEditOwn[Can edit only own buildings]
-    UserPage --> UserNoEditOthers[Cannot edit buildings created by other users]
-
-    ProjectCheck -->|Yes: project owner| OwnerManagementPage[Owner project area / user management page<br/>Can manage project users<br/>Can invite member by email]
-    OwnerManagementPage -->|Owner reviews pending requests| OwnerDecision{Approve invitation?}
-    OwnerDecision -->|Approve| OwnerApprove[Invitation becomes approved]
-    OwnerDecision -->|Disapprove| OwnerDisapprove[Invitation becomes disapproved]
-    OwnerApprove --> ApprovedUser
-    OwnerDisapprove --> NoAccess
-    DirectMember --> ApprovedUser
-    OwnerManagementPage --> OwnerEditAll[Can edit all buildings under own project]
-
-    AdminCheck -->|Yes| SiteAdminPage[Site admin console]
-    SiteAdminPage --> SiteAdminAllProjects[Can access all projects]
-    SiteAdminPage --> SiteAdminEditAll[Can edit all buildings in all projects]
-    SiteAdminPage --> SiteAdminCreateAny[Can create buildings with no restrictions]
-    SiteAdminPage --> SiteAdminManageAll[Can manage users and invitations across projects]
-
-    subgraph AccessRules[Final building access rules]
-        Rule1[Approved regular user: create building + edit own buildings only]
-        Rule2[Project owner: edit all buildings in their project]
-        Rule3[Site admin: create and edit all buildings across all projects]
-    end
-
-    UserCreate --> Rule1
-    UserEditOwn --> Rule1
-    OwnerEditAll --> Rule2
-    SiteAdminEditAll --> Rule3
-    SiteAdminCreateAny --> Rule3
+    ProjectList --> ProjectDetail[Project Detail Page]
+    ProjectDetail --> MembershipRequest[Membership Request Popup]
+    MembershipRequest --> PendingInvitation[Pending Invitation Page]
+    PendingInvitation --> OwnerUserManagement
+    OwnerUserManagement --> Dashboard
+    OwnerUserManagement --> NoProjectAccess[No Project Building Access Guard]
 
     classDef page fill:#e8f4ff,stroke:#1f77b4,stroke-width:2px,color:#102a43
-    classDef decision fill:#fff3cd,stroke:#d39e00,stroke-width:2px,color:#3d2b00
-    classDef approved fill:#eaf7ea,stroke:#2db34a,stroke-width:2px,color:#123d1b
     classDef rejected fill:#fdecea,stroke:#ef3e23,stroke-width:2px,color:#4a120a
-    classDef role fill:#f3eefc,stroke:#6f42c1,stroke-width:2px,color:#25113f
-    classDef rule fill:#f7f7f7,stroke:#666,stroke-width:1px,color:#222
 
-    class Login,Pending,UserPage,OwnerManagementPage,SiteAdminPage,CreateProject,ProjectList,ProjectDetail,AskMembership,MembershipRequest page
-    class Auth,AdminCheck,ProjectCheck,OwnerDecision decision
-    class ApprovedUser,UserCreate,UserEditOwn,OwnerApprove,BecomeOwner,DirectMember approved
-    class Denied,NoAccess,UserNoEditOthers,OwnerDisapprove rejected
-    class OwnerEditAll,SiteAdminAllProjects,SiteAdminEditAll,SiteAdminCreateAny,SiteAdminManageAll role
-    class Rule1,Rule2,Rule3 rule
+    class Login,Register,Dashboard,UserProfile,ProjectList,ProjectDetail,MembershipRequest,PendingInvitation,OwnerUserManagement,AddBuilding,OpenEditBuilding,DeleteBuilding page
+    class AccessDenied,NoProjectAccess rejected

@@ -516,27 +516,13 @@
       });
     }
 
-    const monthOptions = [
-        'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'
-      ];
+    const monthOptions = AppDataModel?.ui?.selectOptions?.monthNames || [];
 
     const gtcpBody = document.getElementById('gtcp-body');
-    const demoGroundRow = {
-      name: 'Demo Ground Profile',
-      externalWallsThickness: 0.30,
-      exposedPerimeter: 120,
-      annualMeanInternalTemperature: 21,
-      amplitudeOfInternalTemperatureVariations: 3,
-      minExternalTemperatureMonth: 1,
-      linearThermalTransmittance: 0.25,
-      conductivity: 1.8,
-      heatCapacity: 2.1
-    };
 
     const sourceGroundRows = Array.isArray(epb?.settings?.groundTemperatureCalculationProperties)
       ? epb.settings.groundTemperatureCalculationProperties
-      : [demoGroundRow];
+      : [];
 
     function normalizeGroundRow(row = {}) {
       return {
@@ -555,7 +541,7 @@
 
     const gtcpRows = sourceGroundRows.map(normalizeGroundRow);
 
-    const singleRow = gtcpRows[0] || normalizeGroundRow(demoGroundRow);
+    const singleRow = gtcpRows[0] || normalizeGroundRow();
     const singleMonthSelect = document.getElementById('gtcp-min-month');
     if (singleMonthSelect) {
       singleMonthSelect.innerHTML = monthOptions.map((m, i) => `<option value="${i + 1}">${m}</option>`).join('');

@@ -1,18 +1,15 @@
 flowchart TD
 
 A[Projects Dashboard] --> B[Add New Building]
-A --> C[Open Edit Building]
-A --> D[Duplicate Building]
-A --> E[Delete Building]
-A --> G[Language Selection]
+A --> C[Open / Edit Building]
+A --> E[Delete Building Popup]
 A --> H[User Profile]
 
 B --> C
 
-C --> J[Go to EPB Dashboard]
 C --> SRI1[SRI View 1 Methodology Selection]
+C --> EPB1[EPB View 1 Calculation Settings]
 
-J --> EPB1[EPB View 1 Calculation Settings]
 EPB1 --> EPB1B[EPB View 1b Climate Data]
 EPB1B --> EPB2[EPB View 2 Building Envelope]
 EPB2 --> EPB3[EPB View 3 Thermal Zone]
@@ -20,8 +17,8 @@ EPB3 --> EPBSPACES[EPB Spaces Tab]
 EPBSPACES --> EPBOPS[EPB Operations Tab]
 EPBOPS --> EPB4[EPB Results Performance Summary]
 
-SRI1 -->|User-defined weightings| SRI2[SRI2 User-defined Weightings]
-SRI1 -->|Weighting settings| SRI3[SRI3 Weighting Settings]
+SRI1 -->|Default weightings| SRI2[SRI Decision Default Weightings]
+SRI1 -->|Weighting settings| SRI3[SRI View 2 Weighting Settings]
 SRI2 -->|Continue| SRI14[SRI14 Results]
 SRI3 -->|Continue| SRI14
 
@@ -35,28 +32,12 @@ SRI14 --> SRI11[Electricity Tab]
 SRI14 --> SRI12[EV Charging Tab]
 SRI14 --> SRI13[Monitoring & Control Tab]
 
-SRI5 --> SRI14[SRI Results]
-SRI6 --> SRI14[SRI Results]
-SRI7 --> SRI14[SRI Results]
-SRI8 --> SRI14[SRI Results]
-SRI9 --> SRI14[SRI Results]
-SRI10 --> SRI14[SRI Results]
-SRI11 --> SRI14[SRI Results]
-SRI12 --> SRI14[SRI Results]
-SRI13 --> SRI14[SRI Results]
-
-%% D2.2 Advanced EU Kernel EPC Engine integration
-C --> CE0[Run OpenBEP4EU Calculation Engine D2.2]
-
-subgraph CE[OpenBEP4EU Calculation Engine D2.2]
-direction TB
-CE1[Data Import\nJSON OpenBEP model or IFC4 Add2 DTV]
-CE2[Data Validation\nSchema, references, semantic constraints]
-CE3[Data Transformation\nHelpers prepare module-specific inputs]
-CE4[Simulation Core Modules\nEN ISO 52016-1 hourly needs\nEN ISO 6946/13370/13789 envelope\nEN ISO 52010-1 climate\nEN 16798-1 indoor/operation\nEN 15316 and ISO 52031/52032 systems]
-CE5[Orchestration Layer\nExecution sequence + intermediate results]
-CE6[EPC-relevant Outputs\nFinal energy by carrier\nPrimary energy\nOperational GHG emissions\nOn-site RES share]
-end
-
-CE0 --> CE1 --> CE2 --> CE3 --> CE4 --> CE5 --> CE6
-CE6 --> EPB4
+SRI5 --> SRI14[SRI View 3 Results]
+SRI6 --> SRI14[SRI View 3 Results]
+SRI7 --> SRI14[SRI View 3 Results]
+SRI8 --> SRI14[SRI View 3 Results]
+SRI9 --> SRI14[SRI View 3 Results]
+SRI10 --> SRI14[SRI View 3 Results]
+SRI11 --> SRI14[SRI View 3 Results]
+SRI12 --> SRI14[SRI View 3 Results]
+SRI13 --> SRI14[SRI View 3 Results]

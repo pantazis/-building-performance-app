@@ -440,41 +440,8 @@
       return map[status] || { label: toTitleCaseFromEnum(status), className: 'chip' };
     }
 
-    const fallbackModel = {
-      projects: [{
-        building: {
-          name: 'Office Athens',
-          sri: {
-            method: 'A',
-            jurisdiction: { region: 'EU' },
-            domainsPresence: { heating: 1, dhw: 1, cooling: 1, ventilation: 1, lighting: 1, envelope: 1, electricity: 1, ev: 0, monitoring: 1 },
-            weighting: {
-              impacts: {
-                energyEfficiency: 20,
-                maintenance: 10,
-                comfort: 15,
-                convenience: 15,
-                health: 10,
-                info: 10,
-                flexibility: 20
-              },
-              domainWeightingsByImpact: {
-                energyEfficiency: { heating: 20, dhw: 10, cooling: 15, ventilation: 10, lighting: 10, envelope: 10, electricity: 10, ev: 5, monitoring: 10 },
-                maintenance: { heating: 15, dhw: 10, cooling: 15, ventilation: 10, lighting: 10, envelope: 10, electricity: 10, ev: 10, monitoring: 10 },
-                comfort: { heating: 20, dhw: 10, cooling: 20, ventilation: 15, lighting: 10, envelope: 10, electricity: 5, ev: 0, monitoring: 10 },
-                convenience: { heating: 15, dhw: 10, cooling: 15, ventilation: 10, lighting: 15, envelope: 10, electricity: 10, ev: 5, monitoring: 10 },
-                health: { heating: 15, dhw: 10, cooling: 15, ventilation: 20, lighting: 15, envelope: 10, electricity: 5, ev: 0, monitoring: 10 },
-                info: { heating: 10, dhw: 10, cooling: 10, ventilation: 10, lighting: 10, envelope: 10, electricity: 10, ev: 10, monitoring: 20 },
-                flexibility: { heating: 15, dhw: 10, cooling: 10, ventilation: 10, lighting: 10, envelope: 10, electricity: 15, ev: 10, monitoring: 10 }
-              }
-            }
-          }
-        }
-      }]
-    };
-
     async function loadDataModel() {
-      return window.AppDataModel || fallbackModel;
+      return window.AppDataModel || { projects: [] };
     }
 
     async function init() {

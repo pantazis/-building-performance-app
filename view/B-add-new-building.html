@@ -222,8 +222,8 @@
     const appDataModel = AppDataModel ?? null;
     const sample = appDataModel?.projects?.[0]?.building?.general ?? {};
 
-    const countries = ['Greece', 'Italy', 'Spain', 'Portugal'];
-    const types = ['Residential', 'Non-Residential', 'Offices', 'Healthcare'];
+    const countries = appDataModel?.ui?.selectOptions?.countries || [];
+    const types = appDataModel?.ui?.selectOptions?.buildingTypes || [];
 
     const countrySelect = document.getElementById('building-country');
     const typeSelect = document.getElementById('building-type');

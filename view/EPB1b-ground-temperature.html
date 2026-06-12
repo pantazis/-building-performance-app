@@ -188,15 +188,13 @@
   <script src="./epb-steps-tabs.js"></script>
   <script>
     const epb = AppDataModel?.projects?.[0]?.building?.epb || {};
-    const monthOptions = ['January', 'February', 'March', 'April', 'May', 'June','July', 'August', 'September', 'October', 'November', 'December'];
+    const monthOptions = AppDataModel?.ui?.selectOptions?.monthNames || [];
     const gtcpBody = document.getElementById('gtcp-body');
     const epbwInput = document.getElementById('epbw-file');
     const epbwFileName = document.getElementById('epbw-file-name');
-    const demoGroundRow = { name: 'Demo Ground Profile', externalWallsThickness: 0.30, exposedPerimeter: 120, annualMeanInternalTemperature: 21, amplitudeOfInternalTemperatureVariations: 3, minExternalTemperatureMonth: 1, linearThermalTransmittance: 0.25, conductivity: 1.8, heatCapacity: 2.1 };
-
     const sourceGroundRows = Array.isArray(epb?.settings?.groundTemperatureCalculationProperties)
       ? epb.settings.groundTemperatureCalculationProperties
-      : [demoGroundRow];
+      : [];
 
     function normalizeGroundRow(row = {}) {
       return {

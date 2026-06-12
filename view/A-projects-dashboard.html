@@ -293,6 +293,7 @@
     </div>
       </footer>
 <script src="./breadcrumbs.js"></script>
+<script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
 
   <!-- COMPONENT: gauge-svg-template -->
   <div id="component-gauge-svg-template" class="c-gauge-svg-template" style="display: none;">
@@ -367,38 +368,6 @@
   <div id="component-toast" class="c-toast" role="status" aria-live="polite">Success! Action completed.</div>
 
   <script>
-    // Static data aligned with data_model/sri_epb_ui_data_model_v2.js
-    const AppDataModel = {
-      projects: [
-        {
-          id: 'project-1',
-          name: 'Demo Building',
-          lastModified: '2026-04-29',
-          building: {
-            id: 'building-1',
-            name: 'Office Athens',
-            general: {
-              type: 'Non-Residential',
-              usage: 'Offices',
-              country: 'Greece',
-              floorArea: '1000-10000',
-              year: 2015,
-              address: 'Messinias 21, Athens 15234'
-            },
-            epb: {
-              orchestration: { status: 'CALCULATION_COMPLETED' }
-            },
-            sri: {
-              results: {
-                totalScore: 75,
-                class: 'B'
-              }
-            }
-          }
-        }
-      ]
-    };
-
     const tableBody = document.getElementById('projects-table-body');
     const scoreGrid = document.getElementById('score-grid');
     const searchInput = document.getElementById('global-search');
@@ -409,19 +378,13 @@
     const modalConfirm = document.getElementById('modal-confirm');
     const toast = document.getElementById('component-toast');
 
-    const appDataModel = AppDataModel ?? { projects: [] };
+    const appDataModel = window.AppDataModel ?? { projects: [], ui: { dashboardProjectVariants: [] } };
 
     const baseProjects = Array.isArray(appDataModel?.projects) ? appDataModel.projects : [];
 
     const templateProject = baseProjects[0] || null;
     const generatedVariants = templateProject
-      ? [
-        { id: 'project-2', lastModified: '2026-04-28', name: 'Harbor Residences', country: 'Greece', address: 'Messinias 21, Athens 15234', type: 'Residential', status: 'IN_PROGRESS', score: 62, scoreClass: 'C' },
-        { id: 'project-3', lastModified: '2026-04-27', name: 'Metro Plaza', country: 'Greece', address: 'Kifisias 120, Marousi 15125', type: 'Retail', status: 'MISSING_DATA', score: 48, scoreClass: 'D' },
-        { id: 'project-4', lastModified: '2026-04-26', name: 'Innovation Campus', country: 'Italy', address: 'Via Roma 45, Milan 20121', type: 'Non-Residential', status: 'READY_FOR_CALCULATION', score: 0, scoreClass: '-' },
-        { id: 'project-5', lastModified: '2026-04-25', name: 'Green Port Offices', country: 'Spain', address: 'Calle Mayor 8, Madrid 28013', type: 'Offices', status: 'CALCULATION_COMPLETED', score: 79, scoreClass: 'B' },
-        { id: 'project-6', lastModified: '2026-04-24', name: 'City Health Center', country: 'Portugal', address: 'Avenida da Liberdade 32, Lisbon 1250-145', type: 'Healthcare', status: 'PROCESSING', score: 55, scoreClass: 'C' }
-      ].map((seed) => ({
+      ? (appDataModel?.ui?.dashboardProjectVariants || []).map((seed) => ({
         ...templateProject,
         id: seed.id,
         lastModified: seed.lastModified,

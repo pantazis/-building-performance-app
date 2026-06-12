@@ -27,6 +27,24 @@ var AppDataModel = {
     }
   },
 
+  ui: {
+    selectOptions: {
+      countries: ["Greece", "Italy", "Spain", "Portugal"],
+      buildingTypes: ["Residential", "Non-Residential", "Offices", "Healthcare"],
+      monthNames: [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ]
+    },
+    dashboardProjectVariants: [
+      { id: "project-2", lastModified: "2026-04-28", name: "Harbor Residences", country: "Greece", address: "Messinias 21, Athens 15234", type: "Residential", status: "IN_PROGRESS", score: 62, scoreClass: "C" },
+      { id: "project-3", lastModified: "2026-04-27", name: "Metro Plaza", country: "Greece", address: "Kifisias 120, Marousi 15125", type: "Retail", status: "MISSING_DATA", score: 48, scoreClass: "D" },
+      { id: "project-4", lastModified: "2026-04-26", name: "Innovation Campus", country: "Italy", address: "Via Roma 45, Milan 20121", type: "Non-Residential", status: "READY_FOR_CALCULATION", score: 0, scoreClass: "-" },
+      { id: "project-5", lastModified: "2026-04-25", name: "Green Port Offices", country: "Spain", address: "Calle Mayor 8, Madrid 28013", type: "Offices", status: "CALCULATION_COMPLETED", score: 79, scoreClass: "B" },
+      { id: "project-6", lastModified: "2026-04-24", name: "City Health Center", country: "Portugal", address: "Avenida da Liberdade 32, Lisbon 1250-145", type: "Healthcare", status: "PROCESSING", score: 55, scoreClass: "C" }
+    ]
+  },
+
   projects: [
     {
       id: "project-1",
