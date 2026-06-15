@@ -19,6 +19,13 @@ Canonical roles:
 4. Project Owner
 5. Site Admin
 
+Important view distinction:
+
+- Project List and Project Dashboard are different views.
+- Project List is for browsing/selecting projects, creating a project, requesting membership, and checking membership status.
+- Project Dashboard is the selected project workspace after access is approved. It contains the building list/actions and entry points to Building, SRI, EPB, and calculation workflows.
+- `view/A-projects-dashboard.html` is the current prototype file for the selected Project Dashboard / project workspace. The Project List page is mentioned in this document but has not been created yet as a prototype HTML file.
+
 ---
 
 ## Page visibility by role
@@ -260,6 +267,8 @@ Site Admin user/project navigation rule:
 | Global User Management | No | No | No | No | Yes |
 | Audit Logs | No | No | No | Optional, project scope | Yes, global scope |
 
+Note: `Project List + Project Info` and `Projects Dashboard` are intentionally separate rows. Project List is the project selection/membership area. Projects Dashboard is the selected project workspace with buildings and workflow actions.
+
 ---
 
 ## Existing prototype/view files mapped to menus
@@ -272,6 +281,7 @@ Site Admin user/project navigation rule:
 
 ### Project and building menu
 
+- Project List page — not created yet; browse/select/request/create projects before opening a project dashboard
 - `view/A-projects-dashboard.html`
 - `view/B-add-new-building.html`
 - `view/C-open-edit-building.html`

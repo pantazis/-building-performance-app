@@ -56,6 +56,13 @@ Role model rules:
 - Site Admin does not need separate admin-only duplicate pages for user projects; the Site Admin Console can show user project memberships, then link into the existing project/dashboard flow.
 - Become User mode and Admin Free Edit mode must be visually distinct so the admin knows whether they are acting as a user or acting with full admin permissions.
 
+Project List vs Project Dashboard:
+- Project List and Project Dashboard are different views.
+- Project List is the project browsing/selection view. It is used to find projects, create a project, request membership, and see membership/request status.
+- Project Dashboard is the selected project workspace after the user has access to a specific project. It shows buildings and starts building, SRI, EPB, and calculation workflows.
+- Registered Users can see the Project List, but they cannot open a Project Dashboard until they are approved into that project or create a project and become its Project Owner.
+- Project Members, Project Owners, and Site Admins open the Project Dashboard only for projects allowed by their project/global permissions.
+
 Temporary workflow states, not permanent roles:
 - Pending Member / Applicant: requested membership, no building access yet.
 - Invited User: invited by owner, becomes Project Member after accepting/approval.

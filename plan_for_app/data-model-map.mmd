@@ -1,0 +1,168 @@
+erDiagram
+  USER ||--o{ PROJECT_MEMBERSHIP : has
+  PROJECT ||--o{ PROJECT_MEMBERSHIP : includes
+  USER ||--o{ MEMBERSHIP_REQUEST : requests
+  PROJECT ||--o{ MEMBERSHIP_REQUEST : receives
+  PROJECT ||--o{ INVITATION : sends
+  PROJECT ||--o{ BUILDING : contains
+
+  BUILDING ||--|| BUILDING_GENERAL_DATA : describes
+  BUILDING ||--|| SRI_MODEL : has
+  BUILDING ||--|| EPB_MODEL : has
+  BUILDING ||--o{ CALCULATION_RUN : produces
+
+  SRI_MODEL ||--o{ SRI_SERVICE_ENTRY : contains
+  SRI_MODEL ||--o{ SRI_RESULTS : calculates
+
+  EPB_MODEL ||--|| EPB_LIBRARY : uses
+  EPB_MODEL ||--o{ EPB_ZONE : contains
+  EPB_ZONE ||--o{ EPB_SPACE : contains
+  EPB_ZONE ||--o{ EPB_SURFACE : contains
+
+  USER ||--o{ AUDIT_LOG : triggers
+  PROJECT ||--o{ AUDIT_LOG : scopes
+  BUILDING ||--o{ AUDIT_LOG : targets
+
+  USER {
+    string id PK
+    string email
+    string displayName
+    string platformRole
+    string status
+  }
+
+  PROJECT {
+    string id PK
+    string name
+    string country
+    string ownerUserId FK
+    string status
+  }
+
+  PROJECT_MEMBERSHIP {
+    string id PK
+    string projectId FK
+    string userId FK
+    string projectRole
+    string status
+  }
+
+  MEMBERSHIP_REQUEST {
+    string id PK
+    string projectId FK
+    string userId FK
+    string status
+    datetime requestedAt
+  }
+
+  INVITATION {
+    string id PK
+    string projectId FK
+    string email
+    string status
+    datetime invitedAt
+  }
+
+  BUILDING {
+    string id PK
+    string projectId FK
+    string createdByUserId FK
+    string name
+    string status
+  }
+
+  BUILDING_GENERAL_DATA {
+    string buildingId PK_FK
+    string type
+    string usage
+    string country
+    number floorArea
+    string address
+  }
+
+  SRI_MODEL {
+    string id PK
+    string buildingId FK
+    string method
+    boolean hasDefaultWeightings
+    string assessmentDate
+    string schemaVersion
+  }
+
+  SRI_SERVICE_ENTRY {
+    string id PK
+    string sriModelId FK
+    string domain
+    string serviceCode
+    boolean applicable
+    number level
+    number compliance
+  }
+
+  SRI_RESULTS {
+    string id PK
+    string sriModelId FK
+    number totalScore
+    string scoreClass
+    datetime calculatedAt
+  }
+
+  EPB_MODEL {
+    string id PK
+    string buildingId FK
+    string schemaVersion
+    string validationStatus
+    string transformationStatus
+  }
+
+  EPB_LIBRARY {
+    string id PK
+    string epbModelId FK
+    string libraryType
+  }
+
+  EPB_ZONE {
+    string id PK
+    string epbModelId FK
+    string name
+    number volume
+    number floorArea
+  }
+
+  EPB_SPACE {
+    string id PK
+    string epbZoneId FK
+    string name
+    number volume
+    number floorArea
+  }
+
+  EPB_SURFACE {
+    string id PK
+    string epbZoneId FK
+    string surfaceType
+    string constructionId
+    number area
+    number azimuth
+    number tilt
+  }
+
+  CALCULATION_RUN {
+    string id PK
+    string buildingId FK
+    string status
+    string inputSnapshotVersion
+    number primaryEnergy
+    number operationalGHG
+    datetime startedAt
+    datetime completedAt
+  }
+
+  AUDIT_LOG {
+    string id PK
+    string userId FK
+    string projectId FK
+    string buildingId FK
+    string action
+    datetime createdAt
+  }

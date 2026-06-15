@@ -5,7 +5,8 @@ flowchart TD
 subgraph APP[Application menu and calculation workflow]
 direction TD
 
-A[Projects Dashboard] --> B[Add New Building]
+PL[Project List / Project Selection] -->|Open allowed project| A[Project Dashboard / Selected Project Workspace]
+A --> B[Add New Building]
 A --> C[Open Edit Building]
 
 B --> C
@@ -97,7 +98,7 @@ direction TD
     OwnerManagementPage -->|Owner adds or invites member by email| DirectMember[Invited user accepts membership]
     Pending --> NoAccess[No project building access yet]
 
-    ApprovedUser --> UserPage[Project Dashboard access\nApproved project scope]
+    ApprovedUser --> UserPage[Project List access\nCan open approved project dashboard]
     UserPage --> UserCreate[Can create buildings]
     UserPage --> UserEditOwn[Can edit only own buildings]
     UserPage --> UserNoEditOthers[Cannot edit buildings created by other users]
@@ -118,7 +119,7 @@ direction TD
     ExitUserView --> SiteAdminPage
     SiteAdminPage --> AdminProjectList[Open Project List as Admin<br/>Full access]
     AdminProjectList --> SiteAdminAllProjects[Can access all projects]
-    SiteAdminAllProjects --> A
+    SiteAdminAllProjects --> PL
     SiteAdminAllProjects --> SiteAdminEditAll[Can edit project dashboards and child pages]
     SiteAdminEditAll --> SiteAdminCreateAny[Can create/edit buildings, SRI and EPB<br/>through existing normal pages]
 
@@ -152,6 +153,6 @@ direction TD
 end
 
 %% Cross-flow handoff
-ApprovedUser --> A
-OwnerEditAll --> A
-SiteAdminAllProjects --> A
+ApprovedUser --> PL
+OwnerEditAll --> PL
+SiteAdminAllProjects --> PL

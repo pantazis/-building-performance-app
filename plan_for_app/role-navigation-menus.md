@@ -12,6 +12,14 @@ Purpose:
 - Keep child pages out of the main menu; users reach them through the parent dashboard/workflow page.
 - Keep temporary workflow states such as Pending Member / Applicant, Invited User, and Access Denied out of the canonical role list.
 
+Important view distinction:
+
+- Project List and Project Dashboard are different views.
+- Project List is the project browsing/selection view for available projects, membership requests, membership status, and create-project actions.
+- Project Dashboard is the selected project workspace for one project after access is approved. It contains buildings and entry points to Building, SRI, EPB, and calculation workflows.
+- `nav-project-list` and `nav-project-dashboard` must remain separate menu/navigation concepts.
+- `view/A-projects-dashboard.html` is the current prototype file for the selected Project Dashboard / project workspace. The Project List page is planned but not yet implemented as a prototype HTML file.
+
 Source documents:
 
 - `plan_for_app/userRoles.md`
@@ -57,7 +65,7 @@ These are stable menu IDs that can be reused across roles.
 | `nav-project-list` | Projects | Project List page, when created | For browsing available projects. |
 | `nav-project-create` | Create Project | Create Project page, when created | Registered users and admins. |
 | `nav-project-request-status` | Membership Status | Pending membership status page, when created | Optional pending/applicant state. |
-| `nav-project-dashboard` | Project Dashboard | `view/A-projects-dashboard.html` | Main dashboard entry. |
+| `nav-project-dashboard` | Project Dashboard | `view/A-projects-dashboard.html` | Selected project workspace after opening an allowed project from the Project List. |
 | `nav-project-members` | Project Users | Project users management page, when created | Project Owner and Site Admin. One page for members, invitations, and membership requests. |
 | `nav-project-settings` | My Projects | My projects list page, when created | Project Owner and Site Admin. Lists manageable projects; each project has Edit/Delete actions. |
 | `nav-admin-console` | Site Admin Console | `view/site-admin-console.html`, when created | Site Admin only. One compact page with internal admin sections/tabs. |
@@ -116,14 +124,16 @@ Project Member menu:
 
 | Order | Menu ID | Label | Target |
 |---:|---|---|---|
-| 1 | `nav-project-dashboard` | Project Dashboard | `view/A-projects-dashboard.html` |
-| 2 | `nav-profile` | My Profile | User profile page, when created |
-| 3 | `nav-about` | About | `view/about.html` |
-| 4 | `nav-logout` | Logout | Logout action |
+| 1 | `nav-project-list` | Projects | Project List page, when created |
+| 2 | `nav-project-dashboard` | Project Dashboard | `view/A-projects-dashboard.html` |
+| 3 | `nav-profile` | My Profile | User profile page, when created |
+| 4 | `nav-about` | About | `view/about.html` |
+| 5 | `nav-logout` | Logout | Logout action |
 
 Project Member menu scope:
 
 - Show `nav-project-dashboard` only for approved projects.
+- Project List is used first to select an approved project; Project Dashboard opens after project selection.
 - Child pages such as Add New Building, Open/Edit Building, SRI, and EPB are opened from the dashboard/building flow, not from the main menu.
 - Project Member can edit only buildings they created.
 - Do not show project user management or site admin menu items.
@@ -139,16 +149,18 @@ Project Owner menu:
 
 | Order | Menu ID | Label | Target |
 |---:|---|---|---|
-| 1 | `nav-project-dashboard` | Project Dashboard | `view/A-projects-dashboard.html` |
-| 2 | `nav-project-members` | Project Users | Project users management page, when created |
-| 3 | `nav-project-settings` | My Projects | My projects list page, when created |
-| 4 | `nav-profile` | My Profile | User profile page, when created |
-| 5 | `nav-about` | About | `view/about.html` |
-| 6 | `nav-logout` | Logout | Logout action |
+| 1 | `nav-project-list` | Projects | Project List page, when created |
+| 2 | `nav-project-dashboard` | Project Dashboard | `view/A-projects-dashboard.html` |
+| 3 | `nav-project-members` | Project Users | Project users management page, when created |
+| 4 | `nav-project-settings` | My Projects | My projects list page, when created |
+| 5 | `nav-profile` | My Profile | User profile page, when created |
+| 6 | `nav-about` | About | `view/about.html` |
+| 7 | `nav-logout` | Logout | Logout action |
 
 Project Owner menu scope:
 
 - Show management items only inside projects the user owns.
+- Project List is used first to select or manage an owned project; Project Dashboard opens after project selection.
 - Child pages such as Add New Building, Open/Edit Building, SRI, and EPB are opened from the dashboard/building flow, not from the main menu.
 - Project Owner can edit all buildings inside owned projects.
 - Do not show global Site Admin items unless the same user is also Site Admin.
@@ -167,14 +179,16 @@ Site Admin menu:
 | Order | Menu ID | Label | Target |
 |---:|---|---|---|
 | 1 | `nav-admin-console` | Site Admin Console | `view/site-admin-console.html`, when created |
-| 2 | `nav-project-dashboard` | Project Dashboard | `view/A-projects-dashboard.html` |
-| 3 | `nav-profile` | My Profile | User profile page, when created |
-| 4 | `nav-about` | About | `view/about.html` |
-| 5 | `nav-logout` | Logout | Logout action |
+| 2 | `nav-project-list` | Projects | Project List page, when created |
+| 3 | `nav-project-dashboard` | Project Dashboard | `view/A-projects-dashboard.html` |
+| 4 | `nav-profile` | My Profile | User profile page, when created |
+| 5 | `nav-about` | About | `view/about.html` |
+| 6 | `nav-logout` | Logout | Logout action |
 
 Site Admin menu scope:
 
 - Site Admin can access all projects and all buildings.
+- Site Admin should open Project List first when choosing a project, then open the selected Project Dashboard.
 - Child pages such as Add New Building, Open/Edit Building, SRI, and EPB are opened from the dashboard/building flow, not from the main menu.
 - Site Admin can open the compact Site Admin Console to see all users and select a user.
 - Full permission does not require one menu item per admin function; keep the menu compact and reuse existing project list, dashboard, building, SRI, and EPB pages.
