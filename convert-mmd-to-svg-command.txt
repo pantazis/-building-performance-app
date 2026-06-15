@@ -1,0 +1,13 @@
+Run this command from the project root:
+
+scripts\convert-planfor-mmd-to-svg.bat
+
+What it does:
+- Finds every .mmd file inside .\planfor app
+- Converts each file to an .svg with the same name
+- Example: .\planfor app\plan.mmd becomes .\planfor app\plan.svg
+
+Requirement:
+- Node.js/npm must be installed.
+- The script uses Mermaid CLI through npx:
+  npx --yes @mermaid-js/mermaid-cli
