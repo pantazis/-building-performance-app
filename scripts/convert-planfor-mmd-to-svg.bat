@@ -1,10 +1,10 @@
 @echo off
 setlocal enabledelayedexpansion
 
-rem Convert every Mermaid .mmd file in "planfor app" to an SVG with the same base name.
+rem Convert every Mermaid .mmd file in "plan_for_app" to an SVG with the same base name.
 rem Requires Node.js/npm. Mermaid CLI is downloaded temporarily through npx if not installed.
 
-set "SOURCE_DIR=%~dp0..\planfor app"
+set "SOURCE_DIR=%~dp0..\plan_for_app"
 
 if not exist "%SOURCE_DIR%" (
   echo ERROR: Source folder not found: "%SOURCE_DIR%"

@@ -1,4 +1,4 @@
-﻿flowchart TD
+flowchart TD
 
 %% Combined from input.mmd and user-management-permissions.mmd
 
@@ -89,7 +89,7 @@ direction TD
     ProjectList --> ProjectDetail[Project detail page]
     ProjectDetail --> AskMembership[User asks to become a member]
     AskMembership --> MembershipRequest[Membership request waits for owner approval]
-    MembershipRequest --> Pending[Pending invitation: wait for owner decision]
+    MembershipRequest --> Pending[Pending membership request / applicant state\nWait for owner decision]
     MembershipRequest -->|Visible only to owner| OwnerManagementPage
 
     ProjectCheck -->|Yes: already member of specific project| ApprovedUser[Approved project user]
@@ -97,12 +97,12 @@ direction TD
     OwnerManagementPage -->|Owner adds or invites member by email| DirectMember[Invited user accepts membership]
     Pending --> NoAccess[No project building access yet]
 
-    ApprovedUser --> UserPage[User management and projects access]
+    ApprovedUser --> UserPage[Project Dashboard access\nApproved project scope]
     UserPage --> UserCreate[Can create buildings]
     UserPage --> UserEditOwn[Can edit only own buildings]
     UserPage --> UserNoEditOthers[Cannot edit buildings created by other users]
 
-    ProjectCheck -->|Yes: project owner| OwnerManagementPage[Owner project area / user management page<br/>Can manage project users<br/>Can invite member by email]
+    ProjectCheck -->|Yes: project owner| OwnerManagementPage[Project Owner area / Project Users management<br/>Can manage project users<br/>Can invite member by email]
     OwnerManagementPage -->|Owner reviews pending requests| OwnerDecision{Approve invitation?}
     OwnerDecision -->|Approve| OwnerApprove[Invitation becomes approved]
     OwnerDecision -->|Disapprove| OwnerDisapprove[Invitation becomes disapproved]
@@ -110,12 +110,17 @@ direction TD
     OwnerDisapprove --> NoAccess
     DirectMember --> ApprovedUser
     OwnerManagementPage --> OwnerEditAll[Can edit all buildings under own project]
-
-    AdminCheck -->|Yes| SiteAdminPage[Site admin console]
-    SiteAdminPage --> SiteAdminAllProjects[Can access all projects]
-    SiteAdminPage --> SiteAdminEditAll[Can edit all buildings in all projects]
-    SiteAdminPage --> SiteAdminCreateAny[Can create buildings with no restrictions]
-    SiteAdminPage --> SiteAdminManageAll[Can manage users and invitations across projects]
+    AdminCheck -->|Yes| SiteAdminPage[Site admin console<br/>One compact admin page]
+    SiteAdminPage --> SiteAdminUsers[All users list]
+    SiteAdminUsers --> SelectUser[Select user]
+    SelectUser --> BecomeUser[Become User / View as User mode<br/>Continue normal app flow as selected user]
+    BecomeUser --> ExitUserView[Exit user view<br/>Return to Site Admin Console]
+    ExitUserView --> SiteAdminPage
+    SiteAdminPage --> AdminProjectList[Open Project List as Admin<br/>Full access]
+    AdminProjectList --> SiteAdminAllProjects[Can access all projects]
+    SiteAdminAllProjects --> A
+    SiteAdminAllProjects --> SiteAdminEditAll[Can edit project dashboards and child pages]
+    SiteAdminEditAll --> SiteAdminCreateAny[Can create/edit buildings, SRI and EPB<br/>through existing normal pages]
 
     subgraph AccessRules[Final building access rules]
         Rule1[Approved regular user: create building + edit own buildings only]
@@ -138,11 +143,11 @@ direction TD
     classDef role fill:#f3eefc,stroke:#6f42c1,stroke-width:2px,color:#25113f
     classDef rule fill:#f7f7f7,stroke:#666,stroke-width:1px,color:#222
 
-    class OpenApp,Login,Register,RegistrationSuccess,Pending,UserPage,ProfilePage,OwnerManagementPage,SiteAdminPage,CreateProject,ProjectList,ProjectDetail,AskMembership,MembershipRequest page
+    class OpenApp,Login,Register,RegistrationSuccess,Pending,UserPage,ProfilePage,OwnerManagementPage,SiteAdminPage,SiteAdminUsers,SelectUser,BecomeUser,ExitUserView,AdminProjectList,CreateProject,ProjectList,ProjectDetail,AskMembership,MembershipRequest page
     class HasAccount,Auth,AdminCheck,ProjectCheck,OwnerDecision decision
     class AuthenticatedUser,ApprovedUser,UserCreate,UserEditOwn,EditOwnProfile,OwnerApprove,BecomeOwner,DirectMember approved
     class Denied,NoAccess,UserNoEditOthers,OwnerDisapprove rejected
-    class OwnerEditAll,SiteAdminAllProjects,SiteAdminEditAll,SiteAdminCreateAny,SiteAdminManageAll role
+    class OwnerEditAll,SiteAdminAllProjects,SiteAdminEditAll,SiteAdminCreateAny role
     class Rule1,Rule2,Rule3,Rule4 rule
 end
 
