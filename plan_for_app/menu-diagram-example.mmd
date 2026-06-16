@@ -118,7 +118,7 @@ direction TD
     UserPage --> UserEditOwn[Can edit only own buildings]
     UserPage --> UserNoEditOthers[Cannot edit buildings created by other users]
 
-    ProjectCheck -->|Yes: project owner| OwnerManagementPage[Project Owner area / Project Users management<br/>Can manage project users<br/>Can add registered user by email]
+    ProjectCheck -->|Yes: project owner| OwnerManagementPage[Project Owner area / Project Users management<br/>Can manage project users<br/>Can add registered user by email<br/>view/project-users.html]
     OwnerManagementPage -->|Owner reviews pending requests| OwnerDecision{Approve invitation?}
     OwnerDecision -->|Approve| OwnerApprove[Invitation becomes approved]
     OwnerDecision -->|Disapprove| OwnerDisapprove[Invitation becomes disapproved]

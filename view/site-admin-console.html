@@ -423,7 +423,6 @@
         <h2 id="modal-title">Project details</h2>
         <p id="modal-description" class="muted"></p>
       </div>
-      <div id="modal-status"></div>
       <div id="modal-detail-grid" class="project-detail-grid" aria-label="Selected project metadata"></div>
       <div class="modal-actions">
         <button id="close-modal" type="button" class="btn btn-default">Close</button>
@@ -453,7 +452,6 @@
     const closeModalButton = document.getElementById('close-modal');
     const modalTitle = document.getElementById('modal-title');
     const modalDescription = document.getElementById('modal-description');
-    const modalStatus = document.getElementById('modal-status');
     const modalDetailGrid = document.getElementById('modal-detail-grid');
     const modalOpenProjectList = document.getElementById('modal-open-project-list');
     let selectedOwnerId = null;
@@ -498,14 +496,6 @@
     }
 
     const owners = buildOwners();
-
-    function statusChipClass(status) {
-      return {
-        ACTIVE: 'chip--ready',
-        ARCHIVED: 'chip--archived',
-        DRAFT: 'chip--draft'
-      }[status] || 'chip--draft';
-    }
 
     function ownerCountries(owner) {
       return Array.from(new Set(owner.projects.map((project) => project.country).filter(Boolean))).join(', ') || 'Not provided';
@@ -553,7 +543,6 @@
               <button class="project-title-button" type="button" data-open-project="${escapeHtml(project.id)}">${escapeHtml(project.name)}</button>
               <p class="caption">${escapeHtml(project.country || 'Country not set')} · ${escapeHtml(project.city || 'City not set')} · ${escapeHtml(project.buildingCount)} buildings</p>
             </div>
-            <span class="chip ${statusChipClass(project.status)}">${escapeHtml(project.status || 'UNKNOWN')}</span>
           </div>
           <p class="muted">${escapeHtml(project.shortDescription || project.description || 'No short description available.')}</p>
           <button class="btn btn-default" type="button" data-open-project="${escapeHtml(project.id)}">View all info</button>
@@ -607,7 +596,6 @@
       lastFocusedElement = document.activeElement;
       modalTitle.textContent = project.name;
       modalDescription.textContent = project.description || project.shortDescription || 'Project summary is available for review.';
-      modalStatus.innerHTML = `<span class="chip ${statusChipClass(project.status)}">${escapeHtml(project.status || 'UNKNOWN')}</span>`;
       modalDetailGrid.innerHTML = [
         ['Project ID', project.id],
         ['Owner', project.ownerName],
@@ -615,8 +603,7 @@
         ['Country', project.country],
         ['City', project.city],
         ['Address', project.address],
-        ['Buildings', project.buildingCount],
-        ['Project status', project.status]
+        ['Buildings', project.buildingCount]
       ].map(([label, value]) => `
         <div class="project-detail-item">
           <span>${escapeHtml(label)}</span>

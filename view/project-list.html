@@ -324,7 +324,7 @@
                 <label for="project-search" class="sr-only">Search projects</label>
                 <div class="search-wrap">
                   <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-                  <input id="project-search" type="search" placeholder="Search by project, owner, country, status" />
+                  <input id="project-search" type="search" placeholder="Search by project, owner, country" />
                 </div>
               </article>
 
@@ -512,8 +512,7 @@
         ['Country', project.country],
         ['City', project.city],
         ['Address', project.address],
-        ['Buildings', project.buildingCount],
-        ['Project status', project.status]
+        ['Buildings', project.buildingCount]
       ].map(([label, value]) => `
         <div class="project-detail-item">
           <span>${escapeHtml(label)}</span>
