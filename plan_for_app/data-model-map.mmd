@@ -72,12 +72,12 @@ erDiagram
   }
 
   BUILDING_GENERAL_DATA {
-    string buildingId PK_FK
+    string buildingId PK
     string type
     string usage
     string country
-    number floorArea
-    string address
+    float floorArea
+    string streetAddress
   }
 
   SRI_MODEL {
@@ -95,14 +95,14 @@ erDiagram
     string domain
     string serviceCode
     boolean applicable
-    number level
-    number compliance
+    float level
+    float compliance
   }
 
   SRI_RESULTS {
     string id PK
     string sriModelId FK
-    number totalScore
+    float totalScore
     string scoreClass
     datetime calculatedAt
   }
@@ -125,16 +125,16 @@ erDiagram
     string id PK
     string epbModelId FK
     string name
-    number volume
-    number floorArea
+    float volume
+    float floorArea
   }
 
   EPB_SPACE {
     string id PK
     string epbZoneId FK
     string name
-    number volume
-    number floorArea
+    float volume
+    float floorArea
   }
 
   EPB_SURFACE {
@@ -142,9 +142,9 @@ erDiagram
     string epbZoneId FK
     string surfaceType
     string constructionId
-    number area
-    number azimuth
-    number tilt
+    float area
+    float azimuth
+    float tilt
   }
 
   CALCULATION_RUN {
@@ -152,8 +152,8 @@ erDiagram
     string buildingId FK
     string status
     string inputSnapshotVersion
-    number primaryEnergy
-    number operationalGHG
+    float primaryEnergy
+    float operationalGHG
     datetime startedAt
     datetime completedAt
   }

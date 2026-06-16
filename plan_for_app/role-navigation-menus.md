@@ -68,7 +68,7 @@ These are stable menu IDs that can be reused across roles.
 | `nav-project-dashboard` | Project Dashboard | `view/A-projects-dashboard.html` | Selected project workspace after opening an allowed project from the Project List. |
 | `nav-project-members` | Project Users | Project users management page, when created | Project Owner and Site Admin. One page for members, invitations, and membership requests. |
 | `nav-project-settings` | My Projects | My projects list page, when created | Project Owner and Site Admin. Lists manageable projects; each project has Edit/Delete actions. |
-| `nav-admin-console` | Site Admin Console | `view/site-admin-console.html`, when created | Site Admin only. One compact page with internal admin sections/tabs. |
+| `nav-admin-console` | Site Admin Console | `view/site-admin-console.html`, when created | Site Admin only. One compact page that lists Project Owners and starts selected-owner mode. |
 
 ---
 
@@ -170,27 +170,28 @@ Project Owner menu scope:
 ## Role menu: Site Admin
 
 Site Admin is a platform-level administrator.
-Site Admin access is global and can override project-level restrictions, while sensitive or destructive actions still require confirmations and audit logging.
+Site Admin access is exercised through selected Project Owner context in the minimal prototype, while sensitive or destructive actions still require confirmations and audit logging.
 
-Site Admin should have full control while keeping the global menu compact. Do not create separate top-level menu pages for every admin function unless a future requirement explicitly needs them. Use one compact Site Admin Console page focused on an all-users list, selected user context, and handoff into the existing project list/dashboard flow.
+Site Admin should keep the global menu compact. Do not create separate top-level menu pages for every admin function unless a future requirement explicitly needs them. Use one compact Site Admin Console page focused on selecting a Project Owner and handing off into the existing Project List / Project Dashboard flow as that selected owner.
 
 Site Admin menu:
 
 | Order | Menu ID | Label | Target |
 |---:|---|---|---|
 | 1 | `nav-admin-console` | Site Admin Console | `view/site-admin-console.html`, when created |
-| 2 | `nav-project-list` | Projects | Project List page, when created |
-| 3 | `nav-project-dashboard` | Project Dashboard | `view/A-projects-dashboard.html` |
+| 2 | `nav-project-list` | Projects | Project List page, when created; shown after selecting a Project Owner |
+| 3 | `nav-project-dashboard` | Project Dashboard | `view/A-projects-dashboard.html`; shown after selecting a Project Owner and opening an allowed project |
 | 4 | `nav-profile` | My Profile | User profile page, when created |
 | 5 | `nav-about` | About | `view/about.html` |
 | 6 | `nav-logout` | Logout | Logout action |
 
 Site Admin menu scope:
 
-- Site Admin can access all projects and all buildings.
-- Site Admin should open Project List first when choosing a project, then open the selected Project Dashboard.
+- Site Admin first opens the Site Admin Console and selects a Project Owner.
+- Site Admin then continues into the normal Project List as the selected Project Owner.
+- Site Admin can access the projects and buildings that the selected Project Owner can manage.
 - Child pages such as Add New Building, Open/Edit Building, SRI, and EPB are opened from the dashboard/building flow, not from the main menu.
-- Site Admin can open the compact Site Admin Console to see all users and select a user.
+- Site Admin can exit selected-owner mode and return to the Project Owners list.
 - Full permission does not require one menu item per admin function; keep the menu compact and reuse existing project list, dashboard, building, SRI, and EPB pages.
 - Destructive or sensitive actions should require confirmation and audit logging.
 
@@ -198,31 +199,31 @@ Site Admin Console required content:
 
 | Area / Action ID | Label | What it contains | Notes |
 |---|---|---|---|
-| `admin-area-users-list` | All Users List | Search/select users. | Main content of the compact console. |
-| `admin-action-become-user` | Become User / View as User | Continue the normal application flow as the selected user. | Show a persistent exit control back to Site Admin Console. |
-| `admin-action-open-project-list` | Open Project List as Admin | Open the normal Project List / Project Dashboard flow with full Site Admin permissions. | No separate admin-only project/building workflow pages. |
+| `admin-area-project-owners-list` | Project Owners List | Search/select Project Owners only. | Main content of the compact console. |
+| `admin-area-selected-owner-details` | Selected Project Owner Details | Show simple details for the selected Project Owner. | Confirms the owner context before continuing. |
+| `admin-action-continue-as-owner` | Continue as Project Owner | Continue the normal application flow as the selected Project Owner. | Show a persistent banner and exit control back to Site Admin Console. |
+| `admin-action-exit-owner-view` | Exit Selected-Owner View | Leave selected-owner mode and return to the Project Owners list. | Available from the banner/state control. |
 
 Prototype role preview guidance:
 
 - A demo login selector may let testers choose a role and see the matching menu.
-- The Site Admin Console can support role/user visibility checks through `Become User / View as User` from the selected user.
+- The Site Admin Console can support owner-context visibility checks through `Continue as Project Owner` from the selected Project Owner.
 - Role preview changes visible navigation only in the prototype; real applications still need server-side permission checks.
 
-Site Admin operating modes:
+Site Admin selected-owner mode:
 
 | Mode ID | Label | Purpose | Typical flow | Safety notes |
 |---|---|---|---|---|
-| `admin-mode-become-user` | Become User / View as User | Continue the application as a selected user to support them, debug visibility, or verify role-based navigation. | Site Admin Console → Users → Select user → Become User → continue through that user's normal Project Dashboard / SRI / EPB flow. | Show a persistent banner such as `Viewing as Maria — Exit user view`. Log the action in the audit log. |
-| `admin-mode-free-edit` | Admin Free Edit | Keep full Site Admin permissions and directly edit any project/building from existing project and building flows. | Site Admin Console → Open Project List as Admin → Open any project/dashboard/building → edit with admin permission. | Show a persistent banner such as `Admin edit mode — Full access`. Destructive actions require confirmation and audit logging. |
+| `admin-mode-selected-owner` | Site Admin viewing as Project Owner | Continue the application as a selected Project Owner to support or manage that owner's projects through the normal owner workflow. | Site Admin Console → Project Owners list → Select Project Owner → Continue as Project Owner → Project List → Project Dashboard → Building / SRI / EPB flow. | Show a persistent banner such as `Site Admin viewing as Project Owner: Maria — Exit owner view`. Log actions with both the real Site Admin actor and the selected Project Owner context. |
 
-No separate user-projects page is required for the minimal prototype. The compact Site Admin Console should show an all-users list and, when a user is selected, a simple details panel/card with:
+No separate user-projects page is required for the minimal prototype. The compact Site Admin Console should show a Project Owners list and, when an owner is selected, a simple details panel/card with:
 
-- User profile summary.
-- Global role/status.
-- `Become User` action.
-- `Open Project List as Admin` action, which opens the normal project list/dashboard flow in Admin Free Edit mode.
+- Project Owner profile summary.
+- Owned project count/status summary, if available.
+- `Continue as Project Owner` action.
+- `Exit selected-owner view` action when already viewing as an owner.
 
-For direct project editing, Site Admin should reuse the existing project list/dashboard and building child pages instead of a new admin-only duplicate flow. The Site Admin Console should not become a complicated multi-view admin area.
+For project editing, Site Admin should reuse the existing Project List, Project Dashboard, and building child pages as the selected Project Owner instead of a new admin-only duplicate flow. The Site Admin Console should not become a complicated multi-view admin area.
 
 ---
 
@@ -251,7 +252,7 @@ This page can include these sections/actions:
 
 | Area / Action ID | Label | What the user can do | Notes |
 |---|---|---|---|
-| `section-project-members` | Project Members | View current project members, review member roles/status, and remove or update members when allowed. | Available to Project Owner for owned projects and Site Admin for all projects. |
+| `section-project-members` | Project Members | View current project members, review member roles/status, and remove or update members when allowed. | Available to Project Owner for owned projects and Site Admin through selected-owner mode. |
 | `action-project-invite-user` | Invite User | Invite a user by email to join the selected project. | Previously represented by `nav-project-invitations`. Now an action inside `nav-project-members`. |
 | `section-project-membership-requests` | Membership Requests | View pending project membership requests and approve or reject them. | Previously represented by `nav-project-requests`. Now a section inside `nav-project-members`. |
 
@@ -261,7 +262,7 @@ This page can include these sections/actions:
 
 Parent menu item: `nav-project-settings`
 
-This page lists projects the user can manage. Project Owner sees owned projects. Site Admin can manage any project from the global project list/admin context. These actions are not top-level main menu items.
+This page lists projects the user can manage. Project Owner sees owned projects. Site Admin sees projects for the selected Project Owner while in selected-owner mode. These actions are not top-level main menu items.
 
 | Action ID | Label | Target | Opened from | Notes |
 |---|---|---|---|---|

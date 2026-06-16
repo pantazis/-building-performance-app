@@ -5,36 +5,37 @@ flowchart TD
 subgraph APP[Application menu and calculation workflow]
 direction TD
 
-PL[Project List / Project Selection] -->|Open allowed project| A[Project Dashboard / Selected Project Workspace]
-A --> B[Add New Building]
-A --> C[Open Edit Building]
+PL[Project List / Project Selection<br/>view/A-projects-dashboard.html] -->|Open allowed project| A[Projects Dashboard / Selected Project Workspace<br/>view/A-projects-dashboard.html]
+A --> B[Add New Building<br/>view/C-open-edit-building.html]
+A --> C[Open / Edit Building<br/>view/C-open-edit-building.html]
+A -.-> ABOUT[About<br/>view/about.html]
 
 B --> C
 
-C --> SRI1[SRI View 1 Methodology Selection]
+C --> SRI1[SRI View 1 Methodology Selection<br/>view/SRI1-methodology-selection.html]
 
-C --> EPB1[EPB View 1 Calculation Settings]
-EPB1 --> EPB1B[EPB View 1b Climate Data]
-EPB1B --> EPB2[EPB View 2 Building Envelope]
-EPB2 --> EPB3[EPB View 3 Thermal Zone]
-EPB3 --> EPBSPACES[EPB Spaces Tab]
-EPBSPACES --> EPBOPS[EPB Operations Tab]
-EPBOPS --> EPB4[EPB Results Performance Summary]
+C --> EPB1[EPB View 1 Calculation Settings<br/>view/EPB1-calculation-settings.html]
+EPB1 --> EPB1B[EPB View 1b Climate Data<br/>view/EPB1b-ground-temperature.html]
+EPB1B --> EPB2[EPB View 2 Building Envelope<br/>view/EPB2-materials-constructions.html]
+EPB2 --> EPB3[EPB View 3 Thermal Zone<br/>view/EPB3-thermal-zones-envelope.html]
+EPB3 --> EPBSPACES[EPB Spaces Tab<br/>view/EPB-spaces-tab.html]
+EPBSPACES --> EPBOPS[EPB Operations Tab<br/>view/EPB-operations-tab.html]
+EPBOPS --> EPB4[EPB Results Performance Summary<br/>view/EPB4-results-summary.html]
 
-SRI1 -->|User-defined weightings| SRI2[SRI2 User-defined Weightings]
-SRI1 -->|Weighting settings| SRI3[SRI3 Weighting Settings]
-SRI2 -->|Continue| SRI14[SRI14 Results]
+SRI1 -->|Default weightings| SRI2[SRI2 Default Weightings<br/>view/SRI2-Default-weightings.html]
+SRI1 -->|Weighting settings| SRI3[SRI3 Weighting Settings<br/>view/SRI3-weighting-settings.html]
+SRI2 -->|Continue| SRI14[SRI14 Results<br/>view/SRI14-results.html]
 SRI3 -->|Continue| SRI14
 
-SRI14 --> SRI5[Heating Tab]
-SRI14 --> SRI6[DHW Tab]
-SRI14 --> SRI7[Cooling Tab]
-SRI14 --> SRI8[Ventilation Tab]
-SRI14 --> SRI9[Lighting Tab]
-SRI14 --> SRI10[Dynamic Envelope Tab]
-SRI14 --> SRI11[Electricity Tab]
-SRI14 --> SRI12[EV Charging Tab]
-SRI14 --> SRI13[Monitoring & Control Tab]
+SRI14 --> SRI5[Heating Tab<br/>view/SRI5-heating-tab.html]
+SRI14 --> SRI6[DHW Tab<br/>view/SRI6-dhw-tab.html]
+SRI14 --> SRI7[Cooling Tab<br/>view/SRI7-cooling-tab.html]
+SRI14 --> SRI8[Ventilation Tab<br/>view/SRI8-ventilation-tab.html]
+SRI14 --> SRI9[Lighting Tab<br/>view/SRI9-lighting-tab.html]
+SRI14 --> SRI10[Dynamic Envelope Tab<br/>view/SRI10-dynamic-envelope-tab.html]
+SRI14 --> SRI11[Electricity Tab<br/>view/SRI11-electricity-tab.html]
+SRI14 --> SRI12[EV Charging Tab<br/>view/SRI12-ev-charging-tab.html]
+SRI14 --> SRI13[Monitoring & Control Tab<br/>view/SRI13-monitoring-control-tab.html]
 
 SRI5 --> SRI14[SRI Results]
 SRI6 --> SRI14[SRI Results]
@@ -69,7 +70,7 @@ direction TD
     OpenApp([User opens app]) --> HasAccount{Does user have an account?}
     HasAccount -->|No| Register[Register account]
     Register --> RegistrationSuccess[Registration successful]
-    RegistrationSuccess --> Login([User logs in])
+    RegistrationSuccess --> Login([User logs in<br/>view/login.html])
     HasAccount -->|Yes| Login
     Login --> Auth{Is user authenticated?}
 
@@ -111,22 +112,27 @@ direction TD
     OwnerDisapprove --> NoAccess
     DirectMember --> ApprovedUser
     OwnerManagementPage --> OwnerEditAll[Can edit all buildings under own project]
-    AdminCheck -->|Yes| SiteAdminPage[Site admin console<br/>One compact admin page]
-    SiteAdminPage --> SiteAdminUsers[All users list]
-    SiteAdminUsers --> SelectUser[Select user]
-    SelectUser --> BecomeUser[Become User / View as User mode<br/>Continue normal app flow as selected user]
-    BecomeUser --> ExitUserView[Exit user view<br/>Return to Site Admin Console]
-    ExitUserView --> SiteAdminPage
-    SiteAdminPage --> AdminProjectList[Open Project List as Admin<br/>Full access]
-    AdminProjectList --> SiteAdminAllProjects[Can access all projects]
-    SiteAdminAllProjects --> PL
-    SiteAdminAllProjects --> SiteAdminEditAll[Can edit project dashboards and child pages]
-    SiteAdminEditAll --> SiteAdminCreateAny[Can create/edit buildings, SRI and EPB<br/>through existing normal pages]
+    AdminCheck -->|Yes| SiteAdminPage[Site Admin Console<br/>Project Owners list + direct Project List action<br/>view/site-admin-console.html]
+    SiteAdminPage --> SiteAdminOwners[Project Owners list]
+    SiteAdminOwners --> SelectOwner[Select Project Owner]
+    SiteAdminPage --> SiteAdminDirectProjectList[Open normal Project List as Site Admin<br/>Direct admin project access banner]
+    SelectOwner --> BecomeOwnerView[Continue as selected Project Owner<br/>Show clear admin-as-owner banner]
+    BecomeOwnerView --> OwnerSelectedProjects[Open normal Project List as selected owner]
+    OwnerSelectedProjects --> PL
+    SiteAdminDirectProjectList --> PL
+    BecomeOwnerView --> ExitOwnerView[Exit selected-owner view<br/>Return to Project Owners list]
+    ExitOwnerView --> SiteAdminPage
+    BecomeOwnerView --> SiteAdminAllProjects[Can manage projects owned by selected owner]
+    SiteAdminAllProjects --> SiteAdminEditAll[Can edit selected owner's project dashboards and child pages]
+    SiteAdminEditAll --> SiteAdminCreateAny[Can create/edit buildings, SRI and EPB<br/>through existing owner pages]
+    SiteAdminDirectProjectList --> SiteAdminAnyDashboard[Can open any project dashboard]
+    SiteAdminAnyDashboard --> SiteAdminDirectEdit[Can create/edit buildings, SRI and EPB<br/>through existing normal pages]
 
     subgraph AccessRules[Final building access rules]
         Rule1[Approved regular user: create building + edit own buildings only]
         Rule2[Project owner: edit all buildings in their project]
-        Rule3[Site admin: create and edit all buildings across all projects]
+        Rule3[Site admin selected-owner mode: create and edit buildings managed by selected Project Owner]
+        Rule5[Site admin direct mode: open any project dashboard and edit through normal pages]
         Rule4[Authenticated user: edit own profile data]
     end
 
@@ -136,6 +142,7 @@ direction TD
     OwnerEditAll --> Rule2
     SiteAdminEditAll --> Rule3
     SiteAdminCreateAny --> Rule3
+    SiteAdminDirectEdit --> Rule5
 
     classDef page fill:#e8f4ff,stroke:#1f77b4,stroke-width:2px,color:#102a43
     classDef decision fill:#fff3cd,stroke:#d39e00,stroke-width:2px,color:#3d2b00
@@ -144,15 +151,16 @@ direction TD
     classDef role fill:#f3eefc,stroke:#6f42c1,stroke-width:2px,color:#25113f
     classDef rule fill:#f7f7f7,stroke:#666,stroke-width:1px,color:#222
 
-    class OpenApp,Login,Register,RegistrationSuccess,Pending,UserPage,ProfilePage,OwnerManagementPage,SiteAdminPage,SiteAdminUsers,SelectUser,BecomeUser,ExitUserView,AdminProjectList,CreateProject,ProjectList,ProjectDetail,AskMembership,MembershipRequest page
+    class OpenApp,Login,Register,RegistrationSuccess,Pending,UserPage,ProfilePage,OwnerManagementPage,SiteAdminPage,SiteAdminOwners,SelectOwner,BecomeOwnerView,OwnerSelectedProjects,ExitOwnerView,CreateProject,ProjectList,ProjectDetail,AskMembership,MembershipRequest,SiteAdminDirectProjectList page
     class HasAccount,Auth,AdminCheck,ProjectCheck,OwnerDecision decision
     class AuthenticatedUser,ApprovedUser,UserCreate,UserEditOwn,EditOwnProfile,OwnerApprove,BecomeOwner,DirectMember approved
     class Denied,NoAccess,UserNoEditOthers,OwnerDisapprove rejected
-    class OwnerEditAll,SiteAdminAllProjects,SiteAdminEditAll,SiteAdminCreateAny role
-    class Rule1,Rule2,Rule3,Rule4 rule
+    class OwnerEditAll,SiteAdminAllProjects,SiteAdminEditAll,SiteAdminCreateAny,SiteAdminAnyDashboard,SiteAdminDirectEdit role
+    class Rule1,Rule2,Rule3,Rule4,Rule5 rule
 end
 
 %% Cross-flow handoff
 ApprovedUser --> PL
 OwnerEditAll --> PL
 SiteAdminAllProjects --> PL
+SiteAdminDirectProjectList --> PL

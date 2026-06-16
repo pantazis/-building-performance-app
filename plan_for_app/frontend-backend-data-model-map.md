@@ -38,7 +38,7 @@ Responsibilities:
 - show current membership/request state
 - allow a Registered User to request membership
 - allow an authenticated user to create a new project, if allowed
-- allow Site Admin to open any project with admin permissions
+- allow Site Admin to open projects through selected Project Owner context
 
 The Project List page is planned but not yet implemented as a prototype HTML file.
 
@@ -146,7 +146,7 @@ The frontend can use composed/nested view models returned by the backend. This k
     firstName,
     lastName,
     organization, // optional
-    platformRole // Registered User | App Admin
+    platformRole // Registered User | Site Admin
   },
   projects: [
     {
@@ -162,7 +162,7 @@ The frontend can use composed/nested view models returned by the backend. This k
   ],
   permissions: {
     canCreateProject,
-    canViewAllProjectsAsAdmin
+    canSelectProjectOwnerAsSiteAdmin
   }
 }
 ```
@@ -173,10 +173,11 @@ Role/membership notes:
 - A user can be a `Project Member` in many projects.
 - A user can have different roles in different projects at the same time, for example `Project Owner` in Project A and `Project Member` in Project B.
 - `Project Owner` and `Project Member` are project-scoped roles stored through `ProjectMembership`, not global user roles.
-- `App Admin` is a platform-level role stored on the user/account and is independent from project memberships.
+- `Site Admin` is a platform-level role stored on the user/account and is independent from project memberships.
+- In the minimal prototype, Site Admin project access is exercised by selecting a Project Owner and continuing in that selected-owner context.
 - `membershipStatus` describes the current user's state for that project row.
 - `currentUserProjectRole` is only populated when `membershipStatus` is `approved` or `owner`; otherwise it should be `null`.
-- `canCreateBuilding` should be computed per project. It is usually `true` for `Project Member`, `Project Owner`, and `App Admin` with project access, but `false` for `none`, `pending`, and `invited` states.
+- `canCreateBuilding` should be computed per project. It is usually `true` for `Project Member`, `Project Owner`, and `Site Admin` only after selected-owner context grants project access, but `false` for `none`, `pending`, and `invited` states.
 
 ### ProjectDashboardViewModel
 
@@ -301,7 +302,7 @@ Role/membership notes:
 | EPB Spaces | `view/EPB-spaces-tab.html` | spaces and zone links | spaces | edit allowed building |
 | EPB Operations | `view/EPB-operations-tab.html` | schedules, thermostats, humidistats, gains | operational controls | edit allowed building |
 | EPB Results Summary | `view/EPB4-results-summary.html` | EPC indicators, calculation run | mostly read-only | view allowed building |
-| Site Admin Console | `view/site-admin-console.html` when created | users, selected user, memberships | admin actions, become-user/admin-mode actions | Site Admin |
+| Site Admin Console | `view/site-admin-console.html` when created | Project Owners list, selected Project Owner details | select owner, continue as selected Project Owner, exit owner-view mode | Site Admin |
 
 ---
 
@@ -330,9 +331,10 @@ Role/membership notes:
 | Pending Member / Applicant | yes, with pending state | no | no building access |
 | Project Member | yes | approved projects | create buildings; edit only own buildings |
 | Project Owner | yes | owned projects | create/edit all buildings in owned projects |
-| Site Admin | yes, all projects | all projects | create/edit all buildings globally |
+| Site Admin | yes, after selecting Project Owner | selected owner's projects | create/edit buildings that the selected Project Owner can manage |
 
 Backend must enforce permissions even when the frontend hides pages or actions.
+Site Admin actions in selected-owner mode should be authorized with the selected Project Owner context and audit logged with both the real Site Admin actor and selected Project Owner context.
 
 ---
 

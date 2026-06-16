@@ -36,13 +36,17 @@ Use 5 canonical roles:
 
 5. Site Admin
 - Platform-level administrator.
-- Can access all projects.
-- Can create/edit all buildings across all projects.
-- Can run the OpenBEP4EU Calculation Engine D2.2 for all buildings across all projects.
-- Can manage/access users globally from the compact Site Admin Console and use existing project/dashboard flows with full admin permission.
-- Can access the site admin console.
-- Can use Become User / View as User mode to continue the app as a selected user for support, debugging, and role visibility checks.
-- Can use Admin Free Edit mode to directly edit any project/building from the existing project list/dashboard and building flows.
+- Can access the Site Admin Console.
+- Site Admin has two supported ways to work in the minimal prototype:
+  1. Select a Project Owner in the Site Admin Console, then continue into the normal application as that selected owner.
+  2. Open the normal Project List as Site Admin, open any project dashboard, and create/edit buildings, SRI, EPB, and calculation workflows through the existing normal pages.
+- Site Admin Console must be simple and focused: it shows a list of Project Owners to select from and a link/action to open the normal Project List as Site Admin.
+- While acting as the selected Project Owner, Site Admin can manage the same projects, buildings, members, invitations, membership requests, SRI, EPB, and calculation workflows that the selected owner can manage.
+- While using direct Site Admin Project List access, Site Admin can open any project dashboard and edit/manage buildings, SRI, EPB, and calculation workflows through the normal project/building pages.
+- Site Admin should not use a broad multi-section admin console for users/projects/buildings/audit logs in the minimal prototype; direct project/building work must reuse the normal Project List / Dashboard / Building flow.
+- The UI must clearly show a persistent banner/state such as "Site Admin viewing as Project Owner: [owner name]".
+- The UI must also clearly show a persistent banner/state for direct admin project access, such as "Site Admin direct project access".
+- Site Admin can exit owner-view mode and return to the Project Owner selection list.
 - Should still use confirmations/audit logs for destructive or sensitive actions.
 
 Role model rules:
@@ -52,16 +56,18 @@ Role model rules:
 - Site Admin is a platform-level role.
 - One person can have different project roles in different projects.
 - Example: same user can be Project Owner in Project A and Project Member in Project B.
-- Site Admin permissions are global and override normal project restrictions.
-- Site Admin does not need separate admin-only duplicate pages for user projects; the Site Admin Console can show user project memberships, then link into the existing project/dashboard flow.
-- Become User mode and Admin Free Edit mode must be visually distinct so the admin knows whether they are acting as a user or acting with full admin permissions.
+- Site Admin permissions are exercised either through selected Project Owner context or through direct Site Admin Project List access in the minimal prototype.
+- Site Admin does not need separate admin-only duplicate pages for user projects.
+- Site Admin Console should list Project Owners, allow selecting one owner, open the normal owner project/dashboard flow, and also provide a direct action to open the normal Project List as Site Admin.
+- Owner-view mode must be visually distinct so the admin knows they are managing as the selected Project Owner.
+- Direct Site Admin project access must be visually distinct so the admin knows they are editing with Site Admin permissions.
 
 Project List vs Project Dashboard:
 - Project List and Project Dashboard are different views.
 - Project List is the project browsing/selection view. It is used to find projects, create a project, request membership, and see membership/request status.
 - Project Dashboard is the selected project workspace after the user has access to a specific project. It shows buildings and starts building, SRI, EPB, and calculation workflows.
 - Registered Users can see the Project List, but they cannot open a Project Dashboard until they are approved into that project or create a project and become its Project Owner.
-- Project Members, Project Owners, and Site Admins open the Project Dashboard only for projects allowed by their project/global permissions.
+- Project Members and Project Owners open the Project Dashboard only for projects allowed by their project permissions. Site Admin can open dashboards through selected Project Owner context or through direct Site Admin Project List access.
 
 Temporary workflow states, not permanent roles:
 - Pending Member / Applicant: requested membership, no building access yet.

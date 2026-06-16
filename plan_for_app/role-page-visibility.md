@@ -190,11 +190,16 @@ Project Owner restrictions:
 Site Admin is a platform-level administrator.
 Site Admin permissions are global and override project-level restrictions.
 
-Site Admin can see all normal application pages:
+Site Admin can see all normal application pages in two ways:
 
-- `view/A-projects-dashboard.html` — All projects dashboard
-- `view/B-add-new-building.html` — Add new building in any project
-- `view/C-open-edit-building.html` — Open/edit any building
+1. **Selected-owner mode** — select a Project Owner and continue as that owner.
+2. **Direct Site Admin Project List access** — open the normal Project List as Site Admin, open any project dashboard, and create/edit through the existing normal pages.
+
+Visible normal pages include:
+
+- `view/A-projects-dashboard.html` — selected owner's project dashboard or any project dashboard opened from direct Site Admin Project List access
+- `view/B-add-new-building.html` — add new building in projects managed by the selected owner or any project opened as Site Admin
+- `view/C-open-edit-building.html` — open/edit buildings managed by the selected owner or any project opened as Site Admin
 - All SRI workflow pages
 - All EPB workflow pages
 - User profile page, when created
@@ -202,46 +207,54 @@ Site Admin can see all normal application pages:
   - `index.html`
   - `view/about.html`
 
-Site Admin can also see global administration pages, when created:
+Site Admin can also see one focused administration page, when created:
 
 - `view/site-admin-console.html` — Site Admin Console
 
-To reduce extra pages, the Site Admin Console should be one compact page, not a complicated multi-view admin area. It should mainly contain:
+The Site Admin Console must be clear and minimal. It is not a broad multi-section admin area. It should mainly contain:
 
-- All users list
-- Selected user details
-- `Become User / View as User` action with an exit back to Site Admin Console
-- `Open Project List as Admin` action with full access
+- Project Owners list
+- Select Project Owner action
+- Clear selected-owner details
+- Continue as selected Project Owner action
+- Open normal Project List as Site Admin action
+- Exit selected-owner view and return to the Project Owner list
 
-The Site Admin should reuse the normal Project List, Project Dashboard, building, SRI, and EPB pages for project/building work instead of separate admin-only project/building views.
+After selecting a Project Owner, the Site Admin should reuse the normal Project List, Project Dashboard, Project Users, building, SRI, and EPB pages as that selected owner. The UI must clearly show a persistent banner/state such as `Site Admin viewing as Project Owner: [owner name]`.
+
+When using direct Site Admin Project List access, the Site Admin should also reuse the normal Project List, Project Dashboard, building, SRI, and EPB pages, but with Site Admin permissions. The UI must clearly show a persistent banner/state such as `Site Admin direct project access`.
 
 Site Admin permissions:
 
-- Can access all projects.
-- Can create/edit all buildings across all projects.
-- Can run the OpenBEP4EU Calculation Engine D2.2 for all buildings across all projects.
-- Can manage/access users from the compact all-users list.
+- Can access projects by selecting a Project Owner and continuing as that owner.
+- Can open the normal Project List as Site Admin, open any project dashboard, and edit through the existing normal pages.
+- Can create/edit buildings that the selected Project Owner can manage.
+- Can create/edit buildings in any project when using direct Site Admin Project List access.
+- Can run the OpenBEP4EU Calculation Engine D2.2 for buildings managed by the selected Project Owner.
+- Can run the OpenBEP4EU Calculation Engine D2.2 for any building opened through direct Site Admin Project List access.
+- Can access the compact Project Owners list.
 - Can access the site admin console.
-- Can view the application as a selected user for testing role-based navigation and visibility.
-- Can use `Become User` mode to continue the normal app flow as a selected user for support/debugging.
-- Can use `Admin Free Edit` mode by opening the normal Project List as Admin and then directly editing any project/building with full admin permission from the existing project dashboard and child pages.
+- Can view/manage the application as a selected Project Owner for support/debugging.
+- Can use selected-owner mode to continue the normal app flow as that Project Owner.
+- Can use direct Site Admin Project List access to open any dashboard and edit with Site Admin permissions.
+- Should not use a separate direct-edit mode in the minimal prototype.
 - Does not need duplicate admin-only project/building workflow pages for the minimal prototype.
 
 Site Admin safety rule:
 
 - Destructive or sensitive actions should require confirmation and audit logging.
-- `Become User` actions should show a clear persistent banner and be recorded in the audit log.
-- `Admin Free Edit` actions should show a clear full-access/admin-mode indicator and be recorded in the audit log when data is changed.
+- Selected Project Owner actions should show a clear persistent banner and be recorded in the audit log.
+- Direct Site Admin Project List actions should show a clear persistent banner and be recorded in the audit log.
 
-Site Admin user/project navigation rule:
+Site Admin project-owner navigation rule:
 
 - Do not create a separate user-projects page for the minimal prototype.
-- Use the Site Admin Console all-users list to select a user and show simple selected-user details.
-- From that user details panel, Site Admin can either:
-  - choose `Become User` to continue as that user, or
-  - choose `Open Project List as Admin` to open the normal project list with full Site Admin permissions.
-- Direct project/building edits should reuse the existing Project Dashboard / Project List / Open Edit Building flow.
-- Admin Free Edit should be visually distinct from Become User / View as User mode so the admin knows whether they are acting as a selected user or with full admin permissions.
+- Use the Site Admin Console Project Owners list to select a Project Owner and show simple selected-owner details.
+- From that owner details panel, Site Admin chooses `Continue as Project Owner`.
+- The app then opens the normal Project List / Project Dashboard / Open Edit Building flow as the selected owner.
+- Site Admin can also choose `Open Project List as Site Admin` to open any project dashboard and edit through the existing Project Dashboard / Project List / Open Edit Building flow.
+- Selected-owner mode must be visually distinct so the admin knows they are managing as the selected Project Owner.
+- Direct Site Admin Project List access must be visually distinct so the admin knows they are editing with Site Admin permissions.
 
 ---
 
@@ -253,19 +266,19 @@ Site Admin user/project navigation rule:
 | Public About / Help | Yes | Yes | Yes | Yes | Yes |
 | User Profile | No | Yes | Yes | Yes | Yes |
 | Project List + Project Info | No | Yes | Yes | Yes | Yes |
-| Create Project | No | Yes | Optional | Optional | Yes |
-| Request Project Membership | No | Yes | Optional | Optional | Yes |
-| Projects Dashboard | No | No | Yes, approved projects | Yes, owned projects | Yes, all projects |
-| Add New Building | No | No | Yes, approved projects | Yes, owned projects | Yes, all projects |
-| Open/Edit Building | No | No | Own buildings only | All buildings in owned projects | All buildings |
-| SRI Workflow | No | No | Yes, allowed buildings | Yes, owned projects | Yes, all buildings |
-| EPB Workflow | No | No | Yes, allowed buildings | Yes, owned projects | Yes, all buildings |
-| Project Members Management | No | No | No | Yes, owned projects | Yes, all projects |
-| Invite Users | No | No | No | Yes, owned projects | Yes, all projects |
-| Approve Membership Requests | No | No | No | Yes, owned projects | Yes, all projects |
+| Create Project | No | Yes | Optional | Optional | Selected-owner mode or direct Site Admin Project List access |
+| Request Project Membership | No | Yes | Optional | Optional | Selected-owner mode if applicable |
+| Projects Dashboard | No | No | Yes, approved projects | Yes, owned projects | Selected owner's projects or any project via direct Site Admin access |
+| Add New Building | No | No | Yes, approved projects | Yes, owned projects | Selected owner's projects or any project via direct Site Admin access |
+| Open/Edit Building | No | No | Own buildings only | All buildings in owned projects | Selected owner's buildings or any building via direct Site Admin access |
+| SRI Workflow | No | No | Yes, allowed buildings | Yes, owned projects | Selected owner's buildings or any building via direct Site Admin access |
+| EPB Workflow | No | No | Yes, allowed buildings | Yes, owned projects | Selected owner's buildings or any building via direct Site Admin access |
+| Project Members Management | No | No | No | Yes, owned projects | Selected-owner mode or direct Site Admin Project List access |
+| Invite Users | No | No | No | Yes, owned projects | Selected-owner mode or direct Site Admin Project List access |
+| Approve Membership Requests | No | No | No | Yes, owned projects | Selected-owner mode or direct Site Admin Project List access |
 | Site Admin Console | No | No | No | No | Yes |
-| Global User Management | No | No | No | No | Yes |
-| Audit Logs | No | No | No | Optional, project scope | Yes, global scope |
+| Global User Management | No | No | No | No | Not in minimal prototype |
+| Audit Logs | No | No | No | Optional, project scope | Used by backend/safety controls; not a broad admin-console page in minimal prototype |
 
 Note: `Project List + Project Info` and `Projects Dashboard` are intentionally separate rows. Project List is the project selection/membership area. Projects Dashboard is the selected project workspace with buildings and workflow actions.
 
@@ -321,7 +334,7 @@ Merged/deprecated SRI page:
 - Run OpenBEP4EU Calculation Engine D2.2 — available from the open/edit building context for roles with building edit/run permission:
   - Project Member: allowed/own buildings only
   - Project Owner: all buildings in owned projects
-  - Site Admin: all buildings across all projects
+  - Site Admin: buildings managed by the selected Project Owner while in selected-owner mode, or any building opened through direct Site Admin Project List access
   - Guest and Registered User without project approval: no access
 
 ### Management pages to create later
@@ -339,17 +352,13 @@ Merged/deprecated SRI page:
   - Approve/disapprove membership request actions
 - My Projects / Project Settings page
 - Site admin console: `view/site-admin-console.html`
-  - Overview section
-  - Users section
-    - Selected user details panel
-    - User project memberships list
-    - Become User action
-    - Open Project as Admin action
-  - Projects section
-  - Buildings section
-  - Requests & Invitations section
-  - Audit Log section
-  - Role Preview section
+  - Project Owners list
+  - Selected Project Owner details panel
+  - Continue as selected Project Owner action
+  - Open normal Project List as Site Admin action
+  - Exit selected-owner view action
+  - Clear persistent banner: `Site Admin viewing as Project Owner: [owner name]`
+  - Clear persistent banner: `Site Admin direct project access`
 
 ---
 
