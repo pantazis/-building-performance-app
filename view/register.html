@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register · OpenBEP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../building-performance-app/style.css" />
+  <style>
+    .register-shell {
+      min-height: calc(100vh - 160px);
+      display: grid;
+      align-items: center;
+      padding-block: var(--sp-lg);
+    }
+
+    .register-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: var(--sp-lg);
+    }
+
+    .register-intro .badge {
+      display: inline-grid;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--green-10);
+      color: var(--green-700);
+      font-weight: 600;
+      margin-bottom: var(--sp-sm);
+    }
+
+    .register-intro h1 {
+      margin-top: 0;
+      margin-bottom: var(--sp-sm);
+    }
+
+    .register-intro p {
+      margin-top: 0;
+      margin-bottom: var(--sp-md);
+    }
+
+    .register-benefits {
+      display: grid;
+      gap: var(--sp-sm);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .register-benefits li {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--sp-xs);
+      align-items: start;
+    }
+
+    .register-benefits i {
+      color: var(--green-700);
+      margin-top: 0.2em;
+    }
+
+    /* COMPONENT: register-form */
+    .c-register-form form {
+      gap: var(--sp-md);
+    }
+
+    .register-card .form-field,
+    .register-card .login-actions,
+    .register-card .social-row {
+      width: 100%;
+    }
+
+    .register-card .btn {
+      justify-content: center;
+    }
+
+    .c-register-form .check-row {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: start;
+      gap: var(--sp-xs);
+      color: var(--muted);
+      font-size: var(--fs-0);
+    }
+
+    /* COMPONENT: validation-state */
+    .c-validation-state {
+      min-height: 20px;
+      margin: 0;
+      color: var(--red-600);
+      font-size: var(--fs-0);
+    }
+
+    /* COMPONENT: social-login */
+    .social-row {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-sm);
+    }
+
+    @media (max-width: 900px) {
+      .register-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .social-row,
+      .login-actions {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="container">
+      <a class="brand" href="./about.html"><img class="logo" src="../building-performance-app/logo.png"
+          alt="OpenBEP logo"></a>
+      <nav id="main-nav" class="nav" aria-label="Authentication navigation">
+        <a href="./login.html">Login</a>
+        <a href="./register.html" aria-current="page">Register</a>
+        <a href="./about.html">Public home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container register-shell">
+    <section class="register-grid" aria-labelledby="register-title">
+      <article class="card register-intro">
+        <span class="badge">OpenBEP4EU</span>
+        <h1 id="register-title">Create your OpenBEP account</h1>
+        <p class="muted">Join the building performance platform to manage assessments, EPB calculations, SRI workflows,
+          reports, and secure data sharing.</p>
+        <ul class="register-benefits" aria-label="Account benefits">
+          <li><i class="fa-solid fa-check" aria-hidden="true"></i><span>Start and manage building assessment projects.</span></li>
+          <li><i class="fa-solid fa-check" aria-hidden="true"></i><span>New accounts start as Registered Users and receive
+              project access after creating a project or being approved as a member.</span></li>
+          <li><i class="fa-solid fa-check" aria-hidden="true"></i><span>Keep reports, calculations, and sharing requests in one
+              workspace.</span></li>
+        </ul>
+      </article>
+
+      <!-- COMPONENT: register-form -->
+      <article id="component-register-form" class="card c-register-form register-card" aria-label="Registration form">
+        <h2>Create account</h2>
+        <form id="register-form" class="grid" novalidate>
+          <label class="form-field" for="register-name">
+            <span>Full name</span>
+            <input id="register-name" type="text" placeholder="Your full name" autocomplete="name" required />
+          </label>
+          <label class="form-field" for="register-email">
+            <span>Email</span>
+            <input id="register-email" type="email" placeholder="name@example.com" autocomplete="email" required />
+          </label>
+          <div class="form-field account-access-note" role="note" aria-label="Account access note">
+            <span>Account access</span>
+            <p class="muted">Your account will be created as a <strong>Registered User</strong>. Project roles are assigned later:
+              create a project to become its Project Owner, or request membership and wait for approval to become a Project Member.</p>
+          </div>
+          <label class="form-field" for="register-password">
+            <span>Password</span>
+            <div class="password-wrap">
+              <input id="register-password" type="password" placeholder="Create a password" minlength="8"
+                autocomplete="new-password" required />
+              <button id="toggle-register-password" type="button" class="btn btn-sm" aria-pressed="false">Show</button>
+            </div>
+          </label>
+          <label class="form-field" for="register-confirm-password">
+            <span>Confirm password</span>
+            <input id="register-confirm-password" type="password" placeholder="Repeat your password" minlength="8"
+              autocomplete="new-password" required />
+          </label>
+
+          <!-- COMPONENT: validation-state -->
+          <p id="component-register-validation-state" class="c-validation-state" role="status" aria-live="polite"></p>
+
+          <label class="check-row" for="register-terms">
+            <input id="register-terms" type="checkbox" required />
+            <span>I agree to the OpenBEP terms, privacy policy, and data processing notices.</span>
+          </label>
+
+          <div class="login-actions">
+            <a href="./login.html" class="muted">Already have an account?</a>
+            <button type="submit" class="btn btn-primary">Create account</button>
+          </div>
+        </form>
+
+        <!-- COMPONENT: social-login -->
+        <div id="component-social-login" class="c-social-login">
+          <p class="caption">Or register with</p>
+          <div class="grid social-row">
+            <button type="button" class="btn"><i class="fa-brands fa-google" aria-hidden="true"></i> Google</button>
+            <button type="button" class="btn"><i class="fa-brands fa-apple" aria-hidden="true"></i> Apple</button>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <!-- COMPONENT: footer -->
+  <footer id="component-footer" class="app-footer c-footer">
+    <div class="container">
+      <p>© 2026 OpenBEP · Contact · Privacy · Terms</p>
+    </div>
+  </footer>
+
+  <script>
+    const registerForm = document.getElementById('register-form');
+    const nameInput = document.getElementById('register-name');
+    const emailInput = document.getElementById('register-email');
+    const passwordInput = document.getElementById('register-password');
+    const confirmPasswordInput = document.getElementById('register-confirm-password');
+    const termsInput = document.getElementById('register-terms');
+    const toggleBtn = document.getElementById('toggle-register-password');
+    const statusEl = document.getElementById('component-register-validation-state');
+
+    toggleBtn.addEventListener('click', () => {
+      const isPassword = passwordInput.type === 'password';
+      passwordInput.type = isPassword ? 'text' : 'password';
+      toggleBtn.textContent = isPassword ? 'Hide' : 'Show';
+      toggleBtn.setAttribute('aria-pressed', String(isPassword));
+    });
+
+    registerForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      statusEl.style.color = 'var(--red-600)';
+
+      if (!nameInput.value.trim() || !emailInput.value.trim() || !passwordInput.value.trim()) {
+        statusEl.textContent = 'Please complete all required account fields.';
+        return;
+      }
+
+      if (!emailInput.value.includes('@')) {
+        statusEl.textContent = 'Please enter a valid email address.';
+        return;
+      }
+
+      if (passwordInput.value.length < 8) {
+        statusEl.textContent = 'Password must be at least 8 characters.';
+        return;
+      }
+
+      if (passwordInput.value !== confirmPasswordInput.value) {
+        statusEl.textContent = 'Password and confirmation do not match.';
+        return;
+      }
+
+      if (!termsInput.checked) {
+        statusEl.textContent = 'Please accept the terms and privacy notices.';
+        return;
+      }
+
+      statusEl.textContent = 'Account created successfully as Registered User (prototype flow). Continue to Login.';
+      statusEl.style.color = 'var(--green-700)';
+    });
+  </script>
+</body>
+
+</html>

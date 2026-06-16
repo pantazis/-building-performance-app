@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project List · OpenBEP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../building-performance-app/style.css" />
+  <style>
+    :root {
+      --btn-color-success: #2db34a;
+      --btn-color-default: #86c440;
+      --btn-color-warning: #fecf17;
+      --btn-color-orange: #f47721;
+      --btn-color-danger: #ef3e23;
+    }
+
+    .project-list-layout {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--sp-md);
+    }
+
+    .project-list-layout > .full {
+      grid-column: 1 / -1;
+    }
+
+    .project-list-layout > .third {
+      grid-column: span 4;
+    }
+
+    .project-list-layout > .two-third {
+      grid-column: span 8;
+    }
+
+    @media (max-width: 900px) {
+      .project-list-layout > .third,
+      .project-list-layout > .two-third {
+        grid-column: 1 / -1;
+      }
+    }
+
+    /* COMPONENT: breadcrumbs */
+    .c-breadcrumbs ol {
+      display: grid;
+      grid-auto-flow: column;
+      justify-content: start;
+      gap: var(--sp-xs);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .c-breadcrumbs li + li::before {
+      content: ">";
+      margin-right: var(--sp-xs);
+      color: var(--muted);
+    }
+
+    /* COMPONENT: search-bar */
+    .c-search-bar .search-wrap {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: var(--sp-sm);
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 10px 12px;
+      background: #fff;
+    }
+
+    .c-search-bar input {
+      border: 0;
+      outline: 0;
+      font: inherit;
+      width: 100%;
+    }
+
+    /* COMPONENT: data-table */
+    .c-data-table {
+      overflow-x: auto;
+    }
+
+    .c-data-table table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      overflow: hidden;
+    }
+
+    .c-data-table th,
+    .c-data-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .c-data-table th {
+      background: var(--green-10);
+    }
+
+    /* COMPONENT: empty-state */
+    .c-empty-state {
+      text-align: center;
+      padding: var(--sp-lg);
+      border: 1px dashed var(--line);
+      border-radius: var(--r-md);
+      background: #fff;
+    }
+
+    .toolbar-grid,
+    .summary-grid,
+    .action-row {
+      display: grid;
+      gap: var(--sp-sm);
+    }
+
+    .toolbar-grid {
+      grid-template-columns: 1fr auto auto;
+      align-items: end;
+    }
+
+    .summary-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .action-row {
+      grid-auto-flow: column;
+      justify-content: start;
+      align-items: center;
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: 1.6rem;
+      color: var(--text);
+    }
+
+    .admin-banner {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--sp-sm);
+      align-items: center;
+      border-left: 4px solid var(--btn-color-orange);
+      background: #fff7ed;
+    }
+
+    .project-name {
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .request-note {
+      max-width: 28ch;
+    }
+
+    .project-name-button {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .project-name-button:hover,
+    .project-name-button:focus-visible {
+      color: var(--green);
+      text-decoration: underline;
+      outline: none;
+    }
+
+    /* COMPONENT: modal */
+    .c-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(12, 18, 32, 0.45);
+      display: none;
+      place-items: center;
+      z-index: 200;
+      padding: var(--sp-lg);
+    }
+
+    .c-modal.is-open {
+      display: grid;
+    }
+
+    .modal-card {
+      background: #fff;
+      border-radius: var(--r-md);
+      border: 1px solid var(--line);
+      padding: var(--sp-lg);
+      max-width: 760px;
+      width: 100%;
+      max-height: min(86vh, 760px);
+      overflow: auto;
+      display: grid;
+      gap: var(--sp-md);
+      box-shadow: var(--shadow-2, 0 20px 50px rgba(12, 18, 32, 0.2));
+    }
+
+    .project-detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sp-sm);
+    }
+
+    .project-detail-item {
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 10px 12px;
+      background: var(--green-10);
+    }
+
+    .project-detail-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .modal-actions {
+      display: grid;
+      grid-auto-flow: column;
+      justify-content: end;
+      align-items: center;
+      gap: var(--sp-sm);
+      border-top: 1px solid var(--line);
+      padding-top: var(--sp-md);
+    }
+
+    @media (max-width: 760px) {
+      .toolbar-grid,
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .action-row {
+        grid-auto-flow: row;
+      }
+
+      .project-detail-grid,
+      .modal-actions {
+        grid-template-columns: 1fr;
+        grid-auto-flow: row;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="container">
+      <a class="brand" href="../index.html"><img class="logo" src="../building-performance-app/logo.png" alt="OpenBEP logo"></a>
+      <nav id="main-nav" class="nav" aria-label="Primary">
+        <a href="./project-list.html" aria-current="page">Project List</a>
+        <a href="./my-project-list.html">My Projects</a>
+        <a href="./create-project.html">Create Project</a>
+        <a href="./A-projects-dashboard.html">Project Dashboard</a>
+        <a href="./login.html">Login</a>
+        <a href="./about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page" id="view-project-list">
+      <div class="page-header">
+        <h1>Project List</h1>
+        <p class="muted">Browse projects, create a project, request membership, and open dashboards for projects where you already have access.</p>
+        <p><a class="btn btn-default" href="./my-project-list.html">Open My Projects quick list</a></p>
+      </div>
+
+      <div class="project-list-layout">
+        <div class="full">
+          <!-- COMPONENT: breadcrumbs -->
+          <article id="component-breadcrumbs" class="card c-breadcrumbs">
+            <nav aria-label="Breadcrumb">
+              <ol>
+                <li><a href="../index.html">Home</a></li>
+                <li aria-current="page">Project List</li>
+              </ol>
+            </nav>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card admin-banner" aria-label="Site admin direct access state">
+            <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+            <p><strong>Site Admin direct project access:</strong> Admin users can open any project dashboard through the normal project workflow.</p>
+          </article>
+        </div>
+
+        <div class="full">
+          <div class="summary-grid" aria-label="Project list summary">
+            <article class="card stat-card">
+              <span class="caption">Available projects</span>
+              <strong id="project-count">0</strong>
+            </article>
+            <article class="card stat-card">
+              <span class="caption">Approved access</span>
+              <strong id="approved-count">0</strong>
+            </article>
+            <article class="card stat-card">
+              <span class="caption">Pending requests</span>
+              <strong id="pending-count">0</strong>
+            </article>
+            <article class="card stat-card">
+              <span class="caption">Open invitations</span>
+              <strong id="invited-count">0</strong>
+            </article>
+          </div>
+        </div>
+
+        <div class="two-third">
+          <article class="card">
+            <h2>Find a project</h2>
+            <div class="toolbar-grid">
+              <!-- COMPONENT: search-bar -->
+              <article id="component-search-bar" class="card c-search-bar">
+                <h2 class="sr-only">Search</h2>
+                <label for="project-search" class="sr-only">Search projects</label>
+                <div class="search-wrap">
+                  <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                  <input id="project-search" type="search" placeholder="Search by project, owner, country, status" />
+                </div>
+              </article>
+
+              <label class="form-field" for="membership-filter">
+                <span>Access filter</span>
+                <select id="membership-filter">
+                  <option value="ALL">All projects</option>
+                  <option value="APPROVED">Approved</option>
+                  <option value="PENDING">Pending</option>
+                  <option value="INVITED">Invited</option>
+                  <option value="NONE">Not a member</option>
+                </select>
+              </label>
+
+              <a class="btn btn-primary" href="./create-project.html">Create Project</a>
+            </div>
+          </article>
+        </div>
+
+        <div class="third">
+          <article class="card">
+            <h2>What data this page needs</h2>
+            <ul>
+              <li>Project name, owner, country, and building count.</li>
+              <li>User membership state: approved, pending, invited, or none.</li>
+              <li>Allowed actions per role: open dashboard, request membership, accept invitation, or create project.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card">
+            <!-- COMPONENT: data-table -->
+            <div id="component-data-table" class="c-data-table">
+              <h2>Projects</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Project</th>
+                    <th scope="col">Owner</th>
+                    <th scope="col">Country</th>
+                    <th scope="col">Buildings</th>
+                    <th scope="col">Membership status</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="project-list-body"></tbody>
+              </table>
+            </div>
+
+            <!-- COMPONENT: empty-state -->
+            <div id="component-empty-state" class="c-empty-state" hidden>
+              <h2>No matching projects</h2>
+              <p class="muted">Try another search term or create a new project.</p>
+              <a href="./create-project.html" class="btn btn-primary">Create Project</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- COMPONENT: footer -->
+  <footer id="component-footer" class="app-footer c-footer">
+    <div class="container">
+      <p>© 2026 OpenBEP · Contact · Privacy · Terms</p>
+    </div>
+  </footer>
+
+  <!-- COMPONENT: modal -->
+  <div id="component-modal" class="c-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <article class="modal-card" tabindex="-1">
+      <div>
+        <p class="caption">Project details</p>
+        <h2 id="modal-title">Project details</h2>
+        <p id="modal-description" class="muted"></p>
+      </div>
+      <div id="modal-status"></div>
+      <div id="modal-detail-grid" class="project-detail-grid" aria-label="Selected project metadata"></div>
+      <div class="modal-actions">
+        <button id="close-modal" type="button" class="btn btn-default">Close</button>
+        <div id="modal-action-row" class="action-row"></div>
+      </div>
+    </article>
+  </div>
+
+  <script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
+  <script>
+    const appDataModel = window.AppDataModel || AppDataModel || { ui: {} };
+    const projects = appDataModel.ui.projectList || [];
+    const tableBody = document.getElementById('project-list-body');
+    const searchInput = document.getElementById('project-search');
+    const membershipFilter = document.getElementById('membership-filter');
+    const emptyState = document.getElementById('component-empty-state');
+    const detailsModal = document.getElementById('component-modal');
+    const modalCard = detailsModal.querySelector('.modal-card');
+    const closeModalButton = document.getElementById('close-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDescription = document.getElementById('modal-description');
+    const modalStatus = document.getElementById('modal-status');
+    const modalDetailGrid = document.getElementById('modal-detail-grid');
+    const modalActionRow = document.getElementById('modal-action-row');
+    let lastFocusedElement = null;
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>'"]/g, (character) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+      }[character]));
+    }
+
+    function statusChipClass(status) {
+      return {
+        APPROVED: 'chip--ready',
+        OWNER: 'chip--ready',
+        PENDING: 'chip--pending',
+        INVITED: 'chip--draft',
+        NONE: 'chip--incomplete'
+      }[status] || 'chip--draft';
+    }
+
+    function statusLabel(status) {
+      return {
+        APPROVED: 'Approved member',
+        OWNER: 'Project owner',
+        PENDING: 'Request pending',
+        INVITED: 'Invited',
+        NONE: 'Not a member'
+      }[status] || status;
+    }
+
+    function actionMarkup(project) {
+      if (project.membershipStatus === 'APPROVED' || project.membershipStatus === 'OWNER') {
+        const manageUsers = project.membershipStatus === 'OWNER'
+          ? `<a class="btn btn-default" href="./project-users.html?project=${project.id}">Project Users</a>`
+          : '';
+        const settings = project.membershipStatus === 'OWNER'
+          ? `<a class="btn btn-default" href="./project-settings.html?project=${project.id}">Settings</a>`
+          : `<a class="btn btn-default" href="./project-settings.html?project=${project.id}&role=member">View settings</a>`;
+        return `<a class="btn btn-primary" href="./A-projects-dashboard.html?project=${project.id}">Open dashboard</a>${settings}${manageUsers}`;
+      }
+      if (project.membershipStatus === 'PENDING') {
+        return `<button class="btn btn-default" type="button" data-open-project="${project.id}">View pending</button>`;
+      }
+      if (project.membershipStatus === 'INVITED') {
+        return `<button class="btn btn-success" type="button" data-open-project="${project.id}">Accept invitation</button>`;
+      }
+      return `<button class="btn btn-orange" type="button" data-open-project="${project.id}">Request membership</button>`;
+    }
+
+    function detailActionMarkup(project) {
+      if (project.membershipStatus === 'APPROVED' || project.membershipStatus === 'OWNER') {
+        const settings = project.membershipStatus === 'OWNER'
+          ? `<a class="btn btn-default" href="./project-settings.html?project=${project.id}">Settings</a>`
+          : `<a class="btn btn-default" href="./project-settings.html?project=${project.id}&role=member">View settings</a>`;
+        return `${settings}<a class="btn btn-primary" href="./A-projects-dashboard.html?project=${project.id}">Open dashboard</a>`;
+      }
+      if (project.membershipStatus === 'PENDING') {
+        return `<button class="btn btn-default" type="button" disabled>Request already pending</button>`;
+      }
+      if (project.membershipStatus === 'INVITED') {
+        return `<a class="btn btn-success" href="./A-projects-dashboard.html?project=${project.id}&accepted=true">Accept invitation</a>`;
+      }
+      return `<a class="btn btn-orange" href="./project-details.html?project=${project.id}&request=membership">Request membership</a>`;
+    }
+
+    function openProjectDetails(projectId) {
+      const project = projects.find((item) => item.id === projectId);
+
+      if (!project) {
+        return;
+      }
+
+      lastFocusedElement = document.activeElement;
+      modalTitle.textContent = project.name;
+      modalDescription.textContent = project.description || project.shortDescription || 'Project summary is available for review.';
+      modalStatus.innerHTML = `<span class="chip ${statusChipClass(project.membershipStatus)}">${statusLabel(project.membershipStatus)}</span>`;
+      modalDetailGrid.innerHTML = [
+        ['Project ID', project.id],
+        ['Owner', project.ownerName],
+        ['Organisation', project.organisationName],
+        ['Country', project.country],
+        ['City', project.city],
+        ['Address', project.address],
+        ['Buildings', project.buildingCount],
+        ['Project status', project.status]
+      ].map(([label, value]) => `
+        <div class="project-detail-item">
+          <span>${escapeHtml(label)}</span>
+          <strong>${escapeHtml(value || 'Not provided')}</strong>
+        </div>
+      `).join('');
+      modalActionRow.innerHTML = detailActionMarkup(project);
+      detailsModal.classList.add('is-open');
+      detailsModal.setAttribute('aria-hidden', 'false');
+      modalCard.focus();
+    }
+
+    function closeProjectDetails() {
+      detailsModal.classList.remove('is-open');
+      detailsModal.setAttribute('aria-hidden', 'true');
+
+      if (lastFocusedElement) {
+        lastFocusedElement.focus();
+      }
+    }
+
+    function updateSummary() {
+      document.getElementById('project-count').textContent = projects.length;
+      document.getElementById('approved-count').textContent = projects.filter((project) => ['APPROVED', 'OWNER'].includes(project.membershipStatus)).length;
+      document.getElementById('pending-count').textContent = projects.filter((project) => project.membershipStatus === 'PENDING').length;
+      document.getElementById('invited-count').textContent = projects.filter((project) => project.membershipStatus === 'INVITED').length;
+    }
+
+    function renderProjects() {
+      const query = searchInput.value.trim().toLowerCase();
+      const filter = membershipFilter.value;
+      const filteredProjects = projects.filter((project) => {
+        const haystack = [project.name, project.ownerName, project.country, project.membershipStatus].join(' ').toLowerCase();
+        const matchesQuery = !query || haystack.includes(query);
+        const matchesFilter = filter === 'ALL' || project.membershipStatus === filter || (filter === 'APPROVED' && project.membershipStatus === 'OWNER');
+        return matchesQuery && matchesFilter;
+      });
+
+      tableBody.innerHTML = filteredProjects.map((project) => `
+        <tr>
+          <td><button class="project-name project-name-button" type="button" data-open-project="${project.id}">${escapeHtml(project.name)}</button><p class="caption request-note">${escapeHtml(project.description || '')}</p></td>
+          <td>${escapeHtml(project.ownerName)}</td>
+          <td>${escapeHtml(project.country)}</td>
+          <td>${escapeHtml(project.buildingCount)}</td>
+          <td><span class="chip ${statusChipClass(project.membershipStatus)}">${statusLabel(project.membershipStatus)}</span></td>
+          <td><div class="action-row">${actionMarkup(project)}</div></td>
+        </tr>
+      `).join('');
+
+      emptyState.hidden = filteredProjects.length > 0;
+    }
+
+    searchInput.addEventListener('input', renderProjects);
+    membershipFilter.addEventListener('change', renderProjects);
+    tableBody.addEventListener('click', (event) => {
+      const detailsTrigger = event.target.closest('[data-open-project]');
+
+      if (detailsTrigger) {
+        openProjectDetails(detailsTrigger.dataset.openProject);
+      }
+    });
+    closeModalButton.addEventListener('click', closeProjectDetails);
+    detailsModal.addEventListener('click', (event) => {
+      if (event.target === detailsModal) {
+        closeProjectDetails();
+      }
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && detailsModal.classList.contains('is-open')) {
+        closeProjectDetails();
+      }
+    });
+    updateSummary();
+    renderProjects();
+  </script>
+</body>
+
+</html>

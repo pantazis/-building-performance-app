@@ -126,7 +126,7 @@
       </div>
       <div class="svg-viewport" id="svg-viewport">
         <div class="svg-stage" id="svg-stage">
-          <img src="./output.svg" alt="OpenBEP4EU user journey and schema flow" />
+          <img src="./plan_for_app/menu-diagram-example.svg" alt="OpenBEP4EU user journey and schema flow" />
         </div>
       </div>
     </section>
@@ -143,7 +143,71 @@
         </article>
 
         <article class="view-item">
-          <h3>2) Projects Dashboard (A)</h3>
+          <h3>2) Register</h3>
+          <p><strong>What this view is:</strong> Public account creation screen used before login.</p>
+          <p><strong>What you can do:</strong> Create an OpenBEP account, choose a primary role, accept terms, and continue to login.</p>
+          <p><strong>Relationship to schema:</strong> User management flow branch: no account → register → registration successful → login.</p>
+          <p><a href="./view/register.html">Open view/register.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>2b) User Profile</h3>
+          <p><strong>What this view is:</strong> Authenticated user profile page for account details and preferences.</p>
+          <p><strong>What you can do:</strong> View and edit your own profile data, review current permissions, and navigate back to projects.</p>
+          <p><strong>Relationship to schema:</strong> Authenticated user → User profile page → edit own profile data.</p>
+          <p><a href="./view/user-profile.html">Open view/user-profile.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>3) Project List</h3>
+          <p><strong>What this view is:</strong> Project browsing and selection view before entering a specific project workspace.</p>
+          <p><strong>What you can do:</strong> Find projects, create a project, request membership, see pending/invited states, and open allowed project dashboards.</p>
+          <p><strong>Relationship to schema:</strong> Project List / Project Selection node that routes approved users to the selected Project Dashboard.</p>
+          <p><a href="./view/project-list.html">Open view/project-list.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>4) Create Project</h3>
+          <p><strong>What this view is:</strong> Project creation form for registered users who need a new workspace.</p>
+          <p><strong>What you can do:</strong> Enter project metadata, choose country and visibility, and become Project Owner after creation.</p>
+          <p><strong>Relationship to schema:</strong> User management branch: registered user without a project → Create project → user becomes Project Owner.</p>
+          <p><a href="./view/create-project.html">Open view/create-project.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>5) Project Details</h3>
+          <p><strong>What this view is:</strong> Project summary and membership decision page before dashboard access.</p>
+          <p><strong>What you can do:</strong> Review project metadata, see membership state, request membership, accept invitations, or open the dashboard when allowed.</p>
+          <p><strong>Relationship to schema:</strong> Project List → Project Detail → membership request / pending / approved dashboard access.</p>
+          <p><a href="./view/project-details.html">Open view/project-details.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>5b) Project Users</h3>
+          <p><strong>What this view is:</strong> Owner/admin management page for users connected to a selected project.</p>
+          <p><strong>What you can do:</strong> Review current members, invite users by email, approve or disapprove membership requests, and remove members while keeping at least one Project Owner.</p>
+          <p><strong>Relationship to schema:</strong> Project Owner area reached from Project List / selected project when the user has manage-project-users permission.</p>
+          <p><a href="./view/project-users.html?project=project-1">Open view/project-users.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>5c) My Projects / Project Settings</h3>
+          <p><strong>What this view is:</strong> Project settings page for selected project metadata, permissions, and edit/delete actions where allowed.</p>
+          <p><strong>What you can do:</strong> Project Owners and Site Admins can edit project settings and confirm archive/delete actions. Project Members can view settings read-only and continue to the dashboard.</p>
+          <p><strong>Relationship to schema:</strong> Project List / Project Dashboard → Project Settings; members return to the dashboard, owners/admins can manage settings.</p>
+          <p><a href="./view/project-settings.html?project=project-1">Open view/project-settings.html</a></p>
+        </article>
+        
+        <article class="view-item">
+          <h3>5d) Site Admin Console</h3>
+          <p><strong>What this view is:</strong> Minimal platform admin page for selecting Project Owners and choosing a safe admin access mode.</p>
+          <p><strong>What you can do:</strong> Search Project Owners, review selected-owner details, inspect owner projects in a popup, continue as selected owner, open the Project List as Site Admin, or exit selected-owner mode.</p>
+          <p><strong>Relationship to schema:</strong> Site Admin Console → Project Owners list → selected-owner mode or direct Site Admin Project List access.</p>
+          <p><a href="./view/site-admin-console.html">Open view/site-admin-console.html</a></p>
+        </article>
+
+        <article class="view-item">
+          <h3>6) Projects Dashboard (A)</h3>
           <p><strong>What this view is:</strong> Main control center listing building projects and scores/statuses.</p>
           <p><strong>What you can do:</strong> Start all major actions (add, open/edit, duplicate, delete, library access).</p>
           <p><strong>Relationship to schema:</strong> Root node A in the plan, branching to B/C/D/E/F/G/H.</p>
@@ -151,7 +215,7 @@
         </article>
 
         <article class="view-item">
-          <h3>3) Add New Building (B)</h3>
+          <h3>7) Add New Building (B)</h3>
           <p><strong>What this view is:</strong> Creation form for first-time building setup.</p>
           <p><strong>What you can do:</strong> Provide basic building metadata and create a new record.</p>
           <p><strong>Relationship to schema:</strong> Node B action uses the Open / Edit screen as the unified entry, then hands off to Building Tab (I).</p>
@@ -159,7 +223,7 @@
         </article>
 
         <article class="view-item">
-          <h3>4) Open / Edit Building (C)</h3>
+          <h3>8) Open / Edit Building (C)</h3>
           <p><strong>What this view is:</strong> Building editing screen for an existing project.</p>
           <p><strong>What you can do:</strong> Update building profile fields and continue directly into EPB or SRI work.</p>
           <p><strong>Relationship to schema:</strong> Node C is the active per-building hub after B and routes to EPB, SRI, and the calculation engine.</p>
@@ -167,7 +231,7 @@
         </article>
 
         <article class="view-item">
-          <h3>5) EPB View 1: Calculation Settings (EPB1)</h3>
+          <h3>9) EPB View 1: Calculation Settings (EPB1)</h3>
           <p><strong>What this view is:</strong> Initial EPB simulation configuration screen.</p>
           <p><strong>What you can do:</strong> Define time period, simulation resolution, and core calculation settings.</p>
           <p><strong>Relationship to schema:</strong> EPB sequence start: J → EPB1 → EPB1b → EPB2 → EPB3 → EPB Spaces Tab → EPB Operations Tab → EPB4.</p>
@@ -175,7 +239,7 @@
         </article>
 
         <article class="view-item">
-          <h3>6) EPB View 1b: Climate Data (EPB1b)</h3>
+          <h3>10) EPB View 1b: Climate Data (EPB1b)</h3>
           <p><strong>What this view is:</strong> Ground-boundary condition setup for EPB calculations.</p>
           <p><strong>What you can do:</strong> Configure Climate Data parameters used before envelope/material steps.</p>
           <p><strong>Relationship to schema:</strong> Second EPB step inserted between Calculation Settings and Building Envelope.</p>
@@ -183,7 +247,7 @@
         </article>
 
         <article class="view-item">
-          <h3>7) EPB View 2: Building Envelope (EPB2)</h3>
+          <h3>11) EPB View 2: Building Envelope (EPB2)</h3>
           <p><strong>What this view is:</strong> Envelope/material definitions for the energy model.</p>
           <p><strong>What you can do:</strong> Configure walls, windows, layers, and construction assemblies.</p>
           <p><strong>Relationship to schema:</strong> Third EPB step after Climate Data; feeds model physics inputs.</p>
@@ -191,7 +255,7 @@
         </article>
 
         <article class="view-item">
-          <h3>8) EPB View 3: Thermal Zone (EPB3)</h3>
+          <h3>12) EPB View 3: Thermal Zone (EPB3)</h3>
           <p><strong>What this view is:</strong> Thermal zoning and operational definition screen.</p>
           <p><strong>What you can do:</strong> Set zones/spaces, occupancy/equipment assumptions, and envelope analysis inputs.</p>
           <p><strong>Relationship to schema:</strong> Fourth EPB stage, followed by Spaces Tab, Operations Tab, and then results summary (EPB4).</p>
@@ -199,7 +263,7 @@
         </article>
 
         <article class="view-item">
-          <h3>9) EPB Spaces Tab</h3>
+          <h3>13) EPB Spaces Tab</h3>
           <p><strong>What this view is:</strong> Detailed per-space EPB input screen for geometry and space-level attributes.</p>
           <p><strong>What you can do:</strong> Review and edit space records before final EPB calculation and summary outputs.</p>
           <p><strong>Relationship to schema:</strong> Fifth EPB stage inserted between thermal-zones analysis and EPB Operations.</p>
@@ -207,7 +271,7 @@
         </article>
 
         <article class="view-item">
-          <h3>10) EPB Operations Tab</h3>
+          <h3>14) EPB Operations Tab</h3>
           <p><strong>What this view is:</strong> EPB operational controls screen for schedules and thermostat/humidistat inputs.</p>
           <p><strong>What you can do:</strong> Manage operational setpoints and schedules before final EPB results generation.</p>
           <p><strong>Relationship to schema:</strong> Sixth EPB stage between Spaces Tab and EPB4 results summary.</p>
@@ -215,7 +279,7 @@
         </article>
 
         <article class="view-item">
-          <h3>11) EPB Results / Performance Summary (EPB4)</h3>
+          <h3>15) EPB Results / Performance Summary (EPB4)</h3>
           <p><strong>What this view is:</strong> EPB outcome view with final energy-performance outputs.</p>
           <p><strong>What you can do:</strong> Review calculated indicators and summary KPI results.</p>
           <p><strong>Relationship to schema:</strong> EPB chain endpoint after Operations Tab (7th step) and recipient of engine output (CE6 → EPB4).</p>
@@ -223,7 +287,7 @@
         </article>
 
         <article class="view-item">
-          <h3>12) SRI View 1: Methodology Selection (SRI1)</h3>
+          <h3>16) SRI View 1: Methodology Selection (SRI1)</h3>
           <p><strong>What this view is:</strong> Entry point for Smart Readiness workflow configuration.</p>
           <p><strong>What you can do:</strong> Choose methodology path and initialize the SRI assessment process.</p>
           <p><strong>Relationship to schema:</strong> SRI chain start after Building Tab, before weighting decision flow.</p>
@@ -231,7 +295,7 @@
         </article>
 
         <article class="view-item">
-          <h3>13) SRI Decision: Default Weightings (SRI2)</h3>
+          <h3>17) SRI Decision: Default Weightings (SRI2)</h3>
           <p><strong>What this view is:</strong> Confirmation gate for selected SRI rules and weighting context.</p>
           <p><strong>What you can do:</strong> Review default or user-defined weighting context before continuing to the SRI domain hub/results view.</p>
           <p><strong>Relationship to schema:</strong> Default-weighting confirmation route between methodology selection and SRI14. User-defined mode can continue directly from SRI1 to SRI14.</p>
@@ -239,7 +303,7 @@
         </article>
 
         <article class="view-item">
-          <h3>14) SRI View 2: Weighting Settings (SRI3)</h3>
+          <h3>18) SRI View 2: Weighting Settings (SRI3)</h3>
           <p><strong>What this view is:</strong> Legacy/manual configuration interface for SRI impact/category weighting values.</p>
           <p><strong>What you can do:</strong> Review custom weighting parameters when accessed manually for reference or legacy workflows.</p>
           <p><strong>Relationship to schema:</strong> Legacy/manual access only; the current live user-defined route continues directly from SRI1/SRI2 to SRI14.</p>
@@ -247,7 +311,7 @@
         </article>
 
         <article class="view-item">
-          <h3>15) SRI View 3: Results (SRI4)</h3>
+          <h3>19) SRI View 3: Results (SRI4)</h3>
           <p><strong>What this view is:</strong> Central SRI domain navigator across technical service tabs.</p>
           <p><strong>What you can do:</strong> Review readiness progress and jump into each service domain form.</p>
           <p><strong>Relationship to schema:</strong> SRI hub branching to service tabs SRI5 through SRI13.</p>
@@ -255,7 +319,7 @@
         </article>
 
         <article class="view-item">
-          <h3>16) Heating Tab (SRI5)</h3>
+          <h3>20) Heating Tab (SRI5)</h3>
           <p><strong>What this view is:</strong> Heating services smart-readiness assessment tab.</p>
           <p><strong>What you can do:</strong> Enter functionality levels and controls for heating-related criteria.</p>
           <p><strong>Relationship to schema:</strong> One of the service-domain children of SRI4.</p>
@@ -263,7 +327,7 @@
         </article>
 
         <article class="view-item">
-          <h3>17) DHW Tab (SRI6)</h3>
+          <h3>21) DHW Tab (SRI6)</h3>
           <p><strong>What this view is:</strong> Domestic hot water smart-readiness assessment tab.</p>
           <p><strong>What you can do:</strong> Configure DHW service functionality and monitoring/control levels.</p>
           <p><strong>Relationship to schema:</strong> Service-domain branch from SRI4 in the SRI workflow set.</p>
@@ -271,7 +335,7 @@
         </article>
 
         <article class="view-item">
-          <h3>18) Cooling Tab (SRI7)</h3>
+          <h3>22) Cooling Tab (SRI7)</h3>
           <p><strong>What this view is:</strong> Cooling systems smart-readiness assessment tab.</p>
           <p><strong>What you can do:</strong> Set cooling automation, efficiency, and control capability levels.</p>
           <p><strong>Relationship to schema:</strong> Service-domain branch under the SRI4 dashboard.</p>
@@ -279,7 +343,7 @@
         </article>
 
         <article class="view-item">
-          <h3>19) Ventilation Tab (SRI8)</h3>
+          <h3>23) Ventilation Tab (SRI8)</h3>
           <p><strong>What this view is:</strong> Ventilation services smart-readiness input tab.</p>
           <p><strong>What you can do:</strong> Record ventilation capabilities for scoring and domain completeness.</p>
           <p><strong>Relationship to schema:</strong> Another technical-domain tab routed from SRI4.</p>
@@ -287,7 +351,7 @@
         </article>
 
         <article class="view-item">
-          <h3>20) Lighting Tab (SRI9)</h3>
+          <h3>24) Lighting Tab (SRI9)</h3>
           <p><strong>What this view is:</strong> Lighting services smart-readiness tab.</p>
           <p><strong>What you can do:</strong> Capture lighting control/intelligence functions for SRI computation.</p>
           <p><strong>Relationship to schema:</strong> Domain-specific node in the SRI4 service-tab group.</p>
@@ -295,7 +359,7 @@
         </article>
 
         <article class="view-item">
-          <h3>21) Dynamic Envelope Tab (SRI10)</h3>
+          <h3>25) Dynamic Envelope Tab (SRI10)</h3>
           <p><strong>What this view is:</strong> Assessment tab for adaptive envelope/building shell functions.</p>
           <p><strong>What you can do:</strong> Define dynamic envelope capabilities contributing to SRI score.</p>
           <p><strong>Relationship to schema:</strong> Domain branch from SRI4 alongside other service tabs.</p>
@@ -303,7 +367,7 @@
         </article>
 
         <article class="view-item">
-          <h3>22) Electricity Tab (SRI11)</h3>
+          <h3>26) Electricity Tab (SRI11)</h3>
           <p><strong>What this view is:</strong> Electricity-domain smart-readiness data-entry tab.</p>
           <p><strong>What you can do:</strong> Configure electrical service intelligence and responsiveness levels.</p>
           <p><strong>Relationship to schema:</strong> SRI4 child node for electricity-related functionalities.</p>
@@ -311,7 +375,7 @@
         </article>
 
         <article class="view-item">
-          <h3>23) EV Charging Tab (SRI12)</h3>
+          <h3>27) EV Charging Tab (SRI12)</h3>
           <p><strong>What this view is:</strong> Electric-vehicle charging readiness assessment tab.</p>
           <p><strong>What you can do:</strong> Enter EV charging intelligence and interaction features.</p>
           <p><strong>Relationship to schema:</strong> Service-domain branch in the SRI tabbed sequence.</p>
@@ -319,7 +383,7 @@
         </article>
 
         <article class="view-item">
-          <h3>24) Monitoring & Control Tab (SRI13)</h3>
+          <h3>28) Monitoring & Control Tab (SRI13)</h3>
           <p><strong>What this view is:</strong> Monitoring, automation, and control capability assessment tab.</p>
           <p><strong>What you can do:</strong> Define supervisory/control features that influence smart readiness.</p>
           <p><strong>Relationship to schema:</strong> Final service-domain input tab before SRI results aggregation.</p>
@@ -327,7 +391,7 @@
         </article>
 
         <article class="view-item">
-          <h3>25) SRI Results (SRI14)</h3>
+          <h3>29) SRI Results (SRI14)</h3>
           <p><strong>What this view is:</strong> Final SRI output screen with consolidated smart-readiness indicators.</p>
           <p><strong>What you can do:</strong> Review total score, domain performance, and final readiness class.</p>
           <p><strong>Relationship to schema:</strong> Endpoint of SRI workflow after domain/service evaluation.</p>
@@ -335,7 +399,7 @@
         </article>
 
         <article class="view-item">
-          <h3>26) About</h3>
+          <h3>30) About</h3>
           <p><strong>What this view is:</strong> Informational/support page describing the app context.</p>
           <p><strong>What you can do:</strong> Read project information and orientation content.</p>
           <p><strong>Relationship to schema:</strong> Auxiliary page, outside the core A→EPB/SRI transactional path.</p>

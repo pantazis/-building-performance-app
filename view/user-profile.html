@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>User Profile · OpenBEP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../building-performance-app/style.css" />
+  <style>
+    :root {
+      --btn-color-success: #2db34a;
+      --btn-color-default: #86c440;
+      --btn-color-warning: #fecf17;
+      --btn-color-orange: #f47721;
+      --btn-color-danger: #ef3e23;
+    }
+
+    .profile-shell {
+      padding-block: var(--sp-xl);
+      display: grid;
+      gap: var(--sp-lg);
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: var(--sp-lg);
+      align-items: start;
+    }
+
+    .profile-intro .badge {
+      display: inline-grid;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--green-10);
+      color: var(--green-700);
+      font-weight: 600;
+      margin-bottom: var(--sp-sm);
+    }
+
+    .profile-intro h1 {
+      margin-top: 0;
+      margin-bottom: var(--sp-sm);
+    }
+
+    .profile-intro p {
+      margin-top: 0;
+      margin-bottom: var(--sp-md);
+    }
+
+    .profile-benefits {
+      display: grid;
+      gap: var(--sp-sm);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .profile-benefits li {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--sp-xs);
+      align-items: start;
+    }
+
+    .profile-benefits i {
+      color: var(--green-700);
+      margin-top: 0.2em;
+    }
+
+    /* COMPONENT: breadcrumbs */
+    .c-breadcrumbs ol {
+      display: grid;
+      grid-auto-flow: column;
+      justify-content: start;
+      gap: var(--sp-xs);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .c-breadcrumbs li+li::before {
+      content: ">";
+      margin-right: var(--sp-xs);
+      color: var(--muted);
+    }
+
+    /* COMPONENT: account-profile-form */
+    .c-account-profile-form form {
+      gap: var(--sp-md);
+    }
+
+    .profile-card .form-field,
+    .profile-card .login-actions {
+      width: 100%;
+    }
+
+    .profile-card .btn {
+      justify-content: center;
+    }
+
+    .account-access-note p {
+      margin-bottom: 0;
+    }
+
+    /* COMPONENT: validation-state */
+    .c-validation-state {
+      min-height: 20px;
+      margin: 0;
+      color: var(--red-600);
+      font-size: var(--fs-0);
+    }
+
+    @media (max-width: 900px) {
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .login-actions {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="container">
+      <a class="brand" href="./about.html"><img class="logo" src="../building-performance-app/logo.png"
+          alt="OpenBEP logo"></a>
+      <nav id="main-nav" class="nav" aria-label="Authenticated navigation">
+        <a href="./project-list.html">Projects</a>
+        <a href="./user-profile.html" aria-current="page">My Profile</a>
+        <a href="./about.html">About</a>
+        <a href="./login.html">Logout</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container profile-shell">
+    <!-- COMPONENT: breadcrumbs -->
+    <article id="component-breadcrumbs" class="card c-breadcrumbs">
+      <nav aria-label="Breadcrumb">
+        <ol>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="./project-list.html">Projects</a></li>
+          <li aria-current="page">My Profile</li>
+        </ol>
+      </nav>
+    </article>
+
+    <section class="profile-grid" aria-labelledby="profile-title">
+      <article class="card profile-intro">
+        <span class="badge">OpenBEP4EU</span>
+        <h1 id="profile-title">Edit your OpenBEP account</h1>
+        <p class="muted">Update the same account information used when registering. This page only edits your own account data.</p>
+        <ul class="profile-benefits" aria-label="Account profile rules">
+          <li><i class="fa-solid fa-check" aria-hidden="true"></i><span>Keep your full name and email address current.</span></li>
+          <li><i class="fa-solid fa-check" aria-hidden="true"></i><span>Update your password using the same password rules as registration.</span></li>
+          <li><i class="fa-solid fa-lock" aria-hidden="true"></i><span>Project roles and access are managed later in project workflows, not on this profile page.</span></li>
+        </ul>
+      </article>
+
+      <!-- COMPONENT: account-profile-form -->
+      <article id="component-account-profile-form" class="card c-account-profile-form profile-card" aria-label="Editable account form">
+        <h2>Account details</h2>
+        <form id="profile-form" class="grid" novalidate>
+          <label class="form-field" for="profile-name">
+            <span>Full name</span>
+            <input id="profile-name" type="text" value="Demo User" autocomplete="name" required />
+          </label>
+          <label class="form-field" for="profile-email">
+            <span>Email</span>
+            <input id="profile-email" type="email" value="demo.user@example.eu" autocomplete="email" required />
+          </label>
+          <div class="form-field account-access-note" role="note" aria-label="Account access note">
+            <span>Account access</span>
+            <p class="muted">Your account is a <strong>Registered User</strong>. Project roles are assigned later: create a project to become its Project Owner, or request membership and wait for approval to become a Project Member.</p>
+          </div>
+          <label class="form-field" for="profile-password">
+            <span>Password</span>
+            <div class="password-wrap">
+              <input id="profile-password" type="password" placeholder="Create a new password" minlength="8"
+                autocomplete="new-password" required />
+              <button id="toggle-profile-password" type="button" class="btn btn-sm" aria-pressed="false">Show</button>
+            </div>
+          </label>
+          <label class="form-field" for="profile-confirm-password">
+            <span>Confirm password</span>
+            <input id="profile-confirm-password" type="password" placeholder="Repeat your new password" minlength="8"
+              autocomplete="new-password" required />
+          </label>
+
+          <!-- COMPONENT: validation-state -->
+          <p id="component-profile-validation-state" class="c-validation-state" role="status" aria-live="polite"></p>
+
+          <div class="login-actions">
+            <a href="./project-list.html" class="muted">Back to projects</a>
+            <button type="submit" class="btn btn-primary">Save account</button>
+          </div>
+        </form>
+      </article>
+    </section>
+  </main>
+
+  <!-- COMPONENT: footer -->
+  <footer id="component-footer" class="app-footer c-footer">
+    <div class="container">
+      <p>© 2026 OpenBEP · Contact · Privacy · Terms</p>
+    </div>
+  </footer>
+
+  <script>
+    const profileForm = document.getElementById('profile-form');
+    const nameInput = document.getElementById('profile-name');
+    const emailInput = document.getElementById('profile-email');
+    const passwordInput = document.getElementById('profile-password');
+    const confirmPasswordInput = document.getElementById('profile-confirm-password');
+    const toggleBtn = document.getElementById('toggle-profile-password');
+    const statusEl = document.getElementById('component-profile-validation-state');
+
+    toggleBtn.addEventListener('click', () => {
+      const isPassword = passwordInput.type === 'password';
+      passwordInput.type = isPassword ? 'text' : 'password';
+      toggleBtn.textContent = isPassword ? 'Hide' : 'Show';
+      toggleBtn.setAttribute('aria-pressed', String(isPassword));
+    });
+
+    profileForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      statusEl.style.color = 'var(--red-600)';
+
+      if (!nameInput.value.trim() || !emailInput.value.trim() || !passwordInput.value.trim()) {
+        statusEl.textContent = 'Please complete all required account fields.';
+        return;
+      }
+
+      if (!emailInput.value.includes('@')) {
+        statusEl.textContent = 'Please enter a valid email address.';
+        return;
+      }
+
+      if (passwordInput.value.length < 8) {
+        statusEl.textContent = 'Password must be at least 8 characters.';
+        return;
+      }
+
+      if (passwordInput.value !== confirmPasswordInput.value) {
+        statusEl.textContent = 'Password and confirmation do not match.';
+        return;
+      }
+
+      statusEl.textContent = 'Account details saved locally in the prototype.';
+      statusEl.style.color = 'var(--green-700)';
+    });
+  </script>
+</body>
+
+</html>

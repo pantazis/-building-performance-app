@@ -22,10 +22,10 @@ Existing core prototype coverage is already available for public pages, project 
 | 3 | `view/project-list.html` | Project List | Browse/select projects, create a project, request membership, and view membership/request status. This is separate from `view/A-projects-dashboard.html`. | Registered User, Project Member, Project Owner, Site Admin |
 | 4 | `view/project-details.html` | Project Info / Project Details | Show project summary and membership/request actions before the user can access the project dashboard. | Registered User, Project Member, Project Owner, Site Admin |
 | 5 | `view/create-project.html` | Create Project | Allow a Registered User to create a new project and become its Project Owner. | Registered User, Project Owner, Site Admin |
-| 6 | `view/pending-membership.html` | Pending membership status | Show applicant state while membership request waits for Project Owner approval. | Registered User / Pending Applicant |
-| 7 | `view/project-users.html` | Project Users management | Combined owner page for current members, email invitations, pending membership requests, approve/disapprove actions, and member management. | Project Owner, Site Admin |
-| 8 | `view/project-settings.html` | My Projects / Project Settings | Manage owned projects and project settings/edit/delete actions where allowed. | Project Owner, Site Admin |
-| 9 | `view/site-admin-console.html` | Site Admin Console | Minimal site-admin page with Project Owners list, selected-owner details, continue-as-owner action, direct Project List as Site Admin action, and exit selected-owner mode. | Site Admin |
+
+| 6 | `view/project-users.html` | Project Users management | Combined owner page for current members, email invitations, pending membership requests, approve/disapprove actions, and member management. | Project Owner, Site Admin |
+| 7 | `view/project-settings.html` | My Projects / Project Settings | Manage owned projects and project settings/edit/delete actions where allowed. | Project Owner, Site Admin |
+| 8 | `view/site-admin-console.html` | Site Admin Console | Minimal site-admin page with Project Owners list, selected-owner details,owner projects name smal descrition on clik popup all info , continue-as-owner action, direct Project List as Site Admin action, and exit selected-owner mode. | Site Admin |
 
 ---
 

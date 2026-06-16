@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project Settings · OpenBEP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../building-performance-app/style.css" />
+  <style>
+    :root {
+      --btn-color-success: #2db34a;
+      --btn-color-default: #86c440;
+      --btn-color-warning: #fecf17;
+      --btn-color-orange: #f47721;
+      --btn-color-danger: #ef3e23;
+    }
+
+    .project-settings-layout {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--sp-md);
+    }
+
+    .project-settings-layout > .full { grid-column: 1 / -1; }
+    .project-settings-layout > .main { grid-column: span 8; }
+    .project-settings-layout > .aside { grid-column: span 4; }
+    .project-settings-layout > .half { grid-column: span 6; }
+
+    @media (max-width: 900px) {
+      .project-settings-layout > .main,
+      .project-settings-layout > .aside,
+      .project-settings-layout > .half { grid-column: 1 / -1; }
+    }
+
+    /* COMPONENT: breadcrumbs */
+    .c-breadcrumbs ol {
+      display: grid;
+      grid-auto-flow: column;
+      justify-content: start;
+      gap: var(--sp-xs);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .c-breadcrumbs li + li::before {
+      content: ">";
+      margin-right: var(--sp-xs);
+      color: var(--muted);
+    }
+
+    /* COMPONENT: data-table */
+    .c-data-table { overflow-x: auto; }
+    .c-data-table table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      overflow: hidden;
+    }
+
+    .c-data-table th,
+    .c-data-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .c-data-table th { background: var(--green-10); }
+
+    /* COMPONENT: modal */
+    .c-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(12, 18, 32, 0.45);
+      display: none;
+      place-items: center;
+      z-index: 200;
+      padding: var(--sp-lg);
+    }
+
+    .c-modal.is-open { display: grid; }
+
+    .modal-card {
+      background: #fff;
+      border-radius: var(--r-md);
+      border: 1px solid var(--line);
+      padding: var(--sp-lg);
+      max-width: 480px;
+      width: 100%;
+      display: grid;
+      gap: var(--sp-md);
+    }
+
+    /* COMPONENT: toast */
+    .c-toast {
+      position: fixed;
+      right: var(--sp-lg);
+      bottom: var(--sp-lg);
+      background: var(--green);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: var(--r-sm);
+      box-shadow: var(--shadow-1);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity .2s ease, transform .2s ease;
+      z-index: 250;
+    }
+
+    .c-toast.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .settings-banner,
+    .summary-grid,
+    .settings-form,
+    .action-row,
+    .meta-list {
+      display: grid;
+      gap: var(--sp-sm);
+    }
+
+    .settings-banner {
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      border-left: 4px solid var(--btn-color-success);
+      background: var(--green-10);
+    }
+
+    .settings-banner.member-view {
+      border-left-color: var(--btn-color-orange);
+      background: #fff7ed;
+    }
+
+    .summary-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .settings-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .settings-form .full { grid-column: 1 / -1; }
+    .action-row {
+      grid-auto-flow: column;
+      justify-content: start;
+      align-items: center;
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: 1.6rem;
+      color: var(--text);
+    }
+
+    .danger-zone {
+      border-left: 4px solid var(--btn-color-danger);
+    }
+
+    .danger-note {
+      color: var(--btn-color-danger);
+      font-weight: 700;
+    }
+
+    input[readonly],
+    textarea[readonly],
+    select:disabled {
+      background: #f3f4f6;
+      color: var(--muted);
+      cursor: not-allowed;
+    }
+
+    button:disabled,
+    .btn[aria-disabled="true"] {
+      background: #c7cbd1;
+      border-color: #c7cbd1;
+      color: #6b7280;
+      cursor: not-allowed;
+      opacity: 1;
+      box-shadow: none;
+    }
+
+    @media (max-width: 760px) {
+      .summary-grid,
+      .settings-form { grid-template-columns: 1fr; }
+      .action-row { grid-auto-flow: row; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="container">
+      <a class="brand" href="../index.html"><img class="logo" src="../building-performance-app/logo.png" alt="OpenBEP logo"></a>
+      <nav id="main-nav" class="nav" aria-label="Primary">
+        <a href="./project-list.html">Project List</a>
+        <a href="./my-project-list.html">My Projects</a>
+        <a href="./project-settings.html" aria-current="page">Project Settings</a>
+        <a href="./project-users.html">Project Users</a>
+        <a href="./A-projects-dashboard.html">Project Dashboard</a>
+        <a href="./login.html">Login</a>
+        <a href="./about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page" id="view-project-settings">
+      <div class="page-header">
+        <h1 id="page-title">My Projects · Project Settings</h1>
+        <p class="muted" id="page-subtitle">Open project settings from My Projects. Project Members can view settings read-only and continue to the dashboard; Project Owners and Site Admins can edit, archive, or delete where allowed.</p>
+      </div>
+
+      <div class="project-settings-layout">
+        <div class="full">
+          <!-- COMPONENT: breadcrumbs -->
+          <article id="component-breadcrumbs" class="card c-breadcrumbs">
+            <nav aria-label="Breadcrumb">
+              <ol>
+                <li><a href="../index.html">Home</a></li>
+                <li><a id="my-projects-breadcrumb" href="./my-project-list.html">My Projects</a></li>
+                <li><a id="dashboard-breadcrumb" href="./A-projects-dashboard.html">Project Dashboard</a></li>
+                <li aria-current="page">Project Settings</li>
+              </ol>
+            </nav>
+          </article>
+        </div>
+
+        <div class="full">
+          <article id="permission-banner" class="card settings-banner" aria-label="Project settings permission state">
+            <i id="permission-icon" class="fa-solid fa-gear" aria-hidden="true"></i>
+            <p id="permission-message"><strong>Loading permissions:</strong> Checking project role.</p>
+          </article>
+        </div>
+
+        <div class="full">
+          <div class="summary-grid" aria-label="Project settings summary">
+            <article class="card stat-card">
+              <span class="caption">Buildings</span>
+              <strong id="building-count">0</strong>
+            </article>
+            <article class="card stat-card">
+              <span class="caption">Approved members</span>
+              <strong id="member-count">0</strong>
+            </article>
+            <article class="card stat-card">
+              <span class="caption">Project status</span>
+              <strong id="project-status">—</strong>
+            </article>
+            <article class="card stat-card">
+              <span class="caption">Current access</span>
+              <strong id="access-label">—</strong>
+            </article>
+          </div>
+        </div>
+
+        <div class="main">
+          <article class="card">
+            <h2>Project metadata</h2>
+            <p class="muted">Owners and Site Admins can update these values. Project Members can view them but cannot save changes or use destructive project actions.</p>
+            <form id="settings-form" class="settings-form">
+              <label class="form-field" for="project-name">
+                <span>Project name</span>
+                <input id="project-name" name="projectName" type="text" required />
+              </label>
+              <label class="form-field" for="organisation-name">
+                <span>Organisation</span>
+                <input id="organisation-name" name="organisationName" type="text" />
+              </label>
+              <label class="form-field full" for="short-description">
+                <span>Short description</span>
+                <input id="short-description" name="shortDescription" type="text" />
+              </label>
+              <label class="form-field full" for="description">
+                <span>Description</span>
+                <textarea id="description" name="description" rows="4"></textarea>
+              </label>
+              <label class="form-field" for="country">
+                <span>Country</span>
+                <select id="country" name="country"></select>
+              </label>
+              <label class="form-field" for="city">
+                <span>City</span>
+                <input id="city" name="city" type="text" />
+              </label>
+              <label class="form-field full" for="address">
+                <span>Address</span>
+                <input id="address" name="address" type="text" />
+              </label>
+              <label class="form-field" for="status">
+                <span>Status</span>
+                <select id="status" name="status">
+                  <option value="ACTIVE">Active</option>
+                  <option value="ARCHIVED">Archived</option>
+                </select>
+              </label>
+              <label class="form-field" for="visibility">
+                <span>Visibility</span>
+                <select id="visibility" name="visibility">
+                  <option value="PUBLIC">Public summary</option>
+                  <option value="PRIVATE">Private project</option>
+                </select>
+              </label>
+              <div class="action-row full">
+                <button id="save-settings" class="btn btn-primary" type="submit">Save settings</button>
+                <a id="open-dashboard" class="btn btn-default" href="./A-projects-dashboard.html">Open dashboard</a>
+                <a id="back-to-my-projects" class="btn btn-default" href="./my-project-list.html">Back to My Projects</a>
+              </div>
+              <p id="settings-feedback" class="caption full" role="status" aria-live="polite"></p>
+            </form>
+          </article>
+        </div>
+
+        <div class="aside">
+          <article class="card">
+            <h2>Selected project</h2>
+            <div class="meta-list" id="project-summary"></div>
+          </article>
+
+          <article class="card danger-zone mt-lg">
+            <h2>Danger zone</h2>
+            <p class="muted">Delete/archive actions are available only to Project Owners and Site Admins and require confirmation.</p>
+            <div class="action-row">
+              <button id="archive-project" class="btn btn-warning" type="button">Archive project</button>
+              <button id="delete-project" class="btn btn-danger" type="button">Delete project</button>
+            </div>
+            <p id="danger-help" class="caption"></p>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card">
+            <!-- COMPONENT: data-table -->
+            <div id="component-data-table" class="c-data-table">
+              <h2>Allowed actions by role on this page</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Role/context</th>
+                    <th scope="col">Can view</th>
+                    <th scope="col">Can edit settings</th>
+                    <th scope="col">Can delete/archive</th>
+                    <th scope="col">Primary navigation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Project Member</td>
+                    <td>Yes</td>
+                    <td>No</td>
+                    <td>No</td>
+                    <td>Open dashboard only</td>
+                  </tr>
+                  <tr>
+                    <td>Project Owner</td>
+                    <td>Yes</td>
+                    <td>Yes, owned projects</td>
+                    <td>Yes, with confirmation</td>
+                    <td>Dashboard, users, list</td>
+                  </tr>
+                  <tr>
+                    <td>Site Admin</td>
+                    <td>Yes</td>
+                    <td>Yes, selected-owner/direct context</td>
+                    <td>Yes, with confirmation/audit expectation</td>
+                    <td>Dashboard, users, list</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- COMPONENT: modal -->
+  <div id="component-modal" class="c-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <h2 id="modal-title">Confirm project action</h2>
+      <p id="modal-message">Are you sure?</p>
+      <p class="danger-note" id="modal-warning"></p>
+      <div class="action-row">
+        <button type="button" class="btn btn-default" id="modal-cancel">Cancel</button>
+        <button type="button" class="btn btn-danger" id="modal-confirm">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPONENT: toast -->
+  <div id="component-toast" class="c-toast" role="status" aria-live="polite">Project settings updated.</div>
+
+  <!-- COMPONENT: footer -->
+  <footer id="component-footer" class="app-footer c-footer">
+    <div class="container">
+      <p>© 2026 OpenBEP · Contact · Privacy · Terms</p>
+    </div>
+  </footer>
+
+  <script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
+  <script>
+    const appDataModel = window.AppDataModel || AppDataModel || { ui: {}, projects: [] };
+    const params = new URLSearchParams(window.location.search);
+    const selectedProjectId = params.get('project') || 'project-1';
+    const roleParam = (params.get('role') || '').toUpperCase();
+    const fromParam = (params.get('from') || '').toLowerCase();
+    const project = (appDataModel.projects || []).find((item) => item.id === selectedProjectId) || (appDataModel.projects || [])[0];
+    const projectListItem = (appDataModel.ui?.projectList || []).find((item) => item.id === project?.id) || project;
+    let pendingAction = null;
+
+    const form = document.getElementById('settings-form');
+    const saveButton = document.getElementById('save-settings');
+    const archiveButton = document.getElementById('archive-project');
+    const deleteButton = document.getElementById('delete-project');
+    const modal = document.getElementById('component-modal');
+    const modalMessage = document.getElementById('modal-message');
+    const modalWarning = document.getElementById('modal-warning');
+    const modalConfirm = document.getElementById('modal-confirm');
+    const toast = document.getElementById('component-toast');
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>'"]/g, (char) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+      }[char]));
+    }
+
+    function currentAccess() {
+      if (roleParam === 'ADMIN' || roleParam === 'SITE_ADMIN') return 'SITE_ADMIN';
+      if (roleParam === 'MEMBER' || roleParam === 'PROJECT_MEMBER') return 'PROJECT_MEMBER';
+      if (projectListItem?.membershipStatus === 'OWNER') return 'PROJECT_OWNER';
+      if (projectListItem?.membershipStatus === 'APPROVED') return 'PROJECT_MEMBER';
+      return 'PROJECT_MEMBER';
+    }
+
+    function accessLabel(access) {
+      return {
+        PROJECT_OWNER: 'Project Owner',
+        PROJECT_MEMBER: 'Project Member',
+        SITE_ADMIN: 'Site Admin'
+      }[access] || access;
+    }
+
+    function canManage(access) {
+      return access === 'PROJECT_OWNER' || access === 'SITE_ADMIN';
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('is-visible');
+      window.setTimeout(() => toast.classList.remove('is-visible'), 2200);
+    }
+
+    function openModal(message, warning, action) {
+      modalMessage.textContent = message;
+      modalWarning.textContent = warning || '';
+      pendingAction = action;
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      modalConfirm.focus();
+    }
+
+    function closeModal() {
+      pendingAction = null;
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+
+    function setFieldValue(id, value) {
+      const field = document.getElementById(id);
+      if (field) field.value = value ?? '';
+    }
+
+    function renderCountries() {
+      const countries = appDataModel.ui?.selectOptions?.countries || ['Greece', 'Italy', 'Spain', 'Portugal'];
+      document.getElementById('country').innerHTML = countries.map((country) => `<option value="${escapeHtml(country)}">${escapeHtml(country)}</option>`).join('');
+    }
+
+    function renderProject() {
+      if (!project) return;
+
+      const access = currentAccess();
+      const editable = canManage(access);
+      const memberCount = (project.members || []).filter((member) => member.status === 'APPROVED').length;
+
+      document.getElementById('page-title').textContent = `${project.name} · Project Settings`;
+      document.getElementById('dashboard-breadcrumb').href = `./A-projects-dashboard.html?project=${project.id}`;
+      document.getElementById('open-dashboard').href = `./A-projects-dashboard.html?project=${project.id}`;
+      const backTarget = fromParam === 'project-list' ? './project-list.html' : './my-project-list.html';
+      document.getElementById('my-projects-breadcrumb').href = backTarget;
+      document.getElementById('back-to-my-projects').href = backTarget;
+      document.getElementById('back-to-my-projects').textContent = fromParam === 'project-list' ? 'Back to Project List' : 'Back to My Projects';
+      document.getElementById('building-count').textContent = project.buildingCount ?? 0;
+      document.getElementById('member-count').textContent = memberCount;
+      document.getElementById('project-status').textContent = project.status || 'ACTIVE';
+      document.getElementById('access-label').textContent = accessLabel(access);
+
+      setFieldValue('project-name', project.name);
+      setFieldValue('organisation-name', project.organisationName);
+      setFieldValue('short-description', project.shortDescription);
+      setFieldValue('description', project.description);
+      setFieldValue('country', project.country);
+      setFieldValue('city', project.city);
+      setFieldValue('address', project.address);
+      setFieldValue('status', project.status || 'ACTIVE');
+      setFieldValue('visibility', project.visibility || 'PUBLIC');
+
+      document.getElementById('project-summary').innerHTML = `
+        <p><strong>Owner:</strong> ${escapeHtml(project.ownerName)}</p>
+        <p><strong>Organisation:</strong> ${escapeHtml(project.organisationName || 'Not provided')}</p>
+        <p><strong>Location:</strong> ${escapeHtml([project.city, project.country].filter(Boolean).join(', ') || 'Not provided')}</p>
+        <p><strong>Last modified:</strong> ${escapeHtml(project.lastModified || 'Not available')}</p>
+      `;
+
+      const banner = document.getElementById('permission-banner');
+      const permissionIcon = document.getElementById('permission-icon');
+      const permissionMessage = document.getElementById('permission-message');
+      banner.classList.toggle('member-view', !editable);
+      permissionIcon.className = editable ? 'fa-solid fa-user-gear' : 'fa-solid fa-eye';
+      permissionMessage.innerHTML = editable
+        ? `<strong>${accessLabel(access)} access:</strong> You can edit project settings and use destructive actions after confirmation.`
+        : '<strong>Project Member view:</strong> You can see this page for context, but you cannot edit, archive, or delete the project. Use Open dashboard to continue.';
+
+      [...form.elements].forEach((field) => {
+        if (field.tagName === 'BUTTON') return;
+        if (field.tagName === 'SELECT') field.disabled = !editable;
+        else field.readOnly = !editable;
+      });
+
+      saveButton.disabled = !editable;
+      archiveButton.disabled = !editable;
+      deleteButton.disabled = !editable;
+      document.getElementById('danger-help').textContent = editable
+        ? 'Archive/delete actions are prototype-only and do not persist after reload.'
+        : 'Project Members cannot archive or delete projects.';
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!canManage(currentAccess())) {
+        document.getElementById('settings-feedback').textContent = 'Project Members cannot save project settings.';
+        return;
+      }
+
+      project.name = document.getElementById('project-name').value.trim();
+      project.organisationName = document.getElementById('organisation-name').value.trim();
+      project.shortDescription = document.getElementById('short-description').value.trim();
+      project.description = document.getElementById('description').value.trim();
+      project.country = document.getElementById('country').value;
+      project.city = document.getElementById('city').value.trim();
+      project.address = document.getElementById('address').value.trim();
+      project.status = document.getElementById('status').value;
+      project.visibility = document.getElementById('visibility').value;
+      project.lastModified = new Date().toISOString().slice(0, 10);
+      document.getElementById('settings-feedback').textContent = 'Project settings saved in prototype state.';
+      renderProject();
+      showToast('Project settings saved.');
+    });
+
+    archiveButton.addEventListener('click', () => {
+      if (!canManage(currentAccess())) return;
+      openModal(
+        `Archive ${project.name}?`,
+        'Archived projects should not be used for new building work until restored.',
+        () => {
+          project.status = 'ARCHIVED';
+          renderProject();
+          showToast('Project archived in prototype state.');
+        }
+      );
+    });
+
+    deleteButton.addEventListener('click', () => {
+      if (!canManage(currentAccess())) return;
+      openModal(
+        `Delete ${project.name}?`,
+        'This is a destructive prototype action. Real implementation must require backend permission checks and audit logging.',
+        () => showToast('Project delete confirmed in prototype state.')
+      );
+    });
+
+    document.getElementById('modal-cancel').addEventListener('click', closeModal);
+    modalConfirm.addEventListener('click', () => {
+      if (pendingAction) pendingAction();
+      closeModal();
+    });
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) closeModal();
+    });
+
+    renderCountries();
+    renderProject();
+  </script>
+</body>
+
+</html>

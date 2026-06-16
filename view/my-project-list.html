@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Project List · OpenBEP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../building-performance-app/style.css" />
+  <style>
+    :root {
+      --btn-color-success: #2db34a;
+      --btn-color-default: #86c440;
+      --btn-color-warning: #fecf17;
+      --btn-color-orange: #f47721;
+      --btn-color-danger: #ef3e23;
+    }
+
+    .my-project-list-layout {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--sp-md);
+    }
+
+    .my-project-list-layout > .full { grid-column: 1 / -1; }
+    .my-project-list-layout > .third { grid-column: span 4; }
+    .my-project-list-layout > .two-third { grid-column: span 8; }
+
+    @media (max-width: 900px) {
+      .my-project-list-layout > .third,
+      .my-project-list-layout > .two-third { grid-column: 1 / -1; }
+    }
+
+    /* COMPONENT: breadcrumbs */
+    .c-breadcrumbs ol {
+      display: grid;
+      grid-auto-flow: column;
+      justify-content: start;
+      gap: var(--sp-xs);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .c-breadcrumbs li + li::before {
+      content: ">";
+      margin-right: var(--sp-xs);
+      color: var(--muted);
+    }
+
+    /* COMPONENT: search-bar */
+    .c-search-bar .search-wrap {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: var(--sp-sm);
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 10px 12px;
+      background: #fff;
+    }
+
+    .c-search-bar input {
+      border: 0;
+      outline: 0;
+      font: inherit;
+      width: 100%;
+    }
+
+    /* COMPONENT: data-table */
+    .c-data-table { overflow-x: auto; }
+    .c-data-table table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      overflow: hidden;
+    }
+
+    .c-data-table th,
+    .c-data-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .c-data-table th { background: var(--green-10); }
+
+    /* COMPONENT: empty-state */
+    .c-empty-state {
+      text-align: center;
+      padding: var(--sp-lg);
+      border: 1px dashed var(--line);
+      border-radius: var(--r-md);
+      background: #fff;
+    }
+
+    .toolbar-grid,
+    .summary-grid,
+    .action-row {
+      display: grid;
+      gap: var(--sp-sm);
+    }
+
+    .toolbar-grid {
+      grid-template-columns: 1fr auto auto;
+      align-items: end;
+    }
+
+    .summary-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .action-row {
+      grid-auto-flow: column;
+      justify-content: start;
+      align-items: center;
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: 1.6rem;
+      color: var(--text);
+    }
+
+    .quick-access-banner {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--sp-sm);
+      align-items: center;
+      border-left: 4px solid var(--btn-color-success);
+      background: var(--green-10);
+    }
+
+    .project-name {
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .request-note { max-width: 32ch; }
+
+    @media (max-width: 760px) {
+      .toolbar-grid,
+      .summary-grid { grid-template-columns: 1fr; }
+      .action-row { grid-auto-flow: row; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="container">
+      <a class="brand" href="../index.html"><img class="logo" src="../building-performance-app/logo.png" alt="OpenBEP logo"></a>
+      <nav id="main-nav" class="nav" aria-label="Primary">
+        <a href="./project-list.html">Project List</a>
+        <a href="./my-project-list.html" aria-current="page">My Projects</a>
+        <a href="./create-project.html">Create Project</a>
+        <a href="./A-projects-dashboard.html">Project Dashboard</a>
+        <a href="./login.html">Login</a>
+        <a href="./about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page" id="view-my-project-list">
+      <div class="page-header">
+        <h1>My Project List</h1>
+        <p class="muted">Quick access to projects where you are already an approved member, Project Owner, or Site Admin. Use the general Project List to browse and request membership.</p>
+      </div>
+
+      <div class="my-project-list-layout">
+        <div class="full">
+          <!-- COMPONENT: breadcrumbs -->
+          <article id="component-breadcrumbs" class="card c-breadcrumbs">
+            <nav aria-label="Breadcrumb">
+              <ol>
+                <li><a href="../index.html">Home</a></li>
+                <li aria-current="page">My Projects</li>
+              </ol>
+            </nav>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card quick-access-banner" aria-label="My Projects quick access rule">
+            <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
+            <p><strong>My Projects:</strong> This page is different from the general Project List. It shows only projects connected to the current user for quick dashboard and settings access.</p>
+          </article>
+        </div>
+
+        <div class="full">
+          <div class="summary-grid" aria-label="My project list summary">
+            <article class="card stat-card">
+              <span class="caption">My projects</span>
+              <strong id="my-project-count">0</strong>
+            </article>
+            <article class="card stat-card">
+              <span class="caption">Owned projects</span>
+              <strong id="owned-count">0</strong>
+            </article>
+            <article class="card stat-card">
+              <span class="caption">Member projects</span>
+              <strong id="member-count">0</strong>
+            </article>
+            <article class="card stat-card">
+              <span class="caption">Quick actions</span>
+              <strong>Dashboard</strong>
+            </article>
+          </div>
+        </div>
+
+        <div class="two-third">
+          <article class="card">
+            <h2>Find one of my projects</h2>
+            <div class="toolbar-grid">
+              <!-- COMPONENT: search-bar -->
+              <article id="component-search-bar" class="card c-search-bar">
+                <h2 class="sr-only">Search</h2>
+                <label for="my-project-search" class="sr-only">Search my projects</label>
+                <div class="search-wrap">
+                  <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                  <input id="my-project-search" type="search" placeholder="Search my projects by name, owner, country" />
+                </div>
+              </article>
+
+              <label class="form-field" for="my-role-filter">
+                <span>My role</span>
+                <select id="my-role-filter">
+                  <option value="ALL">All my projects</option>
+                  <option value="OWNER">Project Owner</option>
+                  <option value="APPROVED">Project Member</option>
+                </select>
+              </label>
+
+              <a class="btn btn-default" href="./project-list.html">Browse all projects</a>
+            </div>
+          </article>
+        </div>
+
+        <div class="third">
+          <article class="card">
+            <h2>Role rules</h2>
+            <ul>
+              <li>Project Members can open the dashboard and view read-only project settings.</li>
+              <li>Project Owners can edit settings, manage users, archive, or delete where allowed.</li>
+              <li>Site Admins reuse this normal page in selected-owner or direct admin context.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card">
+            <!-- COMPONENT: data-table -->
+            <div id="component-data-table" class="c-data-table">
+              <h2>My projects</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Project</th>
+                    <th scope="col">Owner</th>
+                    <th scope="col">Country</th>
+                    <th scope="col">Buildings</th>
+                    <th scope="col">My role</th>
+                    <th scope="col">Quick actions</th>
+                  </tr>
+                </thead>
+                <tbody id="my-project-list-body"></tbody>
+              </table>
+            </div>
+
+            <!-- COMPONENT: empty-state -->
+            <div id="component-empty-state" class="c-empty-state" hidden>
+              <h2>No projects assigned to you</h2>
+              <p class="muted">Create a project or browse the general Project List to request membership.</p>
+              <div class="action-row">
+                <a href="./create-project.html" class="btn btn-primary">Create Project</a>
+                <a href="./project-list.html" class="btn btn-default">Browse Project List</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- COMPONENT: footer -->
+  <footer id="component-footer" class="app-footer c-footer">
+    <div class="container">
+      <p>© 2026 OpenBEP · Contact · Privacy · Terms</p>
+    </div>
+  </footer>
+
+  <script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
+  <script>
+    const appDataModel = window.AppDataModel || AppDataModel || { ui: {} };
+    const params = new URLSearchParams(window.location.search);
+    const roleParam = (params.get('role') || '').toUpperCase();
+    const allProjects = appDataModel.ui.projectList || [];
+    const myProjects = roleParam === 'ADMIN' || roleParam === 'SITE_ADMIN'
+      ? allProjects
+      : allProjects.filter((project) => ['OWNER', 'APPROVED'].includes(project.membershipStatus));
+
+    const tableBody = document.getElementById('my-project-list-body');
+    const searchInput = document.getElementById('my-project-search');
+    const roleFilter = document.getElementById('my-role-filter');
+    const emptyState = document.getElementById('component-empty-state');
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>'"]/g, (char) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+      }[char]));
+    }
+
+    function statusChipClass(status) {
+      return {
+        APPROVED: 'chip--ready',
+        OWNER: 'chip--ready',
+        NONE: 'chip--draft'
+      }[status] || 'chip--draft';
+    }
+
+    function roleLabel(project) {
+      if (roleParam === 'ADMIN' || roleParam === 'SITE_ADMIN') return 'Site Admin';
+      return project.membershipStatus === 'OWNER' ? 'Project Owner' : 'Project Member';
+    }
+
+    function settingsHref(project) {
+      if (roleParam === 'ADMIN' || roleParam === 'SITE_ADMIN') return `./project-settings.html?project=${project.id}&role=admin&from=my-projects`;
+      if (project.membershipStatus === 'OWNER') return `./project-settings.html?project=${project.id}&from=my-projects`;
+      return `./project-settings.html?project=${project.id}&role=member&from=my-projects`;
+    }
+
+    function actionMarkup(project) {
+      const adminOrOwner = roleParam === 'ADMIN' || roleParam === 'SITE_ADMIN' || project.membershipStatus === 'OWNER';
+      const dashboard = `<a class="btn btn-primary" href="./A-projects-dashboard.html?project=${project.id}">Open dashboard</a>`;
+      const settingsLabel = adminOrOwner ? 'Settings' : 'View settings';
+      const settings = `<a class="btn btn-default" href="${settingsHref(project)}">${settingsLabel}</a>`;
+      const users = adminOrOwner ? `<a class="btn btn-default" href="./project-users.html?project=${project.id}">Project Users</a>` : '';
+      return `${dashboard}${settings}${users}`;
+    }
+
+    function updateSummary() {
+      document.getElementById('my-project-count').textContent = myProjects.length;
+      document.getElementById('owned-count').textContent = myProjects.filter((project) => project.membershipStatus === 'OWNER').length;
+      document.getElementById('member-count').textContent = myProjects.filter((project) => project.membershipStatus === 'APPROVED').length;
+    }
+
+    function renderProjects() {
+      const query = searchInput.value.trim().toLowerCase();
+      const filter = roleFilter.value;
+      const filteredProjects = myProjects.filter((project) => {
+        const haystack = [project.name, project.ownerName, project.country, project.membershipStatus].join(' ').toLowerCase();
+        const matchesQuery = !query || haystack.includes(query);
+        const matchesFilter = filter === 'ALL' || project.membershipStatus === filter;
+        return matchesQuery && matchesFilter;
+      });
+
+      tableBody.innerHTML = filteredProjects.map((project) => `
+        <tr>
+          <td><span class="project-name">${escapeHtml(project.name)}</span><p class="caption request-note">${escapeHtml(project.description || '')}</p></td>
+          <td>${escapeHtml(project.ownerName)}</td>
+          <td>${escapeHtml(project.country)}</td>
+          <td>${escapeHtml(project.buildingCount)}</td>
+          <td><span class="chip ${statusChipClass(project.membershipStatus)}">${escapeHtml(roleLabel(project))}</span></td>
+          <td><div class="action-row">${actionMarkup(project)}</div></td>
+        </tr>
+      `).join('');
+
+      emptyState.hidden = filteredProjects.length > 0;
+    }
+
+    searchInput.addEventListener('input', renderProjects);
+    roleFilter.addEventListener('change', renderProjects);
+    updateSummary();
+    renderProjects();
+  </script>
+</body>
+
+</html>

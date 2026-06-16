@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Site Admin Console · OpenBEP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../building-performance-app/style.css" />
+  <style>
+    :root {
+      --btn-color-success: #2db34a;
+      --btn-color-default: #86c440;
+      --btn-color-warning: #fecf17;
+      --btn-color-orange: #f47721;
+      --btn-color-danger: #ef3e23;
+    }
+
+    .site-admin-layout {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--sp-md);
+    }
+
+    .site-admin-layout > .full {
+      grid-column: 1 / -1;
+    }
+
+    .site-admin-layout > .owner-list-pane {
+      grid-column: span 7;
+    }
+
+    .site-admin-layout > .owner-detail-pane {
+      grid-column: span 5;
+    }
+
+    /* COMPONENT: breadcrumbs */
+    .c-breadcrumbs ol {
+      display: grid;
+      grid-auto-flow: column;
+      justify-content: start;
+      gap: var(--sp-xs);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .c-breadcrumbs li + li::before {
+      content: ">";
+      margin-right: var(--sp-xs);
+      color: var(--muted);
+    }
+
+    .admin-mode-banner {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: var(--sp-sm);
+      align-items: center;
+      border-left: 4px solid var(--btn-color-orange);
+      background: #fff7ed;
+    }
+
+    .summary-grid,
+    .owner-table-actions,
+    .owner-actions,
+    .project-card-grid,
+    .selected-owner-summary,
+    .empty-owner-state {
+      display: grid;
+      gap: var(--sp-sm);
+    }
+
+    .summary-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: 1.6rem;
+      color: var(--text);
+    }
+
+    /* COMPONENT: search-bar */
+    .c-search-bar .search-wrap {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: var(--sp-sm);
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 10px 12px;
+      background: #fff;
+    }
+
+    .c-search-bar input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      font: inherit;
+    }
+
+    /* COMPONENT: data-table */
+    .c-data-table {
+      overflow-x: auto;
+    }
+
+    .c-data-table table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      overflow: hidden;
+    }
+
+    .c-data-table th,
+    .c-data-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .c-data-table th {
+      background: var(--green-10);
+    }
+
+    .owner-select-button,
+    .project-title-button {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      color: var(--text);
+      font: inherit;
+      font-weight: 700;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .owner-select-button:hover,
+    .owner-select-button:focus-visible,
+    .project-title-button:hover,
+    .project-title-button:focus-visible {
+      color: var(--green);
+      text-decoration: underline;
+      outline: none;
+    }
+
+    tr.is-selected {
+      background: #f0f9f0;
+      box-shadow: inset 4px 0 0 var(--btn-color-success);
+    }
+
+    .owner-table-actions {
+      grid-auto-flow: column;
+      justify-content: start;
+      align-items: center;
+    }
+
+    .owner-actions {
+      grid-template-columns: 1fr;
+      margin-top: var(--sp-sm);
+    }
+
+    .selected-owner-summary {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .detail-item,
+    .project-card,
+    .project-detail-item {
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 10px 12px;
+      background: var(--green-10);
+    }
+
+    .detail-item span,
+    .project-detail-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .project-card-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .project-card {
+      display: grid;
+      gap: var(--sp-xs);
+      background: #fff;
+    }
+
+    .project-card-header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: start;
+      gap: var(--sp-sm);
+    }
+
+    /* COMPONENT: empty-state */
+    .c-empty-state {
+      text-align: center;
+      padding: var(--sp-lg);
+      border: 1px dashed var(--line);
+      border-radius: var(--r-md);
+      background: #fff;
+    }
+
+    /* COMPONENT: modal */
+    .c-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      place-items: center;
+      z-index: 200;
+      padding: var(--sp-lg);
+      background: rgba(12, 18, 32, 0.45);
+    }
+
+    .c-modal.is-open {
+      display: grid;
+    }
+
+    .modal-card {
+      display: grid;
+      gap: var(--sp-md);
+      width: 100%;
+      max-width: 760px;
+      max-height: min(86vh, 760px);
+      overflow: auto;
+      padding: var(--sp-lg);
+      border: 1px solid var(--line);
+      border-radius: var(--r-md);
+      background: #fff;
+      box-shadow: var(--shadow-2, 0 20px 50px rgba(12, 18, 32, 0.2));
+    }
+
+    .project-detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sp-sm);
+    }
+
+    .modal-actions {
+      display: grid;
+      grid-auto-flow: column;
+      justify-content: end;
+      align-items: center;
+      gap: var(--sp-sm);
+      border-top: 1px solid var(--line);
+      padding-top: var(--sp-md);
+    }
+
+    @media (max-width: 980px) {
+      .site-admin-layout > .owner-list-pane,
+      .site-admin-layout > .owner-detail-pane {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .admin-mode-banner,
+      .summary-grid,
+      .selected-owner-summary,
+      .project-detail-grid,
+      .modal-actions {
+        grid-template-columns: 1fr;
+        grid-auto-flow: row;
+      }
+
+      .owner-table-actions {
+        grid-auto-flow: row;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="container">
+      <a class="brand" href="../index.html"><img class="logo" src="../building-performance-app/logo.png" alt="OpenBEP logo"></a>
+      <nav id="main-nav" class="nav" aria-label="Primary">
+        <a href="./site-admin-console.html" aria-current="page">Site Admin</a>
+        <a href="./project-list.html">Project List</a>
+        <a href="./my-project-list.html">My Projects</a>
+        <a href="./create-project.html">Create Project</a>
+        <a href="./A-projects-dashboard.html">Project Dashboard</a>
+        <a href="./login.html">Login</a>
+        <a href="./about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page" id="view-site-admin-console">
+      <div class="page-header">
+        <h1>Site Admin Console</h1>
+        <p class="muted">Select a Project Owner to continue through the normal owner workflow, or open the normal Project List with direct Site Admin access.</p>
+      </div>
+
+      <div class="site-admin-layout">
+        <div class="full">
+          <!-- COMPONENT: breadcrumbs -->
+          <article id="component-breadcrumbs" class="card c-breadcrumbs">
+            <nav aria-label="Breadcrumb">
+              <ol>
+                <li><a href="../index.html">Home</a></li>
+                <li aria-current="page">Site Admin Console</li>
+              </ol>
+            </nav>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card admin-mode-banner" aria-label="Site Admin mode guidance">
+            <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+            <p><strong>Simple admin UX:</strong> choose an owner to inspect their projects, then continue as that owner. For broad access, use direct Project List mode and keep work inside the normal project/dashboard pages.</p>
+            <a class="btn btn-orange" href="./project-list.html?adminMode=direct">Project List as Site Admin</a>
+          </article>
+        </div>
+
+        <div class="full">
+          <div class="summary-grid" aria-label="Site Admin summary">
+            <article class="card stat-card">
+              <span class="caption">Project Owners</span>
+              <strong id="owner-count">0</strong>
+            </article>
+            <article class="card stat-card">
+              <span class="caption">Owner projects</span>
+              <strong id="project-count">0</strong>
+            </article>
+            <article class="card stat-card">
+              <span class="caption">Selected owner</span>
+              <strong id="selected-owner-count">0</strong>
+            </article>
+          </div>
+        </div>
+
+        <div class="owner-list-pane">
+          <article class="card">
+            <h2>Project Owners</h2>
+            <p class="muted">Click an owner name to preview owner information and related projects without leaving the console.</p>
+
+            <!-- COMPONENT: search-bar -->
+            <article id="component-search-bar" class="card c-search-bar">
+              <h2 class="sr-only">Search Project Owners</h2>
+              <label for="owner-search" class="sr-only">Search owners</label>
+              <div class="search-wrap">
+                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                <input id="owner-search" type="search" placeholder="Search owner, email, organisation, country" />
+              </div>
+            </article>
+
+            <!-- COMPONENT: data-table -->
+            <div id="component-data-table" class="c-data-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Owner</th>
+                    <th scope="col">Organisation</th>
+                    <th scope="col">Projects</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="owner-list-body"></tbody>
+              </table>
+            </div>
+
+            <!-- COMPONENT: empty-state -->
+            <div id="component-empty-state" class="c-empty-state" hidden>
+              <h2>No matching owners</h2>
+              <p class="muted">Try another search term.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="owner-detail-pane">
+          <article class="card" aria-live="polite">
+            <h2>Selected-owner details</h2>
+            <div id="selected-owner-empty" class="empty-owner-state c-empty-state">
+              <i class="fa-solid fa-user-shield" aria-hidden="true"></i>
+              <h3>Select a Project Owner</h3>
+              <p class="muted">Owner information and compact related project cards will appear here.</p>
+            </div>
+
+            <div id="selected-owner-panel" hidden>
+              <div>
+                <p class="caption">Site Admin viewing selected owner</p>
+                <h3 id="owner-detail-name">Owner name</h3>
+                <p id="owner-detail-email" class="muted"></p>
+              </div>
+
+              <div id="selected-owner-summary" class="selected-owner-summary" aria-label="Selected owner metadata"></div>
+
+              <div class="owner-actions" aria-label="Selected owner actions">
+                <a id="continue-as-owner" class="btn btn-primary" href="./project-list.html">Continue as selected owner</a>
+                <a class="btn btn-orange" href="./project-list.html?adminMode=direct">Open Project List as Site Admin</a>
+                <button id="exit-owner-mode" class="btn btn-default" type="button">Exit selected-owner mode</button>
+              </div>
+
+              <h3 class="mt-lg">Owner projects</h3>
+              <div id="owner-projects" class="project-card-grid"></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- COMPONENT: footer -->
+  <footer id="component-footer" class="app-footer c-footer">
+    <div class="container">
+      <p>© 2026 OpenBEP · Contact · Privacy · Terms</p>
+    </div>
+  </footer>
+
+  <!-- COMPONENT: modal -->
+  <div id="component-modal" class="c-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <article class="modal-card" tabindex="-1">
+      <div>
+        <p class="caption">Owner project details</p>
+        <h2 id="modal-title">Project details</h2>
+        <p id="modal-description" class="muted"></p>
+      </div>
+      <div id="modal-status"></div>
+      <div id="modal-detail-grid" class="project-detail-grid" aria-label="Selected project metadata"></div>
+      <div class="modal-actions">
+        <button id="close-modal" type="button" class="btn btn-default">Close</button>
+        <a id="modal-open-project-list" class="btn btn-primary" href="./project-list.html">Open in Project List</a>
+      </div>
+    </article>
+  </div>
+
+  <script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
+  <script>
+    const appDataModel = window.AppDataModel || AppDataModel || { ui: {}, users: [] };
+    const projects = appDataModel.ui.projectList || [];
+    const users = appDataModel.users || [];
+    const ownerSearch = document.getElementById('owner-search');
+    const ownerListBody = document.getElementById('owner-list-body');
+    const ownerEmptyState = document.getElementById('component-empty-state');
+    const selectedOwnerEmpty = document.getElementById('selected-owner-empty');
+    const selectedOwnerPanel = document.getElementById('selected-owner-panel');
+    const selectedOwnerSummary = document.getElementById('selected-owner-summary');
+    const ownerProjects = document.getElementById('owner-projects');
+    const ownerDetailName = document.getElementById('owner-detail-name');
+    const ownerDetailEmail = document.getElementById('owner-detail-email');
+    const continueAsOwner = document.getElementById('continue-as-owner');
+    const exitOwnerMode = document.getElementById('exit-owner-mode');
+    const detailsModal = document.getElementById('component-modal');
+    const modalCard = detailsModal.querySelector('.modal-card');
+    const closeModalButton = document.getElementById('close-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDescription = document.getElementById('modal-description');
+    const modalStatus = document.getElementById('modal-status');
+    const modalDetailGrid = document.getElementById('modal-detail-grid');
+    const modalOpenProjectList = document.getElementById('modal-open-project-list');
+    let selectedOwnerId = null;
+    let lastFocusedElement = null;
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>'"]/g, (character) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+      }[character]));
+    }
+
+    function slugEmail(name, ownerId) {
+      const slug = String(name || ownerId || 'owner').toLowerCase().replace(/[^a-z0-9]+/g, '.').replace(/^\.|\.$/g, '');
+      return `${slug || ownerId}@example.eu`;
+    }
+
+    function ownerEmail(ownerId, ownerName) {
+      const matchedUser = users.find((user) => user.id === ownerId);
+      return matchedUser?.profile?.email || slugEmail(ownerName, ownerId);
+    }
+
+    function buildOwners() {
+      const ownersById = new Map();
+      projects.forEach((project) => {
+        const ownerId = project.ownerId || project.ownerName;
+        if (!ownersById.has(ownerId)) {
+          ownersById.set(ownerId, {
+            id: ownerId,
+            name: project.ownerName || 'Unknown owner',
+            email: ownerEmail(ownerId, project.ownerName),
+            organisationName: project.organisationName || 'Not provided',
+            projects: []
+          });
+        }
+        ownersById.get(ownerId).projects.push(project);
+      });
+      return Array.from(ownersById.values());
+    }
+
+    const owners = buildOwners();
+
+    function statusChipClass(status) {
+      return {
+        ACTIVE: 'chip--ready',
+        ARCHIVED: 'chip--archived',
+        DRAFT: 'chip--draft'
+      }[status] || 'chip--draft';
+    }
+
+    function ownerCountries(owner) {
+      return Array.from(new Set(owner.projects.map((project) => project.country).filter(Boolean))).join(', ') || 'Not provided';
+    }
+
+    function ownerBuildings(owner) {
+      return owner.projects.reduce((total, project) => total + Number(project.buildingCount || 0), 0);
+    }
+
+    function renderSummary() {
+      document.getElementById('owner-count').textContent = owners.length;
+      document.getElementById('project-count').textContent = projects.length;
+      document.getElementById('selected-owner-count').textContent = selectedOwnerId ? '1' : '0';
+    }
+
+    function selectOwner(ownerId) {
+      const owner = owners.find((item) => item.id === ownerId);
+      if (!owner) return;
+
+      selectedOwnerId = owner.id;
+      selectedOwnerEmpty.hidden = true;
+      selectedOwnerPanel.hidden = false;
+      ownerDetailName.textContent = owner.name;
+      ownerDetailEmail.textContent = owner.email;
+      continueAsOwner.href = `./project-list.html?adminMode=owner&owner=${encodeURIComponent(owner.id)}`;
+
+      selectedOwnerSummary.innerHTML = [
+        ['Owner ID', owner.id],
+        ['Organisation', owner.organisationName],
+        ['Countries', ownerCountries(owner)],
+        ['Buildings', ownerBuildings(owner)],
+        ['Owned projects', owner.projects.length],
+        ['Mode', 'Selected-owner admin view']
+      ].map(([label, value]) => `
+        <div class="detail-item">
+          <span>${escapeHtml(label)}</span>
+          <strong>${escapeHtml(value)}</strong>
+        </div>
+      `).join('');
+
+      ownerProjects.innerHTML = owner.projects.map((project) => `
+        <article class="project-card">
+          <div class="project-card-header">
+            <div>
+              <button class="project-title-button" type="button" data-open-project="${escapeHtml(project.id)}">${escapeHtml(project.name)}</button>
+              <p class="caption">${escapeHtml(project.country || 'Country not set')} · ${escapeHtml(project.city || 'City not set')} · ${escapeHtml(project.buildingCount)} buildings</p>
+            </div>
+            <span class="chip ${statusChipClass(project.status)}">${escapeHtml(project.status || 'UNKNOWN')}</span>
+          </div>
+          <p class="muted">${escapeHtml(project.shortDescription || project.description || 'No short description available.')}</p>
+          <button class="btn btn-default" type="button" data-open-project="${escapeHtml(project.id)}">View all info</button>
+        </article>
+      `).join('');
+
+      renderOwners();
+      renderSummary();
+    }
+
+    function clearSelectedOwner() {
+      selectedOwnerId = null;
+      selectedOwnerPanel.hidden = true;
+      selectedOwnerEmpty.hidden = false;
+      renderOwners();
+      renderSummary();
+      ownerSearch.focus();
+    }
+
+    function renderOwners() {
+      const query = ownerSearch.value.trim().toLowerCase();
+      const filteredOwners = owners.filter((owner) => {
+        const haystack = [owner.name, owner.email, owner.organisationName, ownerCountries(owner)].join(' ').toLowerCase();
+        return !query || haystack.includes(query);
+      });
+
+      ownerListBody.innerHTML = filteredOwners.map((owner) => `
+        <tr class="${owner.id === selectedOwnerId ? 'is-selected' : ''}">
+          <td>
+            <button class="owner-select-button" type="button" data-select-owner="${escapeHtml(owner.id)}">${escapeHtml(owner.name)}</button>
+            <p class="caption">${escapeHtml(owner.email)}</p>
+          </td>
+          <td>${escapeHtml(owner.organisationName)}</td>
+          <td>${escapeHtml(owner.projects.length)} projects · ${escapeHtml(ownerBuildings(owner))} buildings</td>
+          <td>
+            <div class="owner-table-actions">
+              <button class="btn btn-default" type="button" data-select-owner="${escapeHtml(owner.id)}">Select</button>
+              <a class="btn btn-primary" href="./project-list.html?adminMode=owner&owner=${encodeURIComponent(owner.id)}">Continue</a>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+
+      ownerEmptyState.hidden = filteredOwners.length > 0;
+    }
+
+    function openProjectDetails(projectId) {
+      const project = projects.find((item) => item.id === projectId);
+      if (!project) return;
+
+      lastFocusedElement = document.activeElement;
+      modalTitle.textContent = project.name;
+      modalDescription.textContent = project.description || project.shortDescription || 'Project summary is available for review.';
+      modalStatus.innerHTML = `<span class="chip ${statusChipClass(project.status)}">${escapeHtml(project.status || 'UNKNOWN')}</span>`;
+      modalDetailGrid.innerHTML = [
+        ['Project ID', project.id],
+        ['Owner', project.ownerName],
+        ['Organisation', project.organisationName],
+        ['Country', project.country],
+        ['City', project.city],
+        ['Address', project.address],
+        ['Buildings', project.buildingCount],
+        ['Project status', project.status]
+      ].map(([label, value]) => `
+        <div class="project-detail-item">
+          <span>${escapeHtml(label)}</span>
+          <strong>${escapeHtml(value || 'Not provided')}</strong>
+        </div>
+      `).join('');
+      modalOpenProjectList.href = `./project-list.html?adminMode=owner&owner=${encodeURIComponent(project.ownerId || '')}&project=${encodeURIComponent(project.id)}`;
+      detailsModal.classList.add('is-open');
+      detailsModal.setAttribute('aria-hidden', 'false');
+      modalCard.focus();
+    }
+
+    function closeProjectDetails() {
+      detailsModal.classList.remove('is-open');
+      detailsModal.setAttribute('aria-hidden', 'true');
+      if (lastFocusedElement) {
+        lastFocusedElement.focus();
+      }
+    }
+
+    ownerSearch.addEventListener('input', renderOwners);
+    ownerListBody.addEventListener('click', (event) => {
+      const ownerTrigger = event.target.closest('[data-select-owner]');
+      if (ownerTrigger) {
+        selectOwner(ownerTrigger.dataset.selectOwner);
+      }
+    });
+    ownerProjects.addEventListener('click', (event) => {
+      const projectTrigger = event.target.closest('[data-open-project]');
+      if (projectTrigger) {
+        openProjectDetails(projectTrigger.dataset.openProject);
+      }
+    });
+    exitOwnerMode.addEventListener('click', clearSelectedOwner);
+    closeModalButton.addEventListener('click', closeProjectDetails);
+    detailsModal.addEventListener('click', (event) => {
+      if (event.target === detailsModal) {
+        closeProjectDetails();
+      }
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && detailsModal.classList.contains('is-open')) {
+        closeProjectDetails();
+      }
+    });
+
+    renderOwners();
+    renderSummary();
+  </script>
+</body>
+
+</html>

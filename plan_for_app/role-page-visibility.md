@@ -24,7 +24,8 @@ Important view distinction:
 - Project List and Project Dashboard are different views.
 - Project List is for browsing/selecting projects, creating a project, requesting membership, and checking membership status.
 - Project Dashboard is the selected project workspace after access is approved. It contains the building list/actions and entry points to Building, SRI, EPB, and calculation workflows.
-- `view/A-projects-dashboard.html` is the current prototype file for the selected Project Dashboard / project workspace. The Project List page is mentioned in this document but has not been created yet as a prototype HTML file.
+- `view/project-list.html` is the current Project List page and includes membership/request status, including pending requests.
+- `view/A-projects-dashboard.html` is the current prototype file for the selected Project Dashboard / project workspace.
 
 ---
 
@@ -62,10 +63,10 @@ If a Registered User creates a project, they become Project Owner for that proje
 Registered User can see:
 
 - `view/login.html` — Login/logout entry page
-- User profile page, when created
-- Project List page, when created
-- Project Info / Project Details page, when created
-- Create project page, when created
+- `view/user-profile.html` — User profile page
+- `view/project-list.html` — Project List page
+- `view/project-details.html` — Project Info / Project Details page
+- `view/create-project.html` — Create project page
 - Request project membership popup/modal, when created
   - Opens from a button on the Project List page or Project Info / Project Details page
 - Public landing/about/help pages:
@@ -86,7 +87,8 @@ Registered User has no building access until they are approved into a project or
 
 Special state:
 
-- If the user requested membership, they can see a pending/request status page when created.
+- If the user requested membership, they can see the pending/request status directly on `view/project-list.html`.
+- Do not create or document a separate pending-membership page; Project List is the single place for membership status.
 - Pending users still have no building access.
 
 ---
@@ -101,7 +103,8 @@ Project Member can see project and building workflow pages for approved projects
 - `view/A-projects-dashboard.html` — Projects dashboard
 - `view/B-add-new-building.html` — Add new building
 - `view/C-open-edit-building.html` — Open/edit building
-- User profile page, when created
+- `view/project-settings.html` — Project Settings, read-only for approved projects; members can only continue/open the dashboard from this page
+- `view/user-profile.html` — User profile page
 - Public landing/about/help pages:
   - `index.html`
   - `view/about.html`
@@ -143,6 +146,7 @@ Project Member restrictions:
 - Cannot edit buildings created by other users.
 - Cannot manage project users.
 - Cannot approve membership requests.
+- Cannot edit project settings, archive projects, or delete projects.
 - Cannot access the site admin console.
 
 ---
@@ -166,17 +170,19 @@ Project Owner can see everything a Project Member can see inside owned projects:
 
 Project Owner can also see project management pages, when created. Prefer compact combined management pages instead of many duplicate standalone pages:
 
-- Project Users page — one combined page for current members, email invitations, pending membership requests, and approve/disapprove actions
-- My Projects / Project Settings page — manageable owned projects with edit/delete actions where allowed
+- Project Users page — one combined page for current members, adding existing registered users by email, pending membership requests, approve/disapprove actions, and member removal
+- `view/project-settings.html` — My Projects / Project Settings page for manageable owned projects with edit/delete actions where allowed
 
 Project Owner permissions:
 
 - Can create buildings inside owned projects.
 - Can edit all buildings inside owned projects.
 - Can run the OpenBEP4EU Calculation Engine D2.2 for all buildings inside owned projects.
-- Can invite users by email.
+- Can add an already registered user to an owned project by email.
+- If the email does not exist in registered users, the system shows an error and does not add the user.
 - Can approve or disapprove membership requests.
 - Can manage members inside owned projects.
+- Can edit owned project settings in `view/project-settings.html` and use archive/delete actions where allowed, with confirmation for destructive actions.
 
 Project Owner restrictions:
 
@@ -200,6 +206,7 @@ Visible normal pages include:
 - `view/A-projects-dashboard.html` — selected owner's project dashboard or any project dashboard opened from direct Site Admin Project List access
 - `view/B-add-new-building.html` — add new building in projects managed by the selected owner or any project opened as Site Admin
 - `view/C-open-edit-building.html` — open/edit buildings managed by the selected owner or any project opened as Site Admin
+- `view/project-settings.html` — edit/manage project metadata and confirmed archive/delete actions through selected-owner mode or direct Site Admin Project List access
 - All SRI workflow pages
 - All EPB workflow pages
 - User profile page, when created
@@ -269,12 +276,13 @@ Site Admin project-owner navigation rule:
 | Create Project | No | Yes | Optional | Optional | Selected-owner mode or direct Site Admin Project List access |
 | Request Project Membership | No | Yes | Optional | Optional | Selected-owner mode if applicable |
 | Projects Dashboard | No | No | Yes, approved projects | Yes, owned projects | Selected owner's projects or any project via direct Site Admin access |
+| Project Settings | No | No | Yes, approved projects, read-only with dashboard action only | Yes, owned projects, edit/delete where allowed | Selected-owner mode or direct Site Admin Project List access |
 | Add New Building | No | No | Yes, approved projects | Yes, owned projects | Selected owner's projects or any project via direct Site Admin access |
 | Open/Edit Building | No | No | Own buildings only | All buildings in owned projects | Selected owner's buildings or any building via direct Site Admin access |
 | SRI Workflow | No | No | Yes, allowed buildings | Yes, owned projects | Selected owner's buildings or any building via direct Site Admin access |
 | EPB Workflow | No | No | Yes, allowed buildings | Yes, owned projects | Selected owner's buildings or any building via direct Site Admin access |
 | Project Members Management | No | No | No | Yes, owned projects | Selected-owner mode or direct Site Admin Project List access |
-| Invite Users | No | No | No | Yes, owned projects | Selected-owner mode or direct Site Admin Project List access |
+| Add Registered Users by Email | No | No | No | Yes, owned projects | Selected-owner mode or direct Site Admin Project List access |
 | Approve Membership Requests | No | No | No | Yes, owned projects | Selected-owner mode or direct Site Admin Project List access |
 | Site Admin Console | No | No | No | No | Yes |
 | Global User Management | No | No | No | No | Not in minimal prototype |
@@ -294,7 +302,7 @@ Note: `Project List + Project Info` and `Projects Dashboard` are intentionally s
 
 ### Project and building menu
 
-- Project List page — not created yet; browse/select/request/create projects before opening a project dashboard
+- `view/project-list.html` — browse/select/request/create projects and see membership/request status before opening a project dashboard
 - `view/A-projects-dashboard.html`
 - `view/B-add-new-building.html`
 - `view/C-open-edit-building.html`
@@ -344,13 +352,17 @@ Merged/deprecated SRI page:
 - Project Info / Project Details page
 - Create project page
 - Request project membership popup/modal
-- Pending membership status page
 - Project Users page
   - Current members section
-  - Invite user by email action
+  - Add registered user by email action
+  - Error state when the email does not exist as a registered user
   - Pending membership requests section
   - Approve/disapprove membership request actions
-- My Projects / Project Settings page
+- `view/project-settings.html` — My Projects / Project Settings page
+  - Project metadata form
+  - Read-only Project Member mode with dashboard-only action
+  - Project Owner/Site Admin edit settings actions
+  - Confirmed archive/delete actions where allowed
 - Site admin console: `view/site-admin-console.html`
   - Project Owners list
   - Selected Project Owner details panel

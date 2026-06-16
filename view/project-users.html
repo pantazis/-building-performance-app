@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project Users · OpenBEP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../building-performance-app/style.css" />
+  <style>
+    :root {
+      --btn-color-success: #2db34a;
+      --btn-color-default: #86c440;
+      --btn-color-warning: #fecf17;
+      --btn-color-orange: #f47721;
+      --btn-color-danger: #ef3e23;
+    }
+
+    .project-users-layout {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--sp-md);
+    }
+
+    .project-users-layout > .full {
+      grid-column: 1 / -1;
+    }
+
+    .project-users-layout > .half {
+      grid-column: span 6;
+    }
+
+    .project-users-layout > .third {
+      grid-column: span 4;
+    }
+
+    .project-users-layout > .two-third {
+      grid-column: span 8;
+    }
+
+    @media (max-width: 900px) {
+      .project-users-layout > .half,
+      .project-users-layout > .third,
+      .project-users-layout > .two-third {
+        grid-column: 1 / -1;
+      }
+    }
+
+    /* COMPONENT: breadcrumbs */
+    .c-breadcrumbs ol {
+      display: grid;
+      grid-auto-flow: column;
+      justify-content: start;
+      gap: var(--sp-xs);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .c-breadcrumbs li + li::before {
+      content: ">";
+      margin-right: var(--sp-xs);
+      color: var(--muted);
+    }
+
+    /* COMPONENT: data-table */
+    .c-data-table {
+      overflow-x: auto;
+    }
+
+    .c-data-table table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      overflow: hidden;
+    }
+
+    .c-data-table th,
+    .c-data-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .c-data-table th {
+      background: var(--green-10);
+    }
+
+    /* COMPONENT: empty-state */
+    .c-empty-state {
+      text-align: center;
+      padding: var(--sp-lg);
+      border: 1px dashed var(--line);
+      border-radius: var(--r-md);
+      background: #fff;
+    }
+
+    /* COMPONENT: modal */
+    .c-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(12, 18, 32, 0.45);
+      display: none;
+      place-items: center;
+      z-index: 200;
+      padding: var(--sp-lg);
+    }
+
+    .c-modal.is-open {
+      display: grid;
+    }
+
+    .modal-card {
+      background: #fff;
+      border-radius: var(--r-md);
+      border: 1px solid var(--line);
+      padding: var(--sp-lg);
+      max-width: 460px;
+      width: 100%;
+      display: grid;
+      gap: var(--sp-md);
+    }
+
+    /* COMPONENT: toast */
+    .c-toast {
+      position: fixed;
+      right: var(--sp-lg);
+      bottom: var(--sp-lg);
+      background: var(--green);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: var(--r-sm);
+      box-shadow: var(--shadow-1);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity .2s ease, transform .2s ease;
+      z-index: 250;
+    }
+
+    .c-toast.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .summary-grid,
+    .form-grid,
+    .action-row,
+    .meta-list {
+      display: grid;
+      gap: var(--sp-sm);
+    }
+
+    .summary-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .form-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: end;
+    }
+
+    .form-grid .full {
+      grid-column: 1 / -1;
+    }
+
+    .action-row {
+      grid-auto-flow: column;
+      justify-content: start;
+      align-items: center;
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: 1.6rem;
+      color: var(--text);
+    }
+
+    .admin-banner {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--sp-sm);
+      align-items: center;
+      border-left: 4px solid var(--btn-color-orange);
+      background: #fff7ed;
+    }
+
+    .danger-note {
+      color: var(--btn-color-danger);
+      font-weight: 700;
+    }
+
+    .member-name {
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    button:disabled {
+      background: #c7cbd1;
+      border-color: #c7cbd1;
+      color: #6b7280;
+      cursor: not-allowed;
+      opacity: 1;
+      box-shadow: none;
+    }
+
+    @media (max-width: 760px) {
+      .summary-grid,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .action-row {
+        grid-auto-flow: row;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="container">
+      <a class="brand" href="../index.html"><img class="logo" src="../building-performance-app/logo.png" alt="OpenBEP logo"></a>
+      <nav id="main-nav" class="nav" aria-label="Primary">
+        <a href="./project-list.html">Project List</a>
+        <a href="./project-users.html" aria-current="page">Project Users</a>
+        <a href="./A-projects-dashboard.html">Project Dashboard</a>
+        <a href="./login.html">Login</a>
+        <a href="./about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page" id="view-project-users">
+      <div class="page-header">
+        <h1>Project Users</h1>
+        <p class="muted">Manage current members, email invitations, pending membership requests, approvals, rejections, and member removal for the selected project.</p>
+      </div>
+
+      <div class="project-users-layout">
+        <div class="full">
+          <!-- COMPONENT: breadcrumbs -->
+          <article id="component-breadcrumbs" class="card c-breadcrumbs">
+            <nav aria-label="Breadcrumb">
+              <ol>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="./project-list.html">Project List</a></li>
+                <li><a id="dashboard-breadcrumb" href="./A-projects-dashboard.html">Project Dashboard</a></li>
+                <li aria-current="page">Project Users</li>
+              </ol>
+            </nav>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card admin-banner" aria-label="Project owner and site admin management scope">
+            <i class="fa-solid fa-users-gear" aria-hidden="true"></i>
+            <p><strong>Owner/admin page:</strong> only Project Owners and Site Admin context can invite users, approve requests, reject requests, or remove project members.</p>
+          </article>
+        </div>
+
+        <div class="two-third">
+          <article class="card">
+            <h2 id="project-name">Selected project</h2>
+            <div class="meta-list" id="project-summary"></div>
+            <div class="action-row" style="margin-top: var(--sp-md);">
+              <a class="btn btn-default" href="./project-list.html">Back to Project List</a>
+              <a class="btn btn-primary" id="open-dashboard" href="./A-projects-dashboard.html">Open dashboard</a>
+            </div>
+          </article>
+        </div>
+
+        <div class="third">
+          <article class="card">
+            <h2>Management rules</h2>
+            <ul>
+              <li>Members can be removed by owners/admins.</li>
+              <li>The only Project Owner cannot be removed.</li>
+              <li>Pending requests have approve and disapprove actions.</li>
+              <li>Removed members lose dashboard, building, SRI, EPB, and calculation access.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="full">
+          <div class="summary-grid" aria-label="Project user summary">
+            <article class="card stat-card">
+              <span class="caption">Approved members</span>
+              <strong id="member-count">0</strong>
+            </article>
+            <article class="card stat-card">
+              <span class="caption">Project owners</span>
+              <strong id="owner-count">0</strong>
+            </article>
+            <article class="card stat-card">
+              <span class="caption">Pending requests</span>
+              <strong id="request-count">0</strong>
+            </article>
+            <article class="card stat-card">
+              <span class="caption">Registered users</span>
+              <strong id="registered-user-count">0</strong>
+            </article>
+          </div>
+        </div>
+
+        <div class="full">
+          <article class="card">
+            <h2>Add registered user by email</h2>
+            <p class="muted">Enter the email of an existing registered user. The user is added as a Project Member when the email exists.</p>
+            <form id="invite-form" class="form-grid">
+              <label class="form-field" for="invite-email">
+                <span>Email address</span>
+                <input id="invite-email" type="email" placeholder="registered.user@example.eu" required />
+              </label>
+              <div class="action-row full">
+                <button class="btn btn-primary" type="submit">Add user to project</button>
+                <p class="caption" id="invite-feedback" role="status" aria-live="polite"></p>
+              </div>
+            </form>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card">
+            <!-- COMPONENT: data-table -->
+            <div id="component-data-table" class="c-data-table">
+              <h2>Current members</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Member</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Joined</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="members-body"></tbody>
+              </table>
+            </div>
+
+            <!-- COMPONENT: empty-state -->
+            <div id="component-empty-state" class="c-empty-state" hidden>
+              <h2>No members found</h2>
+              <p class="muted">This project does not have approved members in the current demo data.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="full">
+          <article class="card">
+            <!-- COMPONENT: data-table -->
+            <div id="component-requests-table" class="c-data-table">
+              <h2>Pending membership requests</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Applicant</th>
+                    <th scope="col">Message</th>
+                    <th scope="col">Requested</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="requests-body"></tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- COMPONENT: modal -->
+  <div id="component-modal" class="c-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <h2 id="modal-title">Confirm action</h2>
+      <p id="modal-message">Are you sure?</p>
+      <p class="danger-note" id="modal-warning"></p>
+      <div class="action-row">
+        <button type="button" class="btn btn-default" id="modal-cancel">Cancel</button>
+        <button type="button" class="btn btn-danger" id="modal-confirm">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPONENT: toast -->
+  <div id="component-toast" class="c-toast" role="status" aria-live="polite">Project users updated.</div>
+
+  <!-- COMPONENT: footer -->
+  <footer id="component-footer" class="app-footer c-footer">
+    <div class="container">
+      <p>© 2026 OpenBEP · Contact · Privacy · Terms</p>
+    </div>
+  </footer>
+
+  <script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
+  <script>
+    const appDataModel = window.AppDataModel || AppDataModel || { projects: [] };
+    const params = new URLSearchParams(window.location.search);
+    const selectedProjectId = params.get('project') || 'project-1';
+    const project = (appDataModel.projects || []).find((item) => item.id === selectedProjectId) || (appDataModel.projects || [])[0];
+    const registeredUsers = appDataModel.users || [];
+    const members = project ? [...(project.members || [])] : [];
+    const membershipRequests = project ? [...(project.membershipRequests || [])] : [];
+
+    const projectName = document.getElementById('project-name');
+    const projectSummary = document.getElementById('project-summary');
+    const openDashboard = document.getElementById('open-dashboard');
+    const dashboardBreadcrumb = document.getElementById('dashboard-breadcrumb');
+    const membersBody = document.getElementById('members-body');
+    const requestsBody = document.getElementById('requests-body');
+    const emptyState = document.getElementById('component-empty-state');
+    const inviteForm = document.getElementById('invite-form');
+    const inviteEmail = document.getElementById('invite-email');
+    const inviteFeedback = document.getElementById('invite-feedback');
+    const modal = document.getElementById('component-modal');
+    const modalMessage = document.getElementById('modal-message');
+    const modalWarning = document.getElementById('modal-warning');
+    const modalCancel = document.getElementById('modal-cancel');
+    const modalConfirm = document.getElementById('modal-confirm');
+    const toast = document.getElementById('component-toast');
+    let pendingAction = null;
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>'"]/g, (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+      }[char]));
+    }
+
+    function roleLabel(role) {
+      return {
+        PROJECT_OWNER: 'Project Owner',
+        PROJECT_MEMBER: 'Project Member'
+      }[role] || role;
+    }
+
+    function statusChipClass(status) {
+      return {
+        APPROVED: 'chip--ready',
+        PENDING: 'chip--pending',
+        INVITED: 'chip--draft',
+        DISAPPROVED: 'chip--incomplete',
+        REMOVED: 'chip--incomplete'
+      }[status] || 'chip--draft';
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('is-visible');
+      window.setTimeout(() => toast.classList.remove('is-visible'), 2200);
+    }
+
+    function ownerCount() {
+      return members.filter((member) => member.projectRole === 'PROJECT_OWNER' && member.status === 'APPROVED').length;
+    }
+
+    function canRemove(member) {
+      return !(member.projectRole === 'PROJECT_OWNER' && ownerCount() <= 1);
+    }
+
+    function updateSummary() {
+      document.getElementById('member-count').textContent = members.filter((member) => member.status === 'APPROVED').length;
+      document.getElementById('owner-count').textContent = ownerCount();
+      document.getElementById('request-count').textContent = membershipRequests.filter((request) => request.status === 'PENDING').length;
+      document.getElementById('registered-user-count').textContent = registeredUsers.length;
+    }
+
+    function renderProject() {
+      if (!project) {
+        projectName.textContent = 'No project selected';
+        projectSummary.innerHTML = '<p class="muted">Open this page from Project List with a valid project id.</p>';
+        return;
+      }
+
+      projectName.textContent = project.name;
+      openDashboard.href = `./A-projects-dashboard.html?project=${project.id}`;
+      dashboardBreadcrumb.href = `./A-projects-dashboard.html?project=${project.id}`;
+      projectSummary.innerHTML = `
+        <p><strong>Owner:</strong> ${escapeHtml(project.ownerName)}</p>
+        <p><strong>Organisation:</strong> ${escapeHtml(project.organisationName || 'Not provided')}</p>
+        <p><strong>Location:</strong> ${escapeHtml([project.city, project.country].filter(Boolean).join(', '))}</p>
+        <p><strong>Buildings:</strong> ${escapeHtml(project.buildingCount)}</p>
+      `;
+    }
+
+    function renderMembers() {
+      membersBody.innerHTML = members.map((member, index) => {
+        const removeDisabled = !canRemove(member);
+        const disabledLabel = removeDisabled ? ' title="At least one Project Owner must remain" disabled' : '';
+        return `
+          <tr>
+            <td><span class="member-name">${escapeHtml(member.name)}</span><p class="caption">${escapeHtml(member.email)}</p></td>
+            <td>${escapeHtml(roleLabel(member.projectRole))}</td>
+            <td><span class="chip ${statusChipClass(member.status)}">${escapeHtml(member.status)}</span></td>
+            <td>${escapeHtml(member.joinedAt || '—')}</td>
+            <td><div class="action-row"><button type="button" class="btn btn-danger" data-action="remove-member" data-member-index="${index}"${disabledLabel}>Remove</button></div></td>
+          </tr>
+        `;
+      }).join('');
+      emptyState.hidden = members.length > 0;
+    }
+
+    function renderRequests() {
+      requestsBody.innerHTML = membershipRequests.map((request, index) => {
+        const isPending = request.status === 'PENDING';
+        return `
+          <tr>
+            <td><span class="member-name">${escapeHtml(request.userName)}</span><p class="caption">${escapeHtml(request.email)}</p></td>
+            <td>${escapeHtml(request.message || 'No message')}</td>
+            <td>${escapeHtml(request.requestedAt || '—')}</td>
+            <td><span class="chip ${statusChipClass(request.status)}">${escapeHtml(request.status)}</span></td>
+            <td>
+              <div class="action-row">
+                <button type="button" class="btn btn-success" data-action="approve-request" data-request-index="${index}" ${isPending ? '' : 'disabled'}>Approve</button>
+                <button type="button" class="btn btn-danger" data-action="reject-request" data-request-index="${index}" ${isPending ? '' : 'disabled'}>Disapprove</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('') || '<tr><td colspan="5"><p class="muted">No pending membership requests.</p></td></tr>';
+    }
+
+    function renderAll() {
+      renderProject();
+      updateSummary();
+      renderMembers();
+      renderRequests();
+    }
+
+    function openModal(message, warning, action) {
+      modalMessage.textContent = message;
+      modalWarning.textContent = warning || '';
+      pendingAction = action;
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      modalConfirm.focus();
+    }
+
+    function closeModal() {
+      pendingAction = null;
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+
+    inviteForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const email = inviteEmail.value.trim().toLowerCase();
+      if (!email) return;
+
+      const registeredUser = registeredUsers.find((user) => (user.profile?.email || '').toLowerCase() === email);
+      if (!registeredUser) {
+        inviteFeedback.textContent = `User with email ${email} does not exist.`;
+        inviteFeedback.classList.add('danger-note');
+        showToast(`User with email ${email} does not exist.`);
+        return;
+      }
+
+      const alreadyMember = members.some((member) => (member.email || '').toLowerCase() === email && member.status === 'APPROVED');
+      if (alreadyMember) {
+        inviteFeedback.textContent = `User with email ${email} is already part of this project.`;
+        inviteFeedback.classList.add('danger-note');
+        showToast(`User with email ${email} is already part of this project.`);
+        return;
+      }
+
+      const joinedAt = new Date().toISOString().slice(0, 10);
+      members.push({
+        userId: registeredUser.id,
+        name: registeredUser.profile?.name || email,
+        email: registeredUser.profile?.email || email,
+        projectRole: 'PROJECT_MEMBER',
+        status: 'APPROVED',
+        joinedAt,
+        removedAt: null,
+        removedBy: null
+      });
+
+      registeredUser.memberships = registeredUser.memberships || [];
+      registeredUser.memberships.push({
+        projectId: project?.id,
+        projectRole: 'PROJECT_MEMBER',
+        status: 'APPROVED',
+        joinedAt
+      });
+
+      inviteFeedback.classList.remove('danger-note');
+      inviteFeedback.textContent = `${registeredUser.profile?.name || email} added to this project.`;
+      inviteForm.reset();
+      renderAll();
+      showToast(`${registeredUser.profile?.name || email} added as an approved project user.`);
+    });
+
+    document.addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-action]');
+      if (!button) return;
+
+      const action = button.dataset.action;
+      if (action === 'remove-member') {
+        const index = Number(button.dataset.memberIndex);
+        const member = members[index];
+        if (!member || !canRemove(member)) return;
+        openModal(
+          `Remove ${member.name} from this project?`,
+          'This member will lose dashboard, building, SRI, EPB, and calculation access.',
+          () => {
+            members.splice(index, 1);
+            renderAll();
+            showToast(`${member.name} removed from the demo project state.`);
+          }
+        );
+      }
+
+      if (action === 'approve-request') {
+        const index = Number(button.dataset.requestIndex);
+        const request = membershipRequests[index];
+        if (!request || request.status !== 'PENDING') return;
+        request.status = 'APPROVED';
+        request.reviewedAt = new Date().toISOString().slice(0, 10);
+        members.push({
+          userId: request.userId,
+          name: request.userName,
+          email: request.email,
+          projectRole: 'PROJECT_MEMBER',
+          status: 'APPROVED',
+          joinedAt: request.reviewedAt
+        });
+        renderAll();
+        showToast(`${request.userName} approved as Project Member.`);
+      }
+
+      if (action === 'reject-request') {
+        const index = Number(button.dataset.requestIndex);
+        const request = membershipRequests[index];
+        if (!request || request.status !== 'PENDING') return;
+        openModal(
+          `Disapprove membership request from ${request.userName}?`,
+          'The applicant will not receive project dashboard or building access.',
+          () => {
+            request.status = 'DISAPPROVED';
+            request.reviewedAt = new Date().toISOString().slice(0, 10);
+            renderAll();
+            showToast(`${request.userName} request disapproved.`);
+          }
+        );
+      }
+    });
+
+    modalCancel.addEventListener('click', closeModal);
+    modalConfirm.addEventListener('click', () => {
+      if (pendingAction) pendingAction();
+      closeModal();
+    });
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) closeModal();
+    });
+
+    renderAll();
+  </script>
+</body>
+
+</html>

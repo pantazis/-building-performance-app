@@ -18,7 +18,8 @@ Important view distinction:
 - Project List is the project browsing/selection view for available projects, membership requests, membership status, and create-project actions.
 - Project Dashboard is the selected project workspace for one project after access is approved. It contains buildings and entry points to Building, SRI, EPB, and calculation workflows.
 - `nav-project-list` and `nav-project-dashboard` must remain separate menu/navigation concepts.
-- `view/A-projects-dashboard.html` is the current prototype file for the selected Project Dashboard / project workspace. The Project List page is planned but not yet implemented as a prototype HTML file.
+- `view/project-list.html` is the current Project List page and includes membership/request status, including pending requests.
+- `view/A-projects-dashboard.html` is the current prototype file for the selected Project Dashboard / project workspace.
 
 Source documents:
 
@@ -61,13 +62,12 @@ These are stable menu IDs that can be reused across roles.
 | `nav-about` | About | `view/about.html` | Public information page. |
 | `nav-login` | Login | `view/login.html` | Guest login entry. |
 | `nav-logout` | Logout | `view/login.html` or logout action | Authenticated users only. |
-| `nav-profile` | My Profile | User profile page, when created | Authenticated users only. |
-| `nav-project-list` | Projects | Project List page, when created | For browsing available projects. |
-| `nav-project-create` | Create Project | Create Project page, when created | Registered users and admins. |
-| `nav-project-request-status` | Membership Status | Pending membership status page, when created | Optional pending/applicant state. |
+| `nav-profile` | My Profile | `view/user-profile.html` | Authenticated users only. |
+| `nav-project-list` | Projects | `view/project-list.html` | For browsing available projects and viewing membership/request status. |
+| `nav-project-create` | Create Project | `view/create-project.html` | Registered users and admins. |
 | `nav-project-dashboard` | Project Dashboard | `view/A-projects-dashboard.html` | Selected project workspace after opening an allowed project from the Project List. |
-| `nav-project-members` | Project Users | Project users management page, when created | Project Owner and Site Admin. One page for members, invitations, and membership requests. |
-| `nav-project-settings` | My Projects | My projects list page, when created | Project Owner and Site Admin. Lists manageable projects; each project has Edit/Delete actions. |
+| `nav-project-members` | Project Users | `view/project-users.html` | Project Owner and Site Admin. One page for members, invitations, and membership requests. |
+| `nav-project-settings` | Project Settings | `view/project-settings.html` | Project Member can view read-only and go to dashboard only. Project Owner and Site Admin can edit settings and use confirmed archive/delete actions where allowed. |
 | `nav-admin-console` | Site Admin Console | `view/site-admin-console.html`, when created | Site Admin only. One compact page that lists Project Owners and starts selected-owner mode. |
 
 ---
@@ -98,17 +98,13 @@ Registered User menu:
 | Order | Menu ID | Label | Target |
 |---:|---|---|---|
 | 1 | `nav-home` | Home | `index.html` |
-| 2 | `nav-project-list` | Projects | Project List page, when created |
-| 3 | `nav-project-create` | Create Project | Create Project page, when created |
-| 4 | `nav-profile` | My Profile | User profile page, when created |
+| 2 | `nav-project-list` | Projects | `view/project-list.html` |
+| 3 | `nav-project-create` | Create Project | `view/create-project.html` |
+| 4 | `nav-profile` | My Profile | `view/user-profile.html` |
 | 5 | `nav-about` | About | `view/about.html` |
 | 6 | `nav-logout` | Logout | Logout action |
 
-Optional pending state menu item:
-
-| Menu ID | Label | Target | When shown |
-|---|---|---|---|
-| `nav-project-request-status` | Membership Status | Pending membership status page, when created | Show only after the user requests project membership. |
+Pending/request status is shown inside `view/project-list.html`; do not add a separate Membership Status menu item or pending-membership page.
 
 Registered User must not see building workflow menu items until approved into a project or until they create a project and become Project Owner.
 Pending membership, invitation, and no-access screens are temporary workflow states, not additional roles.
@@ -124,11 +120,12 @@ Project Member menu:
 
 | Order | Menu ID | Label | Target |
 |---:|---|---|---|
-| 1 | `nav-project-list` | Projects | Project List page, when created |
+| 1 | `nav-project-list` | Projects | `view/project-list.html` |
 | 2 | `nav-project-dashboard` | Project Dashboard | `view/A-projects-dashboard.html` |
-| 3 | `nav-profile` | My Profile | User profile page, when created |
-| 4 | `nav-about` | About | `view/about.html` |
-| 5 | `nav-logout` | Logout | Logout action |
+| 3 | `nav-project-settings` | Project Settings | `view/project-settings.html`; read-only for selected approved project |
+| 4 | `nav-profile` | My Profile | `view/user-profile.html` |
+| 5 | `nav-about` | About | `view/about.html` |
+| 6 | `nav-logout` | Logout | Logout action |
 
 Project Member menu scope:
 
@@ -136,6 +133,7 @@ Project Member menu scope:
 - Project List is used first to select an approved project; Project Dashboard opens after project selection.
 - Child pages such as Add New Building, Open/Edit Building, SRI, and EPB are opened from the dashboard/building flow, not from the main menu.
 - Project Member can edit only buildings they created.
+- Project Member can open Project Settings read-only for an approved project, but the only allowed action there is returning/opening the dashboard.
 - Do not show project user management or site admin menu items.
 
 ---
@@ -149,10 +147,10 @@ Project Owner menu:
 
 | Order | Menu ID | Label | Target |
 |---:|---|---|---|
-| 1 | `nav-project-list` | Projects | Project List page, when created |
+| 1 | `nav-project-list` | Projects | `view/project-list.html` |
 | 2 | `nav-project-dashboard` | Project Dashboard | `view/A-projects-dashboard.html` |
-| 3 | `nav-project-members` | Project Users | Project users management page, when created |
-| 4 | `nav-project-settings` | My Projects | My projects list page, when created |
+| 3 | `nav-project-members` | Project Users | `view/project-users.html` |
+| 4 | `nav-project-settings` | Project Settings | `view/project-settings.html` |
 | 5 | `nav-profile` | My Profile | User profile page, when created |
 | 6 | `nav-about` | About | `view/about.html` |
 | 7 | `nav-logout` | Logout | Logout action |
@@ -179,11 +177,12 @@ Site Admin menu:
 | Order | Menu ID | Label | Target |
 |---:|---|---|---|
 | 1 | `nav-admin-console` | Site Admin Console | `view/site-admin-console.html`, when created |
-| 2 | `nav-project-list` | Projects | Project List page, when created; shown after selecting a Project Owner |
+| 2 | `nav-project-list` | Projects | `view/project-list.html`; shown after selecting a Project Owner or through direct Site Admin Project List access |
 | 3 | `nav-project-dashboard` | Project Dashboard | `view/A-projects-dashboard.html`; shown after selecting a Project Owner and opening an allowed project |
-| 4 | `nav-profile` | My Profile | User profile page, when created |
-| 5 | `nav-about` | About | `view/about.html` |
-| 6 | `nav-logout` | Logout | Logout action |
+| 4 | `nav-project-settings` | Project Settings | `view/project-settings.html`; shown after selecting a Project Owner or through direct Site Admin Project List access |
+| 5 | `nav-profile` | My Profile | User profile page, when created |
+| 6 | `nav-about` | About | `view/about.html` |
+| 7 | `nav-logout` | Logout | Logout action |
 
 Site Admin menu scope:
 
@@ -257,6 +256,14 @@ This page can include these sections/actions:
 | `section-project-membership-requests` | Membership Requests | View pending project membership requests and approve or reject them. | Previously represented by `nav-project-requests`. Now a section inside `nav-project-members`. |
 
 ---
+
+## Project Settings page capabilities
+
+The `nav-project-settings` menu item opens `view/project-settings.html` for the selected project.
+
+- Project Member: can view selected approved project settings read-only and can only open/return to the dashboard.
+- Project Owner: can edit owned project metadata and use confirmed archive/delete actions where allowed.
+- Site Admin: can use the same settings page through selected-owner mode or direct Site Admin Project List access, with confirmation/audit expectations for destructive actions.
 
 ## My Projects list child actions
 

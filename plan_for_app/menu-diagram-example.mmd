@@ -5,10 +5,19 @@ flowchart TD
 subgraph APP[Application menu and calculation workflow]
 direction TD
 
-PL[Project List / Project Selection<br/>view/A-projects-dashboard.html] -->|Open allowed project| A[Projects Dashboard / Selected Project Workspace<br/>view/A-projects-dashboard.html]
+PL[Project List / Project Selection<br/>view/project-list.html] -->|Open allowed project| A[Projects Dashboard / Selected Project Workspace<br/>view/A-projects-dashboard.html]
+PL -->|Manage users for owned project| PU[Project Users management<br/>view/project-users.html]
+PL -->|Open settings for allowed project| PS[My Projects / Project Settings<br/>view/project-settings.html]
+PU -->|Back to project selection| PL
+PU -->|Open selected project dashboard| A
+PS -->|Back to project selection| PL
+PS -->|Open selected project dashboard| A
+PS -->|Project member read-only: dashboard only| A
 A --> B[Add New Building<br/>view/C-open-edit-building.html]
 A --> C[Open / Edit Building<br/>view/C-open-edit-building.html]
 A -.-> ABOUT[About<br/>view/about.html]
+A -->|Back to project selection| PL
+A -->|Project settings| PS
 
 B --> C
 
@@ -68,7 +77,7 @@ subgraph UM[User management and permissions workflow]
 direction TD
 
     OpenApp([User opens app]) --> HasAccount{Does user have an account?}
-    HasAccount -->|No| Register[Register account]
+    HasAccount -->|No| Register[Register account<br/>view/register.html]
     Register --> RegistrationSuccess[Registration successful]
     RegistrationSuccess --> Login([User logs in<br/>view/login.html])
     HasAccount -->|Yes| Login
@@ -78,25 +87,30 @@ direction TD
     Denied --> Login
 
     Auth -->|Yes| AuthenticatedUser[Authenticated user]
-    AuthenticatedUser --> ProfilePage[User profile page]
+    AuthenticatedUser --> ProfilePage[User profile page<br/>view/user-profile.html]
     ProfilePage --> EditOwnProfile[Can edit own profile data]
+    ProfilePage -->|Back to projects| ProjectList
     AuthenticatedUser --> AdminCheck{Is user a site admin?}
 
     AdminCheck -->|No| ProjectCheck{Does user already belong to a project?}
-    ProjectCheck -->|No| CreateProject[Create project]
+    ProjectCheck -->|No| CreateProject[Create project<br/>view/create-project.html]
     CreateProject --> BecomeOwner[User becomes project owner]
     BecomeOwner --> OwnerManagementPage
 
-    ProjectCheck -->|No: browse existing| ProjectList[Project list page]
-    ProjectList --> ProjectDetail[Project detail page]
+    ProjectCheck -->|No: browse existing| ProjectList[Project list page<br/>view/project-list.html]
+    ProjectList -->|Click project row/name| ProjectDetail[Project details popup<br/>inside view/project-list.html]
     ProjectDetail --> AskMembership[User asks to become a member]
     AskMembership --> MembershipRequest[Membership request waits for owner approval]
-    MembershipRequest --> Pending[Pending membership request / applicant state\nWait for owner decision]
+    MembershipRequest --> Pending[Pending membership request / applicant state\nStatus shown in Project List\nview/project-list.html]
     MembershipRequest -->|Visible only to owner| OwnerManagementPage
 
     ProjectCheck -->|Yes: already member of specific project| ApprovedUser[Approved project user]
 
-    OwnerManagementPage -->|Owner adds or invites member by email| DirectMember[Invited user accepts membership]
+    OwnerManagementPage -->|Owner enters registered user email| EmailExists{Does email exist as registered user?}
+    EmailExists -->|Yes| DirectMember[User becomes approved project member]
+    EmailExists -->|No| EmailError[Show error: user with email does not exist]
+    EmailError --> OwnerManagementPage
+    Pending --> ProjectList
     Pending --> NoAccess[No project building access yet]
 
     ApprovedUser --> UserPage[Project List access\nCan open approved project dashboard]
@@ -104,7 +118,7 @@ direction TD
     UserPage --> UserEditOwn[Can edit only own buildings]
     UserPage --> UserNoEditOthers[Cannot edit buildings created by other users]
 
-    ProjectCheck -->|Yes: project owner| OwnerManagementPage[Project Owner area / Project Users management<br/>Can manage project users<br/>Can invite member by email]
+    ProjectCheck -->|Yes: project owner| OwnerManagementPage[Project Owner area / Project Users management<br/>Can manage project users<br/>Can add registered user by email]
     OwnerManagementPage -->|Owner reviews pending requests| OwnerDecision{Approve invitation?}
     OwnerDecision -->|Approve| OwnerApprove[Invitation becomes approved]
     OwnerDecision -->|Disapprove| OwnerDisapprove[Invitation becomes disapproved]
@@ -151,10 +165,10 @@ direction TD
     classDef role fill:#f3eefc,stroke:#6f42c1,stroke-width:2px,color:#25113f
     classDef rule fill:#f7f7f7,stroke:#666,stroke-width:1px,color:#222
 
-    class OpenApp,Login,Register,RegistrationSuccess,Pending,UserPage,ProfilePage,OwnerManagementPage,SiteAdminPage,SiteAdminOwners,SelectOwner,BecomeOwnerView,OwnerSelectedProjects,ExitOwnerView,CreateProject,ProjectList,ProjectDetail,AskMembership,MembershipRequest,SiteAdminDirectProjectList page
-    class HasAccount,Auth,AdminCheck,ProjectCheck,OwnerDecision decision
+    class OpenApp,Login,Register,RegistrationSuccess,Pending,UserPage,ProfilePage,OwnerManagementPage,SiteAdminPage,SiteAdminOwners,SelectOwner,BecomeOwnerView,OwnerSelectedProjects,ExitOwnerView,CreateProject,ProjectList,ProjectDetail,AskMembership,MembershipRequest,SiteAdminDirectProjectList,PS page
+    class HasAccount,Auth,AdminCheck,ProjectCheck,OwnerDecision,EmailExists decision
     class AuthenticatedUser,ApprovedUser,UserCreate,UserEditOwn,EditOwnProfile,OwnerApprove,BecomeOwner,DirectMember approved
-    class Denied,NoAccess,UserNoEditOthers,OwnerDisapprove rejected
+    class Denied,NoAccess,UserNoEditOthers,OwnerDisapprove,EmailError rejected
     class OwnerEditAll,SiteAdminAllProjects,SiteAdminEditAll,SiteAdminCreateAny,SiteAdminAnyDashboard,SiteAdminDirectEdit role
     class Rule1,Rule2,Rule3,Rule4,Rule5 rule
 end

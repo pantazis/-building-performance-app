@@ -7,7 +7,7 @@
   <title>Building Performance App</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="style.css" />
-</head>  <!-- CO  <!-- COMPONENT-INDEX: hamburger-menu, role-switcher, search-bar, breadcrumbs, setup-help, typography-hierarchy, button-group, status-chips, decision-panel, login-form, social-login, validation-state, unordered-list, ordered-list, data-table, select-menu, checklist, accordion, steps-tabs, modal, action-popup, toast, loader, empty-state, footer, gauge-svg-template, sri-results-table -->
+</head>  <!-- CO  <!-- COMPONENT-INDEX: hamburger-menu, role-switcher, search-bar, breadcrumbs, setup-help, typography-hierarchy, button-group, status-chips, decision-panel, login-form, register-form, social-login, validation-state, unordered-list, ordered-list, data-table, select-menu, checklist, accordion, steps-tabs, modal, action-popup, toast, loader, empty-state, footer, gauge-svg-template, sri-results-table -->
   <header class="app-header">
     <div class="container">
       <a class="brand" href="#home"><img class="logo" src="logo.png" alt="Building Performance Logo"></a>
@@ -239,6 +239,53 @@
               <button type="button" class="btn"><i class="fa-brands fa-apple"></i> Apple</button>
             </div>
           </div>
+        </article>
+
+        <!-- COMPONENT: register-form -->
+        <article id="component-register-form" class="card c-register-form">
+          <h2>Create account</h2>
+          <form id="register-form" class="grid" novalidate>
+            <label class="form-field" for="register-name">
+              <span>Full name</span>
+              <input id="register-name" type="text" placeholder="Your full name" autocomplete="name" required />
+            </label>
+            <label class="form-field" for="register-email">
+              <span>Email</span>
+              <input id="register-email" type="email" placeholder="name@example.com" autocomplete="email" required />
+            </label>
+            <label class="form-field" for="register-role">
+              <span>Primary role</span>
+              <select id="register-role" required>
+                <option value="">Select your role</option>
+                <option value="ASSESSOR">Assessor</option>
+                <option value="BUILDING_OWNER">Building Owner / Manager</option>
+                <option value="DATA_OWNER">Data Owner</option>
+                <option value="EXTERNAL_DEVELOPER">External Developer</option>
+                <option value="EXTERNAL_DATA_CONSUMER">External Data Consumer</option>
+              </select>
+            </label>
+            <label class="form-field" for="register-password">
+              <span>Password</span>
+              <div class="password-wrap">
+                <input id="register-password" type="password" placeholder="Create a password" minlength="8" autocomplete="new-password" required />
+                <button id="toggle-register-password" type="button" class="btn btn-sm" aria-pressed="false">Show</button>
+              </div>
+            </label>
+            <label class="form-field" for="register-confirm-password">
+              <span>Confirm password</span>
+              <input id="register-confirm-password" type="password" placeholder="Repeat your password" minlength="8" autocomplete="new-password" required />
+            </label>
+            <!-- COMPONENT: validation-state -->
+            <p id="component-register-validation-state" class="c-validation-state" role="status" aria-live="polite"></p>
+            <label class="check-row" for="register-terms">
+              <input id="register-terms" type="checkbox" required />
+              <span>I agree to the OpenBEP terms, privacy policy, and data processing notices.</span>
+            </label>
+            <div class="login-actions">
+              <a href="../view/login.html" class="muted">Already have an account?</a>
+              <button type="submit" class="btn btn-primary">Create account</button>
+            </div>
+          </form>
         </article>
 
         <article class="card">
@@ -1130,6 +1177,20 @@
     /* COMPONENT: login-form */
     .c-login-form form {
       gap: var(--sp-md);
+    }
+
+    /* COMPONENT: register-form */
+    .c-register-form form {
+      gap: var(--sp-md);
+    }
+
+    .c-register-form .check-row {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: start;
+      gap: var(--sp-xs);
+      color: var(--muted);
+      font-size: var(--fs-0);
     }
 
     .password-wrap {

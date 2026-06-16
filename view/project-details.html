@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project Details · OpenBEP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../building-performance-app/style.css" />
+  <style>
+    :root {
+      --btn-color-success: #2db34a;
+      --btn-color-default: #86c440;
+      --btn-color-warning: #fecf17;
+      --btn-color-orange: #f47721;
+      --btn-color-danger: #ef3e23;
+    }
+
+    .project-details-layout {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--sp-md);
+    }
+
+    .project-details-layout > .full { grid-column: 1 / -1; }
+    .project-details-layout > .main { grid-column: span 8; }
+    .project-details-layout > .aside { grid-column: span 4; }
+
+    @media (max-width: 900px) {
+      .project-details-layout > .main,
+      .project-details-layout > .aside { grid-column: 1 / -1; }
+    }
+
+    /* COMPONENT: breadcrumbs */
+    .c-breadcrumbs ol {
+      display: grid;
+      grid-auto-flow: column;
+      justify-content: start;
+      gap: var(--sp-xs);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .c-breadcrumbs li + li::before {
+      content: ">";
+      margin-right: var(--sp-xs);
+      color: var(--muted);
+    }
+
+    /* COMPONENT: data-table */
+    .c-data-table { overflow-x: auto; }
+    .c-data-table table { width: 100%; border-collapse: collapse; }
+    .c-data-table th,
+    .c-data-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    /* COMPONENT: status-chips */
+    .status-grid {
+      display: grid;
+      gap: var(--sp-sm);
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sp-md);
+    }
+
+    @media (max-width: 640px) {
+      .detail-grid { grid-template-columns: 1fr; }
+    }
+
+    .detail-item strong { display: block; color: var(--text); }
+    .detail-item span { color: var(--muted); }
+
+    .action-stack {
+      display: grid;
+      gap: var(--sp-sm);
+    }
+
+    .request-box {
+      display: grid;
+      gap: var(--sp-sm);
+      margin-top: var(--sp-md);
+    }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="container">
+      <a class="brand" href="../index.html"><img class="logo" src="../building-performance-app/logo.png" alt="OpenBEP logo"></a>
+      <nav id="main-nav" class="nav" aria-label="Primary">
+        <a href="./project-list.html">Project List</a>
+        <a href="./create-project.html">Create Project</a>
+        <a href="./project-details.html" aria-current="page">Project Details</a>
+        <a href="./A-projects-dashboard.html">Project Dashboard</a>
+        <a href="./login.html">Login</a>
+        <a href="./about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page" id="view-project-details">
+      <div class="page-header">
+        <h1 id="project-title">Project Details</h1>
+        <p class="muted" id="project-subtitle">Review project access, membership status, and available actions.</p>
+      </div>
+
+      <div class="project-details-layout">
+        <div class="full">
+          <!-- COMPONENT: breadcrumbs -->
+          <article id="component-breadcrumbs" class="card c-breadcrumbs">
+            <nav aria-label="Breadcrumb">
+              <ol>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="./project-list.html">Project List</a></li>
+                <li aria-current="page">Project Details</li>
+              </ol>
+            </nav>
+          </article>
+        </div>
+
+        <div class="main">
+          <article class="card">
+            <h2>Summary</h2>
+            <div class="detail-grid" id="project-summary"></div>
+          </article>
+
+          <article class="card mt-lg">
+            <!-- COMPONENT: data-table -->
+            <div id="component-data-table" class="c-data-table">
+              <h2>Known members and requests</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Role / request</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="member-table-body"></tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+
+        <div class="aside">
+          <article class="card">
+            <!-- COMPONENT: status-chips -->
+            <div id="component-status-chips" class="c-status-chips status-grid">
+              <h2>Access status</h2>
+              <p><span id="membership-chip" class="chip">Loading</span></p>
+              <p class="muted" id="status-help"></p>
+            </div>
+
+            <div class="action-stack" id="project-actions" aria-label="Project actions"></div>
+
+            <div class="request-box" id="request-box" hidden>
+              <label class="form-field" for="request-message">
+                <span>Membership request message</span>
+                <textarea id="request-message" rows="4" placeholder="Explain why you need access to this project."></textarea>
+              </label>
+              <button class="btn btn-orange" type="button" id="send-request">Send membership request</button>
+              <p class="caption" id="request-feedback" role="status" aria-live="polite"></p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- COMPONENT: footer -->
+  <footer id="component-footer" class="app-footer c-footer">
+    <div class="container">
+      <p>© 2026 OpenBEP · Contact · Privacy · Terms</p>
+    </div>
+  </footer>
+
+  <script src="../data_model/sri_epb_ui_data_model_v2.js"></script>
+  <script>
+    const appDataModel = window.AppDataModel || AppDataModel || { ui: {}, projects: [] };
+    const queryParams = new URLSearchParams(window.location.search);
+    const projectId = queryParams.get('project') || 'project-5';
+    const project = (appDataModel.ui.projectList || []).find((item) => item.id === projectId) || (appDataModel.ui.projectList || [])[0];
+    const fullProject = (appDataModel.projects || []).find((item) => item.id === project?.id) || project;
+
+    function statusChipClass(status) {
+      return {
+        APPROVED: 'chip--ready',
+        OWNER: 'chip--ready',
+        PENDING: 'chip--pending',
+        INVITED: 'chip--draft',
+        NONE: 'chip--incomplete'
+      }[status] || 'chip--draft';
+    }
+
+    function statusLabel(status) {
+      return {
+        APPROVED: 'Approved member',
+        OWNER: 'Project owner',
+        PENDING: 'Request pending',
+        INVITED: 'Invitation available',
+        NONE: 'Not a member'
+      }[status] || status;
+    }
+
+    function renderSummary() {
+      document.getElementById('project-title').textContent = project.name;
+      document.getElementById('project-subtitle').textContent = project.description || project.shortDescription;
+      document.getElementById('project-summary').innerHTML = [
+        ['Owner', project.ownerName],
+        ['Country', project.country],
+        ['City', project.city || '—'],
+        ['Address', project.address || '—'],
+        ['Buildings', project.buildingCount],
+        ['Visibility', project.visibility || 'PUBLIC']
+      ].map(([label, value]) => `<div class="detail-item"><strong>${label}</strong><span>${value}</span></div>`).join('');
+    }
+
+    function renderMembers() {
+      const rows = [];
+      (fullProject.members || []).forEach((member) => {
+        rows.push(`<tr><td>${member.name}<p class="caption">${member.email}</p></td><td>${member.projectRole}</td><td><span class="chip chip--ready">${member.status}</span></td></tr>`);
+      });
+      (fullProject.membershipRequests || []).forEach((request) => {
+        rows.push(`<tr><td>${request.userName}<p class="caption">${request.email}</p></td><td>Membership request</td><td><span class="chip chip--pending">${request.status}</span></td></tr>`);
+      });
+      document.getElementById('member-table-body').innerHTML = rows.join('') || '<tr><td colspan="3">Member details are not published for this project.</td></tr>';
+    }
+
+    function renderActions() {
+      const chip = document.getElementById('membership-chip');
+      chip.className = `chip ${statusChipClass(project.membershipStatus)}`;
+      chip.textContent = statusLabel(project.membershipStatus);
+
+      const actions = document.getElementById('project-actions');
+      const requestBox = document.getElementById('request-box');
+      const statusHelp = document.getElementById('status-help');
+
+      if (['APPROVED', 'OWNER'].includes(project.membershipStatus)) {
+        statusHelp.textContent = 'You can open the selected project dashboard and work with allowed buildings.';
+        const roleHint = project.membershipStatus === 'OWNER' ? '' : '&role=member';
+        actions.innerHTML = `<a class="btn btn-primary" href="./A-projects-dashboard.html?project=${project.id}">Open dashboard</a><a class="btn btn-default" href="./project-settings.html?project=${project.id}${roleHint}">Project settings</a><a class="btn btn-default" href="./project-list.html">Back to project list</a>`;
+        return;
+      }
+
+      if (project.membershipStatus === 'PENDING') {
+        statusHelp.textContent = 'Your membership request is waiting for Project Owner approval. Building access is not available yet.';
+        actions.innerHTML = '<a class="btn btn-default" href="./project-list.html">Back to project list</a>';
+        return;
+      }
+
+      if (project.membershipStatus === 'INVITED') {
+        statusHelp.textContent = 'A Project Owner has invited you. Accepting makes you a Project Member.';
+        actions.innerHTML = `<a class="btn btn-success" href="./A-projects-dashboard.html?project=${project.id}">Accept invitation</a><a class="btn btn-danger" href="./project-list.html">Decline</a>`;
+        return;
+      }
+
+      statusHelp.textContent = 'Request membership to ask the Project Owner for access. You cannot open the dashboard until approved.';
+      actions.innerHTML = '<a class="btn btn-default" href="./project-list.html">Back to project list</a>';
+      requestBox.hidden = false;
+    }
+
+    document.getElementById('send-request').addEventListener('click', () => {
+      document.getElementById('request-feedback').textContent = 'Membership request sent in prototype mode. Status would become PENDING.';
+    });
+
+    renderSummary();
+    renderMembers();
+    renderActions();
+  </script>
+</body>
+
+</html>
